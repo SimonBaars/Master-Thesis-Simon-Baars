@@ -1,9 +1,9 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}     % for éô
-\usepackage[english]{babel}       % for proper word breaking at line ends
-\usepackage[a4paper, left=1.5in, right=1.5in, top=1.5in, bottom=1.5in]{geometry}
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}     % for proper word breaking at line ends
+\usepackage[a4paper, total={170mm,257mm}, left=20mm, right=20mm]{geometry}
                                 % for page size and margin settings
-\usepackage{graphicx}           % for ?
+\usepackage{graphicx}           % for images
 \usepackage{amsmath,amssymb}    % for better equations
 \usepackage{amsthm}             % for better theorem styles
 \usepackage{mathtools}          % for greek math symbol formatting
@@ -12,8 +12,7 @@
 \usepackage{todonotes}          % for clear TODO notes
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
 \usepackage{titlesec}
-\usepackage[fixlanguage]{babelbib}
-                                % voor een Nederlands referentielijstje
+\usepackage{csquotes}
 
 \def\thesistitle{Automatic Refactoring of Code Clones in Object-Oriented Programming Languages}
 \def\thesissubtitle{Improving a systems maintainability with the push of a button}
@@ -25,22 +24,10 @@
 \def\thesissecondreadersecond{Schrijen}
 \def\thesisdate{\today}
 
-
-%             /\               %
-%             ||               %
-%             ||               %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%    TITELPAGINA WOORDJES    %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 %% FOR PDF METADATA
 \title{\thesistitle}
 \author{\thesisauthorfirst\space\thesisauthorsecond}
 \date{\thesisdate}
-
-%% TODO PACKAGE
-\newcommand{\towrite}[1]{\todo[inline,color=yellow!10]{NOG SCHRIJVEN: #1}}
 
 %% THEOREM STYLES
 \newtheorem{theorem}{Stelling}[section]
@@ -66,7 +53,7 @@
 	\thispagestyle{empty}
 	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 	\center
-	%\textsc{\Large Radboud Universiteit Nijmegen}\\[.7cm]
+	%\textsc{\University of Amsterdam}\\[.7cm]
 	\includegraphics[width=100mm]{img/logoUvA_en.pdf}\\[.5cm]
 	\textsc{Faculty of Science}\\[0.5cm]
 
@@ -103,11 +90,11 @@
 \tableofcontents
 
 \newpage
-\section{Abstract}
-\todo{This should be done when most of the rest of the document is finished.}
+\chapter{Abstract}
+\todo[inline,color=blue!10]{This should be done when most of the rest of the document is finished.}
 
 \newpage
-\section{Introduction}
+\chapter{Introduction}
 Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. Refactoring mostly requires some domain knowledge to do it right, but there are also refactoring opportunities that are rather trivial and repetitive to execute. In this thesis, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve maintainability of the refactored code.
 
 There are several models which describe ways to measure maintainability. None of these are sufficient to make a full assessment of the maintainability of a software project, but they strive to give a good indication. For this thesis, we will make use of the \textit{SIG maintainability model} \cite{heitlager2007practical}, as it is based on a lot of experience in the field of software quality assessment. This maintainability model is independent of programming language. For this thesis we will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object oriented languages, like C\#.
@@ -116,11 +103,23 @@ Improving the maintainability metrics does not automatically lead to a better ma
 
 For this research, we will focus on formalizing the refactoring process of dealing with duplication in code. To validate this approach, we will validate the refactored results with domain experts. Apart from that, we will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution.
 
-\subsection{Research questions}
-Code clones can appear anywhere in the code. Whether a code clone has to be refactored, and how it has to be refactored, is dependent on where it exists in the code (it's context). There are many different contexts in which code clones can occur (in a method, a complete class, )
+\section{Research questions}
+Code clones can appear anywhere in the code. Whether a code clone has to be refactored, and how it has to be refactored, is dependent on where it exists in the code (it's context). There are many different contexts in which code clones can occur (in a method, a complete class, in an enumeration, global variables, etc.). Because of this, we first must collect some information regarding in what contexts code clones exist. To do this, we will analyze a set of Java projects for their clones, and generalize their contexts. To come to this information, we have formulated the following research question:
+\begin{displayquote}
+\textbf{Research Question 1:}\\How can we group and rank clones based on their harmfulness?
+\end{displayquote}
+As a result from this research question, we expect a catalog of the different contexts in which clones occur, ordered on the amount of times they occur. On basis of this catalog, we have prioritized the further analysis of the clones. This analysis is to determine a suitable refactoring for the clone type that has been found at the design level. For this, we have formulated the following research question:
+\begin{displayquote}
+\textbf{Research Question 2:}\\To what extend can we suggest refactorings of clones at the design level?
+\end{displayquote}
+As a result, we expect to have proposed refactorings for the most harmful clone patterns. On basis of these design level refactorings we will build a model, which we will proof using Java, that applies the refactorings to corresponding methods. As some refactoring methods, like ``extract method'', require user input (the name of the method in the case of ``extract method''), this model will probably require some user input. Because of this, we have formulated the following research question:
+\begin{displayquote}
+\textbf{Research Question 3:}\\To what extend can we automatically refactor clones?
+\end{displayquote}
+
 
 \newpage
-\bibliographystyle{babplain}
+\bibliographystyle{plain}
 \bibliography{references.bib}
 
 \end{document}
