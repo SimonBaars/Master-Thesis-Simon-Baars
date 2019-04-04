@@ -11,15 +11,9 @@
 \usepackage{listings}           % for control of 'itemize' spacing
 \usepackage{todonotes}          % for clear TODO notes
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
+\usepackage{titlesec}
 \usepackage[fixlanguage]{babelbib}
                                 % voor een Nederlands referentielijstje
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%    TITELPAGINA WOORDJES    %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             ||               %
-%             ||               %
-%             \/               %
 
 \def\thesistitle{Automatic Refactoring of Code Clones in Object-Oriented Programming Languages}
 \def\thesissubtitle{Improving a systems maintainability with the push of a button}
@@ -109,14 +103,23 @@
 \tableofcontents
 
 \newpage
-\section{Introduction}
-
-\section{}
-
-
+\section{Abstract}
+\todo{This should be done when most of the rest of the document is finished.}
 
 \newpage
+\section{Introduction}
+Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. Refactoring mostly requires some domain knowledge to do it right, but there are also refactoring opportunities that are rather trivial and repetitive to execute. In this thesis, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve maintainability of the refactored code.
 
+There are several models which describe ways to measure maintainability. None of these are sufficient to make a full assessment of the maintainability of a software project, but they strive to give a good indication. For this thesis, we will make use of the \textit{SIG maintainability model} \cite{heitlager2007practical}, as it is based on a lot of experience in the field of software quality assessment. This maintainability model is independent of programming language. For this thesis we will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object oriented languages, like C\#.
+
+Improving the maintainability metrics does not automatically lead to a better maintainable codebase \cite{fenton1999software}. For instance, in general, a bigger codebase (in volume) is harder to maintain. However, refactoring a big method into smaller methods can definitely improve the maintainability of the codebase (but still increase the volume metric). Because of this, it is important that refactorings focus on the resolution of harmful anti-patterns \cite{kapser2006cloning} rather than just the improvement of the metrics. This will be one of our main focus points in this thesis.
+
+For this research, we will focus on formalizing the refactoring process of dealing with duplication in code. To validate this approach, we will validate the refactored results with domain experts. Apart from that, we will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution.
+
+\subsection{Research questions}
+Code clones can appear anywhere in the code. Whether a code clone has to be refactored, and how it has to be refactored, is dependent on where it exists in the code (it's context). There are many different contexts in which code clones can occur (in a method, a complete class, )
+
+\newpage
 \bibliographystyle{babplain}
 \bibliography{references.bib}
 
