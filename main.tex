@@ -20,7 +20,7 @@
 \def\thesisauthorsecond{Baars}
 \def\thesissupervisorfirst{dr. Ana}
 \def\thesissupervisorsecond{Oprescu}
-\def\thesissecondreaderfirst{dr. Xander}
+\def\thesissecondreaderfirst{Msc. Xander}
 \def\thesissecondreadersecond{Schrijen}
 \def\thesisdate{\today}
 
@@ -89,11 +89,18 @@
 
 \tableofcontents
 
-\newpage
 \chapter{Abstract}
 \todo[inline,color=blue!10]{This should be done when most of the rest of the document is finished.}
 
-\newpage
+\chapter{Foreword}
+Automation has always been a personal interest of mine. Pushing a single button to start complex processes that ultimately make our lives better. I've always been interested in computer programming because it allows me to write such scripts. I've done a lot of work in test automation with Selenium Webdriver, writing automation scripts for enterprise applications.
+
+As such scripts would grow, a lot of times my creativity was held back by the need for refactoring. At my University we often discussed the software program anology ``taming the beast''. If you don't take measures to keep your software under control, it will ultimately get a life of it's own.
+
+When refactoring large programs, I noticed that I was doing a lot of repeating work. Often I noticed that I reimplemented (parts of) units several times, or did not use inheritance where I should have. Overall, it took a lot of time to refactor large code bases.
+
+This thesis is devoted to performing research to be able to automate the process of refactoring. My host company for this thesis is the Software Improvement Group (SIG). At SIG there is a strong focus on analyzing software project maintainability by looking at several maintainability metrics. This thesis will focus on automating the refactoring process from a maintainability viewpoint.
+
 \chapter{Introduction}
 Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. Refactoring mostly requires some domain knowledge to do it right, but there are also refactoring opportunities that are rather trivial and repetitive to execute. In this thesis, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve maintainability of the refactored code.
 
@@ -116,6 +123,8 @@ As a result, we expect to have proposed refactorings for the most harmful clone 
 \begin{displayquote}
 \textbf{Research Question 3:}\\To what extend can we automatically refactor clones?
 \end{displayquote}
+This research question should result in a model that describes how to apply the refactorings that resulted from the second research question.
+
 
 
 \newpage
