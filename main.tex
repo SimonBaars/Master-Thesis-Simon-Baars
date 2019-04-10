@@ -124,6 +124,13 @@ In this research we will look into code clones from a refactoring viewpoint. The
 It is very disputable whether unit tests apply to the same maintainability metrics that applies to the functional code. Because of that, for this research, unit tests are not taken into scope. The findings of this research may be applicable to those classes, but we will not argue the validity. %TODO: There was some research about this.
 
 \chapter{Background}
+\section{Clone contexts}
+Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sysiphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
+
+A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, the paper that is cited to support this claim \cite{bergman2004ethnographic} does not conclude this same information. First of all, the study that is referenced uses a very small dataset (460 copy & paste instances by 11 participants). Secondly, the group of subject only consists og IBM researchers (selection bias). Thirdly, it only focuses on copy and paste instances, as opposed to other ways clones can creep into the code. Finally, the ``98\%'' is not stated explicitly, but is vaguely derivable from one of the figures (figure 1) in this paper. Because of this, there is no reliable overview of how many clones there are in different contexts.
+
+This thesis will focus on measuring how many clones there are per context. This way we can determine the impact of focussing our search on a specific context, like the analysis of only method-level clones. Our hypothesis is that the 98\% claim is not true (we think this should be far less). We also hypothesize that clones in different contexts than method-level are less likely to be harmful and less straight forward to refactor. 
+
 \section{Clone types}
 Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
 \begin{displayquote}
@@ -135,11 +142,13 @@ Duplication in code is found in many different forms. Most often duplicated code
 A higher type of clone means that it's harder to detect and less subtle. There are many studies that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
 \subsection{Relevance to clone refactoring}
-Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on it's context and type. Type I clones can commonly be refactored by using the ``Extract method'' refactoring
+Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on it's context and type. Method-level Type I clones can commonly be refactored by using the ``Extract method'' refactoring \cite{kodhai2013method}.
+
+\chapter{Clone detection}
 
 \chapter{Analyzing clone harmfulness}
 
-%What makes clones harmful?
+%TODO: What makes clones harmful?
 
 \chapter{Analyzing clone refactorings}
 
