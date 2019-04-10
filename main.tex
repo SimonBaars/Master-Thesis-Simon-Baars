@@ -132,7 +132,10 @@ Duplication in code is found in many different forms. Most often duplicated code
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
 \textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 \end{displayquote}
-There are many papers that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection}.
+A higher type of clone means that it's harder to detect and less subtle. There are many studies that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
+
+\subsection{Relevance to clone refactoring}
+Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on it's context and type. Type I clones can commonly be refactored by using the ``Extract method'' refactoring
 
 \chapter{Analyzing clone harmfulness}
 
