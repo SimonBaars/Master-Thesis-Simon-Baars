@@ -13,6 +13,7 @@
 \usepackage{hyperref}           % page numbers and '\ref's become clickable
 \usepackage{titlesec}
 \usepackage{csquotes}
+\usepackage{float}
 
 \def\thesistitle{Automatic Refactoring of Code Clones in Object-Oriented Programming Languages}
 \def\thesissubtitle{Improving a systems maintainability with the push of a button}
@@ -125,6 +126,14 @@ It is very disputable whether unit tests apply to the same maintainability metri
 
 \chapter{Background}
 \section{Clone Class}
+Before we go into the refactoring of code clones, we must first define how we identify a clone. Roy \cite{roy2007survey} distinguishes clone pairs, clone classes and clone class families. For this thesis we will consider only ``clone classes'', as the other concepts do not add to the understanding and reasoning of clones as applied in this thesis. Roy defined ``clone classes'' as \textit{the union of all code portions/fragments which are identical or similar to each other}.
+
+As an example, look at the code fragment displayed in figure \ref{fig:cloneclass}. It displays two clone classes. One clone class is in all three files, and has two lines in each file (line 5 and 6). The other clone class is only in the first two files, and has three lines in each file (line 5-7). The clone classes overlap partly.
+\begin{figure}[H]
+	\includegraphics[width=1\textwidth]{img/clone-class}
+	\caption{Simple example of two clone classes, one consisting of three blocks of code of three lines, one existing of two blocks of code of two lines.}
+	\label{fig:cloneclass}
+\end{figure}
 
 \section{Clone Contexts}
 Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
@@ -148,6 +157,8 @@ A higher type of clone means that it's harder to detect and less subtle. There a
 
 \subsection{Relevance to clone refactoring}
 Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on it's context and type. Method-level Type I clones can commonly be refactored by using the ``Extract method'' refactoring \cite{kodhai2013method}.
+
+For this thesis, we have chosen not to further look at type III and IV clones, as it is very hard to formalize their refactoring processes. They are out of the scope for this thesis.
 
 \chapter{Clone detection}
 
