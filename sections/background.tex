@@ -1,6 +1,48 @@
 \chapter{Background}
 \label{ch:background}
-This chapter will present the necessary background information for this thesis. First, we define some basic terminology that will be used throughout this thesis. Next, ...
+This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
+\section{Clone Class}
+Before we go into the refactoring of code clones, we must first define how we identify a clone. Roy \cite{roy2007survey} distinguishes clone pairs, clone classes and clone class families. For this thesis we will consider only ``clone classes'', as the other concepts do not add to the understanding and reasoning of clones as applied in this thesis. Roy defined ``clone classes'' as \textit{the union of all code portions/fragments which are identical or similar to each other}.
 
+As an example, look at the code fragment displayed in figure \ref{fig:cloneclass}. It displays two clone classes. One clone class is in all three files, and has two lines in each file (line 5 and 6). The other clone class is only in the first two files, and has three lines in each file (line 5-7). The clone classes overlap partly.
+\begin{figure}[H]
+	\includegraphics[width=1\textwidth]{img/clone-class}
+	\caption{Simple example of two clone classes, one consisting of three blocks of code of three lines, one existing of two blocks of code of two lines.}
+	\label{fig:cloneclass}
+\end{figure}
 
+\section{Clone Contexts}
+Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
+
+A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, the paper that is cited to support this claim \cite{bergman2004ethnographic} does not conclude this same information. First of all, the study that is referenced uses a very small dataset (460 copy \& paste instances by 11 participants). Secondly, the group of subject only consists og IBM researchers (selection bias). Thirdly, it only focuses on copy and paste instances, as opposed to other ways clones can creep into the code. Finally, the ``98\%'' is not stated explicitly, but is vaguely derivable from one of the figures (figure 1) in this paper. Because of this, there is no reliable overview of how many clones there are in different contexts.
+
+This thesis will focus on measuring how many clones there are per context. This way we can determine the impact of focussing our search on a specific context, like the analysis of only method-level clones. Our hypothesis is that the 98\% claim is not true (we think this should be far less). We also hypothesize that clones in different contexts than method-level are less likely to be harmful and less straight forward to refactor.
+
+\subsection{Clone refactoring in relationship to its context}
+How to refactor clones is highly dependent on their context. Method-level clones can be extracted to a method \cite{kodhai2013method} if all occurrences of the clone reside in the same class. If a method level clone is duplicated among classes in the same inheritance structure, we might need to pull-up a method in the inheritance structure. If instances of a method level clone are not in the same inheritance structure, we might need to either make a static method or create an inheritance structure ourselves. So not only a single instance of a clone has a context, but also the relationship between individual instances in a clone class. This is highly relevant to the way in which the clone has to be refactored.
+
+\section{Clone Types}
+Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
+\begin{displayquote}
+\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
+\textbf{Type II:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
+\end{displayquote}
+A higher type of clone means that it's harder to detect and less subtle. There are many studies that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
+
+\subsection{Relevance to clone refactoring}
+Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on their context and type. Kodhai et al \cite{kodhai2013method} describe different refactorings that can be performed to deal with clones.
+
+For this thesis, we have chosen not to further look at type III and IV clones, as it is very hard to formalize their refactoring processes. They are out of the scope for this thesis.
+
+\section{Code clone harmfulness}
+There has been a lot of discussion whether code clones should be considered harmful.
+
+Most papers view clones as harmful regarding program maintainability. \textit{``Clones are problematic for the maintainability of a program, because if the clone is altered at one location to correct an erroneous behaviour, you cannot be sure that this correction is applied to all the cloned code as well. Additionally, the code base size increases unnecessarily and so increases the amount of code to be handled when conducting maintenance work.''} \cite{ostberg2014automatically}
+
+However, the harmfulness of clones depends on a lot of factors. A paper by Kapser et al \cite{kapser2006cloning} describes several patterns of cloning that may not be considered harmful. In this paper Kapser names examples where eliminating clones would compromise other important program qualities. Another study by Jarzabek et al \cite{jarzabek2010clones} categorized ``Essential clones'': clones that are essential because of the solution that is being modelled by the program. Overall, many of the benefits of code clones do not apply to most modern object-oriented programming languages.
+
+\section{Related work}
+There have been some papers that take some steps towards code clone refactoring. Most research towards refactoring code clones has been conducted by Y. Higo et al. In a 2008 study \cite{higo2008metric} the authors look at the refactoring of class-level, method-level and constructor-level clones in Java.
