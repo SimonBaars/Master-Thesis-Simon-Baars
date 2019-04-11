@@ -1,191 +1,230 @@
-\documentclass{report}
+\documentclass[a4paper,10pt,titlepage]{report}
+%%This template is based on Paco van Beckhoven's thesis.
+
+\usepackage{xspace}
+\usepackage{xargs}   % Use more than one optional parameter in a new commands
+\usepackage[pdftex,dvipsnames]{xcolor}
+
+% Putting images next to each other
+\usepackage[font=bf,]{caption}
+\usepackage{subcaption}
+\input{glyphtounicode}
+
+% for last page
+\usepackage{lastpage}
+
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}     % for proper word breaking at line ends
-\usepackage[a4paper, total={170mm,250mm}]{geometry}
-                                % for page size and margin settings
-\usepackage{graphicx}           % for images
-\usepackage{amsmath,amssymb}    % for better equations
-\usepackage{amsthm}             % for better theorem styles
-\usepackage{mathtools}          % for greek math symbol formatting
-\usepackage{enumitem}           % for control of 'enumerate' numbering
-\usepackage{listings}           % for control of 'itemize' spacing
-\usepackage{todonotes}          % for clear TODO notes
-\usepackage{hyperref}           % page numbers and '\ref's become clickable
-\usepackage{titlesec}
 \usepackage{csquotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{paralist}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{titlepic}
+\usepackage{vhistory}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage[backend=biber, style=ieee,citestyle=numeric-comp]{biblatex}
+\usepackage[colorinlistoftodos, prependcaption]{todonotes}
+\usepackage{placeins}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage[acronym,nogroupskip,nohypertypes={acronym},toc,section=chapter]{glossaries}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{cmap}
 \usepackage{float}
 
-\def\thesistitle{Automatic Refactoring of Code Clones in Object-Oriented Programming Languages}
-\def\thesissubtitle{Improving a systems maintainability with the push of a button}
-\def\thesisauthorfirst{Simon}
-\def\thesisauthorsecond{Baars}
-\def\thesissupervisorfirst{dr. Ana}
-\def\thesissupervisorsecond{Oprescu}
-\def\thesissecondreaderfirst{Xander}
-\def\thesissecondreadersecond{Schrijen, MSc.}
-\def\thesisdate{\today}
+%\usepackage[ansinew]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{libertine}
+\input{glyphtounicode}
 
-%% FOR PDF METADATA
-\title{\thesistitle}
-\author{\thesisauthorfirst\space\thesisauthorsecond}
-\date{\thesisdate}
+\pdfglyphtounicode{f_f}{FB00}
+\pdfglyphtounicode{f_f_i}{FB03}
+\pdfglyphtounicode{f_f_l}{FB04}
+\pdfglyphtounicode{f_i}{FB01}
 
-%% THEOREM STYLES
-\newtheorem{theorem}{Stelling}[section]
-\newtheorem{corollary}{Gevolg}[theorem]
-\newtheorem{Lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Propositie}
-
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definitie}
-
-\theoremstyle{remark}
-\newtheorem*{remark}{Opmerking}
+\pdfgentounicode=1
 
 
-%% MATH OPERATORS
-\DeclareMathOperator{\supersine}{supersin}
-\DeclareMathOperator{\supercosine}{supercos}
 
-%%%%%%%%%%%%%%%%%%%%%%%
+%Appendix package + appendix in chapter title
+\usepackage[titletoc]{appendix}
+
+
+
+
+%for highlighting findings
+\usepackage{tcolorbox}
+
+% for highlighting code examples
+\usepackage{listings}
+
+\newcommand{\ie}{\emph{i.e.},\xspace}
+\newcommand{\eg}{\emph{e.g.},\xspace}
+\newcommand{\etc}{\emph{etc.}\xspace}
+\newcommand{\etal}{\emph{et al.}\xspace}
+
+\newcommand{\sig}{\gls{sig}}
+\newcommand{\sigs}{\glspl{sig}}
+
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1, inline]{#2}}
+\newcommandx{\discussion}[2][1=]{\todo[linecolor=red,backgroundcolor=green!25,bordercolor=red,inline,#1]{#2}}
+
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+
+\newcommandx{\reminder}[2][1=]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,#1]{#2}}
+
+\newcommandx{\lessprio}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\todocontent}[2][1=]{\todo[author=\textbf{Planned content},backgroundcolor=Goldenrod!25,bordercolor=Goldenrod,inline,#1]{#2}}
+
+
+%%Some additional table column specifiers, allowing for fixed width columns that wrap.
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+\definecolor{ryel}{HTML}{fcd116}
+\definecolor{rred}{HTML}{ce1126}
+\definecolor{rblu}{HTML}{0a3eb9}
+%these are examples of commands that may facilitate feedback annotations in the document
+%replace \paco by your name and \ana by your supervisor's name
+%\newcommandx{\ana}[2][1=]{\todo[linecolor=rblu,backgroundcolor=ryel,bordercolor=rred,#1]{#2}}
+%\newcommandx{\paco}[2][1=]{\todo[author=Paco,linecolor=blue,backgroundcolor=white,bordercolor=red,#1]{#2}}
+
+
+% -- title page is a modified version of https://github.com/software-engineering-amsterdam/latex/blob/master/thesis/uvamscse.cls
+\newcommand{\email}[1]{\ttfamily\href{mailto:#1}{#1}}
+
+\newcommand{\uvacoverfoot}{%
+	\vfill
+	\begin{center}
+		\begin{tabular}{r|l}
+			\multirow{3}{*}{\includegraphics[height=48pt]{uva.pdf}}
+			&\textsc{\Large Universiteit van Amsterdam}\\
+			&\textsc{Faculteit der Natuurwetenschappen, Wiskunde en Informatica}\\
+			&\textsc{Master Software Engineering}\\
+			&\url{http://www.software-engineering-amsterdam.nl}
+		\end{tabular}
+	\end{center}
+}
+
+\renewcommand{\maketitle}{%
+	% The cover page
+	% --------------
+	\thispagestyle{empty}
+	\enlargethispage{30pt}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+	% Will be page 0, s.t. contents start on page 1
+	\setcounter{page}{0}
+	% \eccoverhead
+	% Volume and article title, author(s)
+	\vspace{60pt}
+	\begin{center}
+		{\Huge\bfseries Title \par}
+		% Earlier versions:
+		% Assessing Test Suite Effectiveness Using Static Analysis
+		% Predicting Test Suite Effectiveness Using Static Analysis
+		% Predicting Test Suite Effectiveness Using Static Source Code Analysis
+		% Assessing Test Suite Effectiveness Using Static Analysis
+		% Predicting test suite effectiveness using static analysis
+		\vspace{44pt}
+		{\Large\bfseries Author \par}
+		\email{author email}\\
+		\vspace{11pt}
+		July 16, 2017, \pageref{LastPage} pages
+	\end{center}
+	\vfill
+	\begin{tabular}{ll}
+		\textbf{Research supervisor:} 	& Name academic supervisor, \email{academic supervisor email} \\
+		\textbf{Host/Daily supervisor:} & Name industry/daily supervisor, \email{industry supervisor email}\\
+		\textbf{Host organisation/Research group:} & Name Host organization/Research group, \url{website organization/research group}
+	\end{tabular}
+	\uvacoverfoot
+	\newpage
+	\setcounter{footnote}{0}
+	\renewcommand{\thefootnote}{\arabic{footnote}}
+	\setlength{\parskip}{0pt}
+}
+
+%\newcommand{\uvaabstract}{}latex
+%\renewcommand{\abstract}[2][Abstract]{\renewcommand{\uvaabstract}{\chapter*{Abstract}%
+%\par#2\newpage}}
+
+
+%-------- End of ``title page''
+
+%Fancy page headers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+
+%%FINDING ENV
+\newcounter{findingctr}
+
+\newenvironment{finding}{%      define a custom environment
+	\refstepcounter{findingctr}% increment the environment's counter
+	\begin{tcolorbox}
+	\textbf{Finding \thefindingctr:}
+}{\end{tcolorbox}}
+% If you want numbers that start with the chapter or section number (e.g. 7.1.1 or 7.1) enable the following lines
+%\usepackage{amsmath}
+%\numberwithin{findingctr}{chapter}
+
+
+% Decrease the size of all these lists
+\setlist{noitemsep,topsep=4pt,parsep=1pt,partopsep=4pt}
+
+
+\lstset{
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	frame=single,                    % adds a frame around the code
+	language=Java,                 % the language of the code
+	keywordstyle=\bf,
+	tabsize=2                       % sets default tabsize to 2 spaces
+}
+
+%make it fit more nicely
+\setlength\extrarowheight{2pt}
+
+
+\input{acronym}
+\makeglossaries
+\bibliography{main}
 
 \begin{document}
-\begin{titlepage}
-	\thispagestyle{empty}
-	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-	\center
-	%\textsc{\University of Amsterdam}\\[.7cm]
-	\includegraphics[width=100mm]{img/logoUvA_en.pdf}\\[.5cm]
-	\textsc{Faculty of Science}\\[0.5cm]
 
-	\HRule \\[0.4cm]
-	{ \huge \bfseries \thesistitle}\\[0.1cm]
-	\textsc{\thesissubtitle}\\
-	\HRule \\[.5cm]
-	\textsc{\large Master Thesis Software Engineering}\\[2cm]
 
-	\begin{minipage}{0.4\textwidth}
-	\begin{flushleft} \large
-	\emph{Author:}\\
-	\thesisauthorfirst\space \thesisauthorsecond \\[1em]
-	\emph{Student Number:}\\
-	12072931 \\[1em]
-	\end{flushleft}
-	\end{minipage}
-	~
-	\begin{minipage}{0.4\textwidth}
-	\begin{flushright} \large
-	\emph{Academic Supervisor:} \\
-	\thesissupervisorfirst\space \thesissupervisorsecond \\[1em]
-	\emph{Company Supervisor:} \\
-	\thesissecondreaderfirst\space \thesissecondreadersecond \\[1em]
-	\emph{Company:} \\
-	Software Improvement Group\space \textsc{\thesissecondreadersecond}
-	\end{flushright}
-	\end{minipage}\\[4cm]
-	\vfill
-	{\large \thesisdate}\\
-	\clearpage
-\end{titlepage}
 
+\maketitle
+\input{sections/abstract}
 \tableofcontents
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/research}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/related_work}
+\input{sections/conclusion}
+\input{sections/acknowledgements}
 
-\newpage
-\chapter{Abstract}
-\todo[inline,color=blue!10]{This should be done when most of the rest of the document is finished.}
+\printbibliography[heading=bibintoc]
+\printglossaries%
 
-\newpage
-\chapter{Introduction}
-Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. Refactoring mostly requires some domain knowledge to do it right, but there are also refactoring opportunities that are rather trivial and repetitive to execute. In this thesis, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve maintainability of the refactored code.
+\input{sections/appendix}
 
-There are several models which describe ways to measure maintainability. None of these are sufficient to make a full assessment of the maintainability of a software project, but they strive to give a good indication. For this thesis, we will make use of the \textit{SIG maintainability model} \cite{heitlager2007practical}, as it is based on a lot of experience in the field of software quality assessment. This maintainability model is independent of programming language. For this thesis we will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object oriented languages, like C\#.
-
-Improving the maintainability metrics does not automatically lead to a better maintainable codebase \cite{fenton1999software}. For instance, in general, a bigger codebase (in volume) is harder to maintain. However, refactoring a big method into smaller methods can definitely improve the maintainability of the codebase (but still increase the volume metric). Because of this, it is important that refactorings focus on the resolution of harmful anti-patterns \cite{kapser2006cloning} rather than just the improvement of the metrics. This will be one of our main focus points in this thesis.
-
-For this research, we will focus on formalizing the refactoring process of dealing with duplication in code. To validate this approach, we will validate the refactored results with domain experts. Apart from that, we will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution.
-
-\section{Research questions}
-Code clones can appear anywhere in the code. Whether a code clone has to be refactored, and how it has to be refactored, is dependent on where it exists in the code (it's context). There are many different contexts in which code clones can occur (in a method, a complete class, in an enumeration, global variables, etc.). Because of this, we first must collect some information regarding in what contexts code clones exist. To do this, we will analyze a set of Java projects for their clones, and generalize their contexts. To come to this information, we have formulated the following research question:
-\begin{displayquote}
-\textbf{Research Question 1:}\\How can we group and rank clones based on their harmfulness?
-\end{displayquote}
-As a result from this research question, we expect a catalog of the different contexts in which clones occur, ordered on the amount of times they occur. On basis of this catalog, we have prioritized the further analysis of the clones. This analysis is to determine a suitable refactoring for the clone type that has been found at the design level. For this, we have formulated the following research question:
-\begin{displayquote}
-\textbf{Research Question 2:}\\To what extend can we suggest refactorings of clones at the design level?
-\end{displayquote}
-As a result, we expect to have proposed refactorings for the most harmful clone patterns. On basis of these design level refactorings we will build a model, which we will proof using Java, that applies the refactorings to corresponding methods. For building this model, we have formulated the following research question:
-\begin{displayquote}
-\textbf{Research Question 3:}\\To what extend can we automatically refactor clones?
-\end{displayquote}
-As a result from this research question, we expect to have a model to be able to refactor the highest priority clones.
-
-\section{Scope}
-In this research we will look into code clones from a refactoring viewpoint. There are several methods that detect code clones using a similarity score to match pieces of code. This similarity is often based on the amount of tokens that match between two pieces of code. The problem with similarity based clones is that it is hard to assess the impact of merging clones that have different tokens, but what exactly this token is is unknown. Because of this, we will not focus on similarity based clone detection techniques, but rather on exact matches and predefined differences.
-
-It is very disputable whether unit tests apply to the same maintainability metrics that applies to the functional code. Because of that, for this research, unit tests are not taken into scope. The findings of this research may be applicable to those classes, but we will not argue the validity. %TODO: There was some research about this.
-
-\chapter{Background}
-\section{Clone Class}
-Before we go into the refactoring of code clones, we must first define how we identify a clone. Roy \cite{roy2007survey} distinguishes clone pairs, clone classes and clone class families. For this thesis we will consider only ``clone classes'', as the other concepts do not add to the understanding and reasoning of clones as applied in this thesis. Roy defined ``clone classes'' as \textit{the union of all code portions/fragments which are identical or similar to each other}.
-
-As an example, look at the code fragment displayed in figure \ref{fig:cloneclass}. It displays two clone classes. One clone class is in all three files, and has two lines in each file (line 5 and 6). The other clone class is only in the first two files, and has three lines in each file (line 5-7). The clone classes overlap partly.
-\begin{figure}[H]
-	\includegraphics[width=1\textwidth]{img/clone-class}
-	\caption{Simple example of two clone classes, one consisting of three blocks of code of three lines, one existing of two blocks of code of two lines.}
-	\label{fig:cloneclass}
-\end{figure}
-
-\section{Clone Contexts}
-Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
-
-A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, the paper that is cited to support this claim \cite{bergman2004ethnographic} does not conclude this same information. First of all, the study that is referenced uses a very small dataset (460 copy \& paste instances by 11 participants). Secondly, the group of subject only consists og IBM researchers (selection bias). Thirdly, it only focuses on copy and paste instances, as opposed to other ways clones can creep into the code. Finally, the ``98\%'' is not stated explicitly, but is vaguely derivable from one of the figures (figure 1) in this paper. Because of this, there is no reliable overview of how many clones there are in different contexts.
-
-This thesis will focus on measuring how many clones there are per context. This way we can determine the impact of focussing our search on a specific context, like the analysis of only method-level clones. Our hypothesis is that the 98\% claim is not true (we think this should be far less). We also hypothesize that clones in different contexts than method-level are less likely to be harmful and less straight forward to refactor.
-
-\subsection{Clone refactoring in relationship to its context}
-How to refactor clones is highly dependent on their context. Method-level clones can be extracted to a method \cite{kodhai2013method} if all occurrences of the clone reside in the same class. If a method level clone is duplicated among classes in the same inheritance structure, we might need to pull-up a method in the inheritance structure. If instances of a method level clone are not in the same inheritance structure, we might need to either make a static method or create an inheritance structure ourselves. So not only a single instance of a clone has a context, but also the relationship between individual instances in a clone class. This is highly relevant to the way in which the clone has to be refactored.
-
-\section{Clone Types}
-Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
-\begin{displayquote}
-\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
-\textbf{Type II:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
-\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
-\textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
-\end{displayquote}
-A higher type of clone means that it's harder to detect and less subtle. There are many studies that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
-
-\subsection{Relevance to clone refactoring}
-Higher type clones are not only harder to detect, but also harder to refactor. How to refactor clones is heavily dependent on their context and type. Kodhai et al \cite{kodhai2013method} describe different refactorings that can be performed to deal with clones.
-
-For this thesis, we have chosen not to further look at type III and IV clones, as it is very hard to formalize their refactoring processes. They are out of the scope for this thesis.
-
-\section{Code clone harmfulness}
-There has been a lot of discussion whether code clones should be considered harmful.
-
-Most papers view clones as harmful regarding program maintainability. \textit{``Clones are problematic for the maintainability of a program, because if the clone is altered at one location to correct an erroneous behaviour, you cannot be sure that this correction is applied to all the cloned code as well. Additionally, the code base size increases unnecessarily and so increases the amount of code to be handled when conducting maintenance work.''} \cite{ostberg2014automatically}
-
-However, the harmfulness of clones depends on a lot of factors. A paper by Kapser et al \cite{kapser2006cloning} describes several patterns of cloning that may not be considered harmful. In this paper Kapser names examples where eliminating clones would compromise other important program qualities. Another study by Jarzabek et al \cite{jarzabek2010clones} categorized ``Essential clones'': clones that are essential because of the solution that is being modelled by the program. Overall, many of the benefits of code clones do not apply to most modern object-oriented programming languages.
-
-\section{Related work}
-There have been some papers that take some steps towards code clone refactoring. Most research towards refactoring code clones has been conducted by Y. Higo et al. In a 2008 study \cite{higo2008metric} the authors look at the refactoring of class-level, method-level and constructor-level clones in Java.
-
-\chapter{Clone detection}
-Clone detection is
-
-\chapter{Analyzing clone harmfulness}
-
-%TODO: What makes clones harmful?
-
-\chapter{Analyzing clone refactorings}
-
-
-\section{Catalogue of clones and their refactorings}
-
-
-
-\newpage
-\bibliographystyle{plain}
-\bibliography{references.bib}
+%comment out in the final version
+%\listoftodos[Notes]
 
 \end{document}
