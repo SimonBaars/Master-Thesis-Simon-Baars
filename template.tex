@@ -1,0 +1,229 @@
+\documentclass[a4paper,10pt,titlepage]{report}
+%%This template is based on Paco van Beckhoven's thesis.
+
+\usepackage{xspace}
+\usepackage{xargs}   % Use more than one optional parameter in a new commands
+\usepackage[pdftex,dvipsnames]{xcolor}
+
+% Putting images next to each other
+\usepackage[font=bf,]{caption}
+\usepackage{subcaption}
+\input{glyphtounicode}
+
+% for last page
+\usepackage{lastpage}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{paralist}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{titlepic}
+\usepackage{vhistory}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage[backend=biber, style=ieee,citestyle=numeric-comp]{biblatex}
+\usepackage[colorinlistoftodos, prependcaption]{todonotes}
+\usepackage{placeins}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage[acronym,nogroupskip,nohypertypes={acronym},toc,section=chapter]{glossaries}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{cmap}
+
+%\usepackage[ansinew]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{libertine}
+\input{glyphtounicode}
+
+\pdfglyphtounicode{f_f}{FB00}
+\pdfglyphtounicode{f_f_i}{FB03}
+\pdfglyphtounicode{f_f_l}{FB04}
+\pdfglyphtounicode{f_i}{FB01}
+
+\pdfgentounicode=1
+
+
+
+%Appendix package + appendix in chapter title
+\usepackage[titletoc]{appendix}
+
+
+
+
+%for highlighting findings
+\usepackage{tcolorbox}
+
+% for highlighting code examples
+\usepackage{listings}
+
+\newcommand{\ie}{\emph{i.e.},\xspace}
+\newcommand{\eg}{\emph{e.g.},\xspace}
+\newcommand{\etc}{\emph{etc.}\xspace}
+\newcommand{\etal}{\emph{et al.}\xspace}
+
+\newcommand{\sig}{\gls{sig}}
+\newcommand{\sigs}{\glspl{sig}}
+
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1, inline]{#2}}
+\newcommandx{\discussion}[2][1=]{\todo[linecolor=red,backgroundcolor=green!25,bordercolor=red,inline,#1]{#2}}
+
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+
+\newcommandx{\reminder}[2][1=]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,#1]{#2}}
+
+\newcommandx{\lessprio}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\todocontent}[2][1=]{\todo[author=\textbf{Planned content},backgroundcolor=Goldenrod!25,bordercolor=Goldenrod,inline,#1]{#2}}
+
+
+%%Some additional table column specifiers, allowing for fixed width columns that wrap.
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+\definecolor{ryel}{HTML}{fcd116}
+\definecolor{rred}{HTML}{ce1126}
+\definecolor{rblu}{HTML}{0a3eb9}
+%these are examples of commands that may facilitate feedback annotations in the document
+%replace \paco by your name and \ana by your supervisor's name
+%\newcommandx{\ana}[2][1=]{\todo[linecolor=rblu,backgroundcolor=ryel,bordercolor=rred,#1]{#2}}
+%\newcommandx{\paco}[2][1=]{\todo[author=Paco,linecolor=blue,backgroundcolor=white,bordercolor=red,#1]{#2}}
+
+
+% -- title page is a modified version of https://github.com/software-engineering-amsterdam/latex/blob/master/thesis/uvamscse.cls
+\newcommand{\email}[1]{\ttfamily\href{mailto:#1}{#1}}
+
+\newcommand{\uvacoverfoot}{%
+	\vfill
+	\begin{center}
+		\begin{tabular}{r|l}
+			\multirow{3}{*}{\includegraphics[height=48pt]{uva.pdf}}
+			&\textsc{\Large Universiteit van Amsterdam}\\
+			&\textsc{Faculteit der Natuurwetenschappen, Wiskunde en Informatica}\\
+			&\textsc{Master Software Engineering}\\
+			&\url{http://www.software-engineering-amsterdam.nl}
+		\end{tabular}
+	\end{center}
+}
+
+\renewcommand{\maketitle}{%
+	% The cover page
+	% --------------
+	\thispagestyle{empty}
+	\enlargethispage{30pt}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+	% Will be page 0, s.t. contents start on page 1
+	\setcounter{page}{0}
+	% \eccoverhead
+	% Volume and article title, author(s)
+	\vspace{60pt}
+	\begin{center}
+		{\Huge\bfseries Title \par}
+		% Earlier versions:
+		% Assessing Test Suite Effectiveness Using Static Analysis
+		% Predicting Test Suite Effectiveness Using Static Analysis
+		% Predicting Test Suite Effectiveness Using Static Source Code Analysis
+		% Assessing Test Suite Effectiveness Using Static Analysis
+		% Predicting test suite effectiveness using static analysis
+		\vspace{44pt}
+		{\Large\bfseries Author \par}
+		\email{author email}\\
+		\vspace{11pt}
+		July 16, 2017, \pageref{LastPage} pages
+	\end{center}
+	\vfill
+	\begin{tabular}{ll}
+		\textbf{Research supervisor:} 	& Name academic supervisor, \email{academic supervisor email} \\
+		\textbf{Host/Daily supervisor:} & Name industry/daily supervisor, \email{industry supervisor email}\\
+		\textbf{Host organisation/Research group:} & Name Host organization/Research group, \url{website organization/research group}
+	\end{tabular}
+	\uvacoverfoot
+	\newpage
+	\setcounter{footnote}{0}
+	\renewcommand{\thefootnote}{\arabic{footnote}}
+	\setlength{\parskip}{0pt}
+}
+
+%\newcommand{\uvaabstract}{}latex
+%\renewcommand{\abstract}[2][Abstract]{\renewcommand{\uvaabstract}{\chapter*{Abstract}%
+%\par#2\newpage}}
+
+
+%-------- End of ``title page''
+
+%Fancy page headers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+
+%%FINDING ENV
+\newcounter{findingctr}
+
+\newenvironment{finding}{%      define a custom environment
+	\refstepcounter{findingctr}% increment the environment's counter
+	\begin{tcolorbox}
+	\textbf{Finding \thefindingctr:}
+}{\end{tcolorbox}}
+% If you want numbers that start with the chapter or section number (e.g. 7.1.1 or 7.1) enable the following lines
+%\usepackage{amsmath}
+%\numberwithin{findingctr}{chapter}
+
+
+% Decrease the size of all these lists
+\setlist{noitemsep,topsep=4pt,parsep=1pt,partopsep=4pt}
+
+
+\lstset{
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	frame=single,                    % adds a frame around the code
+	language=Java,                 % the language of the code
+	keywordstyle=\bf,
+	tabsize=2                       % sets default tabsize to 2 spaces
+}
+
+%make it fit more nicely
+\setlength\extrarowheight{2pt}
+
+
+\input{acronym}
+\makeglossaries
+\bibliography{main}
+
+\begin{document}
+
+
+
+\maketitle
+\input{sections/abstract}
+\tableofcontents
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/research}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/related_work}
+\input{sections/conclusion}
+\input{sections/acknowledgements}
+
+\printbibliography[heading=bibintoc]
+\printglossaries%
+
+\input{sections/appendix}
+
+%comment out in the final version
+%\listoftodos[Notes]
+
+\end{document}
