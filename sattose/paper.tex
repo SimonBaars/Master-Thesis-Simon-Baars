@@ -24,19 +24,10 @@ Duplication in source code can have a major negative impact on the maintainabili
 \end{abstract}
 
 
-\section{General Formatting Instructions}
+\section{Introduction}
+Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. For a large part, refactoring requires domain knowledge to do it right. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. In this thesis, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve maintainability of the refactored code.
 
-The format is in one column. The left margin is .9 inches (5.5 picas). Use 10 point type,
-with a vertical spacing of 11 points. Times Roman is the preferred
-typeface throughout.
-
-Paper title is 16 point, Caps/lowercase, bold, centered. Subsequent
-pages should start at 1 inch (6 picas) from the top of the page.
-
-Authors names are centered, initial caps; co-authors names, if used, are
-flush left and flush right.
-
-Paragraphs are indented by 1 pica with no space between paragraphs.
+Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. However, this statement is not accepted by everyone. Several papers argue that not each type of duplication is harmful \cite{kapser2006cloning}.
 
 \section{First Level Heading}
 
@@ -147,23 +138,7 @@ We would like to thank the Software Improvement Group (SIG) for their continuous
 
 
 
-%\bibliographystyle{alpha}
-%\bibliography{samplebib}
-%inline the .bbl file directly for mailing to authors.
-
-\begin{thebibliography}{Com79}
-
-\bibitem[Com79]{Comer-btree}
-D.~Comer.
-\newblock The ubiquitous b-tree.
-\newblock {\em Computing Surveys}, 11(2):121--137, June 1979.
-
-\bibitem[Knu73]{Knuth-vol3}
-D.~E. Knuth.
-\newblock {\em The Art of Computer Programming -- Volume 3 / Sorting and
-  Searching}.
-\newblock Addison-Wesley, 1973.
-
-\end{thebibliography}
+\bibliographystyle{alpha}
+\bibliography{res}
 
 \end{document}
