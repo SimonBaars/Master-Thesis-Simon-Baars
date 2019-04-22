@@ -1,7 +1,8 @@
 \documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage{twocolpceurws}
-
+\usepackage{float}
+\usepackage{hyperref}
 
 \title{Using Refactoring Techniques to Reduce Duplication in Object-Oriented Programming Languages}
 
@@ -29,11 +30,19 @@ Refactoring is used to improve quality related attributes of a codebase (maintai
 
 Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. However, this statement is not accepted by everyone. Several papers argue that not each type of duplication is harmful \cite{kapser2006cloning}.
 
-\section{First Level Heading}
+In this research, we focus on formalizing the refactoring process of dealing with duplication in code. We will measure open source projects from the We will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution. We will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object-oriented languages, like C\#.
 
-First level headings are all flush left, initial caps, bold and in point
-size 12. One line space before the first level heading and $1/2$ line
-space after the first level heading.
+\section{Clone Detection}
+As duplication in source code is a serious problem in many software systems, there are a lot of researches that look into code clones. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. To be able to refactor detected clones, it is useful to have the ability to rewrite the AST. We considered a set of clone detection tools for their ability to support the refactoring process automatically. None of the tools we consider seemed completely fit for this purpose, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}.
+
+\subsection{CloneRefactor}
+A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. For our tool we decided to combine AST and Graph based approaches for clone detection, similar to Scorpio (which is a clone detection tool that's part of TinyPDG: a library for building intraprocedural program dependency graphs for Java programs). We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code. We then collect each statement and declaration (ommitting their child statements and declarations) and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of it's duplicates (verically). This is displayed in figure \ref{fig:clonerefactor}.
+
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/CodeGraph}
+  \caption{Graph representation built by CloneRefactor}
+  \label{fig:clonerefactor}
+\end{figure}
 
 \subsection{Second Level Heading}
 

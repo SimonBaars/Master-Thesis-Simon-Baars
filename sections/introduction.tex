@@ -9,10 +9,7 @@ Refactoring is used to improve quality related attributes of a codebase (maintai
 
 Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}.
 
-In this research, we will focus on formalizing the refactoring process of dealing with duplication in code. We will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution. We will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object-oriented languages, like C\#
-
-
-
+In this research, we focus on formalizing the refactoring process of dealing with duplication in code. We will measure open source projects from the We will show the improvement of the metrics over various open source and industrial projects. Likewise, we will perform an estimation of the development costs that are saved by using the proposed solution. We will lay the main focus on the Java programming language as refactoring opportunities do feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises used in this thesis will also be applicable with other object-oriented languages, like C\#.
 
 \section{Problem statement}
 
@@ -38,9 +35,10 @@ As a result from this research question, we expect to have a model to be able to
 \section{Contributions}
 Our research makes the following contributions:
 \begin{enumerate}
-	\item 1
-	\item 2
-	\item 3
+	\item We deliver several novel measurements regarding code clones on a large corpus of Java projects.
+	\item We deliver a novel clone detection tool that finds refactorable clones in Java.
+	\item We deliver a novel clone refactoring tool that suggests refactorings to be applied, and applies these refactorings.
+	\item We give further recommendations in how refactoring can be automatically applied to improve maintainability in software projects.
 \end{enumerate}
 
 \section{Scope}
