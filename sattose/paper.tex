@@ -59,7 +59,10 @@ For our measurements we use a large corpus of open source projects \cite{githubC
 We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and it's tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered). Of the 14.436 projects in the corpus over 3.853 remained, which is plenty for our purposes. The script to filter the corpuses in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
 
 \subsection{Relations Between Clone Instances}
-When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. A paper by Fontana et al \cite{fontana2015duplicated} performs measurements on 50 open source projects on the relation of clones to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
+When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances.
+
+\subsubsection{Categorizing Clone Instance Relations}
+A paper by Fontana et al \cite{fontana2015duplicated} performs measurements on 50 open source projects on the relation of clones to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
@@ -74,6 +77,15 @@ When merging code clones in object-oriented languages, it is very important to c
 Please note that no of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
 The ranking of the previous list of categories also matters, as it shows the different levels in which clones were assessed. For instance, if two clone instances of a clone class belong to the ``same method'' category but the third belongs to the ``same class'', we will always chose the item lowest on the list.
+
+\subsubsection{Our measurements}
+We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, but with the following differences:
+\begin{itemize}
+  \item We consider clone classes rather than clone pairs
+\item We use different thresholds regarding when a clone should be considered.
+\item We seek by statement/declaration rather than SLOC.
+\item We test a broader range of projects (they a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality)
+\end{itemize}
 
 
 
