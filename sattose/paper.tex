@@ -44,11 +44,22 @@ A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniq
   \label{fig:clonerefactor}
 \end{figure}
 
-\subsection{Second Level Heading}
+\section{Code Clone Context}
+To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
+\begin{enumerate}
+  \item The relation of clone instances among each other (for example: two clone instances in a clone class are part of the same object).
+  \item Where a clone instance occurs in the code (for instance: a method-level clone is a clone instance that is (a part of) a single method).
+  \item The contents of a clone instance (for instance: the clone instance consists of a one method declaration, a foreach statement and two variable declarations).
+\end{enumerate}
+Everything in the context of a clone has a big impact on how it has to be refactored. For this study we performed measurements on the context of clones in a large corpus of open source projects.
 
-Second level headings must be flush left, initial caps, bold and in point
-size 10. One line space before the second level heading and $1/2$ line
-space after the second level heading.
+\subsection{The corpus}
+For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}\footnote{The corpus can be downloaded from the following URL: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/java_projects.tar.gz}}. This corpus has been assembled to contain relatively higher quality projects (by filtering by forks). Also, any duplicate projects were removed from this corpus. This results in a variaty of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+
+We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and it's tests in the different folders ("/src/main/java" and "/src/test/java" respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a "/src/main/java" folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered). Of the 14.436 projects in the corpus over 3.853 remained, which is plenty for our purposes. The script to filter the corpuses in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
+
+\subsection{Relations Between Clone Instances}
+When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances.
 
 \subsubsection{Third Level Heading}
 
