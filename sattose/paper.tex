@@ -99,16 +99,16 @@ As a result, we got the following table:
 
 \begin{table}[H]
 \begin{tabular}{|l|l|l|}
-\textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\
-FIRSTCOUSIN        & 695             & 2,02                \\
-SUPERCLASS         & 488             & 1,42                \\
-COMMONHIERARCHY    & 442             & 1,29                \\
-UNRELATED          & 13537           & 39,39               \\
-EXTERNALSUPERCLASS & 2402            & 6,99                \\
-SIBLING            & 5978            & 17,39               \\
-SAMEMETHOD         & 2456            & 7,15                \\
-SAMECLASS          & 8341            & 24,27               \\
-ANCESTOR           & 28              & 0,08
+\textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\ \hline
+FIRSTCOUSIN        & 695             & 2,02                \\ \hline
+SUPERCLASS         & 488             & 1,42                \\ \hline
+COMMONHIERARCHY    & 442             & 1,29                \\ \hline
+UNRELATED          & 13537           & 39,39               \\ \hline
+EXTERNALSUPERCLASS & 2402            & 6,99                \\ \hline
+SIBLING            & 5978            & 17,39               \\ \hline
+SAMEMETHOD         & 2456            & 7,15                \\ \hline
+SAMECLASS          & 8341            & 24,27               \\ \hline
+ANCESTOR           & 28              & 0,08               \\ \hline
 \end{tabular}
 \end{table}
 
@@ -148,6 +148,25 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
+\begin{table}[H]
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Contents}       & \textbf{Amount} & \textbf{Percentage} \\ \hline
+HASINTERFACEDECLARATION & 10              & 0,03                \\ \hline
+SEVERALMETHODS          & 9077            & 26,41               \\ \hline
+FULLCLASS               & 198             & 0,58                \\ \hline
+FULLENUM                & 4               & 0,01                \\ \hline
+FULLMETHOD              & 554             & 1,61                \\ \hline
+INCLUDESFIELDS          & 1150            & 3,35                \\ \hline
+HASCLASSDECLARATION     & 445             & 1,29                \\ \hline
+HASENUMDECLARATION      & 47              & 0,14                \\ \hline
+FULLINTERFACE           & 6               & 0,02                \\ \hline
+HASENUMFIELDS           & 52              & 0,15                \\ \hline
+PARTIALMETHOD           & 19263           & 56,05               \\ \hline
+ONLYFIELDS              & 565             & 1,64                \\ \hline
+OTHER                   & 2996            & 8,72                \\ \hline
+\end{tabular}
+\end{table}
 %TODO: Show measurements
 
 \section{Conclusion and next steps}
