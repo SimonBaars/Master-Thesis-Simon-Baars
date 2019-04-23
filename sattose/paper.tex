@@ -35,6 +35,9 @@ However, most of these methods still require manual assessment of where and when
 Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it has to be refactored. Because of this, we will first look at where clones can be found. Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized. Apart from that, we will look at different types of clones. A duplicate part in a codebase does not always have to be an exact match with another part to be called a clone. We will look at the definitions of different types of clones and what the opportunities are to refactor duplicate parts of code if it's not an exact match. All of these measurements are performed on a large corpus of open source projects. We lay the main focus on the Java programming language as refactoring opportunities feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises featured in this research will also be applicable with other object-oriented languages, like C\#.
 
 \subsection{Background}
+As code clones are seen as one of the most harmful types of technical debt, they have been studied very extensively. A survey by Roy et al \cite{roy2007survey} states definitions for various important concepts in code clone research. In this survey he mentions the concept ``clone pair'', which is \textit{a set of two code portions/fragments which are identical or similar to each other}. Furthermore, he defined ``clone class'' as \textit{the union of all clone pairs}. Apart from this, we use the definition ``clone instance'', which is a single code portion/fragment that is part of either a clone pair or clone class.
+
+There are already a few researches that look into refactoring opportunities for clone pairs \cite{}
 %TODO: What are clone classes, what are clone instances, etc.
 
 \section{Clone Detection}
