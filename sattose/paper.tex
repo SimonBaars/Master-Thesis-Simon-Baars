@@ -4,7 +4,7 @@
 \usepackage{float}
 \usepackage{hyperref}
 
-\title{Using Refactoring Techniques to Reduce Duplication in Object-Oriented Programming Languages}
+\title{Using Refactoring Techniques to Reduce Duplication in Object-Oriented Programming Languages\\- Work in Progress -}
 
 \author{
 Simon Baars \\ University of Amsterdam\\
@@ -84,7 +84,7 @@ We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, 
   \item We consider clone classes rather than clone pairs
 \item We use different thresholds regarding when a clone should be considered.
 \item We seek by statement/declaration rather than SLOC.
-\item We test a broader range of projects (they a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality)
+\item We test a broader range of projects (they use a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality)
 \end{itemize}
 
 As a result, we got the following table:
@@ -103,7 +103,18 @@ After mapping the relations between individual clones, we looked at the location
 %TODO
 
 \subsection{Clone instance contents}
-Finally, we looked at the contents of individual clone instances: what  kind of
+Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
+\begin{enumerate}
+  \item
+\end{enumerate}
+
+\section{Merging duplicate code through refactoring}
+Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
+
+However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
+
+\section{Conclusion and next steps}
+Next step: build the model to automatically refactor!
 
 \subsubsection{Tables}
 
