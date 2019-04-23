@@ -56,7 +56,7 @@ Everything in the context of a clone has a big impact on how it has to be refact
 \subsection{The corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}\footnote{The corpus can be downloaded from the following URL: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/java_projects.tar.gz}}. This corpus has been assembled to contain relatively higher quality projects (by filtering by forks). Also, any duplicate projects were removed from this corpus. This results in a variaty of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
-We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and it's tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered). Of the 14.436 projects in the corpus over 3.853 remained, which is plenty for our purposes. The script to filter the corpuses in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
+We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and it's tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered, which filtered only 5 extra projects out of the corpus). Of the 14.436 projects in the corpus over 3.848 remained, which is plenty for our purposes. The script to filter the corpus in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
 
 \subsection{Relations Between Clone Instances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances.
@@ -89,7 +89,21 @@ We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, 
 
 As a result, we got the following table:
 
+%TODO
 
+\subsection{Clone instance location}
+After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, this claim is based on a very small dataset and a questionable way of measurement. We validated this claim over our corpus. For this, we chose the following categories:
+\begin{enumerate}
+  \item \textbf{Method Level:} A clone instance that does not exceed the boundaries of a single method (optionally including the declaration of the method itself).
+  \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class.
+  \item \textbf{Interface Level:} A clone that is (a part of) an interface.
+  \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
+\end{enumerate}
+
+%TODO
+
+\subsection{Clone instance contents}
+Finally, we looked at the contents of individual clone instances: what  kind of
 
 \subsubsection{Tables}
 
