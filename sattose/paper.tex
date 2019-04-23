@@ -89,7 +89,7 @@ We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, 
 
 As a result, we got the following table:
 
-%TODO
+%TODO: Add and discuss measurements
 
 \subsection{Clone instance location}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, this claim is based on a very small dataset and a questionable way of measurement. We validated this claim over our corpus. For this, we chose the following categories:
@@ -100,7 +100,7 @@ After mapping the relations between individual clones, we looked at the location
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
 
-%TODO
+%TODO: Add and discuss measurements
 
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
@@ -108,13 +108,19 @@ Finally, we looked at the contents of individual clone instances: what kind of d
   \item
 \end{enumerate}
 
+%TODO: Finish text and add measurements.
+
 \section{Merging duplicate code through refactoring}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
 
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
+%TODO: Show measurements
+
 \section{Conclusion and next steps}
 Next step: build the model to automatically refactor!
+
+%TODO: Expand conclusion
 
 \subsubsection{Tables}
 
