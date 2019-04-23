@@ -95,7 +95,7 @@ We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, 
 \item We test a broader range of projects (they use a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality)
 \end{itemize}
 
-As a result, we got the following table:
+The table below shows our results.
 
 \begin{table}[H]
 \begin{tabular}{|l|l|l|}
@@ -111,6 +111,9 @@ SAMECLASS          & 8341            & 24,27               \\ \hline
 ANCESTOR           & 28              & 0,08               \\ \hline
 \end{tabular}
 \end{table}
+
+Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class unrelated even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, use more classes from outside the project (which I do not parse, and may thus be marked UNRELATED if they are not a direct external superclass). Just like their study, ``same class'' and ``same external superclass'' are both very high. Sibling class is also very high, similar to them, but relatively it seems lower than the results they got. ``Same method'' is much higher (relatively) in our results. I think this is because the corpus I used contained a few projects with a very high in-method duplication that had a big influence on the results.
+
 
 %TODO: Add and discuss measurements
 
