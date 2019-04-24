@@ -69,6 +69,9 @@ We then filtered the corpus further to make sure we are not including any test c
 Running our clone detection script, CloneRefactor, over this corpus gives the following results:
 
 \begin{table}[H]
+  \begin{center}
+  \caption{CloneRefactor results for Java projects corpus \cite{githubCorpus2013}.}
+  \bigskip
 \begin{tabular}{|l|l|}
 \hline
 Amount of projects                                                                                      & 3.848      \\ \hline
@@ -82,6 +85,7 @@ Amount of lines cloned                                                          
 Amount of tokens cloned                                                                                 & 9.800.819  \\ \hline
 Amount of clone classes                                                                                 & 34.367     \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 
 \subsection{Relations Between Clone Instances}
@@ -107,15 +111,18 @@ The ranking of the previous list of categories also matters, as it shows the dif
 \subsubsection{Our measurements}
 We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, but with the following differences:
 \begin{itemize}
-  \item We consider clone classes rather than clone pairs
+  \item We consider clone classes rather than clone pairs.
 \item We use different thresholds regarding when a clone should be considered.
 \item We seek by statement/declaration rather than SLOC.
-\item We test a broader range of projects (they use a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality)
+\item We test a broader range of projects (they use a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality).
 \end{itemize}
 
 The table below shows our results.
 
 \begin{table}[H]
+  \begin{center}
+  \caption{Clone relations}
+  \bigskip
 \begin{tabular}{|l|l|l|} \hline
 \textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\ \hline
 Unrelated          & 13.537           & 39,39               \\ \hline
@@ -128,6 +135,7 @@ Superclass         & 488             & 1,42                \\ \hline
 Common Hierarchy    & 442             & 1,29                \\ \hline
 Ancestor           & 28              & 0,08               \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 
 Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, use more classes from outside the project (which are marked UNRELATED if they do not have a common external superclass). On the second place, we have the ``Same Class'' clones. On the third place come the ``Sibling'' clones.
@@ -144,6 +152,9 @@ After mapping the relations between individual clones, we looked at the location
 A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, their source for this information, uses a very questionable techique of measuring (human copy-paste behaviour with a small sample-size). We set out to test this for ourselves on our corpus, and got the following results:
 
 \begin{table}[H]
+  \begin{center}
+  \caption{Clone instance locations}
+  \bigskip
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Location} & \textbf{Amount} & \textbf{Percentage} \\ \hline
@@ -152,6 +163,7 @@ Class Level        & 14.366           & 41,80               \\ \hline
 Interface Level    & 110             & 0,32                \\ \hline
 Enum Level         & 74              & 0,22                \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 
 From these results we can see, somewhat surprisingly, that in our
@@ -159,10 +171,12 @@ From these results we can see, somewhat surprisingly, that in our
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
-  \item
 \end{enumerate}
 
 \begin{table}[H]
+  \begin{center}
+  \caption{Clone instance contents}
+  \bigskip
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Contents}       & \textbf{Amount} & \textbf{Percentage} \\ \hline
@@ -180,6 +194,7 @@ PARTIALMETHOD           & 19.263           & 56,05               \\ \hline
 ONLYFIELDS              & 565             & 1,64                \\ \hline
 OTHER                   & 2.996            & 8,72                \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
 %TODO: Finish text and add measurements.
 
@@ -194,38 +209,6 @@ However, not always can a clone easily be merged. Sometimes a clone spans a stat
 Next step: build the model to automatically refactor!
 
 %TODO: Expand conclusion
-
-\subsubsection{Tables}
-
-All tables must be centered, neat, clean and legible. Do not use pencil
-or hand-drawn tables. Table number and title always appear before the
-table.
-
-One line space before the table title, one line space after the table
-title and one line space after the table. The table title must be
-initial caps and each table numbered consecutively.
-
-\begin{table}[ht]
-\begin{center}
-\caption{Sample Table}
-
-\bigskip
-
-\begin{tabular}{|l|l|r|}
-\hline
-A & B & 1\\ \hline
-C & D & 2\\
-E & F & 3\\ \hline
-\end{tabular}
-\end{center}
-\end{table}
-
-
-\subsubsection{Handling References}
-
-Use a first level heading for the references. References follow the
-acknowledgements.
-
 
 \subsubsection{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
