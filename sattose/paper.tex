@@ -66,6 +66,9 @@ For our measurements we use a large corpus of open source projects \cite{githubC
 
 We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and it's tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered, which filtered only 5 extra projects out of the corpus). Of the 14.436 projects in the corpus over 3.848 remained, which is plenty for our purposes. The script to filter the corpus in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
 
+Running our clone detection script, CloneRefactor, over this corpus gives the following results:
+
+
 \subsection{Relations Between Clone Instances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances.
 
@@ -100,11 +103,11 @@ The table below shows our results.
 \begin{table}[H]
 \begin{tabular}{|l|l|l|} \hline
 \textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\ \hline
-Unrelated          & 13537           & 39,39               \\ \hline
-Same Class          & 8341            & 24,27               \\ \hline
-Sibling            & 5978            & 17,39               \\ \hline
-Same Method         & 2456            & 7,15                \\ \hline
-External Superclass & 2402            & 6,99                \\ \hline
+Unrelated          & 13.537           & 39,39               \\ \hline
+Same Class          & 8.341            & 24,27               \\ \hline
+Sibling            & 5.978            & 17,39               \\ \hline
+Same Method         & 2.456            & 7,15                \\ \hline
+External Superclass & 2.402            & 6,99                \\ \hline
 First Cousin        & 695             & 2,02                \\ \hline
 Superclass         & 488             & 1,42                \\ \hline
 Common Hierarchy    & 442             & 1,29                \\ \hline
@@ -129,13 +132,14 @@ A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Location} & \textbf{Amount} & \textbf{Percentage} \\ \hline
-Method Level       & 19817           & 57,66               \\ \hline
-Class Level        & 14366           & 41,80               \\ \hline
+Method Level       & 19.817           & 57,66               \\ \hline
+Class Level        & 14.366           & 41,80               \\ \hline
 Interface Level    & 110             & 0,32                \\ \hline
 Enum Level         & 74              & 0,22                \\ \hline
 \end{tabular}
 \end{table}
-%TODO: Add and discuss measurements
+
+From these results we can see, somewhat surprisingly, that in our
 
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
@@ -143,6 +147,25 @@ Finally, we looked at the contents of individual clone instances: what kind of d
   \item
 \end{enumerate}
 
+\begin{table}[H]
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Contents}       & \textbf{Amount} & \textbf{Percentage} \\ \hline
+HASINTERFACEDECLARATION & 10              & 0,03                \\ \hline
+SEVERALMETHODS          & 9.077            & 26,41               \\ \hline
+FULLCLASS               & 198             & 0,58                \\ \hline
+FULLENUM                & 4               & 0,01                \\ \hline
+FULLMETHOD              & 554             & 1,61                \\ \hline
+INCLUDESFIELDS          & 1.150            & 3,35                \\ \hline
+HASCLASSDECLARATION     & 445             & 1,29                \\ \hline
+HASENUMDECLARATION      & 47              & 0,14                \\ \hline
+FULLINTERFACE           & 6               & 0,02                \\ \hline
+HASENUMFIELDS           & 52              & 0,15                \\ \hline
+PARTIALMETHOD           & 19.263           & 56,05               \\ \hline
+ONLYFIELDS              & 565             & 1,64                \\ \hline
+OTHER                   & 2.996            & 8,72                \\ \hline
+\end{tabular}
+\end{table}
 %TODO: Finish text and add measurements.
 
 \section{Merging duplicate code through refactoring}
@@ -150,25 +173,6 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
-\begin{table}[H]
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Contents}       & \textbf{Amount} & \textbf{Percentage} \\ \hline
-HASINTERFACEDECLARATION & 10              & 0,03                \\ \hline
-SEVERALMETHODS          & 9077            & 26,41               \\ \hline
-FULLCLASS               & 198             & 0,58                \\ \hline
-FULLENUM                & 4               & 0,01                \\ \hline
-FULLMETHOD              & 554             & 1,61                \\ \hline
-INCLUDESFIELDS          & 1150            & 3,35                \\ \hline
-HASCLASSDECLARATION     & 445             & 1,29                \\ \hline
-HASENUMDECLARATION      & 47              & 0,14                \\ \hline
-FULLINTERFACE           & 6               & 0,02                \\ \hline
-HASENUMFIELDS           & 52              & 0,15                \\ \hline
-PARTIALMETHOD           & 19263           & 56,05               \\ \hline
-ONLYFIELDS              & 565             & 1,64                \\ \hline
-OTHER                   & 2996            & 8,72                \\ \hline
-\end{tabular}
-\end{table}
 %TODO: Show measurements
 
 \section{Conclusion and next steps}
