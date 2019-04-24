@@ -27,10 +27,9 @@ Duplication in source code can have a major negative impact on the maintainabili
 
 
 \section{Introduction}
-Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. In this research, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve the maintainability of the refactored code.
+Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler1999refactoring}, he exclaims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. In this research, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve the maintainability of the refactored code.
 
-Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler2018refactoring, wake2004refactoring}, that are integrated into most modern IDE's. % May I assume the reader understands the word IDE?
-However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. For a large part, refactoring requires domain knowledge to do it right. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. In this research we will look at to what extend code clones can be automatically refactored.
+Refactoring is used to improve quality related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. There are many methods that have been introduced to help with the process of refactoring \cite{fowler1999refactoring, wake2004refactoring}, that are integrated into most modern IDE's. However, most of these methods still require manual assessment of where and when to apply them. Because of this, refactoring takes up a signification portion of the development process \cite{lientz1978characteristics, mens2004survey}, or does not happen at all \cite{mens2003refactoring}. For a large part, refactoring requires domain knowledge to do it right. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. In this research we will look at to what extend code clones can be automatically refactored.
 
 Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it has to be refactored. Because of this, we will first look at where clones can be found. Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized. Apart from that, we will look at different types of clones. A duplicate part in a codebase does not always have to be an exact match with another part to be called a clone. We will look at the definitions of different types of clones and what the opportunities are to refactor duplicate parts of code if it's not an exact match. All of these measurements are performed on a large corpus of open source projects. We lay the main focus on the Java programming language as refactoring opportunities feature paradigm and programming language dependent aspects \cite{choi2011extracting}. However, most practises featured in this research will also be applicable with other object-oriented languages, like C\#.
 
@@ -172,7 +171,7 @@ From these results we can see, somewhat surprisingly, that the claim of 98\% of 
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
-  \item \textbf{Full Method/Class/Interface/Enumeration/Constructor:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
+  \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans a method partially, optionally including its declaration.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
@@ -205,11 +204,13 @@ The results for these categories are displayed are displayed in table \ref{table
   \begin{tabular}[c]{@{}l@{}}Includes Interface\\ Declaration\end{tabular} & 10              & 0,03                \\ \hline
   Full Interface                                                           & 6               & 0,02                \\ \hline
   Full Enumeration                                                         & 4               & 0,01                \\ \hline
-  Full Constructor                                                         & 1               & 0,00                \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
-%TODO: Finish text and add measurements.
+
+Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods are cloned fully. More than a quarter of the clones spans over several methods, which is surprising. Simply extracting methods won't work in a case where a clone spans over several methods. About 4.5\% of clones include a constructor. About 3.3\% of clones include a global variable defined in a class.
+
+\section{Redefining type-2 and type-3 clones}
 
 \section{Merging duplicate code through refactoring}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
