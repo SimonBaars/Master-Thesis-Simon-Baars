@@ -172,11 +172,11 @@ From these results we can see, somewhat surprisingly, that the claim of 98\% of 
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
-  \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method:} A clone that spans a method partially, optionally including its declaration.
+  \item \textbf{Full Method/Class/Interface/Enumeration/Constructor:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
+  \item \textbf{Partial Method/Constructor:} A clone that spans a method partially, optionally including its declaration.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
-  \item \textbf{Includes Fields:} A clone that spans a combination of fields and other things, like methods.
+  \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields and other things, like methods.
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
   \item \textbf{Other:} Anything that does not match with above stated categories.
 \end{enumerate}
@@ -186,21 +186,24 @@ Finally, we looked at the contents of individual clone instances: what kind of d
   \caption{Clone instance contents}
   \bigskip
 \begin{tabular}{|l|l|l|}
-\hline
-\textbf{Contents}       & \textbf{Amount} & \textbf{Percentage} \\ \hline
-HASINTERFACEDECLARATION & 10              & 0,03                \\ \hline
-SEVERALMETHODS          & 9.077            & 26,41               \\ \hline
-FULLCLASS               & 198             & 0,58                \\ \hline
-FULLENUM                & 4               & 0,01                \\ \hline
-FULLMETHOD              & 554             & 1,61                \\ \hline
-INCLUDESFIELDS          & 1.150            & 3,35                \\ \hline
-HASCLASSDECLARATION     & 445             & 1,29                \\ \hline
-HASENUMDECLARATION      & 47              & 0,14                \\ \hline
-FULLINTERFACE           & 6               & 0,02                \\ \hline
-HASENUMFIELDS           & 52              & 0,15                \\ \hline
-PARTIALMETHOD           & 19.263           & 56,05               \\ \hline
-ONLYFIELDS              & 565             & 1,64                \\ \hline
-OTHER                   & 2.996            & 8,72                \\ \hline
+  \hline
+  \textbf{Contents}                                                        & \textbf{Amount} & \textbf{Percentage} \\ \hline
+  Partial Method                                                           & 19.264          & 56,07               \\ \hline
+  Several Methods                                                          & 9.076           & 26,41               \\ \hline
+  Includes Constructor                                                     & 1.528           & 4,45                \\ \hline
+  Includes Field                                                           & 1.149           & 3,34                \\ \hline
+  Partial Constructor                                                      & 1.098           & 3,20                \\ \hline
+  Only Fields                                                              & 565             & 1,64                \\ \hline
+  Full Method                                                              & 554             & 1,61                \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Class\\ Declaration\end{tabular}     & 445             & 1,30                \\ \hline
+  Other                                                                    & 369             & 1,07                \\ \hline
+  Full Class                                                               & 192             & 0,56                \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Constant\end{tabular}         & 52              & 0,15                \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Declaration\end{tabular}      & 47              & 0,14                \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Interface\\ Declaration\end{tabular} & 10              & 0,03                \\ \hline
+  Full Interface                                                           & 6               & 0,02                \\ \hline
+  Full Enumeration                                                         & 4               & 0,01                \\ \hline
+  Full Constructor                                                         & 1               & 0,00                \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
