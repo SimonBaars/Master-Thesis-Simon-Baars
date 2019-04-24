@@ -68,6 +68,21 @@ We then filtered the corpus further to make sure we are not including any test c
 
 Running our clone detection script, CloneRefactor, over this corpus gives the following results:
 
+\begin{table}[H]
+\begin{tabular}{|l|l|}
+\hline
+Amount of projects                                                                                      & 3.848      \\ \hline
+Amount of lines                                                                                         & 8.284.140  \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\ whitespace, comments, etc.)\end{tabular}        & 8.163.429  \\ \hline
+Amount of statements/declarations                                                                       & 6.863.725  \\ \hline
+Amount of tokens                                                                                        & 66.964.270 \\ \hline
+Amount of lines cloned                                                                                  & 1.341.094  \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines cloned (excluding\\ whitespace, comments, etc.)\end{tabular} & 815.799    \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of statements/declarations\\ cloned\end{tabular}                      & 747.993    \\ \hline
+Amount of tokens cloned                                                                                 & 9.800.819  \\ \hline
+Amount of clone classes                                                                                 & 34.367     \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Relations Between Clone Instances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances.
