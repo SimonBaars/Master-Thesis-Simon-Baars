@@ -171,6 +171,13 @@ From these results we can see, somewhat surprisingly, that in our
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
+  \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, interface or enumeration, including its declaration.
+  \item \textbf{Partial Method:} A clone that spans a method partially, optionally including its declaration.
+  \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
+  \item \textbf{Only Fields:} A clone that spans only global variables.
+  \item \textbf{Includes Fields:} A clone that spans a combination of fields and other things, like methods.
+  \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
+  \item \textbf{Other:} Anything that does not match with above stated categories.
 \end{enumerate}
 
 \begin{table}[H]
