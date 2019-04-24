@@ -98,24 +98,21 @@ We have recreated the same table as Fontana et al \cite{fontana2015duplicated}, 
 The table below shows our results.
 
 \begin{table}[H]
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|l|} \hline
 \textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\ \hline
-FIRSTCOUSIN        & 695             & 2,02                \\ \hline
-SUPERCLASS         & 488             & 1,42                \\ \hline
-COMMONHIERARCHY    & 442             & 1,29                \\ \hline
-UNRELATED          & 13537           & 39,39               \\ \hline
-EXTERNALSUPERCLASS & 2402            & 6,99                \\ \hline
-SIBLING            & 5978            & 17,39               \\ \hline
-SAMEMETHOD         & 2456            & 7,15                \\ \hline
-SAMECLASS          & 8341            & 24,27               \\ \hline
-ANCESTOR           & 28              & 0,08               \\ \hline
+Unrelated          & 13537           & 39,39               \\ \hline
+Same Class          & 8341            & 24,27               \\ \hline
+Sibling            & 5978            & 17,39               \\ \hline
+Same Method         & 2456            & 7,15                \\ \hline
+External Superclass & 2402            & 6,99                \\ \hline
+First Cousin        & 695             & 2,02                \\ \hline
+Superclass         & 488             & 1,42                \\ \hline
+Common Hierarchy    & 442             & 1,29                \\ \hline
+Ancestor           & 28              & 0,08               \\ \hline
 \end{tabular}
 \end{table}
 
-Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class unrelated even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, use more classes from outside the project (which I do not parse, and may thus be marked UNRELATED if they are not a direct external superclass). Just like their study, ``same class'' and ``same external superclass'' are both very high. Sibling class is also very high, similar to them, but relatively it seems lower than the results they got. ``Same method'' is much higher (relatively) in our results. I think this is because the corpus I used contained a few projects with a very high in-method duplication that had a big influence on the results.
-
-
-%TODO: Add and discuss measurements
+Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, use more classes from outside the project (which are marked UNRELATED if they do not have a common external superclass). On the second place, we have the ``Same Class'' clones. On the third place come the ``Sibling'' clones.
 
 \subsection{Clone instance location}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, this claim is based on a very small dataset and a questionable way of measurement. We validated this claim over our corpus. For this, we chose the following categories:
@@ -126,14 +123,16 @@ After mapping the relations between individual clones, we looked at the location
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
 
+A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper the author argues that 98\% are produced at method-level. However, their source for this information, uses a very questionable techique of measuring (human copy-paste behaviour with a small sample-size). We set out to test this for ourselves on our corpus, and got the following results:
+
 \begin{table}[H]
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Location} & \textbf{Amount} & \textbf{Percentage} \\ \hline
-METHODLEVEL       & 19817           & 57,66               \\ \hline
-CLASSLEVEL        & 14366           & 41,80               \\ \hline
-INTERFACELEVEL    & 110             & 0,32                \\ \hline
-ENUMLEVEL         & 74              & 0,22                \\ \hline
+Method Level       & 19817           & 57,66               \\ \hline
+Class Level        & 14366           & 41,80               \\ \hline
+Interface Level    & 110             & 0,32                \\ \hline
+Enum Level         & 74              & 0,22                \\ \hline
 \end{tabular}
 \end{table}
 %TODO: Add and discuss measurements
