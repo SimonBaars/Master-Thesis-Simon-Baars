@@ -56,6 +56,22 @@ A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniq
   \label{fig:clonerefactor}
 \end{figure}
 
+\subsection{Thresholds}
+CloneRefactor works on basis of three thresholds for finding clones:
+\begin{enumerate}
+  \item \textbf{Number of statements/declarations:} The amount of statements/declarations that should be equal/similar for it to be considered a clone.
+  \item \textbf{Number of tokens:} The amount of tokens (excluding whitespace, end-of-line terminators and comments) that should be equal/similar for it to be considered a clone.
+  \item \textbf{Number of lines:} The minimum amount of lines (excluding lines that do not contain any tokens, for tokens same exclusions apply) that should be equal/similar for it to be considered a clone.
+\end{enumerate}
+Of course, if we put any of these thresholds to zero it won't be taken into account anymore, so not all thresholds have to be used at all times. We consider ``number of lines'' to be the least important, as it highly depends on the programmer of the codebase (and we do not want this kind of dependence!). On basis of manual assessment, we have determined that setting the ``number of statements/declarations'' to 6 ensures that most non-harmful clones are filtered out. On the downside, this also filters out some harmful antipatterns, for instance if a cloned line has many tokens we might want to consider a clone if it spans less than 6 statements (as cloned line with many tokens is more harmful than one with few).
+
+For the measurements in the next chapter we have chosen to apply the following thresholds:
+\begin{itemize}
+  \item \textbf{Number of statements/declarations:} 6
+  \item \textbf{Number of tokens:} 10
+  \item \textbf{Number of lines:} 6
+\end{itemize}
+
 \section{Code Clone Context}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
 \begin{enumerate}
@@ -223,6 +239,9 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
 %TODO: Show measurements
+
+\section{Threats to validity}
+We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 \section{Conclusion and next steps}
 Next step: build the model to automatically refactor!
