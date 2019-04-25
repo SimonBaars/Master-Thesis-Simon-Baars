@@ -232,6 +232,12 @@ The results for these categories are displayed are displayed in table \ref{table
 Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods are cloned fully. More than a quarter of the clones spans over several methods, which is surprising. Simply extracting methods won't work in a case where a clone spans over several methods. About 4.5\% of clones include a constructor. About 3.3\% of clones include a global variable defined in a class.
 
 \section{Redefining type-2 and type-3 clones}
+In a 2007 survey by Roy et al \cite{roy2007survey} he defined four types of clones:
+
+\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
+\textbf{Type II:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 
 \section{Merging duplicate code through refactoring}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
