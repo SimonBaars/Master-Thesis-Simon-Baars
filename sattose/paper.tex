@@ -239,6 +239,19 @@ In a 2007 survey by Roy et al \cite{roy2007survey} he defined four types of clon
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
 \textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 
+In this chapter, we will discuss type-2 and type-3 clones (because type-1 clones are straightforward and type-4 clones are out of the scope for this study).
+
+\subsection{Type 2 clones}
+Type 2 clones, by definition, allow any change in identifiers, literals, types, layout and comments. For refactoring purposes, this doesn't always make a lot of sense. If we allow any change in identifiers, literals and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones, if possible at all, might only proof to be harmful.
+
+Because of that, for this research we have looked into a redefinition of type 2 clones to be able to detect such clones that can and should be merged. Our definition ensures functional similarity by considering types, having a distinction between different variables and defining thresholds for variability in literals.
+
+%TODO: Show the stuff
+
+\subsection{Type 3 clones}
+
+%TODO: Write this chapter
+
 \section{Merging duplicate code through refactoring}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
 
