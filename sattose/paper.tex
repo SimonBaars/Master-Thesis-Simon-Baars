@@ -231,15 +231,15 @@ The results for these categories are displayed are displayed in table \ref{table
 
 Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods are cloned fully. More than a quarter of the clones spans over several methods, which is surprising. Simply extracting methods won't work in a case where a clone spans over several methods. About 4.5\% of clones include a constructor. About 3.3\% of clones include a global variable defined in a class.
 
-\section{Redefining type-2 and type-3 clones}
+\section{Redefining type 2 and type 3 clones}
 In a 2007 survey by Roy et al \cite{roy2007survey} he defined four types of clones:
 
-\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
-\textbf{Type II:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
-\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
-\textbf{Type IV:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
+\textbf{Type 1:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
+\textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type 4:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 
-In this chapter, we will discuss type-2 and type-3 clones (because type-1 clones are straightforward and type-4 clones are out of the scope for this study).
+A higher type of clone means that it's harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful antipattern (not every clone is harmful). Type 1 clones are most often, if not always with the right thresholds, harmful. Type 2 and type 3 clones are more disputable whether they are harmful and whether they can be merged in a way that improves the design of the code. In this chapter we will redefine type 2 and type 3 clones to increase the chance that we can merge the clone while improving the design. Type-4 clones are, because of the serious challenges involved in their detection and refactoring, out of the scope for this study.
 
 \subsection{Type 2 clones}
 Type 2 clones, by definition, allow any change in identifiers, literals, types, layout and comments. For refactoring purposes, this doesn't always make a lot of sense. If we allow any change in identifiers, literals and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones, if possible at all, might only proof to be harmful.
