@@ -19,7 +19,6 @@ Ana Oprescu \\ University of Amsterdam\\
 
 \begin{document}
 \maketitle
-% In this paper I talk about clone instances and clone classes. Should I explain those concepts first?
 
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code. There are several techniques that can be used in order to merge clones, reduce duplication, improve the design of the code and potentially also reduce the total volume of a software system. In this study, we look into the opportunities to aid in the process of refactoring these duplication problems for object-oriented programming languages. Measurements that have been conducted so far have indicated that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately a fifth of the duplication can be refactored through method extraction, the other clones require other techniques to be applied. More measurements will be conducted to get a detailed overview of in what contexts clones occur, and what this means for the refactoring processes of these clones. As the desired output, we strive to construct a model that automatically applies refactorings for a large part of the detected duplication problems. This model will be implemented for the Java programming language.
@@ -273,9 +272,10 @@ The most trivial way to merge a clone is through method extraction. However, met
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Refactorability}        & \textbf{Amount} & \textbf{Percentage} \\ \hline
-Cannot directly be extracted    & 10,990           & 41.91               \\ \hline
-Can be extracted                & 5,791            & 22.08               \\ \hline
-Not possible because of content & 9,444            & 36.01               \\ \hline
+\begin{tabular}[c]{@{}l@{}}Cannot directly\\be extracted\end{tabular}    & 10,990           & 41.91               \\ \hline
+\begin{tabular}[c]{@{}l@{}}Is not a\\partial method\end{tabular} & 9,444            & 36.01               \\ \hline
+\begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                & 5,791            & 22.08               \\ \hline
+
 \end{tabular}
 \end{center}
 \end{table}
