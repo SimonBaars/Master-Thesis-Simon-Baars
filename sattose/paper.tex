@@ -264,17 +264,31 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
-The most trivial way to merge a clone is though method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in figure
+The most trivial way to merge a clone is though method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in table \ref{table:refactorability}.
 
-%TODO: Show and discuss measurements
+\begin{table}[H]
+  \begin{center}
+  \caption{Clone instance contents} \label{table:refactorability}
+  \bigskip
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Refactorability}        & \textbf{Amount} & \textbf{Percentage} \\ \hline
+Cannot directly be extracted    & 10990           & 41,91               \\ \hline
+Can be extracted                & 5791            & 22,08               \\ \hline
+Not possible because of content & 9444            & 36,01               \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+From this table we can see that approximately 22 percent of the clones can be refactored through method extraction. For the other clones, we must first build a catalog of appropriate refactorings.
 
 \section{Threats to validity}
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 \section{Conclusion and next steps}
-We conclude that most clones are found in methods, but no easy refactoring is available for them. Most clones have complex nesting, and need further consideration to be able to merge them. The study that we have conducted so far analyzes different kinds of clones for harmfulness and prioritizes their refactoring. On basis of this we will extend our tool, CloneRefactor, to be able to apply refactorings to the found clones. We will formalize refactorings for clones that make use of their relation. We found that almost 40\% of the clones are unrelated, so we will start formalizing refactorings by finding a refactoring opportunity for such clones.
+We conclude that most clones are found in methods, but most cannot be refactored using only method extraction (as is often assumed when dealing with duplication in code). Most clones have complex nesting, and need further consideration to be able to merge them. The study that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. On basis of this we will extend our tool, CloneRefactor, to be able to apply refactorings to the found clones.
 
-%TODO: Expand conclusion
+
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
