@@ -293,9 +293,11 @@ Secondly, we looked at the location of clone instances. Most clone instances are
 Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (56 percent). About 26 percent of clones span over several methods. We also looked into the refactorability of clones that span part of a method. Over 22 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they are nested in such a way that method extraction would leave side effects (for instance, we cannot extract half of a for-loop).
 
 \subsection{Next steps}
-As a first next step, we 
+As a first next step, we will integrate our redefinition of type-2 clones into CloneRefactor. This way, we can run all scripts that we used for all measurements for our redefinition of type-2 clones. We are curious to see how it compares with the results we had for the type-1 clones so far.
 
+As we want to refactor duplicates fully automated, it is very important that both code fragments have exactly the same functionality. Because of this, we want to look into building a SymbolTable of projects we scan and their dependencies. This allows us to further assess the equality of code fragments. Currently we compare fragments, as most clone detection tools do, on basis of static analysis of only the target project. However, because of this, we omit valuable information like fully qualified identifiers for types. By parsing not only a project, but also its dependencies, we can better assess whether two code fragments are actually equal, or whether they are calling different methods but with the same type signature (we are currently limited in distinguishing these).
 
+Furthermore, we want to start automatically refactoring clones. On basis of our initial results, we have determined that we can best start with the automatic refactoring of clones that can be extracted to a method. If this works, we can already decrease duplication by 22\%.
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
