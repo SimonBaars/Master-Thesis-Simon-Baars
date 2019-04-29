@@ -40,7 +40,7 @@ A tool called DCRA (Duplicated Code Refactoring Advisor) looks into refactoring 
 
 Another tool called Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactoring oriented clones. In this paper the authors describe a few variables by which a clone can be assessed for refactoring suitability. This tool looks however only at the possibility to merge clones, rather than whether clones should be merged. Also, this tool only suggests refactorings, and does not apply them.
 
-There are many other publications that look into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, none of the publications describing a refactoring tool have published their source code or application for refactoring support. Also, these publications/tools are limited to suggesting refactoring opportunities for clones found, rather than actually applying refactorings where suitable. Furthermore, all of these tools only support a subset of all harmful clones that are found. Furthermore, all published approaches have limitations, for instance false positives when detecting clones \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
+There are many other publications that look into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, none of the publications describing a refactoring tool have published their source code or application for refactoring support. Furthermore, all of these tools only support a subset of all harmful clones that are found. Also, these publications/tools are limited to suggesting refactoring opportunities for clones found, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, for instance false positives when detecting clones \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 For this research, we strive to improve upon the current state-of-the-art in clone refactoring by building a clone refactoring tool that applies refactorings to a large percentage of clones found. The design decisions for this tool will be made on basis of data gathered from a large corpus of software systems. The tool will be developed on GitHub and stored in the Software Heritage \cite{di2017software} archives to ensure long term preservation. This way we strive to make the problem of duplication in source code easier to deal with.
 
@@ -187,7 +187,7 @@ Enum Level         & 74               & 0,22                \\ \hline
 \end{center}
 \end{table}
 
-From these results we can see, somewhat surprisingly, that the claim of 98\% of clones being produced at method-level is nowhere near correct. In fact, around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones is found in contructors. The amount of clones found in interfaces and enumerations is very low.
+From these results we can see that the claim of 98\% of clones being produced at method-level is nowhere near correct. In fact, around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones is found in contructors. The amount of clones found in interfaces and enumerations is very low.
 
 \subsection{Clone instance contents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
@@ -264,6 +264,8 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply do be able to conduct a refactoring, if advisable at all.
 
+The most trivial way to merge a clone is though method extraction. However, method extraction is not always possible.
+
 %TODO: Show and discuss measurements
 
 \section{Threats to validity}
@@ -274,7 +276,7 @@ We conclude that most clones are found in methods, but no easy refactoring is av
 
 %TODO: Expand conclusion
 
-\subsubsection{Acknowledgements}
+\section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
 
 \bibliographystyle{alpha}
