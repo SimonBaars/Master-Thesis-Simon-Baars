@@ -286,7 +286,14 @@ From this table we can see that approximately 22 percent of the clones can be re
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 \section{Conclusion and next steps}
-We conclude that most clones are found in methods, but most cannot be refactored using only method extraction (as is often assumed when dealing with duplication in code). Most clones have complex nesting, and need further consideration to be able to merge them. The study that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. On basis of this we will extend our tool, CloneRefactor, to be able to apply refactorings to the found clones.
+The study that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that most clone classes are unrelated, which means that they have at least one instance that has no relation with the other instances. There were also a lot of clone classes of which all instances are in the same class. At the third place are clone instances that are siblings of each other (share the same superclass).
+
+Secondly, we looked at the location of clone instances. Most clone instances are found at method level, about 58 percent. About 39 percent of clone instances were found at class level. We defined ``class level clones'' as clones that that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.).
+
+Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (56 percent). About 26 percent of clones span over several methods. We also looked into the refactorability of clones that span part of a method. Over 22 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they are nested in such a way that method extraction would leave side effects (for instance, we cannot extract half of a for-loop).
+
+\subsection{Next steps}
+As a first next step, we 
 
 
 
