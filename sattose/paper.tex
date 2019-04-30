@@ -285,6 +285,8 @@ From this table, we can see that approximately 22 percent of the clones can be r
 \section{Threats to validity}
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
+Another thread to validity is that currently, in a very small number of cases, clone detection might result in a false positive. This is in cases where two lines are equal, but they actually call different methods with the same method signature. In such a case, merging such clones might turn out to change the functionality of the program. We have noted this down as a next step, working on basis of a callgraph instead of just the AST.
+
 \section{Conclusion and next steps}
 The study that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that most clone classes are unrelated, which means that they have at least one instance that has no relation with the other instances. There were also a lot of clone classes of which all instances are in the same class. At the third place are clone instances that are siblings of each other (share the same superclass).
 
