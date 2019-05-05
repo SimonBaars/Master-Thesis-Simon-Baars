@@ -10,6 +10,11 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
 	\label{fig:type1noclone}
 \end{figure}
 
+\begin{wrapfigure}{r}{5.5cm}
+\caption{A wrapped figure going nicely inside the text.}\label{wrap-fig:1}
+\includegraphics[width=5.5cm]{img/type-1-not-cloned}
+\end{wrapfigure}
+
 The problem with the clone shown in \ref{fig:type1noclone} is that this could invalidate a refactoring opportunity for such a code fragment (especially when we automate it). Because of that, we recommend redefining type-1 clones for refactoring. We propose to:
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also of the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
@@ -38,14 +43,18 @@ We also want to argue that statements that are not common between two clone inst
 As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to merge clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
 
 \chapter{Clone Detection}
-In this chapter, we look into the current state of clone detection research. We held a survey in which we looked into a set of clone detection tools to determine their applicability for automated refactoring. We then proposed our own tool, CloneRefactor, to be able to detect our definitions of clone types (as defined in the previous chapter).
-
-
+In this chapter, we look into the current state of clone detection research. We held a small survey in which we looked into a set of clone detection tools to determine their applicability for automated refactoring. We then proposed our own tool, CloneRefactor, to be able to detect our definitions of clone types (as defined in the previous chapter).
 
 \section{Clone detection survey}
-At the beginning of this study, we set out to find a clone detection tool that we could extend to apply automated refactorings. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. We have considered a set of these tools, including some more recent ones found by a Google search. However, most of these tools have a vastly different purpose than this thesis. Most of the tools are focussed on efficiency and detecting all of the types of clones. Efficiency is lesser of a concern to us, correctness is the most important aspect.
-There are a lot of clone detection tools that focus on a large amounts of
+At the beginning of this study, we set out to find a clone detection tool that we could extend to apply automated refactorings. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. We have considered a set of these tools, including some additional (more recent) ones. However, most of these tools have a vastly different purpose than this thesis. Most of the tools are focused on efficiency and detecting all of the types of clones. Efficiency is lesser of a concern to us, correctness is the most important aspect.
 
+\subsection{Text- and Token based clone detection}
+Clones
+
+\subsection{Big scale clone detection}
+There are a lot of clone detection tools that focus on detecting large amounts of clones quickly \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval, kamiya2002ccfinder, livieri2007very}
+
+\subsection{Our criteria}
 To be able to refactor detected clones, it is useful to have the ability to rewrite the AST. We considered a set of clone detection tools for their ability to support the refactoring process automatically. None of the tools we consider seemed completely fit for this purpose, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}.
 
 \section{CloneRefactor}
@@ -72,8 +81,6 @@ For the measurements in the next chapter we have chosen to apply the following t
   \item \textbf{Number of tokens:} 10
   \item \textbf{Number of lines:} 6
 \end{itemize}
-
-
 
 \chapter{Code Clone Context}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
