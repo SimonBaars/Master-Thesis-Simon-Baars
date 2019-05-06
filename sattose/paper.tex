@@ -126,11 +126,11 @@ For the measurements in the next chapter we have chosen to apply the following t
   \item \textbf{Number of lines:} 6
 \end{itemize}
 
-\section{Redefining type 1, 2 and type 3 clones}\label{chap:clonetypes}
-In this chapter, we will propose solutions for shortcomings in type 1, type 2 and type 3 clones to increase the chance that we can merge the clone while improving the design. Type-4 clones are, because of the serious challenges involved in their detection and refactoring, out of the scope for this study.
+\section{Addressing and solving problems with clone type definitions}\label{chap:clonetypes}
+In this chapter, we will propose solutions for shortcomings in type 1, type 2 and type 3 clones \cite{roy2007survey} to increase the chance that we can merge the clone while improving the design. Type-4 clones are, because of the serious challenges involved in their detection and refactoring, out of the scope for this study.
 
 \subsection{Type 1 clones} \label{chap:type1clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Because of that, we recommend redefining type-1 clones for refactoring. We propose to:
+Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Because of that, we propose to:
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
   \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
@@ -140,7 +140,7 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
 \subsection{Type 2 clones}
 Type 2 clones, by definition, allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this doesn't always make a lot of sense. If we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones, if possible at all, might only prove to be harmful.
 
-Because of that, for this research, we have looked into a redefinition of type 2 clones to be able to detect such clones that can and should be merged. Our definition ensures functional similarity by applying the following changes to type 2 clones:
+Because of that, for this research, we have looked solving these problems with type 2 clones to be able to detect such clones that can and should be merged. Our definition ensures functional similarity by applying the following changes to type 2 clones:
 
 \begin{itemize}
   \item \textbf{Considering types:} The definition of type 2 clones states that types should not be considered. We disagree because types can make a significant change to the meaning of a code segment and thus whether this segment should be considered a clone.
@@ -320,7 +320,7 @@ Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods a
 \section{Merging duplicate code through refactoring}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
 
-However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain a complex control structure, like labels, return, break, continue, etc. In such instances, more conditions apply to be able to conduct a refactoring, if advisable at all.
+However, not always can a clone easily be merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like labels, return, break, continue, etc. In such instances, more conditions may apply to be able to conduct a refactoring, if advisable at all.
 
 The most trivial way to merge a clone is through method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in table \ref{table:refactorability}.
 
@@ -363,9 +363,7 @@ Secondly, we looked at the location of clone instances. Most clone instances are
 We also looked into the refactorability of clones that span a part of a method. Over 22 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they are nested in such a way that method extraction would leave side effects (for instance, we cannot extract half of a for-loop).
 
 \subsection{Next steps}
-The next step will be to integrate our redefinitions of type 1, 2 and 3 clones into CloneRefactor. This way, we can run all scripts that we used for our measurements for these novel clone definitions. We are curious to see how it compares with the results we had so far.
-
-As we want to refactor duplicates fully automated, it is very important that both code fragments have exactly the same functionality. Because of this, we want to look into building a SymbolTable of projects we scan and their dependencies. This allows us to further assess the equality of code fragments. Currently, we compare fragments, as most clone detection tools do, on basis of static analysis of only the target project. However, because of this, we omit valuable information like fully qualified identifiers for types. By parsing not only a project, but also its dependencies, we can better assess whether two code fragments are actually equal, or whether they are calling different methods but with the same type signature (we are currently limited in distinguishing these).
+The next step will be to integrate our solutions for the problems with the clone types, as explained in section \ref{chap:clonetypes}, into our CloneRefactor tool. This way, we can run all scripts that we used for our measurements for these novel clone definitions. We are curious to see how it compares with the results we had so far.
 
 Furthermore, we want to start automatically refactoring clones. On basis of our initial results, we have determined that we can best start with the automatic refactoring of clones that can be extracted to a method. If this works, we can already decrease duplication by 22\%.
 
