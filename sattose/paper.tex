@@ -216,9 +216,14 @@ A paper by Fontana et al. \cite{fontana2015duplicated} describes measurements on
 \item \textbf{Same external superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
 \item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
 \end{enumerate}
-Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
-The ranking of the previous list of categories also matters as it shows the different levels in which clones were assessed. For instance, if two clone instances of a clone class belong to the ``same method'' category but the third belongs to the ``same class'', we will always choose the item lowest on the list.
+A few of these categories are displayed in figure \ref{fig:clonerelation}.
+\begin{figure}[H]
+    \includegraphics[width=1\columnwidth]{img/Relation}
+  \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
+  \label{fig:clonerelation}
+\end{figure}
+Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
 \subsubsection{Our measurements}
 We use a similar setup to that used in the study by Fontana et al. (Table~3 of Fontana et al. \cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool called DCRA. This tool detects clone pairs in Java-based source code. It operates on a single threshold: the minimum number of lines that a clone should span. Our measurements were conducted using CloneRefactor, because of which the setup for our measurements differs as follows from Fontana et al.:
