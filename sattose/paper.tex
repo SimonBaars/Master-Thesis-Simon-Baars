@@ -212,12 +212,12 @@ Please note that no of these categories allow external classes (except for ``sam
 The ranking of the previous list of categories also matters as it shows the different levels in which clones were assessed. For instance, if two clone instances of a clone class belong to the ``same method'' category but the third belongs to the ``same class'', we will always choose the item lowest on the list.
 
 \subsubsection{Our measurements}
-We use a similar setup to that used in the study of Table~3 in Fontana et al \cite{fontana2015duplicated}. Fontana et al measure clones using their own tool called DCRA. This tool detects clone pairs in Java-based source code. It operates on a single threshold: the minimum number of lines that a clone should span. Our measurements were conducted using CloneRefactor, because of which the setup for our measurements differs as follows from Fontana et al:
+We use a similar setup to that used in the study of Table~3 in Fontana et al. \cite{fontana2015duplicated}. Fontana et al. measure clones using their own tool called DCRA. This tool detects clone pairs in Java-based source code. It operates on a single threshold: the minimum number of lines that a clone should span. Our measurements were conducted using CloneRefactor, because of which the setup for our measurements differs as follows from Fontana et al.:
 \begin{itemize}
   \item We consider clone classes rather than clone pairs. The rationale for this is given in section \ref{chap:cloneclasses}.
-\item We use different thresholds regarding when a clone should be considered. Fontana et al seek clones that span a minimum of 7 source lines of code (SLOC). We seek clones with a minimum size of 6 statements/declarations. This is further explained in section \ref{chap:thresholds}.
+\item We use different thresholds regarding when a clone should be considered. Fontana et al. seek clones that span a minimum of 7 source lines of code (SLOC). We seek clones with a minimum size of 6 statements/declarations. This is further explained in section \ref{chap:thresholds}.
 \item We seek by statement/declaration rather than SLOC. This makes our analysis depend less on the coding style (in terms of newline usage) of the author of the software project.
-\item We test a broader range of projects. Fontana et al use a set of 50 relatively large projects. We use the corpus as explained in \ref{chap:corpus}, which contains a diverse set of projects (diverse both in volume and code quality).
+\item We test a broader range of projects. Fontana et al. use a set of 50 relatively large projects. We use the corpus as explained in \ref{chap:corpus}, which contains a diverse set of projects (diverse both in volume and code quality).
 \end{itemize}
 
 Table~\ref{table:relations} contains our results regarding the relations between clone instances.
@@ -241,7 +241,7 @@ Ancestor           & 28              & 0.08               \\ \hline
 \end{center}
 \end{table}
 
-Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, use more classes from outside the project (which are marked UNRELATED if they do not have a common external superclass). On the second place, we have the ``Same Class'' clones. On the third place come the ``Sibling'' clones.
+Comparing it to the results of Fontana et al \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked UNRELATED if they do not have a common external superclass). On the second place, we have the ``Same Class'' clones. On the third place come the ``Sibling'' clones.
 
 \subsection{Clone instance location}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper, the author argues that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over the corpus we use. For this, we chose the following categories:
