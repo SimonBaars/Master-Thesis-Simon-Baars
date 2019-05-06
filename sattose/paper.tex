@@ -49,8 +49,7 @@ For this research, we strive to improve upon the current state-of-the-art in clo
 As duplication in source code is a serious problem in many software systems, there are a lot of researches that look into code clones. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. To be able to refactor detected clones, it is useful to have the ability to rewrite the AST. We considered a set of clone detection tools for their ability to support the refactoring process automatically. \todo{didn't you have to build a matrix with features etc? where is it? this would be the place for it} None of the tools we consider seemed completely fit for this purpose, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}.
 
 \subsection{CloneRefactor}
-\todo{this is not background, this is already your research. Background is what others did and you use as foundation}
-A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. For our tool, we decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio (which is a clone detection tool that's part of TinyPDG: a library for building intraprocedural program dependency graphs for Java programs). We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is useable with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). This is displayed in figure \ref{fig:clonerefactor}.
+A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. For our tool, we decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \footnote{Scorpio is a clone detection tool that's part of TinyPDG: a library for building intraprocedural program dependency graphs for Java programs.}. We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is useable with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). This is displayed in figure \ref{fig:clonerefactor}.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/CodeGraph}
@@ -58,7 +57,10 @@ A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniq
   \label{fig:clonerefactor}
 \end{figure}
 
-\subsection{Thresholds}
+\subsubsection{Detection of clone classes}\label{chap:cloneclasses}
+For CloneRefactor, we have chosen to focus on the detection of clone classes rather than clone pairs. We did this because clone pairs don’t provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. On the other hand, clone classes are harder to manage, but they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue involves clone grouping by pairs: single clone reference amount increases according to binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), of which a heavy information redundancy follows \cite{fontana2012duplicated}.
+
+\subsubsection{Thresholds}\label{chap:thresholds}
 CloneRefactor works on basis of three thresholds for finding clones:
 \begin{enumerate}
   \item \textbf{Number of statements/declarations:} The number of statements/declarations that should be equal/similar for it to be considered a clone.
@@ -122,7 +124,7 @@ To be able to refactor code clones, it is very important to consider the context
 \end{enumerate}
 Everything in the context of a clone has a big impact on how it has to be refactored. For this study, we performed measurements on the context of clones in a large corpus of open source projects.
 
-\subsection{The corpus}
+\subsection{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}\footnote{The corpus can be downloaded from the following URL: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/java_projects.tar.gz}}. This corpus has been assembled to contain relatively higher quality projects (by filtering by forks). Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
 We then filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and its tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered, which filtered only 5 extra projects out of the corpus). Of the 14.436 projects in the corpus over 3.848 remained, which is plenty for our purposes. The script to filter the corpus in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
@@ -170,12 +172,12 @@ Please note that no of these categories allow external classes (except for ``sam
 The ranking of the previous list of categories also matters as it shows the different levels in which clones were assessed. For instance, if two clone instances of a clone class belong to the ``same method'' category but the third belongs to the ``same class'', we will always choose the item lowest on the list.
 
 \subsubsection{Our measurements}
-We use a similar setup to that used in the study of \todo{put here the concise description of the experiment}  (Table~3 in Fontana et al) \cite{fontana2015duplicated}, but with the following differences in our setup:
+We use a similar setup to that used in the study of Table~3 in Fontana et al \cite{fontana2015duplicated}. Fontana et al measure clones using their own tool called DCRA. This tool detects clone pairs in Java-based source code. It operates on a single threshold: the minimum number of lines that a clone should span. Our measurements were conducted using CloneRefactor, because of which the setup for our measurements differs as follows from Fontana et al:
 \begin{itemize}
-  \item We consider clone classes rather than clone pairs.
-\item We use different thresholds regarding when a clone should be considered.
-\item We seek by statement/declaration rather than SLOC.
-\item We test a broader range of projects (they use a set of 50 relatively large projects, we use a large corpus that was assembled by a machine learning algorithm testing java projects on GitHub for quality, which contains projects of all sizes and with differing code quality).
+  \item We consider clone classes rather than clone pairs. The rationale for this is given in section \ref{chap:cloneclasses}.
+\item We use different thresholds regarding when a clone should be considered. Fontana et al seek clones that span a minimum of 7 source lines of code (SLOC). We seek clones with a minimum size of 6 statements/declarations. This is further explained in section \ref{chap:thresholds}.
+\item We seek by statement/declaration rather than SLOC. This makes our analysis depend less on the coding style (in terms of newline usage) of the author of the software project.
+\item We test a broader range of projects. Fontana et al use a set of 50 relatively large projects. We use the corpus as explained in \ref{chap:corpus}, which contains a diverse set of projects (diverse both in volume and code quality).
 \end{itemize}
 
 Table~\ref{table:relations} contains our results regarding the relations between clone instances.
