@@ -60,16 +60,15 @@ A higher type of clone means that it is harder to detect. It also makes the clon
 \subsection{Related work in clone refactoring tools}
 The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated}. This tool only focuses on refactoring clone pairs, the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair.
  
-Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactoring oriented clones. The authors describe a \todo{same criteria as you? different?} few criteria by which a clone can be assessed to determine its suitability for refactoring. However, \todo{can you be more precise?} this tool looks only at the possibility to merge clones, rather than whether clones should be merged (if they are actually harmful). Aries only suggests refactorings and does not apply them.
+Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactoring oriented clones. On basis of the relation between clone instances through inheritance, similar to Fontana et al., Aries proposes a refactoring. For instance, if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes such a refactoring, and does not provide help in the process of applying the refactoring.
 
-There are many other research efforts looking into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, 
-% none of the publications describing a refactoring tool have published their source code or application for refactoring support. Furthermore, 
-all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
+There are many other research efforts looking into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 \section{Clone Detection}
 As duplication in source code is a serious problem in many software systems, there are a lot of researches that look into code clones. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. 
 
 \subsection{Survey on Clone Detection Tools}
+\label{ch:tool-overview}
 We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze either Java or Python. Then we chose four criteria by which we considered these tools: 
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} We want to perform an analysis on a set of projects. In this analysis we want to be able to get a full overview of cloning in the set of projects. Some tools only find clones in specific contexts, like only method-level clones. Because of that, we want to use a clone detection tool that is able to find clones in any context.
@@ -212,7 +211,7 @@ Amount of clone classes                                                         
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process.
 
 \subsubsection{Categorizing Clone Instance Relations}
-A paper by Fontana et al. \cite{fontana2015duplicated} describes measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
+Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in figure \ref{fig:clonerelation}. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
@@ -225,7 +224,6 @@ A paper by Fontana et al. \cite{fontana2015duplicated} describes measurements on
 \item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
 \end{enumerate}
 
-A few of these categories are displayed in figure \ref{fig:clonerelation}.
 \begin{figure}[H]
     \includegraphics[width=1\columnwidth]{img/Relation}
   \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
@@ -234,7 +232,7 @@ A few of these categories are displayed in figure \ref{fig:clonerelation}.
 Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
 \subsubsection{Our measurements}
-We use a similar setup to that used in the study by Fontana et al. (Table~3 of Fontana et al. \cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool called DCRA. This tool detects clone pairs in Java-based source code. It operates on a single threshold: the minimum number of lines that a clone should span. Our measurements were conducted using CloneRefactor, because of which the setup for our measurements differs as follows from Fontana et al.:
+We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al. \cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool (DCRA). As explained in section~\ref{ch:tool-overview}, we chose to implement our own tool, CloneRefactor. Therefore, the setup for our measurements differs as follows from Fontana et al.:
 \begin{itemize}
   \item We consider clone classes rather than clone pairs. The rationale for this is given in section \ref{chap:cloneclasses}.
 \item We use different thresholds regarding when a clone should be considered. Fontana et al. seek clones that span a minimum of 7 source lines of code (SLOC). We seek clones with a minimum size of 6 statements/declarations. This is further explained in section \ref{chap:thresholds}.
@@ -263,10 +261,10 @@ Ancestor           & 28              & 0.08               \\ \hline
 \end{center}
 \end{table}
 
-Comparing it to the results of Fontana et al. \cite{fontana2015duplicated}, we find way more unrelated clones. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring.
+The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results 39.37\% of clone are unrelated, while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring.
 
 \subsection{Clone instance location}
-After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. In this paper, the author argues that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over the corpus we use. For this, we chose the following categories:
+After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over the corpus we use. For this, we chose the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
   \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
