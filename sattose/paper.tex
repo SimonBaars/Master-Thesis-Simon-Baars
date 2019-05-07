@@ -5,7 +5,7 @@
 \usepackage{hyperref}
 \usepackage{todonotes}
 \usepackage{tikz}
-\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
 \title{Towards Automated Merging of Code Clones in Object-Oriented Programming Languages\\- Work in Progress -}
 
@@ -30,22 +30,22 @@ Our intermediate results indicate that more than half of the duplication in code
 \end{abstract}
 
 \section{Introduction}
-Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler1999refactoring}, he claims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. 
+Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book \cite{fowler1999refactoring}, he claims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}.
 % In this research, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve the maintainability of the refactored code.
 
 Refactoring is used to improve the quality-related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. Many methods were introduced to aid the process of refactoring~\cite{fowler1999refactoring, wake2004refactoring}, and are integrated into most modern IDE's. However, most of these methods still require a manual assessment of where and when to apply them. This means refactoring is either a significant part of the development process~\cite{lientz1978characteristics, mens2004survey}, or does not happen at all~\cite{mens2003refactoring}. For a large part, proper refactoring requires domain knowledge. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. In this research, we investigate the extent to which code clones can be automatically refactored.
 
-A survey by Roy et al. \cite{roy2007survey} describes different types of clones. Most clone detection tools focus on finding clones corresponding with these definitions. In this paper, we outline challenges with these clone type definitions when considered in a refactoring context. We next propose solutions to these problems that would enable the detection of clones that should be refactored, rather than fragments of code that are just similar. 
+A survey by Roy et al. \cite{roy2007survey} describes different types of clones. Most clone detection tools focus on finding clones corresponding with these definitions. In this paper, we outline challenges with these clone type definitions when considered in a refactoring context. We next propose solutions to these problems that would enable the detection of clones that should be refactored, rather than fragments of code that are just similar.
 
 Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it can be refactored. Therefore, we first look at where and how often clones can be found, enabling the prioritization of refactoring opportunities.
-% Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized. 
+% Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized.
 
 Furthermore, a duplicate fragment in a codebase does not always have to be an exact match with another fragment to be considered a clone. Therefore, we also analyze the impact of the different definitions of clone types on refactoring opportunities.
-% We look at the definitions of different types of clones and the opportunities to refactor duplicate parts of code albeit not an exact match. 
+% We look at the definitions of different types of clones and the opportunities to refactor duplicate parts of code albeit not an exact match.
 
 We conduct our research on a large corpus of open source projects. We focus mainly on the Java programming language as refactoring opportunities feature paradigm and programming language dependent aspects~\cite{choi2011extracting}. However, most practices featured in this research will also be applicable to other object-oriented languages, like C\#.
 
-In this research, we strive to improve upon the current state-of-the-art in clone refactoring \cite{fontana2015duplicated, alwaqfi2017refactoring} by building a clone refactoring tool that automatically applies refactorings to a large percentage of clones found. The design decisions for this tool are made on basis of data gathered from a large corpus of software systems. 
+In this research, we strive to improve upon the current state-of-the-art in clone refactoring \cite{fontana2015duplicated, alwaqfi2017refactoring} by building a clone refactoring tool that automatically applies refactorings to a large percentage of clones found. The design decisions for this tool are made on basis of data gathered from a large corpus of software systems.
 
 Section \ref{chap:background} describes the background from literature that we used to conduct this study. Section \ref{chap:clonedetection} presents our clone refactoring tool proposal. Section \ref{chap:clonetypes} outlines challenges with clone type definitions and proposes solutions for them in a refactoring context. Section \ref{chap:clonecontextexpl} outlines our analysis and measurements regarding the context of code clones. Section \ref{chap:mergingdups} shows our measurements regarding the amount of clones that can be refactored through method extraction. Section \ref{chap:threatstovalidity} shows the threats to validity of this study and section \ref{chap:conclusion} draws a conclusion on our preliminary results.
 
@@ -64,19 +64,19 @@ In a 2007 survey by Roy et al. \cite{roy2007survey} he defines four types of clo
 A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful antipattern (as not every clone is harmful \cite{jarzabek2010clones, kapser2008cloning}).
 \subsection{Related work in clone refactoring tools}
 The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated, fontana2015duplicated}. This tool only focuses on refactoring clone pairs, the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair.
- 
+
 Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactoring oriented clones. On basis of the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries proposes a refactoring. For instance, if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes such a refactoring, and does not provide help in the process of applying the refactoring.
 
 There are many other research efforts looking into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 \section{Clone Detection}\label{chap:clonedetection}
-As duplication in source code is a serious problem in many software systems, many research efforts look into code clones. Many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones. 
+As duplication in source code is a serious problem in many software systems, many research efforts look into code clones. Many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
 
 In this section, we first assess a set of modern clone detection tools for their applicability to this domain. Next, we introduce our own tool geared towards automatic clone refactoring, CloneRefactor.%Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
 
 \subsection{Survey on Clone Detection Tools}
 \label{ch:tool-overview}
-We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze either Java or Python. Next we formulate the following four criteria by which we analyze these tools: 
+We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze either Java or Python. Next we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} We want to perform an analysis on a set of projects. In this analysis we want to be able to get a full overview of cloning in the set of projects. Some tools only find clones in specific contexts, like only method-level clones. Because of that, we want to use a clone detection tool that is able to find clones in any context.
 \item \textbf{Should detect clone classes in a number of example projects.} We have created a number of test projects\footnote{Our test projects to assess the validity of clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} that we used to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
@@ -111,12 +111,12 @@ None of the tools we considered implement all our criteria, so we decided to imp
 
 
 \subsection{CloneRefactor}
-A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements linking to similar statements. The graph built by CloneRefactor is shown in figure \ref{fig:clonerefactor}. 
+A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements linking to similar statements. The graph built by CloneRefactor is shown in figure \ref{fig:clonerefactor}.
 
 We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is compatible with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). On basis of this graph we detect clone classes.
 
 We challenge completed clone classes against the thresholds that are being used, and remove the clone classes that do not adhere to the thresholds.
- 
+
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/CodeGraph}
   \caption{Abstract figure of the graph representation built by CloneRefactor}
@@ -147,7 +147,8 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
   \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
-  \item \textbf{Compare the equality the fully qualified identifier for variable usages.} Two cloned lines might use a variable with the same name, but different types. This might pose serious challenges on refactoring, as the variables might not concern the same object or primitive. To check this, we need to track the declaration of variables and from this infer the fully qualified identifier of its type.
+  \item \textbf{Compare the equality of the fully qualified identifier for variable usages.} Two cloned lines might use a variable with the same name, but different types. This might pose serious challenges on refactoring, as the variables might not concern the same object or primitive. To check this, we need to track the declaration of variables and from this infer the fully qualified identifier of its type.
+  \item \textbf{Compare the equality of the fully qualified indentifier for method references and call signatures.}
 \end{itemize}
 
 \subsection{Type 2 clones}
@@ -184,7 +185,7 @@ Figure \ref{fig:clonecontext} shows an abstract representation of clone classes 
   \caption{Abstract representation of clone classes and clone instances.}
   \label{fig:clonecontext}
 \end{figure}
-%\todo{do we have proof of this statement? if not, say that this is our intuition and a first step to prove it is to analyze a large body of projects} Everything in the context of a clone has a big impact on how it has to be refactored. 
+%\todo{do we have proof of this statement? if not, say that this is our intuition and a first step to prove it is to analyze a large body of projects} Everything in the context of a clone has a big impact on how it has to be refactored.
 % I guess it's a bit of an empty statement. Of course where some code is located has an impact on how to refactor it. Maybe remove it?
 We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used the CloneRefactor tool. These experiments map the context, as follows: the relation between clone instances is explained, measured and discussed in section\ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in section \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in section \ref{chap:clonecontents}.
 
@@ -382,7 +383,7 @@ We have into existing definitions for different types of clones \cite{roy2007sur
 
 The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a fourth of the clone classes all of its instances are in the same class. For about a sixth of the clone classes have clone instances that are siblings of each other (share the same superclass).
 
-Secondly, we looked at the location of clone instances. Most clone instances are found at method level, about 58 percent. About 39 percent of clone instances were found at class level. We defined ``class level clones'' as clones that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.). Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (56 percent). About 26 percent of clones span over several methods. 
+Secondly, we looked at the location of clone instances. Most clone instances are found at method level, about 58 percent. About 39 percent of clone instances were found at class level. We defined ``class level clones'' as clones that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.). Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (56 percent). About 26 percent of clones span over several methods.
 
 We also looked into the refactorability of clones that span a part of a method. Over 22 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they are nested in such a way that method extraction would leave side effects (for instance, we cannot extract half of a for-loop).
 

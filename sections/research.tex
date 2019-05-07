@@ -45,14 +45,14 @@ As for the detection of type 3 clones, we think the easiest opportunity to detec
 \chapter{Clone Detection}
 In this chapter, we look into the current state of clone detection research. We held a small survey in which we looked into a set of clone detection tools to determine their applicability for automated refactoring. We then proposed our own tool, CloneRefactor, to be able to detect our definitions of clone types (as defined in the previous chapter).
 
-\section{Clone detection survey}
-At the beginning of this study, we set out to find a clone detection tool that we could extend to apply automated refactorings. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. We have considered a set of these tools, including some additional (more recent) ones. However, most of these tools have a vastly different purpose than this thesis. Most of the tools are focused on efficiency and detecting all of the types of clones. Efficiency is lesser of a concern to us, correctness is the most important aspect.
+%\section{Clone detection survey}
+%At the beginning of this study, we set out to find a clone detection tool that we could extend to apply automated refactorings. Many tools have been proposed to detect various types of code clones. We have considered a set of tools, selected by the most relevant AST or token based detectors found in a set of surveys \cite{}. However, most of these tools have a vastly different purpose than this thesis. Most of the tools are focused on efficiency and detecting all of the types of clones. Efficiency is lesser of a concern to us, correctness is the most important aspect.
 
-\subsection{Text- and Token based clone detection}
-Clones
+%\subsection{Text- and Token based clone detection}
+%Most clone detection tools are either text-based or token-based \cite{}. The main rationale for this is that it makes it easy to support many (programming) languages, it is simpler and it is generally more efficient. This works great for most puposes, but for automated refactoring
 
-\subsection{Big scale clone detection}
-There are a lot of clone detection tools that focus on detecting large amounts of clones quickly \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval, kamiya2002ccfinder, livieri2007very}
+%\subsection{Big scale clone detection}
+%There are a lot of clone detection tools that focus on detecting large amounts of clones quickly \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval, kamiya2002ccfinder, livieri2007very}.
 
 \subsection{Our criteria}
 To be able to refactor detected clones, it is useful to have the ability to rewrite the AST. We considered a set of clone detection tools for their ability to support the refactoring process automatically. None of the tools we consider seemed completely fit for this purpose, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}.
