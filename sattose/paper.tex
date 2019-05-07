@@ -35,8 +35,11 @@ Duplication in source code is often seen as one of the most harmful types of tec
 
 Refactoring is used to improve the quality-related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. Many methods were introduced to aid the process of refactoring~\cite{fowler1999refactoring, wake2004refactoring}, and are integrated into most modern IDE's. However, most of these methods still require a manual assessment of where and when to apply them. This means refactoring is either a significant part of the development process~\cite{lientz1978characteristics, mens2004survey}, or does not happen at all~\cite{mens2003refactoring}. For a large part, proper refactoring requires domain knowledge. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. In this research, we investigate the extent to which code clones can be automatically refactored.
 
+A survey by Roy et al. \cite{roy2007survey} describes different types of clones. Most clone detection tools focus on finding clones corresponding with these definitions. In this paper, we outline challenges with these clone type definitions when considered in a refactoring context. We next propose solutions to these problems that would enable the detection of clones that should be refactored, rather than fragments of code that are just similar. 
+
 Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it can be refactored. Therefore, we first look at where and how often clones can be found, enabling the prioritization of refactoring opportunities.
 % Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized. 
+
 Furthermore, a duplicate fragment in a codebase does not always have to be an exact match with another fragment to be considered a clone. Therefore, we also analyze the impact of the different definitions of clone types on refactoring opportunities.
 % We look at the definitions of different types of clones and the opportunities to refactor duplicate parts of code albeit not an exact match. 
 
@@ -44,7 +47,9 @@ We conduct our research on a large corpus of open source projects. We focus main
 
 In this research, we strive to improve upon the current state-of-the-art in clone refactoring \cite{fontana2015duplicated, alwaqfi2017refactoring} by building a clone refactoring tool that automatically applies refactorings to a large percentage of clones found. The design decisions for this tool are made on basis of data gathered from a large corpus of software systems. 
 
-\section{Background}
+Section 
+
+\section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
 \subsection{Advantages of clone classes over clone pairs}\label{chap:cloneclasses}
 Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be detected. In this study we focus on clone classes, because of the advantages for refactoring. Clone pairs don not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue involves clone grouping by pairs: single clone reference amount increases according to binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), of which a heavy information redundancy follows \cite{fontana2012duplicated}.
@@ -64,7 +69,7 @@ Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactori
 
 There are many other research efforts looking into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
-\section{Clone Detection}
+\section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many research efforts look into code clones. Many tools have been proposed to detect various types of code clones. Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
 
 \subsection{Survey on Clone Detection Tools}
@@ -334,7 +339,7 @@ The results for these categories are displayed in table \ref{table:contents}.
 
 Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods are cloned fully. More than a quarter of the clones spans over several methods, which makes extracting methods won't work in a case where a clone spans over several methods. About 4.5\% of clones include a constructor. About 3.3\% of clones include a global variable defined in a class.
 
-\section{Merging duplicate code through refactoring}
+\section{Merging duplicate code through refactoring}\label{chap:mergingdups}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
 
 However, a clone is not always easily merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like labels, return, break, continue, etc. In such instances, more conditions may apply to be able to conduct a refactoring, if advisable at all.
@@ -358,12 +363,12 @@ The most trivial way to merge a clone is through method extraction. However, met
 
 From this table, we can see that approximately 22 percent of the clones can be refactored through method extraction. For the other clones, we must first build a catalog of appropriate refactorings.
 
-\section{Threats to validity}
+\section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 Another thread to validity is that currently, in a very small number of cases, clone detection might result in a false positive. This is in cases where two lines are equal, but they actually call different methods with the same method signature. In such a case, merging such clones might turn out to change the functionality of the program. Solving this problem is one of our next steps in this research.
 
-\section{Conclusion and next steps}
+\section{Conclusion and next steps}\label{chap:conclusion}
 In the research we have conducted so far we have made three novel contributions:
 \begin{itemize}
     \item We proposed a method in which we can detect clones that can/should be refactored.
