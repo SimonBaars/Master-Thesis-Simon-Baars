@@ -26,7 +26,7 @@ Ana Oprescu \\ University of Amsterdam\\
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code, as it creates explicit dependencies between fragments of code. Such explicit dependencies often cause bugs. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. To do this, we propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not leave side effects after it is applied.
 
-Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately a fifth of the duplication can be refactored through method extraction, while other clones require other refactoring techniques. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
+Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately ten percent of the duplication can be refactored through method extraction without extra considerations required, while other clones require other refactoring techniques. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
 \end{abstract}
 
 \section{Introduction}
@@ -135,16 +135,16 @@ Of course, if any threshold is set to zero, it will be ignored, thus not all thr
 
 The measurements in our study use the following thresholds:
 \begin{itemize}
-  \item \textbf{Number of statements/declarations:} 6
-  \item \textbf{Number of tokens:} 10
-  \item \textbf{Number of lines:} 6
+  \item \textbf{Number of statements/declarations:} 3
+  \item \textbf{Number of tokens:} 12
+  \item \textbf{Number of lines:} 1
 \end{itemize}
 
 \section{Addressing problems with clone type definitions}\label{chap:clonetypes}
 We propose solutions for shortcomings in type 1, type 2 and type 3 clones~\cite{roy2007survey} to increase the chance that we can merge the clone while improving the design. Due to the serious challenges involved in their detection and refactoring, type 4 clones are not considered in this study.
 
-\subsection{Type 1 clones} \label{chap:type1clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Therefore, we propose to:
+\subsection{Type 1R clones} \label{chap:type1clones}
+Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Therefore, we propose an alternative definition of type 1 clones. We have named this type 1R clones, indicate that this definition is separate from type 1 clones in literature. The ``R'' stands for refactoring, to indicate that this is type is refactoring oriented (and may be less suitable for, for instance, large scale clone analysis). Type 1R clones differ from type 1 clones by the folowing aspects:
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
   \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
@@ -152,7 +152,7 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
   \item \textbf{Compare the equality of the fully qualified indentifier for method references and call signatures.}
 \end{itemize}
 
-\subsection{Type 2 clones}
+\subsection{Type 2R clones}
 By definition, type 2 clones allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this does not always make a lot of sense. If we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones might only prove to be harmful.
 
 We tackle these problems with type 2 clones to be able to detect such clones that can and should be merged. Our definition ensures functional similarity by applying the following changes to type 2 clones:
@@ -164,7 +164,7 @@ We tackle these problems with type 2 clones to be able to detect such clones tha
   \item \textbf{Consider method call signatures and define a threshold for variability in method calls:} As type-2 clones allow changes in identifiers, also the names of called methods may vary. However, because of this, completely different methods can be called in cloned fragments as a result. This poses serious challenges on refactoring and makes it more disputable whether such a clone is actually harmful. This is because different method identifiers can describe a completely different functionality. Therefore, we suggest considering the call signatures of cloned methods when they are compared. We can allow variability in the rest of method identifiers by passing the function as a parameter. To limit the amount of parameters required we also recommend defining a threshold for variability in method call expressions, so only a limited number of method calls can vary.
 \end{itemize}
 
-\subsection{Type 3 clones}
+\subsection{Type 3R clones}
 Type 3 clones are even more permissive than type 2 clones, allowing added and removed statements. Thresholds matter a lot here to make sure that not the whole project is detected as a clone of itself. The main question for this study regarding type 3 clones is: ``how can we merge type 3 clones while improving the design?''.
 
 Clone instances in type 3 clones are almost always different in functionality. As we have to ensure equal functionality after merging the clone, we have to wrap the difference in statements between the clone instances in conditional blocks (either if-statements or switch-statements). We can then pass a variable as to which path should be taken through the code (either a boolean or an enumeration). Such a refactoring would make added statements that are contiguous less harmful for the design than added statements that are separated by statements that both clone instances have in common.
@@ -172,6 +172,11 @@ Clone instances in type 3 clones are almost always different in functionality. A
 We also argue that statements that are not common between two clone instances, should not count towards the size of the clone (and thus towards the threshold which determines whether the clone will be taken into account). Also, clones should not start and not end with an added statement (as that would be nonsense: such a thing could be done for any clone).
 
 As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to merge clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
+
+\subsection{The challenge of detecting these clones}\label{chap:challenge}
+Detecting these clone types comes with serious challenges. For each of these types of clones we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. To be able to parse all fully qualified identifiers, and trace the declarations of variables, we might to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
+
+In our CloneRefactor tool we use JavaParser \cite{tomassetti2017javaparser}. JavaParser has a build in symbol solver. This symbol solver can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
 
 \section{Relation, Location and Content Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
@@ -193,7 +198,7 @@ We analyzed the context of clones in a large corpus of open source projects. For
 \subsection{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}\footnote{The corpus can be downloaded from the following URL: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/java_projects.tar.gz}}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
-We filtered the corpus further to make sure we are not including any test classes or generated classes. Many Java/Maven projects use a structure where they separate the application and its tests in the different folders (``/src/main/java'' and ``/src/test/java'' respectively). Because of this, we chose to only use projects from the corpus which use this structure (and had at least a ``/src/main/java'' folder). To limit the execution time of the script, we also decided to limit the maximum amount of source files in a single project to 1.000 (projects with more source files were not considered, which filtered only 5 extra projects out of the corpus). Of the 14.436 projects in the corpus over 3.848 remained, which is plenty for our purposes. The script to filter the corpus in included in our GitHub repository \footnote{The script we use to filter the corpus: \url{https://github.com/SimonBaars/CloneRefactor/blob/MeasurementsVersion1/src/main/java/com/simonbaars/clonerefactor/scripts/PrepareProjectsFolder.java}}.
+As indicated in section \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to all Maven projects. As no pom.xml files are included in the corpus, we cloned the lastest version of each project in the corpus. We then removed each project that contained no ``pom.xml'' file (a file that describes the dependencies used by the project). We then filtered the corpus further to make sure each project contained a ``src/main/java'' folder, to be sure no test files or other redundant sources are included in the clone detection. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the ``pom.xml'' file).
 
 Running our clone detection script, CloneRefactor, over this corpus gives the results displayed in table \ref{table:general}.
 
@@ -203,16 +208,27 @@ Running our clone detection script, CloneRefactor, over this corpus gives the re
   \bigskip
 \begin{tabular}{|l|l|}
 \hline
-Amount of projects                                                                                      & 3,848      \\ \hline
-Amount of lines                                                                                         & 8,284,140  \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\ whitespace, comments, etc.)\end{tabular}        & 8,163,429  \\ \hline
-Amount of statements/declarations                                                                       & 6,863,725  \\ \hline
-Amount of tokens                                                                                        & 66,964,270 \\ \hline
-Amount of lines cloned                                                                                  & 1,341,094  \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines cloned (excluding\\ whitespace, comments, etc.)\end{tabular} & 815,799    \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of statements/declarations\\ cloned\end{tabular}                      & 747,993    \\ \hline
-Amount of tokens cloned                                                                                 & 9,800,819  \\ \hline
-Amount of clone classes                                                                                 & 34,367     \\ \hline
+Amount of projects                                                                                      & 1,361      \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\ whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
+Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
+Amount of tokens (excluding whitespace, comments and newlines.)                                                   & 11,643,194 \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Clone detection results}
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines). The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}.
+
+\begin{table}[H]
+  \begin{center}
+  \caption{CloneRefactor results for Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
+  \bigskip
+\begin{tabular}{|l|l|}
+\hline
+ & \textbf{Token} & \textbf{Type 1R}
+\begin{tabular}[c]{@{}l@{}}Amount of lines cloned (excluding\\ whitespace, comments and newlines.)\end{tabular} & 200,362 & 129,519 \\ \hline
+Amount of statements/declarations cloned & 182,466 & 118,980 \\ \hline
+Amount of tokens cloned (excluding whitespace, comments and newlines.) & 1,582,845 & 973,596 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
