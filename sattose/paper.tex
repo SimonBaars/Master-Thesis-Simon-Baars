@@ -209,29 +209,37 @@ Running our clone detection script, CloneRefactor, over this corpus gives the re
 \begin{tabular}{|l|l|}
 \hline
 Amount of projects                                                                                      & 1,361      \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\ whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
 Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
-Amount of tokens (excluding whitespace, comments and newlines.)                                                   & 11,643,194 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of tokens (excluding\\whitespace, comments and newlines.)\end{tabular} & 11,643,194 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
 \subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines). The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}.
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in table \ref{table:clonedet}. Please note that the amount of lines, statements and tokens is without whitespace, newlines and comments.
 
 \begin{table}[H]
   \begin{center}
-  \caption{CloneRefactor results for Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
+  \caption{CloneRefactor clone detection results for the two different algorithms.} \label{table:clonedet}
   \bigskip
-\begin{tabular}{|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
- & \textbf{Token} & \textbf{Type 1R}
-\begin{tabular}[c]{@{}l@{}}Amount of lines cloned (excluding\\ whitespace, comments and newlines.)\end{tabular} & 200,362 & 129,519 \\ \hline
-Amount of statements/declarations cloned & 182,466 & 118,980 \\ \hline
-Amount of tokens cloned (excluding whitespace, comments and newlines.) & 1,582,845 & 973,596 \\ \hline
+Extra & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines cloned\end{tabular} & 200,362 & 129,519 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of statements/\\declarations cloned\end{tabular} & 182,466 & 118,980 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of tokens cloned\end{tabular} & 1,582,845 & 973,596 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
+
+Looking at table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones found than the type 1 algorithm. Figure \ref{fig:type1rclone} displays an example of a clone that does get detected by the type 1 algorithm but does not get detected by the type 1R algorithm. This is because the variable ``key'' and ``prefix'' are of a different primitive type between the clone instances. This makes this clone less suitable for automated refactoring. We manually checked some differences between the detected type 1 clones and type 1R clones and in each instance there was either a variable with different type, a different method call or a different type (but textual equality). This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions.
+
+\begin{figure}[H]
+    \includegraphics[width=1\columnwidth]{img/clone}
+  \caption{Example of a clone that is not a type 1R clone but is a type 1 clone.}
+  \label{fig:type1rclone}
+\end{figure}
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in section \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in section \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in section \ref{chap:oursetup}. We then show our results in section \ref{chap:ourmeasurements}.
@@ -273,22 +281,22 @@ Table~\ref{table:relations} contains our results regarding the relations between
   \begin{center}
   \caption{Clone relations} \label{table:relations}
   \bigskip
-\begin{tabular}{|l|l|l|} \hline
-\textbf{Relation}  & \textbf{Amount} & \textbf{Percentage} \\ \hline
-Unrelated          & 13,529           & 39.37               \\ \hline
-Same Class          & 8,341            & 24.28               \\ \hline
-Sibling            & 5,978            & 17.40               \\ \hline
-Same Method         & 2,456            & 7.15                \\ \hline
-External Superclass & 2,402            & 6.99                \\ \hline
-First Cousin        & 695             & 2.02                \\ \hline
-Superclass         & 489             & 1.42                \\ \hline
-Common Hierarchy    & 442             & 1.29                \\ \hline
-Ancestor           & 28              & 0.08               \\ \hline
+\begin{tabular}{|l|l|l|l|l|} \hline
+\textbf{Relation}  & \textbf{\# (1)} & \textbf{\% (1)}  & \textbf{\# (1R)} & \textbf{\% (1R)} \\ \hline
+Unrelated          & 6,134           & 35.48  & 4,762 & 38.14            \\ \hline
+\begin{tabular}[c]{@{}l@{}}Same\\Class\end{tabular}          & 4,772            & 27.60  & 3,131 & 25.07             \\ \hline
+Sibling            & 2,680            & 15.50   & 1,949 & 15.61            \\ \hline
+\begin{tabular}[c]{@{}l@{}}Same\\Method\end{tabular}         & 2,247            & 13.00   & 1,685 & 13.49             \\ \hline
+\begin{tabular}[c]{@{}l@{}}External\\Superclass\end{tabular} & 794            & 4.59   & 558 & 4.47             \\ \hline
+\begin{tabular}[c]{@{}l@{}}First\\Cousin\end{tabular}        & 269             & 1.56     & 197 & 1.58           \\ \hline
+Superclass         & 237             & 1.37     & 118 & 0.94           \\ \hline
+\begin{tabular}[c]{@{}l@{}}Common\\Hierarchy\end{tabular}    & 123             & 0.71    & 73 & 0.58            \\ \hline
+Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results 39.37\% of clone are unrelated, while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring.
+The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with type 1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and type 1R clones.
 
 \subsection{Clone instance location}\label{chap:clonelocation}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in table \ref{table:locations}. We chose the following categories:
@@ -299,23 +307,25 @@ After mapping the relations between individual clones, we looked at the location
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
 
+Please note that these results are measured over each clone instance rather than each clone class, hence the higher total amount in comparison to the results of section \ref{chap:ourmeasurements}.
+
 \begin{table}[H]
   \begin{center}
   \caption{Clone instance locations} \label{table:locations}
   \bigskip
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{Location}  & \textbf{Amount}  & \textbf{Percentage} \\ \hline
-Method Level       & 19,818           & 57.68               \\ \hline
-Class Level        & 13,259           & 38.59               \\ \hline
-Constructor Level  & 1,099            & 3.20                \\ \hline
-Interface Level    & 110              & 0.32                \\ \hline
-Enum Level         & 74               & 0.22                \\ \hline
+\textbf{Location}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
+Method Level       & 32,861           & 66.02   & 19,075 & 58.23            \\ \hline
+Class Level        & 15,069           & 30.27   & 12,207 & 37.27            \\ \hline
+\begin{tabular}[c]{@{}l@{}}Constructor\\Level\end{tabular}  & 1,391            & 2.79     & 1,080 & 3.30           \\ \hline
+\begin{tabular}[c]{@{}l@{}}Interface\\Level\end{tabular}    & 282              & 0.57     & 247 & 0.75           \\ \hline
+Enum Level         & 171               & 0.34    & 147 & 0.45            \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low.
+Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and type 1R, it seems that there are relatively less method level clones and more class level clones for type 1R. This is probably due to that the main reason for variability between type 1 and type 1R is variable references, which occur more at method level than class level.
 
 \subsection{Clone instance contents}\label{chap:clonecontents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
