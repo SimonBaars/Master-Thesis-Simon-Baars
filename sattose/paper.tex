@@ -52,22 +52,22 @@ Section \ref{chap:background} describes the background from literature that we u
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
 \subsection{Advantages of clone classes over clone pairs}\label{chap:cloneclasses}
-Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be detected. In this study we focus on clone classes, because of the advantages for refactoring. Clone pairs don not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue involves clone grouping by pairs: single clone reference amount increases according to binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), of which a heavy information redundancy follows \cite{fontana2012duplicated}.
+Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be detected. In this study we focus on clone classes, because of the advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. There is also another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
 
-\subsection{Clone types}
+\subsection{Clone types}\label{chap:backgroundclonetypes}
 In a 2007 survey by Roy et al. \cite{roy2007survey} he defines four types of clones:\\
-\textbf{Type 1:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
+\textbf{Type 1:} Identical code fragments except for variations in whitespace (may also be variations in layout) and comments.\\
 \textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
 \textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type 4:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 
 A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful antipattern (as not every clone is harmful \cite{jarzabek2010clones, kapser2008cloning}).
 \subsection{Related work in clone refactoring tools}
-The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated, fontana2015duplicated}. This tool only focuses on refactoring clone pairs, the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair.
+The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated, fontana2015duplicated}. This tool only focuses on refactoring clone pairs, with the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair.
 
-Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactoring oriented clones. On basis of the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries proposes a refactoring. For instance, if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes such a refactoring, and does not provide help in the process of applying the refactoring.
+Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They basis of the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries proposes a refactoring. For instance, if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes such a refactoring, and does not provide help in the process of applying the refactoring.
 
-There are many other research efforts looking into code clone refactoring \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
+There is various other research that investigates refactoring code clones \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 \section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many research efforts look into code clones. Many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
@@ -141,10 +141,10 @@ The measurements in our study use the following thresholds:
 \end{itemize}
 
 \section{Addressing problems with clone type definitions}\label{chap:clonetypes}
-We propose solutions for shortcomings in type 1, type 2 and type 3 clones~\cite{roy2007survey} to increase the chance that we can merge the clone while improving the design. Due to the serious challenges involved in their detection and refactoring, type 4 clones are not considered in this study.
+We propose solutions for shortcomings in type 1, type 2 and type 3 clones~\cite{roy2007survey} (see section \ref{chap:backgroundclonetypes} for these definitions) to increase the chance that we can merge the clone while improving the design. Due to the serious challenges involved in their detection and refactoring, type 4 clones are not considered in this study.
 
 \subsection{Type 1R clones} \label{chap:type1clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Therefore, we propose an alternative definition of type 1 clones. We have named this it ``type 1R clones'', to indicate that this definition is separate from type 1 clones in literature. The ``R'' stands for refactoring, to indicate that this is type is refactoring oriented (and may be less suitable for, for instance, large scale clone analysis). Type 1R clones differ from type 1 clones by the following aspects:
+Type 1, as defined in literature~\cite{roy2007survey}, clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are actually identical. Even when textually equal, method calls can refer to different methods, type declarations can refer to different types and even variables can be of a different type. This could invalidate a refactoring opportunity for such a code fragment. Therefore, we propose an alternative definition of type 1 clones. We have named this it ``type 1R clones'', to indicate that this definition is separate from type 1 clones in literature. The ``R'' stands for refactoring, to indicate that this is type is refactoring oriented (and may be less suitable for, for instance, large scale clone analysis). Type 1R clones differ from type 1 clones by the following aspects:
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
   \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
@@ -153,7 +153,7 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
 \end{itemize}
 
 \subsection{Type 2R clones}
-By definition, type 2 clones allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this does not always make a lot of sense. If we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones might only prove to be harmful.
+By its definition in literature, type 2 clones allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this does not always make a lot of sense. If we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones might only prove to be harmful.
 
 We tackle these problems with type 2 clones to be able to detect such clones that can and should be merged. Our definition ensures functional similarity by applying the following changes to type 2 clones:
 
@@ -165,13 +165,11 @@ We tackle these problems with type 2 clones to be able to detect such clones tha
 \end{itemize}
 
 \subsection{Type 3R clones}
-Type 3 clones are even more permissive than type 2 clones, allowing added and removed statements. Thresholds matter a lot here to make sure that not the whole project is detected as a clone of itself. The main question for this study regarding type 3 clones is: ``how can we merge type 3 clones while improving the design?''.
+Type 3 clones are even more permissive than type 2 clones, allowing added and removed statements. For these clones, thresholds matter a lot to make sure that not the whole project is detected as a clone of itself. The main question for this study regarding type 3 clones is: \textit{``how can we merge type 3 clones while improving the design?''}.
 
-Clone instances in type 3 clones are almost always different in functionality. As we have to ensure equal functionality after merging the clone, we have to wrap the difference in statements between the clone instances in conditional blocks (either if-statements or switch-statements). We can then pass a variable as to which path should be taken through the code (either a boolean or an enumeration). Such a refactoring would make added statements that are contiguous less harmful for the design than added statements that are separated by statements that both clone instances have in common.
+Clone instances in type 3 clones are almost always different in functionality. As we have to ensure equal functionality after merging the clone, we have to wrap the difference in statements between the clone instances in conditional blocks (either if-statements or switch-statements). We can then pass a variable to indicate which path should be taken through the code (either a boolean or an enumeration). Such a refactoring would make added statements that are contiguous less harmful for the design than added statements that are scattered throughout the cloned fragment.
 
-We also argue that statements that are not common between two clone instances, should not count towards the size of the clone (and thus towards the threshold which determines whether the clone will be taken into account). Also, clones should not start and not end with an added statement (as that would be nonsense: such a thing could be done for any clone).
-
-As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to merge clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
+We also argue that statements that are not common between two clone instances, should not count towards the size of the clone (and thus towards the threshold which determines whether the clone will be taken into account). As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to merge clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
 
 \subsection{The challenge of detecting these clones}\label{chap:challenge}
 Detecting these clone types comes with serious challenges. For each of these types of clones we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. To be able to parse all fully qualified identifiers, and trace the declarations of variables, we might to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
@@ -275,7 +273,7 @@ We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.
 \end{itemize}
 
 \subsubsection{Our results} \label{chap:ourmeasurements}
-Table~\ref{table:relations} contains our results regarding the relations between clone instances.
+Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in section \ref{chap:type1clones}.
 
 \begin{table}[H]
   \begin{center}
@@ -378,20 +376,21 @@ The most trivial way to merge a clone is through method extraction. However, met
 
 \begin{table}[H]
   \begin{center}
-  \caption{Clone instance contents} \label{table:refactorability}
+  \caption{Refactorability through method extraction} \label{table:refactorability}
   \bigskip
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{Refactorability}        & \textbf{Amount} & \textbf{Percentage} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Cannot directly\\be extracted\end{tabular}    & 10,990           & 41.91               \\ \hline
-\begin{tabular}[c]{@{}l@{}}Is not a\\partial method\end{tabular} & 9,444            & 36.01               \\ \hline
-\begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                & 5,791            & 22.08               \\ \hline
+\textbf{}        & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
+\begin{tabular}[c]{@{}l@{}}Is not a\\partial method\end{tabular}           & 5,917 & 34.22 & 4,806 & 38.49 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Complex\\control flow\end{tabular} & 5,511 & 31.87 & 3,158 & 25.29 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Spans part of\\a block\end{tabular}             & 3,989 & 23.07 & 3,152 & 25.24 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                  & 1,874 & 10.84 & 1,371 & 10.98 \\ \hline
 
 \end{tabular}
 \end{center}
 \end{table}
 
-From this table, we can see that approximately 22 percent of the clones can be refactored through method extraction. For the other clones, we must first build a catalog of appropriate refactorings.
+From this table, we can see that approximately ten percent of the clones can directly be refactored through method extraction. For the other clones, we must first build a catalog of appropriate refactorings.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
