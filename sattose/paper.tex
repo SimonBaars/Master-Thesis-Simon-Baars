@@ -65,12 +65,12 @@ A higher type of clone means that it is harder to detect. It also makes the clon
 \subsection{Related work in clone refactoring tools}
 The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated, fontana2015duplicated}. This tool only focuses on refactoring clone pairs, with the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair.
 
-Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They basis of the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries proposes a refactoring. For instance, if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes such a refactoring, and does not provide help in the process of applying the refactoring.
+Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They do this based on the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries also proposes a refactoring: if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes the refactoring, and does not provide help in the process of applying the refactoring.
 
 There is various other research that investigates refactoring code clones \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 \section{Clone Detection}\label{chap:clonedetection}
-As duplication in source code is a serious problem in many software systems, many research efforts look into code clones. Many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
+As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
 
 In this section, we first assess a set of modern clone detection tools for their applicability to this domain. Next, we introduce our own tool geared towards automatic clone refactoring, CloneRefactor.%Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
 
@@ -78,7 +78,7 @@ In this section, we first assess a set of modern clone detection tools for their
 \label{ch:tool-overview}
 We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze either Java or Python. Next we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
-    \item \textbf{Should find clones in any context.} We want to perform an analysis on a set of projects. In this analysis we want to be able to get a full overview of cloning in the set of projects. Some tools only find clones in specific contexts, like only method-level clones. Because of that, we want to use a clone detection tool that is able to find clones in any context.
+    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview. Because of that, we want to use a clone detection tool that is able to find clones in any context.
 \item \textbf{Should detect clone classes in a number of example projects.} We have created a number of test projects\footnote{Our test projects to assess the validity of clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} that we used to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
 \item \textbf{Considers dependency graphs to be sure that this clone can be merged.} When detecting clones for refactoring purposes, it is important that clone instances are actually equal. Sometimes, to verify actual equality (not just textual equality), it is required to consider resolved symbols (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
 \item \textbf{Makes it possible to configure the way in which clones are detected (as in what to exclude from the detection) in a relatively straightforward way.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to recognize the meaning of certain tokens.
@@ -372,7 +372,13 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, a clone is not always easily merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like labels, return, break, continue, etc. In such instances, more conditions may apply to be able to conduct a refactoring, if advisable at all.
 
-The most trivial way to merge a clone is through method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in table \ref{table:refactorability}.
+The most trivial way to merge a clone is through method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone or if the control flow (return, break and continue statements) prohibit extraction. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in table \ref{table:refactorability}. In this table we use the following categories:
+\begin{itemize}
+    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to merge the extracted methods (for instance ``pull up method'' for clones in sibling classes).
+    \item \textbf{Complex control flow:} This clone contains break, continue or return statements.
+    \item \textbf{Spans part of a block:} This clone spans a part of a block, including the declaration. For instance, when an if-statement is matched but not the entirety of its body.
+    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of table \label{table:contents}, the ``extract method'' refactoring technique cannot be applied.
+\end{itemize}
 
 \begin{table}[H]
   \begin{center}
@@ -385,12 +391,11 @@ The most trivial way to merge a clone is through method extraction. However, met
 \begin{tabular}[c]{@{}l@{}}Complex\\control flow\end{tabular} & 5,511 & 31.87 & 3,158 & 25.29 \\ \hline
 \begin{tabular}[c]{@{}l@{}}Spans part of\\a block\end{tabular}             & 3,989 & 23.07 & 3,152 & 25.24 \\ \hline
 \begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                  & 1,874 & 10.84 & 1,371 & 10.98 \\ \hline
-
 \end{tabular}
 \end{center}
 \end{table}
 
-From this table, we can see that approximately ten percent of the clones can directly be refactored through method extraction. For the other clones, we must first build a catalog of appropriate refactorings.
+From this table, we can see that approximately ten percent of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required. Looking into these techniques and transformations will be one of our next steps.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when measuring over a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
