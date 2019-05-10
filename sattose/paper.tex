@@ -87,7 +87,7 @@ We conducted a short survey on (recent) clone detection tools that we could use 
 \begin{table}[H]
  \begin{center}
   \caption{Our survey on clone detection tools.} \label{table:dettools}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
 \textbf{Clone Detection Tool} & \textbf{(1)} & \textbf{(2)} & \textbf{(3)} & \textbf{(4)} \\ \hline
@@ -119,8 +119,9 @@ We decided to base our tool on the JavaParser library \cite{tomassetti2017javapa
 We challenge completed clone classes against the thresholds that are being used, and remove the clone classes that do not adhere to the thresholds.
 
 \begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/CodeGraph}
   \caption{Abstract figure of the graph representation built by CloneRefactor}
+  \medskip
+  \includegraphics[width=1\columnwidth]{img/CodeGraph}
   \label{fig:clonerefactor}
 \end{figure}
 
@@ -185,8 +186,9 @@ To be able to refactor code clones, it is very important to consider the context
 \end{enumerate}
 Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
 \begin{figure}[H]
-    \includegraphics[width=1\columnwidth]{img/context}
   \caption{Abstract representation of clone classes and clone instances.}
+    \medskip
+    \includegraphics[width=1\columnwidth]{img/context}
   \label{fig:clonecontext}
 \end{figure}
 %\todo{do we have proof of this statement? if not, say that this is our intuition and a first step to prove it is to analyze a large body of projects} Everything in the context of a clone has a big impact on how it has to be refactored.
@@ -203,7 +205,7 @@ Running our clone detection script, CloneRefactor, over this corpus gives the re
 \begin{table}[H]
   \begin{center}
   \caption{CloneRefactor results for Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|}
 \hline
 Amount of projects                                                                                      & 1,361      \\ \hline
@@ -220,7 +222,7 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 \begin{table}[H]
   \begin{center}
   \caption{CloneRefactor clone detection results for the two different algorithms.} \label{table:clonedet}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|l|}
 \hline
 Extra & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
@@ -234,8 +236,9 @@ Extra & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
 Looking at table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones found than the type 1 algorithm. Figure \ref{fig:type1rclone} displays an example of a clone that does get detected by the type 1 algorithm but does not get detected by the type 1R algorithm. This is because the variable ``key'' and ``prefix'' are of a different primitive type between the clone instances. This makes this clone less suitable for automated refactoring. We manually checked some differences between the detected type 1 clones and type 1R clones and in each instance there was either a variable with different type, a different method call or a different type (but textual equality). This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions.
 
 \begin{figure}[H]
-    \includegraphics[width=1\columnwidth]{img/clone}
   \caption{Example of a clone that is not a type 1R clone but is a type 1 clone.}
+  \medskip
+    \includegraphics[width=1\columnwidth]{img/clone}
   \label{fig:type1rclone}
 \end{figure}
 
@@ -257,8 +260,9 @@ Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open sou
 \end{enumerate}
 
 \begin{figure}[H]
-    \includegraphics[width=1\columnwidth]{img/Relation}
   \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
+    \medskip
+    \includegraphics[width=1\columnwidth]{img/Relation}
   \label{fig:clonerelation}
 \end{figure}
 Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
@@ -278,7 +282,7 @@ Table~\ref{table:relations} contains our results regarding the relations between
 \begin{table}[H]
   \begin{center}
   \caption{Clone relations} \label{table:relations}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|l|l|l|} \hline
 \textbf{Relation}  & \textbf{\# (1)} & \textbf{\% (1)}  & \textbf{\# (1R)} & \textbf{\% (1R)} \\ \hline
 Unrelated          & 6,134           & 35.48  & 4,762 & 38.14            \\ \hline
@@ -310,7 +314,7 @@ Please note that these results are measured over each clone instance rather than
 \begin{table}[H]
   \begin{center}
   \caption{Clone instance locations} \label{table:locations}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{Location}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
@@ -342,25 +346,25 @@ The results for these categories are displayed in table \ref{table:contents}.
 \begin{table}[H]
   \begin{center}
   \caption{Clone instance contents} \label{table:contents}
-  \bigskip
-\begin{tabular}{|l|l|l|}
+  \medskip
+\begin{tabular}{|l|l|l|l|l|}
   \hline
-  \textbf{Contents}                                                        & \textbf{Amount} & \textbf{Percentage} \\ \hline
-  Partial Method                                                           & 19,264          & 56.07               \\ \hline
-  Several Methods                                                          & 9,076           & 26.41               \\ \hline
-  Includes Constructor                                                     & 1,528           & 4.45                \\ \hline
-  Includes Field                                                           & 1,149           & 3.34                \\ \hline
-  Partial Constructor                                                      & 1,098           & 3.20                \\ \hline
-  Only Fields                                                              & 565             & 1.64                \\ \hline
-  Full Method                                                              & 554             & 1.61                \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Class\\ Declaration\end{tabular}     & 445             & 1.30                \\ \hline
-  Other                                                                    & 369             & 1.07                \\ \hline
-  Full Class                                                               & 192             & 0.56                \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Constant\end{tabular}         & 52              & 0.15                \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Declaration\end{tabular}      & 47              & 0.14                \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Interface\\ Declaration\end{tabular} & 10              & 0.03                \\ \hline
-  Full Interface                                                           & 6               & 0.02                \\ \hline
-  Full Enumeration                                                         & 4               & 0.01                \\ \hline
+  \textbf{Contents} & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
+  Partial Method                                                           & 32,214 & 56.07 & 19,264 & 56.07 \\ \hline
+  Several Methods                                                          & 10,542  & 26.41 & 19,264 & 56.07 \\ \hline
+  Includes Constructor                                                     & 1,772  & 4.45  & 19,264 & 56.07 \\ \hline
+  Includes Field                                                           & 1,681  & 3.34  & 19,264 & 56.07 \\ \hline
+  Partial Constructor                                                      & 1,389  & 3.20  & 19,264 & 56.07 \\ \hline
+  Only Fields                                                              & 962    & 1.64  & 19,264 & 56.07 \\ \hline
+  Full Method                                                              & 647    & 1.61  & 19,264 & 56.07 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Class\\ Declaration\end{tabular}     & 445    & 1.30  & 19,264 & 56.07 \\ \hline
+  Other                                                                    & 369    & 1.07  & 19,264 & 56.07 \\ \hline
+  Full Class                                                               & 192    & 0.56  & 19,264 & 56.07 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Constant\end{tabular}         & 52     & 0.15  & 19,264 & 56.07 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Declaration\end{tabular}      & 47     & 0.14  & 19,264 & 56.07 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Interface\\ Declaration\end{tabular} & 10     & 0.03  & 19,264 & 56.07 \\ \hline
+  Full Interface                                                           & 6      & 0.02  & 19,264 & 56.07 \\ \hline
+  Full Enumeration                                                         & 4      & 0.01  & 19,264 & 56.07 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -383,7 +387,7 @@ The most trivial way to merge a clone is through method extraction. However, met
 \begin{table}[H]
   \begin{center}
   \caption{Refactorability through method extraction} \label{table:refactorability}
-  \bigskip
+  \medskip
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{}        & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
