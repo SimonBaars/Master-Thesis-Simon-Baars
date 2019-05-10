@@ -350,20 +350,20 @@ The results for these categories are displayed in Table \ref{table:contents}.
 \begin{tabular}{|l|l|l|l|l|}
   \hline
   \textbf{Contents} & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Method\end{tabular}                                                           & 32,214 & 64.72 & 18,791 & 57.37 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Several\\Methods\end{tabular}                                                          & 10,542 & 21.18 & 8,514 & 25.99 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes\\Constructor\end{tabular}                                                     & 1,772  & 3.56  & 1,213 & 3.70 \\ \hline
-  Includes Field                                                           & 1,681  & 3.38  & 1,487 & 4.54 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Constructor\end{tabular}                                                      & 1,389  & 2.79  & 1,078 & 3.29 \\ \hline
-  Only Fields                                                              & 962    & 1.93  & 888 & 2.71 \\ \hline
-  Full Method                                                              & 647    & 1.30  & 284 & 0.87 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Class\\Declaration\end{tabular}     & 263    & 0.53  & 258 & 0.79 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Other\\Categories\end{tabular}                                                         & 304    & 0.61  & 243 & 0.74 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Partial\\Method\end{tabular}             & 32,214 & 64.72 & 18,791 & 57.37 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Several\\Methods\end{tabular}            & 10,542 & 21.18 & 8,514 & 25.99 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes\\Constructor\end{tabular}       & 1,772  & 3.56  & 1,213 & 3.70 \\ \hline
+  Includes Field                                                      & 1,681  & 3.38  & 1,487 & 4.54 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Partial\\Constructor\end{tabular}        & 1,389  & 2.79  & 1,078 & 3.29 \\ \hline
+  Only Fields                                                         & 962    & 1.93  & 888 & 2.71 \\ \hline
+  Full Method                                                         & 647    & 1.30  & 284 & 0.87 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Class\\Declaration\end{tabular} & 263    & 0.53  & 258 & 0.79 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Other\\Categories\end{tabular}           & 304    & 0.61  & 243 & 0.74 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-Unsurprisingly, most clones span a part of a method. Just 1.6\% of the methods are cloned fully. More than a quarter of the clones spans over several methods, which makes extracting methods won't work in a case where a clone spans over several methods. About 4.5\% of clones include a constructor. About 3.3\% of clones include a global variable defined in a class.
+Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for type 1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
 
 \section{Merging duplicate code through refactoring}\label{chap:mergingdups}
 Now we have mapped the contexts in which clones occur, we can start looking at refactoring opportunities. Regarding refactoring, we separate clones in two categories: easy and difficult refactoring opportunities. Easy refactoring opportunities are clones that can easily be automatically refactored. Examples of these opportunities are fully cloned methods or a set of fully cloned statements. According to the relation between the clone instances, we can propose a refactoring automatically.
