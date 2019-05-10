@@ -51,8 +51,9 @@ Section \ref{chap:background} describes the background from literature that we u
 
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
+
 \subsection{Advantages of clone classes over clone pairs}\label{chap:cloneclasses}
-Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be detected. In this study we focus on clone classes, because of the advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. There is also another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
+Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be considered for detection. In this study we focus on clone classes, because of the advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. There is also another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
 
 \subsection{Clone types}\label{chap:backgroundclonetypes}
 In a 2007 survey by Roy et al. \cite{roy2007survey} he defines four types of clones:\\
@@ -61,14 +62,14 @@ In a 2007 survey by Roy et al. \cite{roy2007survey} he defines four types of clo
 \textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type 4:} Two or more code fragments that perform the same computation but implemented through different syntactic variants.
 
-A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful antipattern (as not every clone is harmful \cite{jarzabek2010clones, kapser2008cloning}).
+A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful \cite{jarzabek2010clones, kapser2008cloning}).
+
 \subsection{Related work in clone refactoring tools}
 The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs \cite{fontana2012duplicated, fontana2015duplicated}. This tool only focuses on refactoring clone pairs, with the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair. We further look into these measurements in section \ref{chap:relationsinstances}.
 
-
 Aries \cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They do this based on the relation between clone instances through inheritance, similar to Fontana et al. \cite{fontana2012duplicated}, Aries also proposes a refactoring: if two clone classes are siblings of each other (share the same superclass), they propose to perform ``Extract method'' and ``Pull up method'' sequentially. This tool only proposes the refactoring, and does not provide help in the process of applying the refactoring.
 
-There is various other research that investigates refactoring code clones \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
+There are various other researches that investigate refactoring code clones \cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection \cite{chen2018clone} or being limited to clone pairs \cite{higo2008metric}.
 
 \section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
@@ -79,9 +80,9 @@ In this section, we first assess a set of modern clone detection tools for their
 \label{ch:tool-overview}
 We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze either Java or Python. Next we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
-    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview. Because of that, we want to use a clone detection tool that is able to find clones in any context.
-\item \textbf{Should find all clones in created test projects.} We have created a number of test projects\footnote{Our test projects to assess the validity of clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} that we used to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
-\item \textbf{Considers dependency graphs to be sure that this clone can be merged.} When detecting clones for refactoring purposes, it is important that clone instances are actually equal. Sometimes, to verify actual equality (not just textual equality), it is required to consider resolved symbols (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
+    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview.
+\item \textbf{Should find all clones in created test projects.} We have created a number of test projects that we used to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
+\item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances are actually equal. Sometimes, to verify actual equality (not just textual equality), it is required to consider resolved symbols (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
 \item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
 \end{enumerate}
 
@@ -93,8 +94,8 @@ We conducted a short survey on (recent) clone detection tools that we could use 
 \hline
 \textbf{Clone Detection Tool} & \textbf{(1)} & \textbf{(2)} & \textbf{(3)} & \textbf{(4)} \\ \hline
 Siamese \cite{ragkhitwetsagul2019siamese} &  &             &             & \checkmark            \\ \hline
-NiCAD \cite{roy2008nicad, cordy2011nicad} \footnote{}           & \checkmark                             & \checkmark            &             &             \\ \hline
-CPD \cite{roy2009comparison}\footnote{} & \checkmark & \checkmark            &             &             \\ \hline
+NiCAD \cite{roy2008nicad, cordy2011nicad} & \checkmark                             & \checkmark            &             &             \\ \hline
+CPD \cite{roy2009comparison} & \checkmark & \checkmark            &             &             \\ \hline
 \begin{tabular}[c]{@{}l@{}}CCFinder \cite{kamiya2002ccfinder}\\ D-CCFinder \cite{livieri2007very}\end{tabular} & \checkmark  & \checkmark   &    &   \\ \hline
 CCFinderSW \cite{semura2017ccfindersw}   & \checkmark     &             &             & \checkmark            \\ \hline
 \begin{tabular}[c]{@{}l@{}}SourcererCC \cite{sajnani2016sourcerercc}\\ Oreo \cite{saini2018oreo}\end{tabular} & \checkmark    &             &             & \checkmark            \\ \hline
@@ -105,19 +106,10 @@ Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{center}
 \end{table}
 
-\footnotetext[3]{This clone detection tool has also been used by Fontana et al. \cite{fontana2012duplicated}}
-\footnotetext{\label{note1}CPD is a Clone Detection tool that is part of PMD. PMD is a widely used tool for static code analysis in Java.}
-
-None of the tools we considered implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}.
-
-
+None of the tools we considered implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repo contains all scripts that were used to retrieve the data that is displayed in this paper.}.
 
 \subsection{CloneRefactor}
 A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements linking to similar statements. The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
-
-We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is compatible with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). On basis of this graph we detect clone classes.
-
-We challenge completed clone classes against the thresholds that are being used, and remove the clone classes that do not adhere to the thresholds.
 
 \begin{figure}[H]
   \caption{Abstract figure of the graph representation built by CloneRefactor}
@@ -125,6 +117,8 @@ We challenge completed clone classes against the thresholds that are being used,
   \includegraphics[width=1\columnwidth]{img/CodeGraph}
   \label{fig:clonerefactor}
 \end{figure}
+
+We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is compatible with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). On basis of this graph we detect clone classes. We challenge completed clone classes against the thresholds that are being used, and remove the clone classes that do not adhere to the thresholds.
 
 \subsubsection{Thresholds}\label{chap:thresholds}
 CloneRefactor works on basis of three thresholds for finding clones:
@@ -174,9 +168,9 @@ Clone instances in type 3 clones are almost always different in functionality. A
 We also argue that statements that are not common between two clone instances, should not count towards the size of the clone (and thus towards the threshold which determines whether the clone will be taken into account). As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to merge clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
 
 \subsection{The challenge of detecting these clones}\label{chap:challenge}
-Detecting these clone types comes with serious challenges. For each of these types of clones we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. To be able to parse all fully qualified identifiers, and trace the declarations of variables, we might to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
+To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
 
-In our CloneRefactor tool we use JavaParser \cite{tomassetti2017javaparser}. JavaParser has a build in symbol solver. This symbol solver can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
+In our CloneRefactor tool we use JavaParser \cite{tomassetti2017javaparser}. JavaParser has a build in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
 
 \section{Relation, Location and Content Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
@@ -185,21 +179,22 @@ To be able to refactor code clones, it is very important to consider the context
   \item Where a clone instance occurs in the code (for example: a method-level clone is a clone instance that is in a method).
   \item The contents of a clone instance (for example: the clone instance spans several methods).
 \end{enumerate}
-Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
+
 \begin{figure}[H]
   \caption{Abstract representation of clone classes and clone instances.}
     \medskip
     \includegraphics[width=1\columnwidth]{img/context}
   \label{fig:clonecontext}
 \end{figure}
-%\todo{do we have proof of this statement? if not, say that this is our intuition and a first step to prove it is to analyze a large body of projects} Everything in the context of a clone has a big impact on how it has to be refactored.
-% I guess it's a bit of an empty statement. Of course where some code is located has an impact on how to refactor it. Maybe remove it?
-We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used the CloneRefactor tool. These experiments map the context, as follows: the relation between clone instances is explained, measured and discussed in section\ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in section \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in section \ref{chap:clonecontents}.
+
+Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
+
+We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in section \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in section \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in section \ref{chap:clonecontents}.
 
 \subsection{The corpus}\label{chap:corpus}
-For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}\footnote{The corpus can be downloaded from the following URL: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/java_projects.tar.gz}}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
-As indicated in section \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that contained no ``pom.xml'' file (a file that describes the dependencies used by the project). We then filtered the corpus further to make sure each project contained a ``src/main/java'' folder, to be sure no test files or other redundant sources are included in the clone detection. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the ``pom.xml'' file).
+As indicated in section \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
 
 Running our clone detection script, CloneRefactor, over this corpus gives the results displayed in Table \ref{table:general}.
 
@@ -218,7 +213,7 @@ Amount of statements/declarations                                               
 \end{table}
 
 \subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}. Please note that the amount of lines, statements and tokens is without whitespace, newlines and comments.
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
 
 \begin{table}[H]
   \begin{center}
@@ -234,7 +229,7 @@ Extra & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
 \end{center}
 \end{table}
 
-Looking at table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
+Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in section \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in section \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in section \ref{chap:oursetup}. We then show our results in section \ref{chap:ourmeasurements}.
