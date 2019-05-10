@@ -112,7 +112,7 @@ None of the tools we considered implement all our criteria, so we decided to imp
 
 
 \subsection{CloneRefactor}
-A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements linking to similar statements. The graph built by CloneRefactor is shown in figure \ref{fig:clonerefactor}.
+A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements linking to similar statements. The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
 
 We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is compatible with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. This way we build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). On basis of this graph we detect clone classes.
 
@@ -200,7 +200,7 @@ For our measurements we use a large corpus of open source projects \cite{githubC
 
 As indicated in section \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that contained no ``pom.xml'' file (a file that describes the dependencies used by the project). We then filtered the corpus further to make sure each project contained a ``src/main/java'' folder, to be sure no test files or other redundant sources are included in the clone detection. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the ``pom.xml'' file).
 
-Running our clone detection script, CloneRefactor, over this corpus gives the results displayed in table \ref{table:general}.
+Running our clone detection script, CloneRefactor, over this corpus gives the results displayed in Table \ref{table:general}.
 
 \begin{table}[H]
   \begin{center}
@@ -217,7 +217,7 @@ Amount of statements/declarations                                               
 \end{table}
 
 \subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in table \ref{table:clonedet}. Please note that the amount of lines, statements and tokens is without whitespace, newlines and comments.
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}. Please note that the amount of lines, statements and tokens is without whitespace, newlines and comments.
 
 \begin{table}[H]
   \begin{center}
@@ -233,7 +233,7 @@ Extra & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
 \end{center}
 \end{table}
 
-Looking at table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones found than the type 1 algorithm. Figure \ref{fig:type1rclone} displays an example of a clone that does get detected by the type 1 algorithm but does not get detected by the type 1R algorithm. This is because the variable ``key'' and ``prefix'' are of a different primitive type between the clone instances. This makes this clone less suitable for automated refactoring. We manually checked some differences between the detected type 1 clones and type 1R clones and in each instance there was either a variable with different type, a different method call or a different type (but textual equality). This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions.
+Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones found than the type 1 algorithm. Figure \ref{fig:type1rclone} displays an example of a clone that does get detected by the type 1 algorithm but does not get detected by the type 1R algorithm. This is because the variable ``key'' and ``prefix'' are of a different primitive type between the clone instances. This makes this clone less suitable for automated refactoring. We manually checked some differences between the detected type 1 clones and type 1R clones and in each instance there was either a variable with different type, a different method call or a different type (but textual equality). This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions.
 
 \begin{figure}[H]
   \caption{Example of a clone that is not a type 1R clone but is a type 1 clone.}
@@ -246,7 +246,7 @@ Looking at table \ref{table:clonedet}, it becomes apparent that the type 1R algo
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in section \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in section \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in section \ref{chap:oursetup}. We then show our results in section \ref{chap:ourmeasurements}.
 
 \subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
-Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in figure \ref{fig:clonerelation}. These categories are as follows:
+Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in Figure \ref{fig:clonerelation}. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
@@ -301,7 +301,7 @@ Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
 The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with type 1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and type 1R clones.
 
 \subsection{Clone instance location}\label{chap:clonelocation}
-After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in table \ref{table:locations}. We chose the following categories:
+After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
   \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
@@ -341,7 +341,7 @@ Finally, we looked at the contents of individual clone instances: what kind of d
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
 
-The results for these categories are displayed in table \ref{table:contents}.
+The results for these categories are displayed in Table \ref{table:contents}.
 
 \begin{table}[H]
   \begin{center}
@@ -350,21 +350,15 @@ The results for these categories are displayed in table \ref{table:contents}.
 \begin{tabular}{|l|l|l|l|l|}
   \hline
   \textbf{Contents} & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-  Partial Method                                                           & 32,214 & 56.07 & 19,264 & 56.07 \\ \hline
-  Several Methods                                                          & 10,542  & 26.41 & 19,264 & 56.07 \\ \hline
-  Includes Constructor                                                     & 1,772  & 4.45  & 19,264 & 56.07 \\ \hline
-  Includes Field                                                           & 1,681  & 3.34  & 19,264 & 56.07 \\ \hline
-  Partial Constructor                                                      & 1,389  & 3.20  & 19,264 & 56.07 \\ \hline
-  Only Fields                                                              & 962    & 1.64  & 19,264 & 56.07 \\ \hline
-  Full Method                                                              & 647    & 1.61  & 19,264 & 56.07 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Class\\ Declaration\end{tabular}     & 445    & 1.30  & 19,264 & 56.07 \\ \hline
-  Other                                                                    & 369    & 1.07  & 19,264 & 56.07 \\ \hline
-  Full Class                                                               & 192    & 0.56  & 19,264 & 56.07 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Constant\end{tabular}         & 52     & 0.15  & 19,264 & 56.07 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Enum\\ Declaration\end{tabular}      & 47     & 0.14  & 19,264 & 56.07 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Interface\\ Declaration\end{tabular} & 10     & 0.03  & 19,264 & 56.07 \\ \hline
-  Full Interface                                                           & 6      & 0.02  & 19,264 & 56.07 \\ \hline
-  Full Enumeration                                                         & 4      & 0.01  & 19,264 & 56.07 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Partial\\Method\end{tabular}                                                           & 32,214 & 64.72 & 18,791 & 57.37 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Several\\Methods\end{tabular}                                                          & 10,542 & 21.18 & 8,514 & 25.99 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes\\Constructor\end{tabular}                                                     & 1,772  & 3.56  & 1,213 & 3.70 \\ \hline
+  Includes Field                                                           & 1,681  & 3.38  & 1,487 & 4.54 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Partial\\Constructor\end{tabular}                                                      & 1,389  & 2.79  & 1,078 & 3.29 \\ \hline
+  Only Fields                                                              & 962    & 1.93  & 888 & 2.71 \\ \hline
+  Full Method                                                              & 647    & 1.30  & 284 & 0.87 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Includes Class\\Declaration\end{tabular}     & 263    & 0.53  & 258 & 0.79 \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Other\\Categories\end{tabular}                                                         & 304    & 0.61  & 243 & 0.74 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -376,12 +370,12 @@ Now we have mapped the contexts in which clones occur, we can start looking at r
 
 However, a clone is not always easily merged. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like labels, return, break, continue, etc. In such instances, more conditions may apply to be able to conduct a refactoring, if advisable at all.
 
-The most trivial way to merge a clone is through method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone or if the control flow (return, break and continue statements) prohibit extraction. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in table \ref{table:refactorability}. In this table we use the following categories:
+The most trivial way to merge a clone is through method extraction. However, method extraction is not always possible. For instance, if a part of a subtree (in a programs' AST) is matched as a clone or if the control flow (return, break and continue statements) prohibit extraction. Because of this, we chose to measure what percentage of ``Partial Method'' clones are refactorable using method extraction. Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
 \begin{itemize}
     \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to merge the extracted methods (for instance ``pull up method'' for clones in sibling classes).
     \item \textbf{Complex control flow:} This clone contains break, continue or return statements.
     \item \textbf{Spans part of a block:} This clone spans a part of a block, including the declaration. For instance, when an if-statement is matched but not the entirety of its body.
-    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of table \label{table:contents}, the ``extract method'' refactoring technique cannot be applied.
+    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of table \ref{table:contents}, the ``extract method'' refactoring technique cannot be applied.
 \end{itemize}
 
 \begin{table}[H]
