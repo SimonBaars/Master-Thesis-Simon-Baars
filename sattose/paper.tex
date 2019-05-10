@@ -26,7 +26,7 @@ Ana Oprescu \\ University of Amsterdam\\
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code, as it creates explicit dependencies between fragments of code. Such explicit dependencies often cause bugs. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. To do this, we propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not leave side effects after it is applied.
 
-Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately ten percent of the duplication can be refactored through method extraction without extra considerations required, while other clones require other refactoring techniques. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
+Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately ten percent of the duplication can be refactored through method extraction without extra considerations required, while other clones require other refactoring techniques or further transformations. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
 \end{abstract}
 
 \section{Introduction}
@@ -196,7 +196,7 @@ For our measurements we use a large corpus of open source projects \cite{githubC
 
 As indicated in section \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
 
-Running our clone detection script, CloneRefactor, over this corpus gives the results displayed in Table \ref{table:general}.
+Some general data regarding this corpus is displayed in Table \ref{table:general}.
 
 \begin{table}[H]
   \begin{center}
@@ -273,7 +273,7 @@ Table~\ref{table:relations} contains our results regarding the relations between
   \caption{Clone relations} \label{table:relations}
   \medskip
 \begin{tabular}{|l|l|l|l|l|} \hline
-\textbf{Relation}  & \textbf{\# (1)} & \textbf{\% (1)}  & \textbf{\# (1R)} & \textbf{\% (1R)} \\ \hline
+\textbf{Relation}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
 Unrelated          & 6,134           & 35.48  & 4,762 & 38.14            \\ \hline
 \begin{tabular}[c]{@{}l@{}}Same\\Class\end{tabular}          & 4,772            & 27.60  & 3,131 & 25.07             \\ \hline
 Sibling            & 2,680            & 15.50   & 1,949 & 15.61            \\ \hline
@@ -384,8 +384,6 @@ From Table \ref{table:refactorability}, we can see that approximately ten percen
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
-
-Another thread to validity is that currently, in a very small number of cases, clone detection might result in a false positive. This is in cases where two lines are equal, but they actually call different methods with the same method signature. In such a case, merging such clones might turn out to change the functionality of the program. Solving this problem is one of our next steps in this research.
 
 \section{Conclusion and next steps}\label{chap:conclusion}
 In the research we have conducted so far we have made three novel contributions:
