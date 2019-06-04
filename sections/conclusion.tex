@@ -1,6 +1,22 @@
 \chapter{Conclusion}
 \label{ch:conclusion}
+In the research we have conducted so far we have made three novel contributions:
+\begin{itemize}
+    \item We proposed a method with which we can detect clones that can/should be refactored.
+    \item We mapped the context of clones in a large corpus of open source systems.
+    \item We mapped the opportunities to perform method extraction on clones this corpus.
+\end{itemize}
 
+We have looked into existing definitions for different types of clones \cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that fully qualified identifiers of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the merged unit shall have.
+
+The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a fourth of the clone classes all of its instances are in the same class. About a sixth of the clone classes have clone instances that are siblings of each other (share the same superclass).
+
+Secondly, we looked at the location of clone instances. Most clone instances (58 percent) are found at method level. About 37 percent of clone instances were found at class level. We defined ``class level clones'' as clones that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.). Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (57 percent). About 26 percent of clones span over several methods.
+
+We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
+
+\section{Threats to validity}\label{chap:threatstovalidity}
+We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 
 \section{Future work}
