@@ -6,10 +6,10 @@
   publisher={Addison-Wesley Professional}
 }
 
-@book{fowler2018refactoring,
+@book{fowler1999refactoring,
   title={Refactoring: improving the design of existing code},
   author={Fowler, Martin},
-  year={2018},
+  year={1999},
   publisher={Addison-Wesley Professional}
 }
 
@@ -60,15 +60,6 @@
   organization={IEEE}
 }
 
-@inproceedings{svajlenko2016bigcloneeval,
-  title={Bigcloneeval: A clone detection tool evaluation framework with bigclonebench},
-  author={Svajlenko, Jeffrey and Roy, Chanchal K},
-  booktitle={2016 IEEE International Conference on Software Maintenance and Evolution (ICSME)},
-  pages={596--600},
-  year={2016},
-  organization={IEEE}
-}
-
 @article{kamiya2002ccfinder,
   title={CCFinder: a multilinguistic token-based code clone detection system for large scale source code},
   author={Kamiya, Toshihiro and Kusumoto, Shinji and Inoue, Katsuro},
@@ -78,6 +69,15 @@
   pages={654--670},
   year={2002},
   publisher={IEEE}
+}
+
+@inproceedings{livieri2007very,
+  title={Very-large scale code clone analysis and visualization of open source programs using distributed CCFinder: D-CCFinder},
+  author={Livieri, Simone and Higo, Yoshiki and Matushita, Makoto and Inoue, Katsuro},
+  booktitle={29th International Conference on Software Engineering (ICSE'07)},
+  pages={106--115},
+  year={2007},
+  organization={IEEE}
 }
 
 @inproceedings{heitlager2007practical,
@@ -216,10 +216,22 @@ month={Oct}
   publisher={Springer}
 }
 
-@article{jarzabek2010clones,
-  title={Are clones harmful for maintenance?},
-  author={Jarzabek, Stan and Xue, Yinxing},
-  year={2010}
+@inproceedings{jarzabek2010clones,
+ author = {Jarzabek, Stan and Xue, Yinxing},
+ title = {Are Clones Harmful for Maintenance?},
+ booktitle = {Proceedings of the 4th International Workshop on Software Clones},
+ series = {IWSC '10},
+ year = {2010},
+ isbn = {978-1-60558-980-0},
+ location = {Cape Town, South Africa},
+ pages = {73--74},
+ numpages = {2},
+ url = {http://doi.acm.org/10.1145/1808901.1808911},
+ doi = {10.1145/1808901.1808911},
+ acmid = {1808911},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {clone detection, similarity patterns, software clones},
 }
 
 @article{higo2008metric,
@@ -233,6 +245,13 @@ month={Oct}
   publisher={Wiley Online Library}
 }
 
+@techreport{higo2013revisiting,
+  title={Revisiting Capability of PDG-based Clone Detection},
+  author={Higo, Yoshiki and Murakami, Hiroaki and Kusumoto, Shinji},
+  year={2013},
+  institution={Citeseer}
+}
+
 @inproceedings{githubCorpus2013,
 	author={Allamanis, Miltiadis and Sutton, Charles},
 	title={{Mining Source Code Repositories at Massive Scale using Language Modeling}},
@@ -241,7 +260,6 @@ month={Oct}
 	pages={207--216},
 	organization={IEEE}
 }
-
 
 @article{sheneamer2016survey,
   title={A survey of software clone detection techniques},
@@ -270,7 +288,9 @@ month = {08},
 pages = {655-667},
 title = {Various Code Clone Detection Techniques and Tools: A Comprehensive Survey},
 isbn = {978-981-10-3432-9},
-doi = {10.1007/978-981-10-3433-6_79}
+doi = {10.1007/978-981-10-3433-6_79},
+booktitle={SmartCom 2016: Smart Trends in Information Technology and Computer Communications},
+conference={International Conference on Smart Trends for Information Technology and Computer Communications}
 }
 
   @misc{tomassetti2017javaparser,
@@ -290,10 +310,11 @@ doi = {10.1007/978-981-10-3433-6_79}
   organization={Springer}
 }
 
-@inproceedings{fontana2012duplicated,
+@phdthesis{fontana2012duplicated,
   title={Duplicated Code Refactoring Advisor (DCRA): a tool aimed at suggesting the best refactoring techniques of Java code clones},
   author={Fontana, Francesca Arcelli and Zanoni, Marco and Zanoni, Francesco},
   year={2012},
+  school={UNIVERSITÀ DEGLI STUDI DI MILANO-BICOCCA},
   organization={Università degli Studi di Milano-Bicocca}
 }
 
@@ -338,11 +359,92 @@ doi = {10.1007/978-981-10-3433-6_79}
   year={2017}
 }
 
-@inproceedings{livieri2007very,
-  title={Very-large scale code clone analysis and visualization of open source programs using distributed CCFinder: D-CCFinder},
-  author={Livieri, Simone and Higo, Yoshiki and Matushita, Makoto and Inoue, Katsuro},
-  booktitle={29th International Conference on Software Engineering (ICSE'07)},
-  pages={106--115},
-  year={2007},
+@inproceedings{kamalpriya2017enhancing,
+  title={Enhancing program dependency graph based clone detection using approximate subgraph matching},
+  author={Kamalpriya, CM and Singh, Paramvir},
+  booktitle={2017 IEEE 11th International Workshop on Software Clones (IWSC)},
+  pages={1--7},
+  year={2017},
   organization={IEEE}
+}
+
+@article{ragkhitwetsagul2019siamese,
+  title={Siamese: scalable and incremental code clone search via multiple code representations},
+  author={Ragkhitwetsagul, Chaiyong and Krinke, Jens},
+  journal={Empirical Software Engineering},
+  pages={1--49},
+  year={2019},
+  publisher={Springer}
+}
+
+@article{roy2009comparison,
+  title={Comparison and evaluation of code clone detection techniques and tools: A qualitative approach},
+  author={Roy, Chanchal K and Cordy, James R and Koschke, Rainer},
+  journal={Science of computer programming},
+  volume={74},
+  number={7},
+  pages={470--495},
+  year={2009},
+  publisher={Elsevier North-Holland, Inc.}
+}
+
+@inproceedings{semura2017ccfindersw,
+  title={CCFinderSW: Clone Detection Tool with Flexible Multilingual Tokenization},
+  author={Semura, Yuichi and Yoshida, Norihiro and Choi, Eunjong and Inoue, Katsuro},
+  booktitle={2017 24th Asia-Pacific Software Engineering Conference (APSEC)},
+  pages={654--659},
+  year={2017},
+  organization={IEEE}
+}
+
+@inproceedings{roy2008nicad,
+  title={NICAD: Accurate detection of near-miss intentional clones using flexible pretty-printing and code normalization},
+  author={Roy, Chanchal K and Cordy, James R},
+  booktitle={2008 16th iEEE international conference on program comprehension},
+  pages={172--181},
+  year={2008},
+  organization={IEEE}
+}
+
+@inproceedings{cordy2011nicad,
+  title={The NiCad clone detector},
+  author={Cordy, James R and Roy, Chanchal K},
+  booktitle={2011 IEEE 19th International Conference on Program Comprehension},
+  pages={219--220},
+  year={2011},
+  organization={IEEE}
+}
+
+@inproceedings{saini2018oreo,
+  title={Oreo: Detection of clones in the twilight zone},
+  author={Saini, Vaibhav and Farmahinifarahani, Farima and Lu, Yadong and Baldi, Pierre and Lopes, Cristina V},
+  booktitle={Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+  pages={354--365},
+  year={2018},
+  organization={ACM}
+}
+
+@inproceedings{svajlenko2016bigcloneeval,
+  title={Bigcloneeval: A clone detection tool evaluation framework with bigclonebench},
+  author={Svajlenko, Jeffrey and Roy, Chanchal K},
+  booktitle={2016 IEEE International Conference on Software Maintenance and Evolution (ICSME)},
+  pages={596--600},
+  year={2016},
+  organization={IEEE}
+}
+
+@inproceedings{jiang2007deckard,
+  title={Deckard: Scalable and accurate tree-based detection of code clones},
+  author={Jiang, Lingxiao and Misherghi, Ghassan and Su, Zhendong and Glondu, Stephane},
+  booktitle={Proceedings of the 29th international conference on Software Engineering},
+  pages={96--105},
+  year={2007},
+  organization={IEEE Computer Society}
+}
+
+@article{saini2018towards,
+  title={Towards Automating Precision Studies of Clone Detectors},
+  author={Saini, Vaibhav and Farmahinifarahani, Farima and Lu, Yadong and Yang, Di and Martins, Pedro and Sajnani, Hitesh and Baldi, Pierre and Lopes, Cristina},
+  journal={arXiv preprint arXiv:1812.05195},
+  year={2018}
 }
