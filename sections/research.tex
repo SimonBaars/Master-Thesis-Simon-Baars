@@ -3,12 +3,19 @@ In section \ref{chap:backgroundclonetypes} we introduced the four clone types as
 
 We also look into clone detection tools for their suitability to support the proposed clone type definitions. We selected a few criteria  Most clone detection tools support these definitions of clone types. However, many of these tools use a vastly different approach. A study by Saini et al \cite{saini2018towards} outlines different clone detection tools and compares their results for each of type 1-3 clones. Even though they operate on the same type definitions, the tools used in this study yield different results.
 
+\section{Shortcomings of clone types}
+The clone definitions, as outlined in section \ref{chap:backgroundclonetypes}, allow reasoning about the duplication in a software system. Clones by these definitions can relatively easily and efficiently be detected. This has allowed for large scale analyses of duplication. However, these clone type definitions have shortcomings which makes the clones detected in correspondance with these definitions less valuable.
+
+In this section we discuss the shortcomings of the different clone type definitions which make them less suitable for refactoring. Because of that, these clones require more human judgement whether they should and can be refactored.
+
+\subsection{Type 1 clones}
+Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated.
 
 \section{Refactoring-oriented clone types}
-To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. 
+To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type nR clones, where n corresponds with the type definition it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses). Type 1R clones differ from type 1 clones as follows:
 
-\section{Type 1R clones} \label{chap:type1clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments. However, when two clone fragments are textually identical, it does not yet indicate that they are functionally identical. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and even variables can be of a different type. In such cases refactoring opportunities could be invalidated. Therefore, we propose an alternative definition of type 1 clones. We have named it ``type 1R clones''. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses). Type 1R clones differ from type 1 clones as follows:
+\subsection{Type 1R clones} \label{chap:type1clones}
+We propose an alternative definition of type 1 clones.
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
   \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
@@ -21,13 +28,6 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
 \caption{A wrapped figure going nicely inside the text.}\label{wrap-fig:1}
 \includegraphics[width=5.5cm]{img/type-1-not-cloned}
 \end{wrapfigure}
-
-The problem with the clone shown in \ref{fig:type1noclone} is that this could invalidate a refactoring opportunity for such a code fragment (especially when we automate it). Because of that, we recommend redefining type-1 clones for refactoring. We propose to:
-\begin{itemize}
-  \item \textbf{Compare the equality of the fully qualified method signature for method references.} This way we can validate whether two method references, like method calls, are actually equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also of the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
-  \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
-  \item \textbf{Compare the equality the fully qualified identifier for variable usages.} Two cloned lines might use a variable with the same name, but different types. This might pose serious challenges on refactoring, as the variables might not concern the same object or primitive. To check this, we need to track the declaration of variables and from this infer the fully qualified identifier of its type.
-\end{itemize}
 %% END ADDED
 
 \section{Type 2R clones}
