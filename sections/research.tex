@@ -92,8 +92,26 @@ In this chapter we describe the setup we use for our experiments. Our most promi
 All data for our experiments, as displayed in chapter \ref{ch:results}, is measured over a corpus of Java projects. In this chapter we will explain how we prepared this corpus.
 
 \section{CloneRefactor}
-CloneRefactor is the name of our tools which allows 
+CloneRefactor is the name of our clone detection and refactoring tool. It features the following novel functions:
+\begin{itemize}
+  \item Detection of clone classes rather than clone pairs.
+  \item A novel detection method, aimed at extensibility.
+  \item Detection of refactoring-oriented clone types, in addition to the literature clone types.
+  \item Allows for automated refactoring of a subset of the detected duplication issues.
+\end{itemize}
+In this section we describe our approach and rationale for the design decisions regarding this tool.
 
+\subsection{JavaParser}
+A very important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows to parse Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
+
+Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called `symbols`). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
+
+In order to be able to trace referenced identifiers SymbolSolver requires access to not only the analyzed Java projects, but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency.
+
+Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
+
+\subsection{Clone Detection}
+To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. This graph structure is then
 
 \section{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
