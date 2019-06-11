@@ -24,17 +24,13 @@ In the example in figure \ref{fig:type1}, we see a type 1 clone consisting of tw
 Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \subsection{Type 2 clones}
-Type 2 clones are structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in listing \ref{lst:type2clone} are type 2 clones of each other.
+Type 2 clones are structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
 
-\begin{lstlisting}[caption={Methods that are type 2 clones but functionally completely different.},label={lst:type2clone},language=Java]
-public boolean containsOnlyRedCircles(List<Circle> listOfCircles){
-	return listOfCircles.stream().allMatch(Shape::isRed);
-}
-
-public Apple getEatableAppleFromBasket(FruitBasket<Apple> appleBasket){
-	return appleBasket.getFruitContainer().getAppleByCriterium(Fruit::hasNotYetBeenEaten);
-}
-\end{lstlisting}
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/type2}
+  \caption{Example of a type 2 clone.}
+  \label{fig:type2}
+\end{figure}
 
 Looking at the example in listing \ref{lst:type2clones}, we see an example of a type 2 clone that poses no harm to the system whatsoever. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide any useful information.
 
@@ -53,7 +49,19 @@ Many object-oriented programming languages (like Java, Python, C#) require the p
 A codebase can have several methods with the same name. The implementation of these methods might differ. When we call two methods with an identical name, we can in fact call different methods. This is another reason that textually identical code fragements can differ functionally.
 
 \subsubsection{Variables}
+In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in listing \ref{lst:type2variables}.
 
+\begin{lstlisting}[caption={Variables with different types but the same name.},label={lst:type2variables},language=Java]
+public String appendFive(String x){
+	return x + 5;
+}
+
+public int addFive(int x){
+	return x + 5;
+}
+\end{lstlisting}
+
+The body of both methods in listing \ref{lst:type2variables} is equal. However, their functionality is not.
 
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
@@ -136,7 +144,7 @@ In this section we describe our approach and rationale for the design decisions 
 \subsection{JavaParser}
 A very important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows to parse Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
 
-Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called `symbols`). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
+Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
 
 In order to be able to trace referenced identifiers SymbolSolver requires access to not only the analyzed Java projects, but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency.
 
