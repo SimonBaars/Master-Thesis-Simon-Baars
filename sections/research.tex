@@ -53,6 +53,8 @@ Many object-oriented programming languages (like Java, Python, C\#) require the 
 \subsubsection{Called methods}
 A codebase can have several methods with the same name. The implementation of these methods might differ. When we call two methods with an identical name, we can in fact call different methods. This is another reason that textually identical code fragements can differ functionally.
 
+Because of this, for type 1R clones, we compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{java.lang.Boolean com.simonbaars.fruitgame.Apple.eat(java.util.List<com.simonbaars.fruitgame.tools.Tool>)}.
+
 \subsubsection{Variables}
 In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in figure \ref{lst:type1variables}.
 
