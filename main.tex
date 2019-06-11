@@ -3,7 +3,7 @@
 
 \usepackage{xspace}
 \usepackage{xargs}   % Use more than one optional parameter in a new commands
-\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage{xcolor}
 
 % Putting images next to each other
 \usepackage[font=bf,]{caption}
@@ -40,6 +40,20 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{wrapfig}
+
+\usepackage{listings}
+\lstset{
+tabsize = 4, %% Sets tab space width.
+showstringspaces = false, %% Prevents space marking in strings, string is defined as the text that is generally printed directly to the console.
+numbers = left, %% Displays line numbers on the left.
+commentstyle = \color{green}, %% Sets comment color.
+keywordstyle = \color{blue}, %% Sets  keyword color.
+stringstyle = \color{red}, %% Sets  string color.
+rulecolor = \color{black}, %% Sets frame color to avoid being affected by text color.
+basicstyle = \small \ttfamily , %% Sets listing font and size.
+breaklines = true, %% Enables line breaking.
+numberstyle = \tiny,
+}
 
 %\usepackage[ansinew]{inputenc}
 %\usepackage[T1]{fontenc}
@@ -96,8 +110,8 @@
 \definecolor{rblu}{HTML}{0a3eb9}
 %these are examples of commands that may facilitate feedback annotations in the document
 %replace \paco by your name and \ana by your supervisor's name
-%\newcommandx{\ana}[2][1=]{\todo[linecolor=rblu,backgroundcolor=ryel,bordercolor=rred,#1]{#2}}
-%\newcommandx{\paco}[2][1=]{\todo[author=Paco,linecolor=blue,backgroundcolor=white,bordercolor=red,#1]{#2}}
+\newcommandx{\ana}[2][1=]{\todo[linecolor=rblu,backgroundcolor=ryel,bordercolor=rred,#1]{#2}}
+\newcommandx{\simon}[2][1=]{\todo[author=Simon,linecolor=blue,backgroundcolor=white,bordercolor=red,#1]{#2}}
 
 
 % -- title page is a modified version of https://github.com/software-engineering-amsterdam/latex/blob/master/thesis/uvamscse.cls
