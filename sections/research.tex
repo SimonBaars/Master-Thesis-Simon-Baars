@@ -9,7 +9,9 @@ The clone definitions, as outlined in section \ref{chap:backgroundclonetypes}, a
 In this section we discuss the shortcomings of the different clone type definitions which make them less suitable for (automated) refactoring. Because of that, these clones require more judgement whether they should and can be refactored.
 
 \subsection{Type 1 clones} \label{chap:type1clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated. An example of such a case is displayed in figure \ref{fig:type1}.
+Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. This allows for the detection of clones that are the result of copying and pasting existing code, along with other reasons why duplicates might get into a codebase.
+
+Type 1 clones are in most cases implemented as textual equality between code fragments (except for whitespace and comments). Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated. An example of such a case is displayed in figure \ref{fig:type1}.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/type1}
@@ -22,23 +24,27 @@ In the example in figure \ref{fig:type1}, we see a type 1 clone consisting of tw
 Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \subsection{Type 2 clones}
-Type 2 clones are structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments \cite{roy2007survey}.
+Type 2 clones are structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in listing \ref{lst:type2clone} are type 2 clones of each other.
 
 \begin{lstlisting}[caption={Methods that are type 2 clones but functionally completely different.},label={lst:type2clone},language=Java]
 public boolean containsOnlyRedCircles(List<Circle> listOfCircles){
-	return listOfCircles.stream().allMatch(c -> c.isRed());
+	return listOfCircles.stream().allMatch(Shape::isRed);
 }
 
 public Apple getEatableAppleFromBasket(FruitBasket<Apple> appleBasket){
-	return appleBasket.getFruitContainer().getAppleByCriterium(a -> a.hasNotYetBeenEaten());
+	return appleBasket.getFruitContainer().getAppleByCriterium(Fruit::hasNotYetBeenEaten);
 }
 \end{lstlisting}
+
+Looking at the example in listing \ref{lst:type2clones}, we see an example of a type 2 clone that poses no harm to the system whatsoever. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide any useful information.
+
+When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which makes the these clones often not so useful for refactoring purposes.
 
 \section{Refactoring-oriented clone types}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions share similarities with the literature definitions, thus the usage of . The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
 \subsection{Type 1R clones} \label{chap:type1rclones}
-We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of the fully qualityfied identifier for referenced types, methods and variables.
+We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of the fully qualityfied identifier for referenced types, methods and variables. Type 1R clones are always a subset of type 1 clones.
 
 \subsubsection{Referenced Types}
 Many object-oriented programming languages (like Java, Python, C#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list datastructures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). Because of this, for type 1R clones, we compare the fully qualified identifier for all referenced types.
