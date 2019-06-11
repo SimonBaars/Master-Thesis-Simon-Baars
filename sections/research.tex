@@ -6,24 +6,28 @@ We also look into clone detection tools for their suitability to support the pro
 \section{Shortcomings of clone types}
 The clone definitions, as outlined in section \ref{chap:backgroundclonetypes}, allow reasoning about the duplication in a software system. Clones by these definitions can relatively easily and efficiently be detected. This has allowed for large scale analyses of duplication. However, these clone type definitions have shortcomings which makes the clones detected in correspondance with these definitions less valuable.
 
-In this section we discuss the shortcomings of the different clone type definitions which make them less suitable for refactoring. Because of that, these clones require more human judgement whether they should and can be refactored.
+In this section we discuss the shortcomings of the different clone type definitions which make them less suitable for (automated) refactoring. Because of that, these clones require more judgement whether they should and can be refactored.
 
-\subsection{Type 1 clones}
-Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated.
+\subsection{Type 1 clones} \label{chap:type1clones}
+Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated. An example of such a case is displayed in figure \ref{fig:type1}.
 
-\begin{figure}
-  \includegraphics{/img/type1}
-  \caption{Example of a textual equal type 1 clone}
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/type1}
+  \caption{Example of a type 1 clone.}
   \label{fig:type1}
 \end{figure}
+
+In the example in figure \ref{fig:type1}, we see a type 1 clone consisting of two methods. However, these clones might still be very hard to refactor as we cannot see by this example whether they are functionally equal. Both code fragments use different imported types, some of which imported via a wildcard. Because of this, it is hard to verify which of the used types have the same underlying implementation. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgement regarding the refactorability of such a clone. When aiming to automatically refactor clones, applying refactorings to clones as shown in figure \ref{fig:type1}, is bound to be error prone and result in a uncompilable project or a difference in functionality.
+
+Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \section{Refactoring-oriented clone types}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions share similarities with the literature definitions, thus the usage of . The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
-\subsection{Type 1R clones} \label{chap:type1clones}
-We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do still not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of referenced types.
+\subsection{Type 1R clones} \label{chap:type1rclones}
+We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do still not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of referenced types, methods and variables.
 
-\subsubsection{An example}
+\subsubsection{Referenced Types}
 
 
 \begin{itemize}
