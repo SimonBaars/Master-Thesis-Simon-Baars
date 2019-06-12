@@ -112,11 +112,10 @@ The method call variability property of type 2R clones imply that type 2R clones
   \label{fig:type2method}
 \end{figure}
 
-\paragraph{Allow any change in some identifiers}
-- Identifier of method declarations
-- Identifier of locally declared variables
-- Identifier of class/interface/enum declaration
-- etc?
+\subsubsection{Allow any change in method and class names}
+When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. In the previous section, variability in literals, variables and called methods would result in more parameters for the extracted method, thus indicating a detrimental effect on system design. This is not the case with the name of a method declaration and the name of a class/interface/enumeration declaration.
+
+If a full method is cloned with another method, however only their names differ, we can refactor these methods to keep only one of them. Allowing any change in method and class names will only indicate a refactoring opportunity if the full method or class is cloned.
 
 \section{Type 3R clones}
 Type 3 clones are even more permissive than type 2 clones, allowing added and removed statements. For these clones, thresholds matter a lot to make sure that not the whole project is detected as a clone of itself. The main question for this study regarding type 3 clones is: \textit{``how can we refactor type 3 clones while improving the design?''}.
