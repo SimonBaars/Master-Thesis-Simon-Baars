@@ -48,7 +48,7 @@ To resolve the shortcomings of clone types as outlined in the previous section, 
 We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of the fully qualityfied identifier for referenced types, methods and variables. Type 1R clones are a subset of type 1 clones.
 
 \subsubsection{Referenced Types}
-Many object-oriented programming languages (like Java, Python, C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list datastructures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). Because of this, for type 1R clones, we compare the fully qualified identifier for all referenced types.
+Many object-oriented programming languages (like Java, Python and C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list datastructures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). Because of this, for type 1R clones, we compare the fully qualified identifier for all referenced types.
 
 \subsubsection{Called methods}
 A codebase can have several methods with the same name. The implementation of these methods might differ. When we call two methods with an identical name, we can in fact call different methods. This is another reason that textually identical code fragements can differ functionally.
@@ -89,25 +89,28 @@ $$t=Number\ of\ tokens$$
 \paragraph{Literal and variable variability}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
 
-Consider the example in figure \ref{fig:type2literal1}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result in figure \ref{fig:type2literal2}. In this process, we create a method parameter for the corresponding literal.
+Consider the example in figure \ref{fig:type2literal}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result that is displayed on the right. In this process, we create a method parameter for the corresponding literal.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\columnwidth]{img/type2literal1}
-  \caption{Literal variability.}
-  \label{fig:type2literal1}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.6\columnwidth]{img/type2literal2}
+  \includegraphics[width=1\columnwidth]{img/type2literal}
   \caption{Literal variability refactored.}
-  \label{fig:type2literal2}
+  \label{fig:type2literal}
 \end{figure}
 
 \paragraph{Method call variability}
+Most modern programming languages (like Java, Python and C\#) allow to pass method references as a parameter to a method. This helps reducing duplication, as it is possible to refactor two code fragments which differ only by a method call. However, a method call does often not consist of a single token (like variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method.
 
+For type 2R clones, we allow called methods to vary as long as they have the same argument types and return type (both of them should be compared using their fully qualified identifiers). An example of this is shown in figure \ref{fig:type2method}. In this example, we have two methods (\texttt{System.out.println} and \texttt{myFancyPrint}). We use the ``Extract Method'' refactoring method to extract a new method and use a parameter for to pass the used method.
 
+The method call variability property of type 2R clones imply that type 2R clones are not a subset of type 2 clones. Because methods calls can have a different structure, type 2R clones can be structurally slightly different. The example as shown in figure \ref{fig:type2method} can be a type 2R clone (dependent on the thresholds used), but is not a type 2 clone.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/type2method}
+  \caption{Method variability refactored.}
+  \label{fig:type2method}
+\end{figure}
 
 \paragraph{Allow any change in some identifiers}
 - Identifier of method declarations
