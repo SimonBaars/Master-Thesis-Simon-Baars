@@ -3,11 +3,11 @@ public void printWeather(){
 	printNice(this::myFancyPrint);
 }
 
-public void printNice2(){
+public void printWeather2(){
 	printNice(System.out::println);
 }
 
-public void printNice(Consumer<String> printFunction){
+public void printWeather(Consumer<String> printFunction){
 	System.out.println("=====================");
 	printFunction.accept("The weather is nice");
 	System.out.println("=====================");
@@ -15,8 +15,6 @@ public void printNice(Consumer<String> printFunction){
 
 public void myFancyPrint(String s){
 	Arrays.stream(s.toCharArray()).boxed()
-		.map(e -> "("+e+")")
-		.collect(Collectors.joining);
+		.map(e -> "(" + e + ")")
+		.collect(Collectors.joining());
 }
-
-

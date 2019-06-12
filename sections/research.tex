@@ -78,7 +78,7 @@ Type 2 clones allow any variability in literals, variables and method identifier
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
-$$T2R\ Variability\ Percentage=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}$$
+$$T2R\ Variability\ Percentage=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
 $$Diff=Amount\ that\ differ\ from\ other\ clone\ instances\ in\ the\ clone\ class$$
 $$Total\ =\ Total\ number\ in\ the\ clone\ instance$$
 $$l=Number\ of\ literals$$
@@ -118,16 +118,36 @@ When refactored, some identifiers have no detrimental effect on the design if th
 If a full method is cloned with another method, however only their names differ, we can refactor these methods to keep only one of them. Allowing any change in method and class names will only indicate a refactoring opportunity if the full method or class is cloned.
 
 \section{Type 3R clones}
-Type 3 clones are even more permissive than type 2 clones, allowing added and removed statements. For these clones, thresholds matter a lot to make sure that not the whole project is detected as a clone of itself. The main question for this study regarding type 3 clones is: \textit{``how can we refactor type 3 clones while improving the design?''}.
+Type 3 clones allow any change in statements, often bounded by a similarity threshold. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. See figure \ref{fig:type3} for an example of such a clone.
 
-Clone instances in type 3 clones are almost always different in functionality. As we have to ensure equal functionality after refactoring the clone, we have to wrap the difference in statements between the clone instances in conditional blocks. We can then pass a variable to indicate which path should be taken through the code (either a boolean or an enumeration). Such a refactoring would make added statements that are contiguous less harmful for the design than added statements that are scattered throughout the cloned fragment.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/type3_3}
+  \caption{Added statement between cloned methods.}
+  \label{fig:type3}
+\end{figure}
 
-We also argue that statements that are not common between two clone instances, should not count towards the size of the clone (and thus towards the threshold which determines whether the clone will be taken into account). As for the detection of type 3 clones, we think the easiest opportunity to detect these clones is to consider it as a postprocessing step after clone detection. By trying to find short gaps between clones, we can find opportunities to refactor clone classes into a single type 3 clone class. The amount of statements that this ``short gap'' can maximally span should be dependent on a threshold value.
+In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}. This gap has a threshold for type 3R, which is calculated by the following formula:
+
+$$T3R\ Gap\ Percentage=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
+$$Statements = The\ amount\ of\ statements\ in\ this\ code\ fragment$$
+$$C_{gap} = The\ gap between two clones$$
+$$C_{above} = The\ clone\ instance\ above\ the\ gap$$
+$$lower = The clone instance below the gap$$
+
+Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{img/type3invalid}
+  \caption{Statements between clones in different blocks.}
+  \label{fig:type3invalid}
+\end{figure}
 
 \section{The challenge of detecting these clones}\label{chap:challenge}
 To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
 
-Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, these definitions may be less suitable for large scale clone detection purposes.
+Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, the proposed clone definitions may be less suitable for large scale clone detection purposes.
 
 \section{Unifying the types}
 In this chapter we have proposed refactoring-oriented definitions using the type 1, 2 and 3 clone definitions from literature as a baseline. In literature, these definitions are mainly aimed towards reasoning about duplication in source code. When considering these types for refactoring, the goal becomes slighly different. Because of this, having separate clone type definitions does not have any value. Rather, we need a single clone type definition by which we can detect all clones that can and should be considered for refactoring.

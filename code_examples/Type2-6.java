@@ -1,11 +1,11 @@
 // Original
-public void printNice(){
+public void printWeather(){
 	System.out.println("=====================");
 	myFancyPrint("The weather is nice");
 	System.out.println("=====================");
 }
 
-public void printNice2(){
+public void printWeather2(){
 	System.out.println("=====================");
 	System.out.println("The weather is nice");
 	System.out.println("=====================");
@@ -13,10 +13,6 @@ public void printNice2(){
 
 public void myFancyPrint(String s){
 	Arrays.stream(s.toCharArray()).boxed()
-		.map(e -> "("+e+")")
-		.collect(Collectors.joining);
+		.map(e -> "(" + e + ")")
+		.collect(Collectors.joining());
 }
-
-
-
-
