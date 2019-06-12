@@ -68,16 +68,17 @@ The body of both methods in figure \ref{lst:type2variables} is equal. However, t
 
 For type 1R clones variable references should be compared by both type and name.
 
-\begin{itemize}
-  \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
-  \item \textbf{Compare the equality of the fully qualified identifier for type references.} This way we can be sure that two referenced types are actually equal, and that they are not just two types with the same name.
-  \item \textbf{Compare the equality of the fully qualified identifier for variable usages.} Two cloned lines might use a variable with the same name, but different types. This might pose serious challenges on refactoring, as the variables might not concern the same object or primitive. To check this, we need to track the declaration of variables and from this infer the fully qualified identifier of its type.
-\end{itemize}
-
 \section{Type 2R clones}
-Type 2 clones allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Refactoring such clones can be harmful instead of helpful.
+Type 2R clones are modelled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in figure \ref{fig:type2} previously). Refactoring such clones can be harmful instead of helpful.
 
-We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. However, type 2R clones
+We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types.
+
+\subsubsection{A threshold for variability in literals, variables and method calls}
+
+\subsubsection{Allow any change in some names}
+- Names of method definitions
+- Names of locally declared variables
+- etc?
 
 \begin{itemize}
   \item \textbf{Considering types:} Type 2 clones do not consider types. However, this can make a code fragment very hard to refactor, as different types can describe different functional concepts. Because of this, we propose that type 2R clones should consider types like type 1R clones do.
