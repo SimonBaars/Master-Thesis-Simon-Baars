@@ -45,7 +45,7 @@ Having a definition that allows for any change in code poses serious challenges 
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
 \subsection{Type 1R clones} \label{chap:type1rclones}
-We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of the fully qualityfied identifier for referenced types, methods and variables. Type 1R clones are always a subset of type 1 clones.
+We propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Although requiring fragements to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones). We check functional equality of two fragments by validating the equality of the fully qualityfied identifier for referenced types, methods and variables. Type 1R clones are a subset of type 1 clones.
 
 \subsubsection{Referenced Types}
 Many object-oriented programming languages (like Java, Python, C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list datastructures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). Because of this, for type 1R clones, we compare the fully qualified identifier for all referenced types.
@@ -53,25 +53,25 @@ Many object-oriented programming languages (like Java, Python, C\#) require the 
 \subsubsection{Called methods}
 A codebase can have several methods with the same name. The implementation of these methods might differ. When we call two methods with an identical name, we can in fact call different methods. This is another reason that textually identical code fragements can differ functionally.
 
-Because of this, for type 1R clones, we compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{java.lang.Boolean com.simonbaars.fruitgame.Apple.eat(java.util.List<com.simonbaars.fruitgame.tools.Tool>)}.
+Because of this, for type 1R clones, we compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{com.sb.AppleCore com.sb.fruitgame.Apple.eat(com.sb.fruitgame.Tool)}.
 
 \subsubsection{Variables}
-In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in figure \ref{lst:type1variables}.
+In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in figure \ref{fig:type2variables}.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/type2}
   \caption{Variables with different types but the same name.}
-  \label{fig:type1variables}
+  \label{fig:type2variables}
 \end{figure}
 
-The body of both methods in figure \ref{lst:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer to a String.
+The body of both methods in figure \ref{fig:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer to a String.
 
 For type 1R clones variable references should be compared by both type and name.
 
-\section{Type 2R clones}
+\subsection{Type 2R clones}
 Type 2R clones are modelled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in figure \ref{fig:type2} previously). Refactoring such clones can be harmful instead of helpful.
 
-We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types.
+We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
 
 \subsubsection{A threshold for variability in literals, variables and method calls}
 Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many. However, this does have a big impact on the meaning of the code fragment and thus the harmfulness of the duplication being there.
@@ -86,13 +86,30 @@ $$v=Number\ of\ variables$$
 $$m=Number\ of\ method\ calls$$
 $$t=Number\ of\ tokens$$
 
-\noindent \textbf{Literal variability}\\
-We allow only variability in the value of literals, but not in the type of literals. This is because a difference in literal type may have a big impact on the refactorability of the cloned fragment. When we refactor literals that have both the same type, in case of an ``Extract Method'' refactoring, we create a method argument for this literal and pass the corresponding literal from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system).
+\paragraph{Literal and variable variability}
+We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
 
-\noindent \textbf{Variable variability}\\
+Consider the example in figure \ref{fig:type2literal1}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result in figure \ref{fig:type2literal2}. In this process, we create a method parameter for the corresponding literal.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{img/type2literal1}
+  \caption{Literal variability.}
+  \label{fig:type2literal1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{img/type2literal2}
+  \caption{Literal variability refactored.}
+  \label{fig:type2literal2}
+\end{figure}
+
+\paragraph{Method call variability}
 
 
-\subsubsection{Allow any change in some identifiers}
+
+\paragraph{Allow any change in some identifiers}
 - Identifier of method declarations
 - Identifier of locally declared variables
 - Identifier of class/interface/enum declaration
