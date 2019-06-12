@@ -78,18 +78,19 @@ Type 2 clones allow any variability in literals, variables and method identifier
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
-T2R Variability = (Diff(l) + Diff(v) + Diff(m))/Total(t)
-Diff = Amount that differ from other clone instances in the clone class
-Total = Total number in the clone instance
-l = Number of literals
-v = Number of variables
-m = Number of method calls
-t = Number of tokens
+$$T2R\ Variability\ Percentage=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}$$
+$$Diff=Amount\ that\ differ\ from\ other\ clone\ instances\ in\ the\ clone\ class$$
+$$Total\ =\ Total\ number\ in\ the\ clone\ instance$$
+$$l=Number\ of\ literals$$
+$$v=Number\ of\ variables$$
+$$m=Number\ of\ method\ calls$$
+$$t=Number\ of\ tokens$$
 
-\paragraph{Literal variability}
+\noindent \textbf{Literal variability}\\
 We allow only variability in the value of literals, but not in the type of literals. This is because a difference in literal type may have a big impact on the refactorability of the cloned fragment. When we refactor literals that have both the same type, in case of an ``Extract Method'' refactoring, we create a method argument for this literal and pass the corresponding literal from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system).
 
-\paragraph{}
+\noindent \textbf{Variable variability}\\
+
 
 \subsubsection{Allow any change in some identifiers}
 - Identifier of method declarations
@@ -113,6 +114,8 @@ We also argue that statements that are not common between two clone instances, s
 
 \section{The challenge of detecting these clones}\label{chap:challenge}
 To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
+
+Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, these definitions may be less suitable for large scale clone detection purposes.
 
 \section{Unifying the types}
 In this chapter we have proposed refactoring-oriented definitions using the type 1, 2 and 3 clone definitions from literature as a baseline. In literature, these definitions are mainly aimed towards reasoning about duplication in source code. When considering these types for refactoring, the goal becomes slighly different. Because of this, having separate clone type definitions does not have any value. Rather, we need a single clone type definition by which we can detect all clones that can and should be considered for refactoring.
@@ -154,7 +157,7 @@ None of the state-of-the-art tools we identified implement all our criteria, so 
 \chapter{Evaluation setup}
 In this chapter we describe the setup we use for our experiments. Our most prominent contribution is the proposal of a tool called CloneRefactor. This tool allows us to map clones with all clone definitions as described in chapter \ref{chap:clonetypes}.
 
-All data for our experiments, as displayed in chapter \ref{ch:results}, is measured over a corpus of Java projects. In this chapter we will explain how we prepared this corpus.
+All results of our experiments, as displayed in chapter \ref{ch:results}, are measured over a corpus of Java projects. In this chapter we will explain how we prepared this corpus.
 
 \section{CloneRefactor}
 CloneRefactor is the name of our clone detection and refactoring tool. It features the following novel functions:
