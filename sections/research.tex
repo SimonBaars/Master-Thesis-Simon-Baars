@@ -86,10 +86,10 @@ v = Number of variables
 m = Number of method calls
 t = Number of tokens
 
-Looking at this formula, it becomes apparent that we made the decision to let literals, variables and method calls count towards the same threshold. So a large variability in method calls might constrain variability from literals. This is because how to refactor variability in literals, variables and method calls. When we use either a different literal, variable or method call, we will have to use a 
-
 \paragraph{Literal variability}
+We allow only variability in the value of literals, but not in the type of literals. This is because a difference in literal type may have a big impact on the refactorability of the cloned fragment. When we refactor literals that have both the same type, in case of an ``Extract Method'' refactoring, we create a method argument for this literal and pass the corresponding literal from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system).
 
+\paragraph{}
 
 \subsubsection{Allow any change in some identifiers}
 - Identifier of method declarations
