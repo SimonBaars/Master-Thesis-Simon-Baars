@@ -251,9 +251,11 @@ We generally call the declarations and statements represented in this grid \text
 \subsubsection{Comparing Statements/Declarations}
 In the previous section we described a ``duplicate'' relation between nodes in the clone grid built by CloneRefactor. Whether two nodes in this grid are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations assess whether they are clones of each other.
 
-CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. Type 1 clones are an exact textual match between two clones, omitting comments and whitespace. For type 1 clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For type 2 clones, the tokens are further filtered to omit all identifiers and literals. Type 3 clones do the same node comparison as type 2 clones.
+CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
 
-For type 1R clones, this comparison is a bit more advanced. For method calls
+For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit{method calls} we trace their declaration and use its fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we trace their declarations and use assemble their fully qualified identifier for comparison with other nodes. For \textit{variables} we trace their declaration and their types. If the variable type is a primitive we can directly use it for comparison. If it is a referenced type, we have to trace this type first in order to collect their fully qualified identifier for comparison.
+
+For \textbf{type 2R} clones we allow any variation in literals, variables and method calls at this stage in the clone detection process. However, for \textit{literals} we do resolve their type in order to verify that they are of the same type. For \textit{variables} we also only verify that their types are the same (but not their names). For \textit{method calls}, we trace their declaration but only compare the fully qualified identifier for its return type and each of its arguments' types. Apart from that, we do not compare the names of method, class, interface and enum declarations.
 
 \subsubsection{Detecting Clones} \label{sec:detectingclones}
 After building the clone grid, we use it to detect clones. We decided to focus on the detection of clone classes rather than clone pairs because clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
@@ -272,6 +274,8 @@ Using the example shown in figure \ref{fig:clonegrid} we can explain how we dete
 The grid representation shown in figure \ref{fig:clonegrid} is only shown as a grid for ease of comprehension. In fact, it is not a grid, but a graph. Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case, we discard the clone.
 
 \subsubsection{Validating the type 2 variability threshold}
+
+\subsubsection{Checking for type 3 opportunities}
 
 
 \section{The corpus}\label{chap:corpus}
