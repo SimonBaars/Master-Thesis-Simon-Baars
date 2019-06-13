@@ -213,6 +213,25 @@ Because of the requirement of symbol resolution, the refactoring-oriented clone 
 \subsection{Clone Detection}
 To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously, in accordance with our clone type philosophy as described in chapter \ref{sec:unifying}.
 
+The overall process regarding clone detection is displayed in figure \ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a grid that maps relations between statements, further explained in section \ref{sec:clonegrid}. On basis of this grid, we detect clone classes and verify them using three thresholds (in order of importance):
+\begin{itemize}
+  \item Amount of tokens.
+  \item Amount of statements.
+  \item Amount of lines.
+\end{itemize}
+If the detection was configured to detect either type 2R, 3 or 3R clones we perform some type specific transformations on the resulting set of clones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CloneDetection}
+  \caption{CloneRefactor clone detection process.}
+  \label{fig:clonedetection}
+\end{figure}
+
+\subsubsection{Generating the clone grid}\label{sec:clonegrid}
+
+
+
 \subsection{Type specific transformations}
 
 
