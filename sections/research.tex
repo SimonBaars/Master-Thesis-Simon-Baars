@@ -229,10 +229,29 @@ If the detection was configured to detect either type 2R, 3 or 3R clones we perf
 \end{figure}
 
 \subsubsection{Generating the clone grid}\label{sec:clonegrid}
+First of all, we parse the AST obtained from JavaParser into what we call a clone grid. Although it is not a grid in an original sense, thinking of it as a grid makes it easier to comprehend. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place (more about this in section \ref{sec:thresholds}).
 
+Building the ``clone grid'' consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
+\begin{itemize}
+  \item The declaration/statement preceding it.
+  \item The declaration/statement following.
+  \item The last \textbf{preceding} declaration/statement with which it is cloned.
+\end{itemize}
+We do not create a seperate grid for each class file, so the statement/declaration preceding or following could be in a different file. While mapping these relations, we maintain a hashed map containing the last occurrence of each unique statement. This map is used to quickly find out whether a statement is cloned with another.
 
+\subsubsection{Detecting Clones}
+After building the clone grid, we use it to detect clones. We decided to focus on the detection of clone classes rather than clone pairs because clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
 
-\subsection{Type specific transformations}
+As stated in the previous section, nodes in the grid link to \textit{preceding} cloned statement. This implies that the first node that is cloned does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the grid. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, see figure \ref{}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CodeGraph}
+  \caption{Clone grid as built by CloneRefactor.}
+  \label{fig:clonegrid}
+\end{figure}
+
+\subsubsection{Validating the type 2 variability threshold}
 
 
 \section{The corpus}\label{chap:corpus}
