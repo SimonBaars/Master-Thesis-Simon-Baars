@@ -159,7 +159,7 @@ Because of this, the ultimate goal would be not to consider type 1R, 2R and 3R s
 We conducted a short survey on (recent) clone detection tools in order to expand them with the proposed types. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze at least one popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview. We analyzed this behavior using a set of control projects.
-\item \textbf{TODO: Criterium.} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
+\item \textbf{TODO: Criterium.}\simon{TODO} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
 \item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be refactored. Sometimes, textual equality between code fragments does not imply that these can be refactored (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
 \item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
 \end{enumerate}
@@ -203,7 +203,7 @@ In this section we describe our approach and rationale for the design decisions 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\columnwidth]{img/CloneRefactorOverall}
+  \includegraphics[width=0.8\columnwidth]{img/CloneRefactorOverall}
   \caption{CloneRefactor overall process.}
   \label{fig:clonerefactorprocess}
 \end{figure}
@@ -219,7 +219,7 @@ In order to be able to trace referenced identifiers SymbolSolver requires access
 
 Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
-\subsection{Clone Detection}\ref{sec:clonedetection}
+\subsection{Clone Detection}\label{sec:clonedetection}
 To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously, in accordance with our clone type philosophy as described in chapter \ref{sec:unifying}.
 
 The overall process regarding clone detection is displayed in figure \ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a grid that maps relations between statements, further explained in section \ref{sec:clonegrid}. On basis of this grid, we detect clone classes and verify them using three thresholds (in order of importance):
