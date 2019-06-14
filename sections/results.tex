@@ -24,7 +24,7 @@ Figure \ref{fig:clonecontext} shows an abstract representation of clone classes 
 
 We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
 
-\section{Clone detection results}
+\subsection{Clone detection results}
 Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in chapter \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
 
 \begin{table}[H]
@@ -43,10 +43,10 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 
 Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
-\section{Relations Between Clone Instances} \label{chap:relationsinstances}
+\subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process. In this chapter, we display measurements we conducted on the corpus introduced in chapter \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in chapter \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in chapter \ref{chap:oursetup}. We then show our results in chapter \ref{chap:ourmeasurements}.
 
-\subsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
+\subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
 Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in Figure \ref{fig:clonerelation}. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
@@ -69,7 +69,7 @@ Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open sou
 \end{figure}
 Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
-\subsection{Our setup}\label{chap:oursetup}
+\subsubsection{Our setup}\label{chap:oursetup}
 We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al. \cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool (DCRA). As explained in chapter~\ref{ch:tool-overview}, we chose to implement our own tool, CloneRefactor. Therefore, the setup for our measurements differs as follows from Fontana et al.:
 \begin{itemize}
   \item We consider clone classes rather than clone pairs. The rationale for this is given in chapter \ref{chap:cloneclasses}.
@@ -102,7 +102,7 @@ Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
 
 The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with type 1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and type 1R clones.
 
-\section{Clone instance location}\label{chap:clonelocation}
+\subsection{Clone instance location}\label{chap:clonelocation}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
@@ -167,7 +167,7 @@ The results for these categories are displayed in Table \ref{table:contents}.
 
 Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for type 1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
 
-\chapter{Merging duplicate code through refactoring}
+\section{Merging duplicate code through refactoring}
 The most used technique to merge clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
 
 We measured the amount of clones that can be refactored through method extraction (without additional transformations being required). Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
