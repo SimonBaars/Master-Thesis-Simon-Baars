@@ -1,0 +1,35 @@
+Refactoring-oriented: hwo does that differ from current types?
+--> It's about better refactoring.
+Quality of refactoring output might be easier to show
+It lends itself better to automisation?? --> we need to show this
+
+Automatisation -> refactoring process
+Maintainability -> output
+
+Shortcoming current clone types
+
+Label equations -> Math mode (begin eq, end eq)
+
+paragraph before eq should describe intuition behind it: why like this?
+
+\verb|text text text| -> inside math mode
+
+Check mention need for limiting increasing cc for type 3r
+
+Unifying types: you saying and showing that any clone found by the other clones are also found by 3R
+
+Types 2R, 3R: our definitions have "knobs". While the classic ones explicitly do not have knobs. Similarity knob is there for type 3. LOC is knob for all clones,
+
+Unifying: there is rationale why you'd want to NOT unify, because you do not want certain types of refactorings to be executed.
+
+Unifying should be more like a discussion than a statement.
+
+Focus more on definition of done. How do these definitions influence our goals (eg maintainability index). For instance, T3R increases complexity!!
+
+How involve humans?? MSR on duplication, how does my tool compare? Let human try and assess on own codebase?
+
+Shortcomings type 2: show with data from clone detector.
+
+Not clone grid, but clone graph. Directed Graph. Show code to make it simpler.
+
+Think of the experiments. What do you want to show? What experiments do you run? How do you show refactorings are useful? How do you show that new type definitions are more useful than original ones. Challenges that I have to overcome before I can run the experiments.
