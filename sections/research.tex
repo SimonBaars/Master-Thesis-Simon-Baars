@@ -78,13 +78,13 @@ Type 2 clones allow any variability in literals, variables and method identifier
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
-$$T2R\ Variability\ Percentage=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
-$$Diff=Amount\ that\ differ\ from\ other\ clone\ instances\ in\ the\ clone\ class$$
-$$Total\ =\ Total\ number\ in\ the\ clone\ instance$$
-$$l=Number\ of\ literals$$
-$$v=Number\ of\ variables$$
-$$m=Number\ of\ method\ calls$$
-$$t=Number\ of\ tokens$$
+$$\text{T2R Variability Percentage}=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
+$$\text{Diff = Amount that differ from other clone instances in the clone class}$$
+$$\text{Total = Total number in the clone instance}$$
+$$\text{l = Number of literals}$$
+$$\text{v = Number of variables}$$
+$$\text{m = Number of method calls}$$
+$$\text{t = Number of tokens}$$
 
 \paragraph{Literal and variable variability}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
@@ -117,7 +117,7 @@ When refactored, some identifiers have no detrimental effect on the design if th
 
 If a full method is cloned with another method, however only their names differ, we can refactor these methods to keep only one of them. Allowing any change in method and class names will only indicate a refactoring opportunity if the full method or class is cloned.
 
-\section{Type 3R clones}
+\subsection{Type 3R clones}
 Type 3 clones allow any change in statements, often bounded by a similarity threshold. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. See figure \ref{fig:type3} for an example of such a clone.
 
 \begin{figure}[H]
