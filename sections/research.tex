@@ -79,12 +79,12 @@ Type 2 clones allow any variability in literals, variables and method identifier
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
 $$\text{T2R Variability Percentage}=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
-$$\text{Diff = Amount that differ from other clone instances in the clone class}$$
-$$\text{Total = Total number in the clone instance}$$
-$$\text{l = Number of literals}$$
-$$\text{v = Number of variables}$$
-$$\text{m = Number of method calls}$$
-$$\text{t = Number of tokens}$$
+$$Diff = \text{Amount that differ from other clone instances in the clone class}$$
+$$Total = \text{Total number in the clone instance}$$
+$$l = \text{Number of literals}$$
+$$v = \text{Number of variables}$$
+$$m = \text{Number of method calls}$$
+$$t = \text{Number of tokens}$$
 
 \paragraph{Literal and variable variability}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
@@ -129,11 +129,11 @@ Type 3 clones allow any change in statements, often bounded by a similarity thre
 
 In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}. This gap has a threshold for type 3R, which is calculated by the following formula:
 
-$$T3R\ Gap\ Percentage=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
-$$Statements = The\ amount\ of\ statements\ in\ this\ code\ fragment$$
-$$C_{gap} = The\ gap between two clones$$
-$$C_{above} = The\ clone\ instance\ above\ the\ gap$$
-$$lower = The clone instance below the gap$$
+$$\text{T3R Gap Percentage}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
+$$Statements = \text{The amount of statements in this code fragment}$$
+$$C_{gap} = \text{The gap between two clones}$$
+$$C_{above} = \text{The clone instance above the gap}$$
+$$C_{below} = \text{The clone instance below the gap}$$
 
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
