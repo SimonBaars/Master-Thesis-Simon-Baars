@@ -68,7 +68,7 @@ The body of both methods in figure \ref{fig:type2variables} is equal. However, t
 
 For type 1R clones variable references should be compared by both type and name.
 
-\subsection{Type 2R clones}
+\subsection{Type 2R clones} \label{sec:type2r}
 Type 2R clones are modelled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in figure \ref{fig:type2} previously). Refactoring such clones can be harmful instead of helpful.
 
 We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
@@ -78,6 +78,7 @@ Type 2 clones allow any variability in literals, variables and method identifier
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
+\begin{eqfloat}\label{eq:type2r}
 $$\text{T2R Variability Percentage}=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
 $$Diff = \text{Amount that differ from other clone instances in the clone class}$$
 $$Total = \text{Total number in the clone instance}$$
@@ -85,6 +86,7 @@ $$l = \text{Number of literals}$$
 $$v = \text{Number of variables}$$
 $$m = \text{Number of method calls}$$
 $$t = \text{Number of tokens}$$
+\caption{Type 2R variability threshold formula}\end{eqfloat}
 
 \paragraph{Literal and variable variability}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
@@ -129,11 +131,13 @@ Type 3 clones allow any change in statements, often bounded by a similarity thre
 
 In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}. This gap has a threshold for type 3R, which is calculated by the following formula:
 
+\begin{eqfloat}\label{eq:type3r}
 $$\text{T3R Gap Percentage}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
 $$Statements = \text{The amount of statements in this code fragment}$$
 $$C_{gap} = \text{The gap between two clones}$$
 $$C_{above} = \text{The clone instance above the gap}$$
 $$C_{below} = \text{The clone instance below the gap}$$
+\caption{Type 3R clone merge opportunities threshold formula}\end{eqfloat}
 
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
@@ -143,6 +147,13 @@ Apart from this threshold, the gap in between clones may not span over different
   \caption{Statements between clones in different blocks.}
   \label{fig:type3invalid}
 \end{figure}
+
+\subsection{Clone types summarized}
+The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in the sense that they were designed after the literature type definitions but with a concrete refactoring opportunity in mind. Summarized, these types can be explained as follows:
+
+Type 1R: Allows no difference between cloned fragments, making it possible to refactor both fragments to a method call that contains the code of both locations.
+Type 2R: Allows difference between cloned fragments in controlled features of a codebase. Refactoring opportunities for these controlled features are known, allowing refactoring with a minor tradeoff.
+Type 3R: Allows any difference. When refactored, this difference must be wrapped in its own block, which entails a major tradeoff.
 
 \section{The challenge of detecting these clones}\label{chap:challenge}
 To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
@@ -295,8 +306,8 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
-\subsubsection{Validating the type 2 variability threshold}
-
+\subsubsection{Validating the type 2R variability threshold}
+In the definition of type 2R (see section \ref{eq:type2r}) clones we described how type 2R clones work on basis of a variability threshold. This threshold,
 
 \subsubsection{Checking for type 3 opportunities}
 
