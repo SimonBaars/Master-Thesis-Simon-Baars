@@ -258,7 +258,7 @@ We do not create a separate graph for each class file, so the statement/declarat
 We refer to the declarations and statements in this graph as \textit{nodes}. The relations \textit{next} and \textit{previous} in this graph are represented as an twodirectional arrow. The relations representing duplication are directed. This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in section \ref{sec:detectingclones}.
 
 \subsubsection{Comparing Statements/Declarations}
-In the previous section we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations assess whether they are clones of each other.
+In the previous section we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
 
 CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
 
@@ -275,8 +275,15 @@ As stated in the previous section, nodes in the graph link to \textit{preceding}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\columnwidth]{img/CodeGraph4}
-  \caption{Clone graph with a clone class consisting of three clone instances marked.}
+  \includegraphics[width=1\columnwidth]{img/CloneGraphCode}
+  \caption{CloneRefactor extracts statements and declarations from source code.}
+  \label{fig:clonegraph}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CodeGraphExample}
+  \caption{Example of a clone graph built by CloneRefactor.}
   \label{fig:clonegraph}
 \end{figure}
 
