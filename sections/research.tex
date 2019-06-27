@@ -307,7 +307,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
 \subsubsection{Validating the type 2R variability threshold}
-In the definition of type 2R (see section \ref{eq:type2r}) clones we described how type 2R clones work on basis of a variability threshold. This threshold,
+In the definition of type 2R (see section \ref{eq:type2r}) clones we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain the way CloneRefactor uses to verify the type 2R variability threshold.
 
 \subsubsection{Checking for type 3 opportunities}
 
