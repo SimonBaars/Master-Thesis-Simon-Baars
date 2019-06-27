@@ -101,11 +101,10 @@ We tackle these problems with type 2R clones to be able to detect such clones th
 Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined type 3R clones in such a way that they are directed towards finding clones that are worth this tradeoff. This entails the following:
 
 \begin{itemize}
-  \item \textbf{The difference in statements must bridge a gap between two clones that were valid by the original thresholds}. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}.
-  \item \textbf{The size of the gap between two clones is limited by a threshold.} This threshold is displayed in equation \ref{eq:type3r}.
-  \item item
+  \item \textbf{The difference in statements must bridge a gap between two clones that were valid by the original thresholds}. This entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones. This holds the most value when looking at refactoring such clones. A difference at the beginning or end of a cloned block can better not be refactored.
+  \item \textbf{The size of the gap between two clones is limited by a threshold.} This threshold is calculated by taking the percentage of the amount of statements in the gap over the amount of statements that both clones that are being bridged span. This is displayed in equation \ref{eq:type3r}.
+  \item \textbf{The gap may not span a partial block.} To make sure that the type 3R clone can be refactored, we do not allow the gap to span a part of a block, for instance the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could however use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 \end{itemize}
-For type 3R clones we state that .  This gap has a threshold for type 3R, which is calculated by the following formula:
 
 \begin{eqfloat}\label{eq:type3r}
 $$\text{T3R Gap Percentage}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
@@ -114,10 +113,6 @@ $$C_{gap} = \text{The gap between two clones}$$
 $$C_{above} = \text{The clone instance above the gap}$$
 $$C_{below} = \text{The clone instance below the gap}$$
 \caption{Type 3R clone bridging opportunities threshold formula}\end{eqfloat}
-
-Defining a gap threshold entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones. This holds the most value when looking at refactoring such clones. A difference at the beginning or
-
-Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
 \section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
