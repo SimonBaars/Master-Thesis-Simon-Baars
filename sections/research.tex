@@ -1,5 +1,5 @@
 \chapter{Defining refactoring-oriented clone types}\label{chap:clonetypes}
-In section \ref{chap:backgroundclonetypes} we introduced the four clone types as defined in literature. These simple definitions are suitable for analysis of a codebase. Their detection results in simple to understand numbers to argue about a codebase. However, these clone types have a few flaws which makes it hard to argue to what extend two fragments of code are functionally related. For each of type 1-3 clones~\cite{roy2007survey} we list our solutions to their shortcomings to increase the chance that we can refactor the clone while improving the design. Due to the serious challenges involved in their detection and refactoring, type 4 clones are not considered in this study.
+In section \ref{chap:backgroundclonetypes} we introduced the four clone types as defined in literature. These simple definitions are suitable for analysis of a codebase. Their detection results in simple to understand numbers to argue about a codebase. However, these clone types have a few flaws which makes it hard to argue to what extend two fragments of code are functionally related. For each of type 1-3 clones~\cite{roy2007survey} we list our solutions to their shortcomings to increase the chance that we can refactor the clone while improving the design.
 
 We also look into clone detection tools for their suitability to support the proposed clone type definitions. We selected a few criteria  Most clone detection tools support these definitions of clone types. However, many of these tools use a vastly different approach. A study by Saini et al \cite{saini2018towards} outlines different clone detection tools and compares their results for each of type 1-3 clones. Even though they operate on the same type definitions, the tools used in this study yield different results.
 
@@ -24,15 +24,15 @@ In the example in figure \ref{fig:type1}, we see a type 1 clone consisting of tw
 Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \subsection{Type 2 clones}
-Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
+  Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
 
-\begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/type2}
-  \caption{Example of a type 2 clone.}
-  \label{fig:type2}
-\end{figure}
+  \begin{figure}[H]
+    \includegraphics[width=1\columnwidth]{img/type2}
+    \caption{Example of a type 2 clone.}
+    \label{fig:type2}
+  \end{figure}
 
-Looking at the example in listing \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
+Looking at the example in figure \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
 When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which makes the these clones often not so useful for refactoring purposes.
 

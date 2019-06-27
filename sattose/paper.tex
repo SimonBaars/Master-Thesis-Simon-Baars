@@ -99,12 +99,12 @@ Type 2 clones are \textit{structurally/syntactically identical fragments except 
   \label{fig:type2}
 \end{figure}
 
-Looking at the example in listing \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
+Looking at the example in figure \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
-When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which makes the these clones often not so useful for refactoring purposes.
+When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which further undermines the usefulness of clones detected by this definition.
 
 \subsection{Type 3 clones}
-Type 3 clones are \textit{copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. Detection of clones by this definition can be very hard, as it may be hard to detect whether a fragment was copied in the first place if it was severely changed. Because of this, most clone detection implementations of type 3 clones work on basis of a similarity threshold \cite{svajlenko2014evaluating, cordy2011nicad}. This similarity threshold has been implemented in different ways: textual similarity (for instance using levenshtein distance) \cite{lavoie2011automated}, token-level similarity of statement-level similarity.
+Type 3 clones are \textit{copied fragments with further modification (having added, removed or changed statements)} \cite{roy2007survey}. Detection of clones by this definition can be hard, as it may be hard to detect whether a fragment was copied in the first place if it was severely changed. Because of this, most clone detection implementations of type 3 clones work on basis of a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold has been implemented in different ways: textual similarity (for instance using levenshtein distance) \cite{lavoie2011automated}, token-level similarity \cite{sajnani2016sourcerercc} of statement-level similarity \cite{kamalpriya2017enhancing}.
 
 Having a definition that allows for any change in code poses serious challenges on refactoring. A levenshtein distance of one can already change the meaning of a code fragment significantly, for instance if the name of a type differs by a character (and thus referring to different types).
 
@@ -197,7 +197,7 @@ Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repository contains all scripts that were used to retrieve the data that is displayed in this paper.}.
 
 \subsection{CloneRefactor}
-A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements (linking to similar statements). The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
+A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection. We build a similarity graph of statements (linking to similar statements). The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
 
 \begin{figure}[H]
   \caption{Abstract figure of the graph representation built by CloneRefactor}
