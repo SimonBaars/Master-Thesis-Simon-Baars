@@ -107,13 +107,13 @@ Type 3 clones allow any change in statements (added, removed and changed stateme
   \item \textbf{The gap may not span a partial block.} To make sure that the type 3R clone can be refactored, we do not allow the gap to span a part of a block, for instance the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could however use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 \end{itemize}
 
-\begin{eqfloat}\label{eq:type3r}
-$$\text{T3R Gap Percentage}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
-$$Statements = \text{The amount of statements in this code fragment}$$
+\begin{equation}\label{eq:type3r}
+\text{T3R Gap}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100
+\end{equation}
+$$Statements = \text{Statements in a code fragment}$$
 $$C_{gap} = \text{The gap between two clones}$$
 $$C_{above} = \text{The clone instance above the gap}$$
 $$C_{below} = \text{The clone instance below the gap}$$
-\caption{Type 3R clone bridging opportunities threshold formula}\end{eqfloat}
 
 \section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
