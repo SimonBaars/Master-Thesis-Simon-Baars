@@ -1,0 +1,14 @@
+4. Separate chapter for tool
+5. Experimental setup & results
+	Evaluation setup -> Corpus
+	Results
+
+-> Compare my tool vs others. (separate experiment & first experiment)
+
+Paper: these are missing things and how I fixed it in my tool. One paragraph briefly give surface description of the tool.
+
+Figure 2: OUR abstract representation of clone classes and instances
+Make it clear what is YOUR contribution
+We introduce ...
+
+Make more clear how context relates to the defined types. Eq.~\ref{eq:t3r}
