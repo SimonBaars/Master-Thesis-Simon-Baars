@@ -172,6 +172,38 @@ As duplication in source code is a serious problem in many software systems, man
 
 In this section, we first assess a set of modern clone detection tools for their applicability to this domain. Next, we introduce our own tool geared towards automatic clone refactoring, CloneRefactor.%Two surveys of modern clone detection tools \cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
 
+\subsection{Survey on Clone Detection Tools}
+\label{ch:tool-overview}
+We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
+\begin{enumerate}
+    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview.
+\item \textbf{Should find all clones in created control projects.} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
+\item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be merged. Sometimes, textual equality between code fragments does not imply that these can be merged (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
+\item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
+\end{enumerate}
+
+\begin{table}[H]
+ \begin{center}
+  \caption{Our survey on clone detection tools.} \label{table:dettools}
+  \medskip
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Clone Detection Tool} & \textbf{(1)} & \textbf{(2)} & \textbf{(3)} & \textbf{(4)} \\ \hline
+Siamese \cite{ragkhitwetsagul2019siamese} &  &             &             & \checkmark            \\ \hline
+NiCAD \cite{roy2008nicad, cordy2011nicad} & \checkmark                             & \checkmark            &             &             \\ \hline
+CPD \cite{roy2009comparison} & \checkmark & \checkmark            &             &             \\ \hline
+\begin{tabular}[c]{@{}l@{}}CCFinder \cite{kamiya2002ccfinder}\\ D-CCFinder \cite{livieri2007very}\end{tabular} & \checkmark  & \checkmark   &    &   \\ \hline
+CCFinderSW \cite{semura2017ccfindersw}   & \checkmark     &             &             & \checkmark            \\ \hline
+\begin{tabular}[c]{@{}l@{}}SourcererCC \cite{sajnani2016sourcerercc}\\ Oreo \cite{saini2018oreo}\end{tabular} & \checkmark    &             &             & \checkmark            \\ \hline
+BigCloneEval \cite{svajlenko2016bigcloneeval}  & \checkmark  & \checkmark   &             &             \\ \hline
+Deckard \cite{jiang2007deckard} & \checkmark   &             & \checkmark            &             \\ \hline
+Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     & \checkmark  & \checkmark   \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repository contains all scripts that were used to retrieve the data that is displayed in this paper.}.
+
 \subsection{CloneRefactor}
 A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection, similar to Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing}. However, instead of building a dependency graph, we build a similarity graph of statements (linking to similar statements). The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
 
