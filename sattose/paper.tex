@@ -83,14 +83,14 @@ The clone definitions, as outlined in section \ref{chap:backgroundclonetypes}, a
 
 In this section we discuss the shortcomings of the different clone type definitions which make them less suitable for (automated) refactoring. Because of these shortcomings, clones found by these definitions are often found to require additional judgement whether they should and can be refactored.
 
-\subsection{Type 1 clones} \label{chap:type1clones}
+\subsection{Type 1 clones} \label{sec:type1}
 Type 1 clones are \textit{identical clone fragments except for variations in whitespace and comments} \cite{roy2007survey}. This allows for the detection of clones that are the result of copying and pasting existing code, along with other reasons why duplicates might get into a codebase.
 
 Type 1 clones are in most cases implemented as textual equality between code fragments (except for whitespace and comments). Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. When aiming to automatically refactor clones, applying refactorings to clones which might refer to different methods, types and variables is bound to be error prone and result in a uncompilable project or a difference in functionality.
 
 Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
-\subsection{Type 2 clones}
+\subsection{Type 2 clones}\label{sec:type2}
 Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
 
 \begin{figure}[H]
@@ -103,7 +103,7 @@ Looking at the example in figure \ref{fig:type2}, we see an example of a type 2 
 
 When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which further undermines the usefulness of clones detected by this definition.
 
-\subsection{Type 3 clones}
+\subsection{Type 3 clones}\label{sec:type3}
 Type 3 clones are \textit{copied fragments with further modification (having added, removed or changed statements)} \cite{roy2007survey}. Detection of clones by this definition can be hard, as it may be hard to detect whether a fragment was copied in the first place if it was severely changed. Because of this, most clone detection implementations of type 3 clones work on basis of a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold has been implemented in different ways: textual similarity (for instance using levenshtein distance) \cite{lavoie2011automated}, token-level similarity \cite{sajnani2016sourcerercc} of statement-level similarity \cite{kamalpriya2017enhancing}.
 
 Having a definition that allows for any change in code poses serious challenges on refactoring. A levenshtein distance of one can already change the meaning of a code fragment significantly, for instance if the name of a type differs by a character (and thus referring to different types).
@@ -111,7 +111,7 @@ Having a definition that allows for any change in code poses serious challenges 
 \subsection{Refactoring-oriented clone types}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
-\subsubsection{Type 1R clones} \label{chap:type1clones}
+\subsubsection{Type 1R clones} \label{sec:type1r}
 Type 1 clones are identical clone fragments except for variations in whitespace and comments \cite{roy2007survey}. However, when two clone fragments are textually identical, it does not yet indicate that they are functionally identical. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and even variables can be of a different type. In such cases refactoring opportunities could be invalidated. Therefore, we propose an alternative definition of type 1 clones. We have named it ``type 1R clones''. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses). Type 1R clones differ from type 1 clones as follows:
 \begin{itemize}
   \item \textbf{Compare the equality of the fully qualified method signature for method references.} If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.simonbaars.fruitgame.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. In the method signature, not only the fully qualified identifier of the method should be considered, but also the type of all its arguments. This way we can be sure that two potentially cloned method references do not point to overloaded variants (in a case that the data type of arguments is overloaded).
@@ -120,7 +120,9 @@ Type 1 clones are identical clone fragments except for variations in whitespace 
   \item \textbf{Compare the equality of the fully qualified identifier for method references and call signatures.} This is to prevent a change in functionality after merging the clone, as methods with equal names/parameters can still contain different functionality.
 \end{itemize}
 
-\subsubsection{Type 2R clones}
+\subsubsection{Type 2R clones}\label{sec:type2r}
+We tackle the previously outlined shortcomings of type 2R clones (see section We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
+
 Type 2 clones allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones can be harmful instead of helpful.
 
 We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Our definition ensures functional similarity by applying the following changes to type 2 clones:
@@ -142,7 +144,7 @@ $$v = \text{Variables in clone}$$
 $$m = \text{Method calls in clone}$$
 $$t = \text{Tokens in clones}$$
 
-\subsubsection{Type 3R clones}
+\subsubsection{Type 3R clones}\label{sec:type3r}
 Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined type 3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
 
 Type 3R clones allow, different from type 2R clones, a gap between two clone classes of statements that are not cloned. The following rules apply to this gap:
@@ -172,7 +174,7 @@ We conducted a short survey on (recent) clone detection tools that we could use 
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview.
 \item \textbf{Should find all clones in created control projects.} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
-\item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be merged. Sometimes, textual equality between code fragments does not imply that these can be merged (this is described more elaborately in section \ref{chap:type1clones}). Because of this, we want to use a clone detection tool that can analyze such structures.
+\item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be merged. Sometimes, textual equality between code fragments does not imply that these can be merged (this is described more elaborately in section \ref{sec:type1}). Because of this, we want to use a clone detection tool that can analyze such structures.
 \item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
 \end{enumerate}
 
@@ -265,7 +267,7 @@ Amount of statements/declarations                                               
 \end{table}
 
 \subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{chap:type1clones}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{sec:type1r}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
 
 \begin{table}[H]
   \begin{center}
@@ -318,7 +320,7 @@ We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.
 \end{itemize}
 
 \subsubsection{Our results} \label{chap:ourmeasurements}
-Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in section \ref{chap:type1clones}.
+Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in section \ref{sec:type1r}.
 
 \begin{table}[H]
   \begin{center}
