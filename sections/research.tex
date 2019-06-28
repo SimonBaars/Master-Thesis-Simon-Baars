@@ -298,7 +298,7 @@ As stated in the previous section, nodes in the graph link to \textit{preceding}
   \label{fig:clonegraph2}
 \end{figure}
 
-Using the example shown in figure \ref{fig:clonegraph} and \label{fig:clonegraph2} we can explain how we detect clones. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
+Using the example shown in figure \ref{fig:clonegraph} and \label{fig:clonegraph2} we can explain how we detect clones. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
 
 Next, we move to the previous line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
 
