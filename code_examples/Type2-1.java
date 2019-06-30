@@ -1,7 +1,10 @@
-public boolean containsOnlyRedCircles(List<Circle> listOfCircles){
-	return listOfCircles.stream().allMatch(Shape::isRed);
+public boolean containsOnlyRedCircles(List<Circle> circles){
+	return circles.stream().allMatch(Shape::isRed);
 }
 
-public Apple getEdibleAppleFromBasket(FruitBasket<Apple> appleBasket){
-	return appleBasket.getFruitContainer().getAppleByCriterium(Fruit::hasNotYetBeenEaten);
+public Apple getEdibleApple(FruitBasket<Apple> basket){
+	return basket.getFruitContainer()
+		.getAppleByCriterium(Fruit::hasNotYetBeenEaten);
 }
+
+

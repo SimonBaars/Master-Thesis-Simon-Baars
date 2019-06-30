@@ -12,3 +12,5 @@ Make it clear what is YOUR contribution
 We introduce ...
 
 Make more clear how context relates to the defined types. Eq.~\ref{eq:t3r}
+
+Proportion (0-100) vs ratio (any %)
