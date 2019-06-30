@@ -109,10 +109,16 @@ Type 3 clones are \textit{copied fragments with further modification (having add
 Having a definition that allows for any change in code poses serious challenges on refactoring. A levenshtein distance of one can already change the meaning of a code fragment significantly, for instance if the name of a type differs by a character (and thus referring to different types).
 
 \subsection{Refactoring-oriented clone types}
-To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
+To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
+
+Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Likewise, each type R clone inherits all properties of the previous one. Each statement found as cloned for T1R clones, will also be found as cloned for T2R and T3R. Each rule that applies to T1R clones also applies to T2R and T3R.
+
+\begin{equation}\label{eq:typerelation}
+\text{Cloned statements: } T1R \subseteq T2R \subseteq T3R
+\end{equation}
 
 \subsubsection{Type 1R clones} \label{sec:type1r}
-To solve the shortcomings listed in section \ref{sec:type1}, we propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Because of this, type 1R clones are a subset of type 1 clones. Although requiring fragments to be functionally equal, type 1R clones do not allow for change in implementation (like type 4 clones).
+To solve the shortcomings listed in section \ref{sec:type1}, we propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Because of this, type 1R clones are a subset of type 1 clones. Although requiring fragments to be functionally equal, T1R clones do not allow for change in implementation (like type 4 clones).
 
 We check functional equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. This entails the following procedures to verify equality:
 
@@ -123,7 +129,7 @@ We check functional equality of two fragments by validating the equality of the 
 \end{itemize}
 
 \subsubsection{Type 2R clones}\label{sec:type2r}
-We tackle the previously outlined shortcomings of type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
+We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
 
 We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Our definition ensures functional similarity by applying the following changes to type 2 clones:
 
