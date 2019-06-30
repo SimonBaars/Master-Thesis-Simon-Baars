@@ -114,7 +114,7 @@ To resolve the shortcomings of clone types as outlined in the previous section, 
 Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Likewise, each type R clone inherits all properties of the previous one. Each statement found as cloned for T1R clones, will also be found as cloned for T2R and T3R. Each rule that applies to T1R clones also applies to T2R and T3R.
 
 \begin{equation}\label{eq:typerelation}
-\text{Cloned statements: } T1R \subseteq T2R \subseteq T3R
+T1R \subseteq T2R \subseteq T3R
 \end{equation}
 
 \subsubsection{Type 1R clones} \label{sec:type1r}
@@ -129,9 +129,7 @@ We check functional equality of two fragments by validating the equality of the 
 \end{itemize}
 
 \subsubsection{Type 2R clones}\label{sec:type2r}
-We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
-
-We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Our definition ensures functional similarity by applying the following changes to type 2 clones:
+We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold as a tradeoff exists in the refactoring of such differences. Furthermore, type 2R clones allow any variability in method names and class/enum/interface names. This is because, if the body of a method/class/enum/interface equals the body of another, but only their names differ, this can be refactored without a design tradeoff. 
 
 \begin{itemize}
   \item \textbf{Considering types:} Type 2 clones do not consider types. However, this can make a code fragment very hard to refactor, as different types can describe different functional concepts. Because of this, we propose that type 2R clones should consider types like type 1R clones do.
@@ -149,6 +147,10 @@ $$l = \text{Literals in clone}$$
 $$v = \text{Variables in clone}$$
 $$m = \text{Method calls in clone}$$
 $$t = \text{Tokens in clones}$$
+
+\begin{equation}\label{eq:typerelation2}
+T1R \subseteq T1 \text{, but } T2R	\nsubseteq T2 \text{ and } T3R \nsubseteq T3
+\end{equation}
 
 \subsubsection{Type 3R clones}\label{sec:type3r}
 Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined type 3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
