@@ -41,10 +41,8 @@ Refactoring is used to improve the quality-related attributes of a codebase (mai
 A survey by Roy et al.~\cite{roy2007survey} describes various ways in which clones can be identified. Most clone detection tools focus on finding clones that align with these definitions. In this paper, we outline challenges with these clone type definitions when considered in a refactoring context. We next propose solutions to these problems that would enable the detection of clones that should be refactored, rather than fragments of code that are just similar.
 
 Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it can be refactored. Therefore, we first look at where and how often clones can be found, enabling the prioritization of refactoring opportunities.
-% Using this information we can determine in which locations clones are found the most, on basis of which the refactoring will be prioritized.
 
 Furthermore, a duplicate fragment in a codebase does not always have to be an exact match with another fragment to be considered a clone. Therefore, we also analyze the impact of the different definitions of clone types on refactoring opportunities.
-% We look at the definitions of different types of clones and the opportunities to refactor duplicate parts of code albeit not an exact match.
 
 We conduct our research on a large corpus of open source projects. We focus mainly on the Java programming language as refactoring opportunities feature paradigm and programming language dependent aspects~\cite{choi2011extracting}. However, most practices featured currently in our work will also be applicable to other object-oriented languages, like C\#. This is because these programming languages share many similarities regarding refactoring opportunities.
 
@@ -127,20 +125,14 @@ To solve the issues identified in Sec.~\ref{sec:type1}, we introduce an alternat
 We check functional equality of two fragments by checking the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object). For method calls, we also compare the equality of the FQI of the type of each of its arguments, to differentiate between overloaded method variants. This way we can check whether two identifiers are functionally equal.
 
 \subsubsection{T2R clones}\label{sec:type2r}
-To solve the issues identifier in Sec.~\ref{sec:type2}, we introduce . We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to T1R clones also apply to T2R clones. Additionally, T2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold as a tradeoff exists in the refactoring of such differences. Furthermore, T2R clones allow any variability in method names and class/enum/interface names. This is because, if the body of a method/class/enum/interface equals the body of another, but only their names differ, this can be refactored without a design tradeoff.
+To solve the issues identifier in Sec.~\ref{sec:type2}, we introduce an alternative definition. All rules that apply to T1R clones also apply to T2R clones. Additionally, T2R clones allow variability in literals, variables and method calls. Furthermore, T2R clones allow variability in method names and class/enum/interface names.
 
-When refactoring two fragments that differ by a few literals, called methods or used variables, we are faced with a design tradeoff. For instance, if two literals differ and we want to refactor by method extraction, we need our new method to have an added argument to which each usage can pass the literal that was used at that place. Likewise, such things can be done for different variables that have been used and different called methods. Important here is, that the type of the used literals/variables are equal. Likewise, the signature of the called methods must be equal.
+When refactoring two fragments that differ by literals, called methods or used variables, we are faced with a design tradeoff. When replacing the cloned fragments by a new method, we need an extra argument for each literal, called method or used variable that differs. This can be done as long as the type of used literals/variables and the signature of called methods are equal.
 
 To limit the negative impact of this tradeoff on the design of the system, we formalized as threshold for the variability between fragments. The formula by which this threshold is calculated is displayed in equation \ref{eq:type2r}. In this formula, \textit{different expressions} refers to the amount of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of tokens in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring.
 
 \begin{equation}\label{eq:type2r}
 \text{T2R}=\frac{\text{Different expressions}}{\text{Total tokens}}*100
-\end{equation}
-
-A method call does often not consist of a single token (unlike variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method. Because of this, T2R clones are not a subset of of type 2 clones. Because T3R clones inherit all rules of T2R clones, T3R clones are also not a subset of T3 clones. This is displayed in equation \ref{eq:typerelation2}.
-
-\begin{equation}\label{eq:typerelation2}
-T1R \subseteq T1 \text{, but } T2R	\nsubseteq T2 \text{ and } T3R \nsubseteq T3
 \end{equation}
 
 \subsubsection{T3R clones}\label{sec:type3r}
