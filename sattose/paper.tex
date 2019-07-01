@@ -308,15 +308,15 @@ Table~\ref{table:relations} contains our results regarding the relations between
   \medskip
 \begin{tabular}{|l|l|l|} \hline
 \textbf{Relation} & \textbf{\#} & \textbf{\%} \\ \hline
-Unrelated          & 4,762 & 38.14            \\ \hline
-Same Class          & 3,131 & 25.07             \\ \hline
-Sibling               & 1,949 & 15.61            \\ \hline
-Same Method         & 1,685 & 13.49             \\ \hline
-External Superclass   & 558 & 4.47             \\ \hline
-First Cousin          & 197 & 1.58           \\ \hline
-Superclass          & 118 & 0.94           \\ \hline
-Common Hierarchy    & 73 & 0.58            \\ \hline
-Ancestor          & 14 & 0.11          \\ \hline
+Unrelated          & 12,368 & 34.88            \\ \hline
+Same Class          & 11,483 & 32.38             \\ \hline
+Same Method               & 5,056 & 14.26            \\ \hline
+Sibling         & 4,182 & 11.79             \\ \hline
+External Superclass   & 1,066 & 3.01             \\ \hline
+Superclass          & 558 & 1.57           \\ \hline
+First Cousin          & 489 & 1.38           \\ \hline
+Common Hierarchy    & 206 & 0.58            \\ \hline
+Ancestor          & 54 & 0.15          \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -341,16 +341,16 @@ Please note that these results are measured over each clone instance rather than
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Location}   & \textbf{\#} & \textbf{\%} \\ \hline
-Method Level        & 19,075 & 58.23            \\ \hline
-Class Level        & 12,207 & 37.27            \\ \hline
-Constructor Level    & 1,080 & 3.30           \\ \hline
-Interface Level   & 247 & 0.75           \\ \hline
-Enum Level         & 147 & 0.45            \\ \hline
+Method Level        & 83,813 & 82.62            \\ \hline
+Class Level        & 12,534 & 12.35            \\ \hline
+Constructor Level    & 4,391 & 4.33           \\ \hline
+Interface Level   & 567 & 0.56           \\ \hline
+Enum Level         & 145 & 0.14            \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and T1R, it seems that there are relatively less method level clones and more class level clones for T1R. This is probably due to that the main reason for variability between type 1 and T1R is variable references, which occur more at method level than class level.
+Our results indicate that, quite significantly, most clones are found at method level. The amount of clones found in interfaces and enumerations is very low.
 
 \subsubsection{Clone instance contents}\label{chap:clonecontents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
