@@ -21,7 +21,7 @@ Ana Oprescu \\ University of Amsterdam\\
                 AM.Oprescu@uva.nl
 }
 
-\institution{University of Amsterdam}
+\institution{}
 
 \begin{document}
 \maketitle
@@ -29,11 +29,11 @@ Ana Oprescu \\ University of Amsterdam\\
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code, as it creates implicit dependencies between fragments of code. Such implicit dependencies often cause bugs and increases maintenance efforts. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. We propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not create side effects.
 
-Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately ten percent of the duplication can be refactored through method extraction without extra considerations required, while other clones require other refactoring techniques or further transformations. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
+Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Almost 40 percent of the duplication can be refactored through method extraction, while other clones require other refactoring techniques or further transformations. Future measurements will provide further insight into what clones should be refactored to improve the design of a software system.
 \end{abstract}
 
 \section{Introduction}
-Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book~\cite{fowler1999refactoring}, he claims that \textit{``Number one in the stink parade is duplicated code. If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}.
+Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book~\cite{fowler1999refactoring}, he claims that \textit{``If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}.
 % In this research, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve the maintainability of the refactored code.
 
 Refactoring is used to improve the quality-related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. Many methods were introduced to aid the process of refactoring~\cite{fowler1999refactoring, wake2004refactoring}, and are integrated into most modern IDE's. However, most of these methods still require a manual assessment of where and when to apply them. This means refactoring is either a significant part of the development process~\cite{lientz1978characteristics, mens2004survey}, or does not happen at all~\cite{mens2003refactoring}. For a large part, proper refactoring requires domain knowledge. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. Our goal is investigating to what extend code clones can be automatically refactored.
@@ -235,7 +235,7 @@ In this chapter we display the differences between clone type 1-3 \cite{roy2007s
 
 \begin{figure}[H]
   \caption{Number of cloned declarations/statements.}
-    \includegraphics[width=1\columnwidth]{img/TypeResults}
+    \includegraphics[width=.96\columnwidth]{img/TypeResults}
   \label{fig:typeres}
 \end{figure}
 
@@ -245,7 +245,7 @@ We also measured the duration of finding clones by the different clone types. Fi
 
 \begin{figure}[H]
   \caption{Duration in minutes of identifying clones for clone type definitions.}
-    \includegraphics[width=1\columnwidth]{img/DurationChart}
+    \includegraphics[width=.96\columnwidth]{img/DurationChart}
   \label{fig:performance}
 \end{figure}
 
@@ -321,10 +321,10 @@ Ancestor          & 54 & 0.15          \\ \hline
 \end{center}
 \end{table}
 
-The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with T1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and T1R clones.
+The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (34.44), while for them it was only 15.70\%. This is likely due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a third of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the clones that are in the same method, which are also easy to refactor.
 
 \subsubsection{Clone instance location}\label{chap:clonelocation}
-After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
+After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. We use the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
   \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
@@ -332,7 +332,7 @@ After mapping the relations between individual clones, we looked at the location
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
 
-Please note that these results are measured over each clone instance rather than each clone class, hence the higher total amount in comparison to the results of Sec.~\ref{chap:ourmeasurements}.
+The results are shown in Table~\ref{table:locations}. Our results indicate that, quite significantly, most clones are found at method level. The amount of clones found in interfaces and enumerations is very low.
 
 \begin{table}[H]
   \begin{center}
@@ -349,8 +349,6 @@ Enum Level         & 145 & 0.14            \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
-
-Our results indicate that, quite significantly, most clones are found at method level. The amount of clones found in interfaces and enumerations is very low.
 
 \subsubsection{Clone instance contents}\label{chap:clonecontents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
@@ -386,10 +384,10 @@ The results for these categories are displayed in Table \ref{table:contents}.
 \end{center}
 \end{table}
 
-Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for T1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
+Unsurprisingly, most clones span a part of a method. The most used refactoring technique for clones that span part of a method is ``Extract Method''. Because of that, we focus our research efforts on refactoring such clones.
 
 \subsection{Method extraction opportunities}\label{chap:mergingdups}
-The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
+The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
 
 We measured the amount of clones that can be refactored through method extraction (without additional transformations being required). Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
 \begin{itemize}
