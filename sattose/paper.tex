@@ -351,9 +351,9 @@ Finally, we looked at the contents of individual clone instances: what combinati
 \begin{enumerate}
   \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans a method partially.
-  \item \textbf{Several Methods:} A clone that spans over two or more methods and/or method bodies.
+  \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially.
   \item \textbf{Only Fields:} A clone that spans only global variables.
-  \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields/constructors and other things.
+  \item \textbf{Includes Fields/Constructor:} A clone that spans fields/constructors, but can also span other statements or declarations.
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
 \end{enumerate}
 
@@ -427,7 +427,7 @@ The research that we have conducted so far analyzes the context of different kin
 Secondly, we looked at the location of clone instances. Most clone instances (79 percent) are found at method level. Because of that, we concluded that our main refactoring focus should be aimed at method-level clones. A common method to refactor such clones is by extracting a new method on basis of the contents of the clone. However, method extraction cannot be applied in all cases. According to our experiments, about 40 percent of the clones can be refactored by extracting them to a new method.
 
 \subsection{Next steps}
-Our next step is to implement the ``Extract Method'' refactoring for the identified automatic refactoring opportunities. On basis of the resulting code, we can perform experiments that compare the maintainability index of the refactored code to the original code. The maintainability index of a system is an aggregation of various metrics that test a systems' maintainability (like volume, complexity, duplication, etc.). If we can automatically apply refactorings to the identified clones, this maintainability index can be used to select more optimal threshold values. 
+Our next step is to implement the ``Extract Method'' refactoring for the identified automatic refactoring opportunities. On basis of the resulting code, we can perform experiments that compare the maintainability index of the refactored code to the original code. The maintainability index of a system is an aggregation of various metrics that test a systems' maintainability (like volume, complexity, duplication, etc.). If we can automatically apply refactorings to the identified clones, this maintainability index can be used to select more optimal threshold values.
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
