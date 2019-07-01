@@ -206,10 +206,12 @@ CloneRefactor walks the AST and collects each declaration and statement (similar
 Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against thresholds, and remove the clone classes that do not pass the test.
 
 \section{Experiments}
-This section outlines the conducted experiments to determine refactoring opportunities for code clones. First, we look into the thresholds that determine whether duplicated fragments are considered a clone in section \ref{chap:thresholds}. Next, we show the corpus on which we have performed our measurements in section \ref{chap:corpus}. We then perform an analysis on the context of code clones in section \ref{chap:clonecontextexpl}. Finally, we map refactoring opportunities for clones in section \ref{chap:mergingdups}.
+This section outlines the conducted experiments to determine refactoring opportunities for code clones. We show the corpus on which we have performed our measurements in section \ref{chap:corpus}. Next, we look into the thresholds that determine whether duplicated fragments are considered a clone in section \ref{chap:thresholds}. We then show a comparison between the different proposed clone types in section \ref{sec:clonetypeexperiments}. Afterwards, we perform an analysis on the context of code clones in section \ref{chap:clonecontextexpl}. Finally, we map refactoring opportunities for clones in section \ref{chap:mergingdups}.
+
+All experiments were conducted using CloneRefactor, which contains scripts for running large scale clone detection over the indicated corpus.
 
 \subsection{The corpus}\label{chap:corpus}
-For our experiments we use a large corpus of open source projects~\cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on. We filtered this corpus further to only include projects that use Maven, which is a build tool which is mainly used to manage dependencies in the Java ecosystem. We then filtered the corpus further to only include projects for which all external dependencies are available. This resulted in 1.343 projects of varying sizes averaging at 980 source lines of code (omitting whitespace, comments) per project.
+For our experiments we use a large corpus of open source projects~\cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects and files were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on. We filtered this corpus further to only include projects that use Maven, which is a build tool which is mainly used to manage dependencies in the Java ecosystem. We then filtered the corpus further to only include projects for which all external dependencies are available, as CloneRefactor requires all dependencies of a project in order to accurately resolve all its symbols. This resulted in 1.343 projects of varying sizes averaging at 980 source lines of code (omitting whitespace, comments) per project.
 
 \subsection{Thresholds}\label{chap:thresholds}
 Thresholds are a tool that aid in the process of deciding whether a clone \textit{should} be refactored. Many clone detection tools focus on either the number of lines~\cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, number of tokens~\cite{roy2008nicad, sajnani2016sourcerercc, ragkhitwetsagul2019siamese} and/or number of nodes (declarations/statements)~\cite{higo2013revisiting} to decide whether code fragments should be considered clones of each other. A comparison of clone detection tools by Bellon et al.~\cite{bellon2007comparison} shows that most clone detection tools choose a minimum of \textbf{6} lines of code to be duplicate to consider code fragments a clone. The Scorpio clone detection tool uses this same number as minimum number of nodes~\cite{higo2013revisiting}. Token based tools mostly operate on basis of a minimum of \textbf{50} tokens for fragments to be considered a clone~\cite{sajnani2016sourcerercc}.
@@ -226,12 +228,12 @@ To find such a threshold, we measured the number of clone classes found for a ce
 
 In this chart we see that when seeking clones with a minimum of 10 tokens, there are more clones that span 2 statements than clones that span one statement. We manually assessed these clones, and mainly the two-statement clones contain many clones that we classified as ``should be refactored''. Because of this, we decided to go with a minimum of 10 tokens threshold for our experiments.
 
-\subsection{Clone types}
+\subsection{Clone types}\label{sec:clonetypeexperiments}
 In this chapter we display the differences between clone type 1-3~\cite{roy2007survey} and type 1R-3R as proposed in section \ref{sec:rtypes}. When running our clone detection script over the corpus, we get the results displayed in Fig.~\ref{fig:typeres}.
 
 \begin{figure}[H]
   \caption{Number of cloned declarations/statements.}
-    \includegraphics[width=.96\columnwidth]{img/TypeResults}
+    \includegraphics[width=1\columnwidth]{img/TypeResults}
   \label{fig:typeres}
 \end{figure}
 
@@ -241,7 +243,7 @@ We also measured the duration of finding clones by the different clone types. Fi
 
 \begin{figure}[H]
   \caption{Duration in minutes of identifying clones for clone type definitions.}
-    \includegraphics[width=.96\columnwidth]{img/DurationChart}
+    \includegraphics[width=1\columnwidth]{img/DurationChart}
   \label{fig:performance}
 \end{figure}
 
@@ -264,10 +266,9 @@ Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes an
 
 All data shown in this section is measured using the T1R clone definition. We have performed the same measurements for the other type definitions and found that they follow similar trends. Because of that, we decided not to further show them in this section.
 
-\subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
+\subsubsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
-\subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
 Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are shown in Fig.~\ref{fig:clonerelation}. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
