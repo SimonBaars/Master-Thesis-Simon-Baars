@@ -27,7 +27,7 @@ Ana Oprescu \\ University of Amsterdam\\
 \maketitle
 
 \begin{abstract}
-Duplication in source code can have a major negative impact on the maintainability of source code, as it creates implicit dependencies between fragments of code. Such implicit dependencies often cause bugs. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. We propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not create side effects.
+Duplication in source code can have a major negative impact on the maintainability of source code, as it creates implicit dependencies between fragments of code. Such implicit dependencies often cause bugs and increases maintenance efforts. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. We propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not create side effects.
 
 Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Approximately ten percent of the duplication can be refactored through method extraction without extra considerations required, while other clones require other refactoring techniques or further transformations. Similar future measurements will provide further insight into the contexts where clones occur and how this affects the automated refactoring process. Finally, we strive to construct a tool that automatically applies refactorings for a large part of the detected duplication problems.
 \end{abstract}
@@ -323,7 +323,7 @@ Ancestor          & 14 & 0.11          \\ \hline
 
 The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with T1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and T1R clones.
 
-\subsection{Clone instance location}\label{chap:clonelocation}
+\subsubsection{Clone instance location}\label{chap:clonelocation}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
@@ -352,7 +352,7 @@ Enum Level         & 147 & 0.45            \\ \hline
 
 Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and T1R, it seems that there are relatively less method level clones and more class level clones for T1R. This is probably due to that the main reason for variability between type 1 and T1R is variable references, which occur more at method level than class level.
 
-\subsection{Clone instance contents}\label{chap:clonecontents}
+\subsubsection{Clone instance contents}\label{chap:clonecontents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
@@ -370,18 +370,18 @@ The results for these categories are displayed in Table \ref{table:contents}.
   \begin{center}
   \caption{Clone instance contents} \label{table:contents}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
   \hline
-  \textbf{Contents} & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Method\end{tabular}             & 32,214 & 64.72 & 18,791 & 57.37 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Several\\Methods\end{tabular}            & 10,542 & 21.18 & 8,514 & 25.99 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes\\Constructor\end{tabular}       & 1,772  & 3.56  & 1,213 & 3.70 \\ \hline
-  Includes Field                                                      & 1,681  & 3.38  & 1,487 & 4.54 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Constructor\end{tabular}        & 1,389  & 2.79  & 1,078 & 3.29 \\ \hline
-  Only Fields                                                         & 962    & 1.93  & 888 & 2.71 \\ \hline
-  Full Method                                                         & 647    & 1.30  & 284 & 0.87 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Class\\Declaration\end{tabular} & 263    & 0.53  & 258 & 0.79 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Other\\Categories\end{tabular}           & 304    & 0.61  & 243 & 0.74 \\ \hline
+  \textbf{Contents} & \textbf{\#} & \textbf{\%} \\ \hline
+  Partial Method     & 18,791 & 57.37 \\ \hline
+  Several Methods         & 8,514 & 25.99 \\ \hline
+  Includes Constructor  & 1,213 & 3.70 \\ \hline
+  Includes Field        & 1,487 & 4.54 \\ \hline
+  Partial Constructor      & 1,078 & 3.29 \\ \hline
+  Only Fields           & 888 & 2.71 \\ \hline
+  Full Method           & 284 & 0.87 \\ \hline
+  Includes Class Declaration  & 258 & 0.79 \\ \hline
+  Other Categories    & 243 & 0.74 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -403,13 +403,13 @@ We measured the amount of clones that can be refactored through method extractio
   \begin{center}
   \caption{Refactorability through method extraction} \label{table:refactorability}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{}        & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Is not a\\partial method\end{tabular}           & 5,917 & 34.22 & 4,806 & 38.49 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Complex\\control flow\end{tabular} & 5,511 & 31.87 & 3,158 & 25.29 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Spans part of\\a block\end{tabular}             & 3,989 & 23.07 & 3,152 & 25.24 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                  & 1,874 & 10.84 & 1,371 & 10.98 \\ \hline
+\textbf{}         & \textbf{\#} & \textbf{\%} \\ \hline
+Is not a partial method     & 4,806 & 38.49 \\ \hline
+Complex control flow  & 3,158 & 25.29 \\ \hline
+Spans part of a block   & 3,152 & 25.24 \\ \hline
+Can be extracted & 1,371 & 10.98 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
