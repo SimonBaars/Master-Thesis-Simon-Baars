@@ -241,11 +241,11 @@ In this chapter we display the differences between clone type 1-3 \cite{roy2007s
 
 In this figure the amount cloned statements per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%), mainly because we allow no variability in used types. T3R and T3 are similar to T2R and T2, because our dataset does not have so many gapped clones for the thresholds used.
 
-We also measured the duration of finding clones by the different clone types. These results are displayed in figure \ref{fig:performance}. Although this data is dependent on the implementation, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Most of the time that the refactoring-oriented clone types take longer is spent resolving symbols (to infer FQIs).
+We also measured the duration of finding clones by the different clone types. Fig.~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is dependent on the implementation, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Most of the time that the refactoring-oriented clone types take longer is spent resolving symbols (to infer FQIs).
 
 \begin{figure}[H]
   \caption{Duration in minutes of identifying clones for clone type definitions.}
-    \includegraphics[width=1\columnwidth]{img/TypeResults}
+    \includegraphics[width=1\columnwidth]{img/DurationChart}
   \label{fig:performance}
 \end{figure}
 
@@ -338,14 +338,14 @@ Please note that these results are measured over each clone instance rather than
   \begin{center}
   \caption{Clone instance locations} \label{table:locations}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{Location}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-Method Level       & 32,861           & 66.02   & 19,075 & 58.23            \\ \hline
-Class Level        & 15,069           & 30.27   & 12,207 & 37.27            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Constructor\\Level\end{tabular}  & 1,391            & 2.79     & 1,080 & 3.30           \\ \hline
-\begin{tabular}[c]{@{}l@{}}Interface\\Level\end{tabular}    & 282              & 0.57     & 247 & 0.75           \\ \hline
-Enum Level         & 171               & 0.34    & 147 & 0.45            \\ \hline
+\textbf{Location}   & \textbf{\#} & \textbf{\%} \\ \hline
+Method Level        & 19,075 & 58.23            \\ \hline
+Class Level        & 12,207 & 37.27            \\ \hline
+Constructor Level    & 1,080 & 3.30           \\ \hline
+Interface Level   & 247 & 0.75           \\ \hline
+Enum Level         & 147 & 0.45            \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
