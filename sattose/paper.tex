@@ -53,11 +53,12 @@ Our end goal is to improve upon the current state-of-the-art in clone research \
 Section \ref{chap:background} describes the background from literature that we used to conduct this study. Section \ref{chap:clonedetection} presents our clone refactoring tool proposal. Section \ref{chap:clonetypes} outlines challenges with clone type definitions and proposes solutions for them in a refactoring context. Section \ref{chap:clonecontextexpl} outlines our analysis and measurements regarding the context of code clones. Section \ref{chap:mergingdups} shows our measurements regarding the amount of clones that can be refactored through method extraction. Section \ref{chap:threatstovalidity} shows the threats to validity of this study and section \ref{chap:conclusion} draws a conclusion based on our preliminary results.
 
 \subsection{Research questions}
-We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:
-
+We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:\\
 \textbf{RQ1.} How do we identify clones that we \textbf{can} refactor?\\
 \textbf{RQ2.} How do we identify clones that we \textbf{should} refactor?\\
-\textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring?
+\textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring?\\
+
+For \textbf{RQ1} we look into current clone definitions and clone detection methods. We then assess their suitability for refactoring purposes. For \textbf{RQ2} we look into to what extent clones can be filtered based on their impact on the system design when refactored. We do this by both determining good thresholds for the clone detection and by assessing the design implications of applying refactorings to the code. \textbf{RQ3} is currently still future work, hence the work in progress status of this paper.
 
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
