@@ -136,7 +136,7 @@ To limit the negative impact of this tradeoff on the design of the system, we fo
 \end{equation}
 
 \subsubsection{T3R clones}\label{sec:type3r}
-Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold~\cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that T3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined T3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
+Type 3 clones allow any change in statements (added, removed and changed statements). When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined T3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
 
 T3R clones allow, different from T2R clones, a gap between two clone classes of statements that are not cloned. The following rules apply to this gap:
 
@@ -155,7 +155,7 @@ $$C_{above} = \text{The clone instance above the gap}$$
 $$C_{below} = \text{The clone instance below the gap}$$
 
 \subsubsection{The challenge of detecting these clones}\label{chap:challenge}
-To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
+To detect each type of clone, we need to parse the FQI of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all FQIs, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which an FQI can be created.
 
 CloneRefactor uses JavaParser~\cite{tomassetti2017javaparser}. JavaParser has a built-in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
 
@@ -425,7 +425,7 @@ We measured the amount of clones that can be refactored through method extractio
 From Table \ref{table:refactorability}, we can see that approximately ten percent of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required. Looking into these techniques and transformations will be one of our next steps.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
-We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
+We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our assessments, seemed optimal. However, by using these, we definitely miss some harmful clones.
 
 \section{Conclusion and next steps}\label{chap:conclusion}
 In the research we have conducted so far we have made three novel contributions:
@@ -435,7 +435,7 @@ In the research we have conducted so far we have made three novel contributions:
     \item We mapped the opportunities to perform method extraction on clones this corpus.
 \end{itemize}
 
-We have looked into existing definitions for different types of clones~\cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that fully qualified identifiers of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the refactored unit shall have.
+We have looked into existing definitions for different types of clones~\cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that FQIs of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the refactored unit shall have.
 
 The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a fourth of the clone classes all of its instances are in the same class. About a sixth of the clone classes have clone instances that are siblings of each other (share the same superclass).
 
