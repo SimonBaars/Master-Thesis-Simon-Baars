@@ -51,7 +51,8 @@ Our end goal is to improve upon the current state-of-the-art in clone research~\
 Sec.~\ref{chap:background} describes the background from literature that we used to conduct this study. Sec.~\ref{chap:clonedetection} presents our clone refactoring tool proposal. Sec.~\ref{chap:clonetypes} outlines challenges with clone type definitions and proposes solutions for them in a refactoring context. Sec.~\ref{chap:clonecontextexpl} outlines our analysis and measurements regarding the context of code clones. Sec.~\ref{chap:mergingdups} shows our measurements regarding the amount of clones that can be refactored through method extraction. Sec.~\ref{chap:threatstovalidity} shows the threats to validity of this study and Sec.~\ref{chap:conclusion} draws a conclusion based on our preliminary results.
 
 \subsection{Research questions}
-We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:\\
+We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:
+\\\\
 \textbf{RQ1.} How can we define clone types such that they \textbf{can} be automatically refactored?\\
 %\textbf{RQ2.} How can we determine decision factors for when a clone \textbf{should} be refactored?\\
 \textbf{RQ2.} What are the discriminating factors to decide when a clone \textbf{should} be refactored?\\
@@ -66,7 +67,8 @@ As code clones are seen as one of the most harmful types of technical debt, they
 Regarding clone detection, there is a lot of variability in literature whether clone pairs or clone classes should be considered for detection. We focus on clone classes, because of the advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics~\cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy~\cite{fontana2012duplicated}.
 
 \subsection{Clone types}\label{chap:backgroundclonetypes}
-In a 2007 survey by Roy et al.~\cite{roy2007survey} he defines several types of clones:\\
+In a 2007 survey by Roy et al.~\cite{roy2007survey} he defines several types of clones:
+\\\\
 \textbf{Type 1:} Identical code fragments except for variations in whitespace (may also be variations in layout) and comments.\\
 \textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
 \textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.\\
@@ -239,7 +241,13 @@ In this chapter we display the differences between clone type 1-3 \cite{roy2007s
 
 In this figure the amount cloned statements per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%), mainly because we allow no variability in used types. T3R and T3 are similar to T2R and T2, because our dataset does not have so many gapped clones for the thresholds used.
 
-We also measured the duration of finding clones by the different clone types. These results are displayed in figure TODO.
+We also measured the duration of finding clones by the different clone types. These results are displayed in figure \ref{fig:performance}. Although this data is dependent on the implementation, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Most of the time that the refactoring-oriented clone types take longer is spent resolving symbols (to infer FQIs).
+
+\begin{figure}[H]
+  \caption{Duration in minutes of identifying clones for clone type definitions.}
+    \includegraphics[width=1\columnwidth]{img/TypeResults}
+  \label{fig:performance}
+\end{figure}
 
 \subsection{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is important to consider the context of the clone. We define the following aspects of the clone as its context:
@@ -258,8 +266,10 @@ To be able to refactor code clones, it is important to consider the context of t
 
 Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
 
+All data shown in this section is measured using the T1R clone definition. We have performed the same measurements for the other type definitions and found that they follow similar trends. Because of that, we decided not to further show them in this section.
+
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
-When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in Sec.~\ref{chap:corpus}. These measurements are based on an experiment by Fontana et al.~\cite{fontana2015duplicated}, which we will briefly introduce in Sec.~\ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in Sec.~\ref{chap:oursetup}. We then show our results in Sec.~\ref{chap:ourmeasurements}.
+When merging code clones in object-oriented languages, it is very important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
 \subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
 Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are shown in Fig.~\ref{fig:clonerelation}. These categories are as follows:
@@ -282,7 +292,6 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
   \label{fig:clonerelation}
 \end{figure}
 
-\subsubsection{Our setup}\label{chap:oursetup}
 We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.~\cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool (DCRA). As explained in section~\ref{ch:tool-overview}, we chose to implement our own tool, CloneRefactor. Therefore, the setup for our measurements differs as follows from Fontana et al.:
 \begin{itemize}
   \item We consider clone classes rather than clone pairs. The rationale for this is given in Sec.~\ref{chap:cloneclasses}.
@@ -291,24 +300,23 @@ We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.
 \item We test a broader range of projects. Fontana et al. use a set of 50 relatively large projects. We use the corpus as explained in \ref{chap:corpus}, which contains a diverse set of projects (diverse both in volume and code quality).
 \end{itemize}
 
-\subsubsection{Our results} \label{chap:ourmeasurements}
-Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our T1R definition as explained in Sec.~\ref{sec:type1r}.
+Table~\ref{table:relations} contains our results regarding the relations between clone instances.
 
 \begin{table}[H]
   \begin{center}
   \caption{Clone relations} \label{table:relations}
   \medskip
-\begin{tabular}{|l|l|l|l|l|} \hline
-\textbf{Relation}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-Unrelated          & 6,134           & 35.48  & 4,762 & 38.14            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Same\\Class\end{tabular}          & 4,772            & 27.60  & 3,131 & 25.07             \\ \hline
-Sibling            & 2,680            & 15.50   & 1,949 & 15.61            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Same\\Method\end{tabular}         & 2,247            & 13.00   & 1,685 & 13.49             \\ \hline
-\begin{tabular}[c]{@{}l@{}}External\\Superclass\end{tabular} & 794            & 4.59   & 558 & 4.47             \\ \hline
-\begin{tabular}[c]{@{}l@{}}First\\Cousin\end{tabular}        & 269             & 1.56     & 197 & 1.58           \\ \hline
-Superclass         & 237             & 1.37     & 118 & 0.94           \\ \hline
-\begin{tabular}[c]{@{}l@{}}Common\\Hierarchy\end{tabular}    & 123             & 0.71    & 73 & 0.58            \\ \hline
-Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
+\begin{tabular}{|l|l|l|} \hline
+\textbf{Relation} & \textbf{\#} & \textbf{\%} \\ \hline
+Unrelated          & 4,762 & 38.14            \\ \hline
+Same Class          & 3,131 & 25.07             \\ \hline
+Sibling               & 1,949 & 15.61            \\ \hline
+Same Method         & 1,685 & 13.49             \\ \hline
+External Superclass   & 558 & 4.47             \\ \hline
+First Cousin          & 197 & 1.58           \\ \hline
+Superclass          & 118 & 0.94           \\ \hline
+Common Hierarchy    & 73 & 0.58            \\ \hline
+Ancestor          & 14 & 0.11          \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
