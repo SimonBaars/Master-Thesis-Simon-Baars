@@ -131,7 +131,7 @@ To solve the shortcomings listed in section \ref{sec:type1}, we propose an alter
 We check functional equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. This entails the following procedures to verify equality:
 
 \begin{itemize}
-  \item \textbf{Referenced Types:} For all types references in the code, we should compare their FQI with other code fragements to ensure functional equality.
+  \item \textbf{Referenced Types:} For all types references in the code, we should compare their FQI with other code fragments to ensure functional equality.
   \item \textbf{Variables:} We trace the declaration of used variables to ensure that their type equals the type of another equally named variable.
   \item \textbf{Method Calls:} A codebase can have several methods with equal names, but a different implementation. Because of this, we compare the FQI of the method signature of called methods. A method signature includes the FQI for a methods' name, return value and each of its arguments.
 \end{itemize}
@@ -223,7 +223,7 @@ None of the state-of-the-art tools we identified implement all our criteria, so 
 
 Our tool is based on the JavaParser library \cite{tomassetti2017javaparser}. This library can parse Java source code to an AST representation. This AST can then be analyzed, modified and eventually written back to source code. This allows us to perform AST-based clone detection and apply transformations to the AST based on the clones found.
 
-CloneRefactor walks the AST and collects each declaration and statement. It then builds a graph representation on basis of this AST, in which each declaration and statement becomes a node. This graph representation maps the following relations for each declaration and statement:
+CloneRefactor walks the AST and collects each declaration and statement (similar to the Scorpio clone detection tool \cite{higo2013revisiting}). It then builds a graph representation on basis of this AST, in which each declaration and statement becomes a node. This graph representation maps the following relations for each declaration and statement:
 
 \begin{itemize}
   \item The declaration/statement preceding it
@@ -234,6 +234,9 @@ CloneRefactor walks the AST and collects each declaration and statement. It then
 Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
 
 \subsection{Thresholds}\label{chap:thresholds}
+Thresholds are a tool that aid in the process of deciding whether a clone \textit{should} be refactored. Many clone detection tools focus on either the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, number of tokens \cite{roy2008nicad, sajnani2016sourcerercc, ragkhitwetsagul2019siamese} and/or number of nodes (declarations/statements) \cite{higo2013revisiting} to decide whether code fragments should be considered clones of each other. A comparison of clone detection tools by Bellon et al. \cite{bellon2007comparison} shows that most clone detection tools choose a minimum of \textbf{6} lines of code to be duplicate to consider code fragments a clone. The Scorpio clone detection tool uses this same number as minimum number of nodes \cite{higo2013revisiting}. Token based tools mostly operate on basis of a minimum of \textbf{50} tokens for fragments to be considered a clone.
+
+However, we would argue that going with this ``magic number 6'' eliminates a lot of harmful clones that should be refactored. For instance
 
 CloneRefactor works on basis of three thresholds for finding clones:
 \begin{enumerate}
