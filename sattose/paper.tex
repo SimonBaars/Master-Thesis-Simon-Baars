@@ -29,7 +29,7 @@ Ana Oprescu \\ University of Amsterdam\\
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code, as it creates implicit dependencies between fragments of code. Such implicit dependencies often cause bugs and increases maintenance efforts. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. We propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not create side effects.
 
-Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Almost fourty percent of the duplication can be refactored through method extraction, while other clones require other refactoring techniques or further transformations. Future measurements will provide further insight into what clones should be refactored to improve the design of software systems.
+Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Almost 40 percent of the duplication can be refactored through method extraction, while other clones require other refactoring techniques or further transformations. Future measurements will provide further insight into what clones should be refactored to improve the design of software systems.
 \end{abstract}
 
 \section{Introduction}
@@ -152,9 +152,7 @@ All rules that apply to T2R clones also apply to T3R clones. Additionally, T3R c
 To detect each type of clone, we need to parse the FQI of all types, method calls and variables. This comes with challenges, regarding both performance and implementation. To trace the declarations of variables, methods and types, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which an FQI can be created.
 
 \section{Clone Detection}\label{chap:clonedetection}
-As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
-
-In this section, we first assess a set of modern clone detection tools for their applicability to this domain. Next, we introduce our own tool geared towards automatic clone refactoring, CloneRefactor.%Two surveys of modern clone detection tools~\cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
+As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones. In this section, we first assess a set of modern clone detection tools for their applicability to this domain. Next, we introduce our own tool geared towards automatic clone refactoring, CloneRefactor.%Two surveys of modern clone detection tools~\cite{sheneamer2016survey, svajlenko2014evaluating} together show an overview of the most-popular clone detection tools up until 2016. \todo{what is insufficient about these two? what triggered the need to reassess clone detectors? where are the four criteria coming from?}
 
 \subsection{Survey on Clone Detection Tools}
 \label{ch:tool-overview}
@@ -187,7 +185,13 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{table}
 
 \subsection{CloneRefactor}
-None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repository contains all scripts that were used to retrieve the data that is displayed in this paper.}. In this tool, we implemented both the literature clone types~\cite{roy2007survey} and our refactoring-oriented clone types as described in Sec.~\ref{sec:rtypes}.
+None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. In this tool, we implemented both the literature clone types~\cite{roy2007survey} and our refactoring-oriented clone types as described in Sec.~\ref{sec:rtypes}. %An abstract view of the process flow of CloneRefactor is displayed in figure \ref{fig:clonerefactor}
+
+%\begin{figure}[H]
+%  \caption{Abstract representation of CloneRefactor.}
+%    \includegraphics[width=1\columnwidth]{img/CloneRefactorOverall}
+%  \label{fig:clonerefactor}
+%\end{figure}
 
 Our tool is based on the JavaParser library~\cite{tomassetti2017javaparser}. This library can parse Java source code to an AST representation. This AST can then be analyzed, modified and eventually written back to source code. This allows us to perform AST-based clone detection and apply transformations to the AST based on the clones found.
 
