@@ -120,12 +120,6 @@ Having a definition that allows for any change in code poses serious challenges 
 \subsection{Refactoring-oriented clone types}\label{sec:rtypes}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
-Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Each statement that is a T1R will also be found for T2R; each T2R statement will also be found for T3R. Each rule that applies to T1R also applies to T2R; each T2R rule applies to T3R.
-
-\begin{equation}\label{eq:typerelation}
-T1R \subseteq T2R \subseteq T3R
-\end{equation}
-
 \subsubsection{T1R clones} \label{sec:type1r}
 To solve the issues identified in Sec.~\ref{sec:type1}, we introduce an alternative definition: cloned fragments have to be both textually \textit{and} functionally equal. Therefore, T1R clones are a subset of type 1 clones.
 %Although requiring fragments to be functionally equal, T1R clones do not allow for change in implementation (like type 4 clones).
