@@ -155,9 +155,7 @@ $$C_{above} = \text{The clone instance above the gap}$$
 $$C_{below} = \text{The clone instance below the gap}$$
 
 \subsubsection{The challenge of detecting these clones}\label{chap:challenge}
-To detect each type of clone, we need to parse the FQI of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all FQIs, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which an FQI can be created.
-
-CloneRefactor uses JavaParser~\cite{tomassetti2017javaparser}. JavaParser has a built-in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
+To detect each type of clone, we need to parse the FQI of all types, method calls and variables. This comes with challenges, regarding both performance and implementation. To trace the declarations of variables, methods and types, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which an FQI can be created.
 
 \section{Clone Detection}\label{chap:clonedetection}
 As duplication in source code is a serious problem in many software systems, many tools have been proposed to detect various types of code clones~\cite{sheneamer2016survey, svajlenko2014evaluating}. However, these tools were not yet assessed in terms of automatically refactoring clones.
@@ -207,31 +205,15 @@ CloneRefactor walks the AST and collects each declaration and statement (similar
   \item The previous statement/declaration that is cloned
 \end{itemize}
 
-Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
+Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against thresholds, and remove the clone classes that do not pass the test.
+
+\section{Experiments}
+This section outlines the conducted experiments to determine refactoring opportunities for code clones. First, we look into the thresholds that determine whether duplicated fragments are considered a clone in section \ref{chap:thresholds}. Next, we show the corpus on which we have performed our measurements in section \ref{chap:corpus}. We then perform an analysis on the context of code clones in section \ref{chap:clonecontextexpl}. Finally, we map refactoring opportunities for clones in section \ref{chap:mergingdups}.
 
 \subsection{Thresholds}\label{chap:thresholds}
 Thresholds are a tool that aid in the process of deciding whether a clone \textit{should} be refactored. Many clone detection tools focus on either the number of lines~\cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, number of tokens~\cite{roy2008nicad, sajnani2016sourcerercc, ragkhitwetsagul2019siamese} and/or number of nodes (declarations/statements)~\cite{higo2013revisiting} to decide whether code fragments should be considered clones of each other. A comparison of clone detection tools by Bellon et al.~\cite{bellon2007comparison} shows that most clone detection tools choose a minimum of \textbf{6} lines of code to be duplicate to consider code fragments a clone. The Scorpio clone detection tool uses this same number as minimum number of nodes~\cite{higo2013revisiting}. Token based tools mostly operate on basis of a minimum of \textbf{50} tokens for fragments to be considered a clone~\cite{sajnani2016sourcerercc}.
 
-However, we would argue that going with this ``magic number 6'' eliminates a lot of harmful clones that should be refactored. For instance
-
-\section{Context Analysis of Clones}\label{chap:clonecontextexpl}
-To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
-\begin{enumerate}
-  \item The relation of clone instances among each other through inheritance (for example: a clone instance resides in a superclass of another clone instance in the same clone class).
-  \item Where a clone instance occurs in the code (for example: a method-level clone is a clone instance that is in a method).
-  \item The contents of a clone instance (for example: the clone instance spans several methods).
-\end{enumerate}
-
-\begin{figure}[H]
-  \caption{Abstract representation of clone classes and clone instances.}
-    \medskip
-    \includegraphics[width=1\columnwidth]{img/context}
-  \label{fig:clonecontext}
-\end{figure}
-
-Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
-
-We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in Sec.~\ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in Sec.~\ref{chap:clonelocation}; the content of clone instances are explained, measured and discussed in Sec.~\ref{chap:clonecontents}.
+We would argue that going with this ``magic number 6'' eliminates a lot of harmful clones that should be refactored. For instance, a single 100-token statement will not be considered by such a threshold, which can still be harmful for the system design when
 
 \subsection{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects~\cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
@@ -253,6 +235,25 @@ Amount of statements/declarations                                               
 \end{tabular}
 \end{center}
 \end{table}
+
+\subsection{Context Analysis of Clones}\label{chap:clonecontextexpl}
+To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
+\begin{enumerate}
+  \item The relation of clone instances among each other through inheritance (for example: a clone instance resides in a superclass of another clone instance in the same clone class).
+  \item Where a clone instance occurs in the code (for example: a method-level clone is a clone instance that is in a method).
+  \item The contents of a clone instance (for example: the clone instance spans several methods).
+\end{enumerate}
+
+\begin{figure}[H]
+  \caption{Abstract representation of clone classes and clone instances.}
+    \medskip
+    \includegraphics[width=1\columnwidth]{img/context}
+  \label{fig:clonecontext}
+\end{figure}
+
+Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
+
+We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in Sec.~\ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in Sec.~\ref{chap:clonelocation}; the content of clone instances are explained, measured and discussed in Sec.~\ref{chap:clonecontents}.
 
 \subsection{Clone detection results}
 Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature~\cite{roy2007survey}. The second algorithm implements our T1R, as explained in Sec.~\ref{sec:type1r}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
@@ -396,7 +397,7 @@ The results for these categories are displayed in Table \ref{table:contents}.
 
 Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for T1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
 
-\section{Merging duplicate code through method extraction}\label{chap:mergingdups}
+\subsection{Method extraction opportunities}\label{chap:mergingdups}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
 
 We measured the amount of clones that can be refactored through method extraction (without additional transformations being required). Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
