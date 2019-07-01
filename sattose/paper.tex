@@ -131,15 +131,11 @@ To solve the issues identifier in Sec.~\ref{sec:type2}, we introduce . We tackle
 
 When refactoring two fragments that differ by a few literals, called methods or used variables, we are faced with a design tradeoff. For instance, if two literals differ and we want to refactor by method extraction, we need our new method to have an added argument to which each usage can pass the literal that was used at that place. Likewise, such things can be done for different variables that have been used and different called methods. Important here is, that the type of the used literals/variables are equal. Likewise, the signature of the called methods must be equal.
 
-To limit the negative impact of this tradeoff on the design of the system, we formalized as threshold for the variability between fragments. The formula by which this threshold is calculated is displayed in equation \ref{eq:type2r}. We take the amount of literals, variables and method calls that differ from other clone instances in a clone class and divide it by the total number of tokens in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring.
+To limit the negative impact of this tradeoff on the design of the system, we formalized as threshold for the variability between fragments. The formula by which this threshold is calculated is displayed in equation \ref{eq:type2r}. In this formula, \textit{different expressions} refers to the amount of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of tokens in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring.
 
 \begin{equation}\label{eq:type2r}
 \text{T2R}=\frac{\text{Different expressions}}{\text{Total tokens}}*100
 \end{equation}
-$$Diff = \text{Number that differ from other clone instances}$$
-$$l = \text{Literals in clone instance}$$
-$$v = \text{Variables in clone instance}$$
-$$m = \text{Method calls in clone instance}$$
 
 A method call does often not consist of a single token (unlike variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method. Because of this, T2R clones are not a subset of of type 2 clones. Because T3R clones inherit all rules of T2R clones, T3R clones are also not a subset of T3 clones. This is displayed in equation \ref{eq:typerelation2}.
 
