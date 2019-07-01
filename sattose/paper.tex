@@ -347,13 +347,13 @@ Enum Level         & 145 & 0.14            \\ \hline
 \end{table}
 
 \subsubsection{Clone instance contents}\label{chap:clonecontents}
-Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
+Finally, we looked at the contents of individual clone instances: what combination of declarations and statements they span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method/Constructor:} A clone that spans a method partially, optionally including its declaration.
-  \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
+  \item \textbf{Partial Method/Constructor:} A clone that spans a method partially.
+  \item \textbf{Several Methods:} A clone that spans over two or more methods and/or method bodies.
   \item \textbf{Only Fields:} A clone that spans only global variables.
-  \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields and other things, like methods.
+  \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields/constructors and other things.
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
 \end{enumerate}
 
@@ -410,7 +410,7 @@ Complex control flow & 1,503 & 4.24 \\ \hline
 From Table \ref{table:refactorability}, we can see that 38.22\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
-We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our assessments, seemed optimal. However, by using these, we definitely miss some harmful clones.
+We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our experiments and assessments, seemed optimal. However, by using these, we might have some ``noise'' in our results of clones that should not be considered for refactoring.
 
 \section{Conclusion and next steps}\label{chap:conclusion}
 In the research we have conducted so far we have made three novel contributions:
@@ -420,16 +420,14 @@ In the research we have conducted so far we have made three novel contributions:
     \item We mapped the opportunities to perform method extraction on clones this corpus.
 \end{itemize}
 
-We have looked into existing definitions for different types of clones~\cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that FQIs of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the refactored unit shall have.
+We have looked into existing definitions for different types of clones~\cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that fully qualified identifiers (FQIs) of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the refactored method will have.
 
-The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a fourth of the clone classes all of its instances are in the same class. About a sixth of the clone classes have clone instances that are siblings of each other (share the same superclass).
+The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that a little more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. About a third of the clone classes all of its instances are in the same class.
 
-Secondly, we looked at the location of clone instances. Most clone instances (58 percent) are found at method level. About 37 percent of clone instances were found at class level. We defined ``class level clones'' as clones that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.). Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (57 percent). About 26 percent of clones span over several methods.
-
-We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
+Secondly, we looked at the location of clone instances. Most clone instances (79 percent) are found at method level. Because of that, we concluded that our main refactoring focus should be aimed at method-level clones. A common method to refactor such clones is by extracting a new method on basis of the contents of the clone. However, method extraction cannot be applied in all cases. According to our experiments, about 40 percent of the clones can be refactored by extracting them to a new method.
 
 \subsection{Next steps}
-Our next step is to implement the ``Extract Method'' refactoring for the identified automatic refactoring opportunities. On basis of the resulting code, we can perform experiments comparing the maintainability index of the refactored code to the original code. On basis of these results, we can find better thresholds in order to determine thresholds. We can assess the impact of our work on code volume, complexity, etc. This helps to verify the usability of the proposed type definitions towards our goal of improving the quality of a software system.
+Our next step is to implement the ``Extract Method'' refactoring for the identified automatic refactoring opportunities. On basis of the resulting code, we can perform experiments that compare the maintainability index of the refactored code to the original code. The maintainability index of a system is an aggregation of various metrics that test a systems' maintainability (like volume, complexity, duplication, etc.). If we can automatically apply refactorings to the identified clones, this maintainability index can be used to select more optimal threshold values. 
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
