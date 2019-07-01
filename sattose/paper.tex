@@ -54,11 +54,12 @@ Section \ref{chap:background} describes the background from literature that we u
 
 \subsection{Research questions}
 We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:\\
-\textbf{RQ1.} How do we identify clones that we \textbf{can} refactor?\\
-\textbf{RQ2.} How do we identify clones that we \textbf{should} refactor?\\
-\textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring?\\
+\textbf{RQ1.} How can we define clone types such that they \textbf{can} be automatically refactored?\\
+%\textbf{RQ2.} How can we determine decision factors for when a clone \textbf{should} be refactored?\\
+\textbf{RQ2.} What are the discriminating factors to decide when a clone \textbf{should} be refactored?\\
+\textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring clones?\\
 
-For \textbf{RQ1} we look into current clone definitions and clone detection methods. We then assess their suitability for refactoring purposes. For \textbf{RQ2} we look into to what extent clones can be filtered based on their impact on the system design when refactored. We do this by both determining good thresholds for the clone detection and by assessing the design implications of applying refactorings to the code. \textbf{RQ3} is currently still future work, hence the work in progress status of this paper.
+For \textbf{RQ1} we look into current clone definitions and clone detection methods. We then assess their suitability for refactoring purposes. For \textbf{RQ2} we look into to what extent clones can be filtered based on their impact on the system design when refactored. We do this by both determining good thresholds for the clone detection and by assessing the design implications of applying refactorings to the code. \textbf{RQ3} is currently work in progress.
 
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
@@ -119,39 +120,32 @@ Having a definition that allows for any change in code poses serious challenges 
 \subsection{Refactoring-oriented clone types}\label{sec:rtypes}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
-Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Each statement found as cloned for T1R clones, will also be found as cloned for T2R and T3R. Each rule that applies to T1R clones also applies to T2R and T3R.
+Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Each statement that is a T1R will also be found for T2R; each T2R statement will also be found for T3R. Each rule that applies to T1R also applies to T2R; each T2R rule applies to T3R.
 
 \begin{equation}\label{eq:typerelation}
 T1R \subseteq T2R \subseteq T3R
 \end{equation}
 
-\subsubsection{Type 1R clones} \label{sec:type1r}
-To solve the shortcomings listed in section \ref{sec:type1}, we propose an alternative definition of type 1 clones. This definition requires cloned fragments to be not just textually equal, but also functionally equal. Because of this, type 1R clones are a subset of type 1 clones. Although requiring fragments to be functionally equal, T1R clones do not allow for change in implementation (like type 4 clones).
+\subsubsection{T1R clones} \label{sec:type1r}
+To solve the issues identified in Sec.~\ref{sec:type1}, we introduce an alternative definition: cloned fragments have to be both textually \textit{and} functionally equal. Therefore, T1R clones are a subset of type 1 clones.
+%Although requiring fragments to be functionally equal, T1R clones do not allow for change in implementation (like type 4 clones).
 
-We check functional equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object). This way we can validate whether two method references, like method calls, are functionally equal. This entails the following procedures to verify equality:
+We check functional equality of two fragments by checking the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object). For method calls, we also compare the equality of the FQI of the type of each of its arguments, to differentiate between overloaded method variants. This way we can check whether two identifiers are functionally equal.
 
-\begin{itemize}
-  \item \textbf{Referenced Types:} For all types references in the code, we should compare their FQI with other code fragments to ensure functional equality.
-  \item \textbf{Variables:} We trace the declaration of used variables to ensure that their type equals the type of another equally named variable.
-  \item \textbf{Method Calls:} A codebase can have several methods with equal names, but a different implementation. Because of this, we compare the FQI of the method signature of called methods. A method signature includes the FQI for a methods' name, return value and each of its arguments.
-\end{itemize}
-
-\subsubsection{Type 2R clones}\label{sec:type2r}
-We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold as a tradeoff exists in the refactoring of such differences. Furthermore, type 2R clones allow any variability in method names and class/enum/interface names. This is because, if the body of a method/class/enum/interface equals the body of another, but only their names differ, this can be refactored without a design tradeoff.
+\subsubsection{T2R clones}\label{sec:type2r}
+To solve the issues identifier in Sec.~\ref{sec:type2}, we introduce . We tackle the previously outlined shortcomings of type 2 clones to be able to detect such clones that can and should be refactored. All rules that apply to T1R clones also apply to T2R clones. Additionally, T2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold as a tradeoff exists in the refactoring of such differences. Furthermore, T2R clones allow any variability in method names and class/enum/interface names. This is because, if the body of a method/class/enum/interface equals the body of another, but only their names differ, this can be refactored without a design tradeoff.
 
 When refactoring two fragments that differ by a few literals, called methods or used variables, we are faced with a design tradeoff. For instance, if two literals differ and we want to refactor by method extraction, we need our new method to have an added argument to which each usage can pass the literal that was used at that place. Likewise, such things can be done for different variables that have been used and different called methods. Important here is, that the type of the used literals/variables are equal. Likewise, the signature of the called methods must be equal.
 
 To limit the negative impact of this tradeoff on the design of the system, we formalized as threshold for the variability between fragments. The formula by which this threshold is calculated is displayed in equation \ref{eq:type2r}. We take the amount of literals, variables and method calls that differ from other clone instances in a clone class and divide it by the total number of tokens in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring.
 
 \begin{equation}\label{eq:type2r}
-\text{T2R}=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100
+\text{T2R}=\frac{\text{Different expressions}}{\text{Total tokens}}*100
 \end{equation}
 $$Diff = \text{Number that differ from other clone instances}$$
-$$Total = \text{Total number in the clone instance}$$
 $$l = \text{Literals in clone instance}$$
 $$v = \text{Variables in clone instance}$$
 $$m = \text{Method calls in clone instance}$$
-$$t = \text{Tokens in clone instance}$$
 
 A method call does often not consist of a single token (unlike variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method. Because of this, T2R clones are not a subset of of type 2 clones. Because T3R clones inherit all rules of T2R clones, T3R clones are also not a subset of T3 clones. This is displayed in equation \ref{eq:typerelation2}.
 
@@ -159,15 +153,15 @@ A method call does often not consist of a single token (unlike variables and lit
 T1R \subseteq T1 \text{, but } T2R	\nsubseteq T2 \text{ and } T3R \nsubseteq T3
 \end{equation}
 
-\subsubsection{Type 3R clones}\label{sec:type3r}
-Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that type 3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined type 3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
+\subsubsection{T3R clones}\label{sec:type3r}
+Type 3 clones allow any change in statements (added, removed and changed statements). Many clone detection tools have implemented this type by introducing a similarity threshold \cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold entails that two fragments may differ by a certain percentage. This means that T3R allows the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. This is a tradeoff, as an added conditional block increases the complexity of the system. Because of that, we defined T3R clones in such a way that they are directed towards finding clones that are worth this tradeoff.
 
-Type 3R clones allow, different from type 2R clones, a gap between two clone classes of statements that are not cloned. The following rules apply to this gap:
+T3R clones allow, different from T2R clones, a gap between two clone classes of statements that are not cloned. The following rules apply to this gap:
 
 \begin{itemize}
   \item \textbf{The difference in statements must bridge a gap between two clones that were valid by the original thresholds}. This entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones. This holds the most value when looking at refactoring such clones. A difference at the beginning or end of a cloned block can better not be refactored.
   \item \textbf{The size of the gap between two clones is limited by a threshold.} This threshold is calculated by taking the percentage of the amount of statements in the gap over the amount of statements that both clones that are being bridged span. This is displayed in equation \ref{eq:type3r}.
-  \item \textbf{The gap may not span a partial block.} To make sure that the type 3R clone can be refactored, we do not allow the gap to span a part of a block, for instance the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could however use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
+  \item \textbf{The gap may not span a partial block.} To make sure that the T3R clone can be refactored, we do not allow the gap to span a part of a block, for instance the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could however use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for T3R clones.
 \end{itemize}
 
 \subsubsection{The challenge of detecting these clones}\label{chap:challenge}
@@ -234,17 +228,9 @@ CloneRefactor walks the AST and collects each declaration and statement (similar
 Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
 
 \subsection{Thresholds}\label{chap:thresholds}
-Thresholds are a tool that aid in the process of deciding whether a clone \textit{should} be refactored. Many clone detection tools focus on either the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, number of tokens \cite{roy2008nicad, sajnani2016sourcerercc, ragkhitwetsagul2019siamese} and/or number of nodes (declarations/statements) \cite{higo2013revisiting} to decide whether code fragments should be considered clones of each other. A comparison of clone detection tools by Bellon et al. \cite{bellon2007comparison} shows that most clone detection tools choose a minimum of \textbf{6} lines of code to be duplicate to consider code fragments a clone. The Scorpio clone detection tool uses this same number as minimum number of nodes \cite{higo2013revisiting}. Token based tools mostly operate on basis of a minimum of \textbf{50} tokens for fragments to be considered a clone.
+Thresholds are a tool that aid in the process of deciding whether a clone \textit{should} be refactored. Many clone detection tools focus on either the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, number of tokens \cite{roy2008nicad, sajnani2016sourcerercc, ragkhitwetsagul2019siamese} and/or number of nodes (declarations/statements) \cite{higo2013revisiting} to decide whether code fragments should be considered clones of each other. A comparison of clone detection tools by Bellon et al. \cite{bellon2007comparison} shows that most clone detection tools choose a minimum of \textbf{6} lines of code to be duplicate to consider code fragments a clone. The Scorpio clone detection tool uses this same number as minimum number of nodes \cite{higo2013revisiting}. Token based tools mostly operate on basis of a minimum of \textbf{50} tokens for fragments to be considered a clone \cite{sajnani2016sourcerercc}.
 
 However, we would argue that going with this ``magic number 6'' eliminates a lot of harmful clones that should be refactored. For instance
-
-CloneRefactor works on basis of three thresholds for finding clones:
-\begin{enumerate}
-  \item \textbf{Number of statements/declarations:} The number of statements/declarations that should be equal/similar for it to be considered a clone.
-  \item \textbf{Number of tokens:} The number of tokens (excluding whitespace, end-of-line terminators and comments) that should be equal/similar for it to be considered a clone.
-  \item \textbf{Number of lines:} The minimum amount of lines (excluding lines that do not contain any tokens) that should be equal/similar for it to be considered a clone.
-\end{enumerate}
-Of course, if any threshold is set to zero, it will be ignored, thus not all thresholds have to be used at all times. We consider ``number of lines'' to be the least important, as it highly depends on the developer of the codebase (and we want to prevent this dependence).
 
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
@@ -263,7 +249,7 @@ To be able to refactor code clones, it is very important to consider the context
 
 Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
 
-We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in section \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in section \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in section \ref{chap:clonecontents}.
+We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in section \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in section \ref{chap:clonelocation}; the content of clone instances are explained, measured and discussed in section \ref{chap:clonecontents}.
 
 \subsection{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
@@ -287,7 +273,7 @@ Amount of statements/declarations                                               
 \end{table}
 
 \subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our type 1R, as explained in section \ref{sec:type1r}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
+Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature \cite{roy2007survey}. The second algorithm implements our T1R, as explained in section \ref{sec:type1r}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
 
 \begin{table}[H]
   \begin{center}
@@ -295,7 +281,7 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
   \medskip
 \begin{tabular}{|l|l|l|}
 \hline
- & \textbf{Type 1} & \textbf{Type 1R} \\ \hline
+ & \textbf{Type 1} & \textbf{T1R} \\ \hline
 \begin{tabular}[c]{@{}l@{}}Amount of lines cloned\end{tabular} & 200,362 & 129,519 \\ \hline
 \begin{tabular}[c]{@{}l@{}}Amount of statements/\\declarations cloned\end{tabular} & 182,466 & 118,980 \\ \hline
 \begin{tabular}[c]{@{}l@{}}Amount of tokens cloned\end{tabular} & 1,582,845 & 973,596 \\ \hline
@@ -303,7 +289,7 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 \end{center}
 \end{table}
 
-Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
+Looking at Table \ref{table:clonedet}, it becomes apparent that the T1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in section \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in section \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in section \ref{chap:oursetup}. We then show our results in section \ref{chap:ourmeasurements}.
@@ -340,7 +326,7 @@ We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.
 \end{itemize}
 
 \subsubsection{Our results} \label{chap:ourmeasurements}
-Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in section \ref{sec:type1r}.
+Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our T1R definition as explained in section \ref{sec:type1r}.
 
 \begin{table}[H]
   \begin{center}
@@ -361,7 +347,7 @@ Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
 \end{center}
 \end{table}
 
-The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with type 1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and type 1R clones.
+The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with T1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and T1R clones.
 
 \subsection{Clone instance location}\label{chap:clonelocation}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
@@ -390,7 +376,7 @@ Enum Level         & 171               & 0.34    & 147 & 0.45            \\ \hli
 \end{center}
 \end{table}
 
-Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and type 1R, it seems that there are relatively less method level clones and more class level clones for type 1R. This is probably due to that the main reason for variability between type 1 and type 1R is variable references, which occur more at method level than class level.
+Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and T1R, it seems that there are relatively less method level clones and more class level clones for T1R. This is probably due to that the main reason for variability between type 1 and T1R is variable references, which occur more at method level than class level.
 
 \subsection{Clone instance contents}\label{chap:clonecontents}
 Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
@@ -426,7 +412,7 @@ The results for these categories are displayed in Table \ref{table:contents}.
 \end{center}
 \end{table}
 
-Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for type 1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
+Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for T1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
 
 \section{Merging duplicate code through method extraction}\label{chap:mergingdups}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
@@ -476,7 +462,7 @@ Secondly, we looked at the location of clone instances. Most clone instances (58
 We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
 
 \subsection{Next steps}
-The next step is to integrate our type 2R and type 3R definitions into our CloneRefactor tool. We then will look into appropriate thresholds for these types of clones. We can then re-run all scripts for type 2R and 3R clones. On basis of these results, we can prioritize implementing automated refactorings.
+The next step is to integrate our T2R and T3R definitions into our CloneRefactor tool. We then will look into appropriate thresholds for these types of clones. We can then re-run all scripts for T2R and 3R clones. On basis of these results, we can prioritize implementing automated refactorings.
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
