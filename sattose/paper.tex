@@ -108,10 +108,10 @@ Type 3 clones are \textit{copied fragments with further modification (having add
 
 Having a definition that allows for any change in code poses serious challenges on refactoring. A levenshtein distance of one can already change the meaning of a code fragment significantly, for instance if the name of a type differs by a character (and thus referring to different types).
 
-\subsection{Refactoring-oriented clone types}
+\subsection{Refactoring-oriented clone types}\label{sec:rtypes}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types to be directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions share similarities with the literature definitions, the number of each type corresponds with the clone type it is modeled after. The ``R'' stands for refactoring-oriented (and may be less suitable for other analyses).
 
-Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Likewise, each type R clone inherits all properties of the previous one. Each statement found as cloned for T1R clones, will also be found as cloned for T2R and T3R. Each rule that applies to T1R clones also applies to T2R and T3R.
+Like the clone types that are commonly used in literature \cite{roy2007survey}, each type R clone is a subset of the next type. This property is displayed in equation \ref{eq:typerelation}. Each statement found as cloned for T1R clones, will also be found as cloned for T2R and T3R. Each rule that applies to T1R clones also applies to T2R and T3R.
 
 \begin{equation}\label{eq:typerelation}
 T1R \subseteq T2R \subseteq T3R
@@ -180,7 +180,7 @@ In this section, we first assess a set of modern clone detection tools for their
 We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview.
-\item \textbf{Should find all clones in created control projects.} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
+\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
 \item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be merged. Sometimes, textual equality between code fragments does not imply that these can be merged (this is described more elaborately in section \ref{sec:type1}). Because of this, we want to use a clone detection tool that can analyze such structures.
 \item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
 \end{enumerate}
@@ -205,19 +205,20 @@ Scorpio \cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{center}
 \end{table}
 
-None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repository contains all scripts that were used to retrieve the data that is displayed in this paper.}.
-
 \subsection{CloneRefactor}
-A 2016 survey by Gautam \cite{gautam2016various} focuses more on various techniques for clone detection. We decided to combine AST- and Graph-based approaches for clone detection. We build a similarity graph of statements (linking to similar statements). The graph built by CloneRefactor is shown in Figure \ref{fig:clonerefactor}.
+None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}. This repository contains all scripts that were used to retrieve the data that is displayed in this paper.}. In this tool, we implemented both the literature clone types \cite{roy2007survey} and our refactoring-oriented clone types as described in section \ref{sec:rtypes}.
 
-\begin{figure}[H]
-  \caption{Abstract figure of the graph representation built by CloneRefactor}
-  \medskip
-  \includegraphics[width=1\columnwidth]{img/CodeGraph}
-  \label{fig:clonerefactor}
-\end{figure}
+Our tool is based on the JavaParser library \cite{tomassetti2017javaparser}. This library can parse Java source code to an AST representation. This AST can then be analyzed, modified and eventually written back to source code. This allows us to perform AST-based clone detection and apply transformations to the AST based on the clones found.
 
-We decided to base our tool on the JavaParser library \cite{tomassetti2017javaparser}, as it supports rewriting the AST back to Java code and is compatible with all modern Java versions (Java 1-12). We collect each statement and declaration and compare those to find duplicates. We build a graph of each statement/declaration linking to each subsequent statement/declaration (horizontally) and linking to each of its duplicates (vertically). On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
+CloneRefactor walks the AST and collects each declaration and statement. It then builds a graph representation on basis of this AST, in which each declaration and statement becomes a node. This graph representation maps the following relations for each declaration and statement:
+
+\begin{itemize}
+  \item The declaration/statement preceding it
+  \item The declaration/statement following it
+  \item The previous statement/declaration that is cloned
+\end{itemize}
+
+Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
 
 \subsubsection{Thresholds}\label{chap:thresholds}
 CloneRefactor works on basis of three thresholds for finding clones:
