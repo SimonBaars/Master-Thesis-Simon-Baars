@@ -239,7 +239,7 @@ In this chapter we display the differences between clone type 1-3~\cite{roy2007s
 
 In this figure the number of cloned nodes per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%), mainly because we allow no variability in used types. T3R and T3 are similar to T2R and T2, because our dataset does not have so many gapped clones for the thresholds used.
 
-We also measured the duration of finding clones by the different clone types. Fig.~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is dependent on the implementation, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Most of the time that the refactoring-oriented clone types take longer is spent resolving symbols (to infer FQIs).
+We also measured the duration of finding clones by the different clone types. Fig.~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is partly dependent on our implementation of the clone types, there is a notable difference between the refactoring-oriented clone types and the literature clone types. The reason for this is further explained in section \ref{chap:challenge}.
 
 \begin{figure}[H]
   \caption{Duration in minutes of identifying clones for clone type definitions.}
@@ -262,14 +262,14 @@ To be able to refactor code clones, it is important to consider the context of t
   \label{fig:clonecontext}
 \end{figure}
 
-Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
+Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured for each clone class. The location and contents of clones are measured for each clone instance.
 
 All data shown in this section is measured using the T1R clone definition. We have performed the same measurements for the other type definitions and found that they follow similar trends. Because of that, we decided not to further show them in this section.
 
 \subsubsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
-Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are shown in Fig.~\ref{fig:clonerelation}. These categories are as follows:
+Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
