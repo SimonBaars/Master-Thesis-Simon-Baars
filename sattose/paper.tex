@@ -106,7 +106,7 @@ Type 2 clones are \textit{structurally/syntactically identical fragments except 
   \label{fig:type2}
 \end{figure}
 
-Looking at the example in figure \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
+Looking at the example in Fig.~\ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
 When looking at refactoring, type 2 clones can be very difficult to refactor. For instance if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and objects, which further undermines the usefulness of clones detected by this definition.
 
@@ -218,7 +218,7 @@ Thresholds are a tool that aid in the process of deciding whether a clone \texti
 
 We would argue that going with this ``magic number 6'' eliminates a lot of harmful clones that should be refactored. For instance, a single 100-token statement will not be considered by such a threshold, which can still be harmful for the system design when cloned. Because of that, we decided to perform our measurements using thresholds that will include most clones that should be refactored, while eliminating most of the noise. With ``noise'' we mean duplication that has no relevancy towards refactoring, like a single token that is duplicated elsewhere.
 
-To find such a threshold, we measured the amount of clone classes found for a certain number of tokens. We then looked at the amount of nodes (statements/declarations) that these clones span. The resulting chart is displayed in figure \ref{fig:tokenthreshold}.
+To find such a threshold, we measured the amount of clone classes found for a certain number of tokens. We then looked at the amount of nodes (statements/declarations) that these clones span. The resulting chart is displayed in Fig.~\ref{fig:tokenthreshold}.
 
 \begin{figure}[H]
   \caption{Amount of times a clone with a certain amount of tokens has a certain amount of nodes.}
@@ -229,14 +229,17 @@ To find such a threshold, we measured the amount of clone classes found for a ce
 In this chart we see that when seeking clones with a minimum of 10 tokens, there are more clones that span 2 statements than clones that span one statement. We manually assessed these clones, and mainly the two-statement clones contain many clones that we classified as ``should be refactored''. Because of this, we decided to go with a minimum of 10 tokens threshold for our experiments.
 
 \subsection{Clone types}
-In this chapter we display the differences between clone type 1-3 \cite{roy2007survey} and type 1R-3R as proposed in section \ref{sec:rtypes}. When running our clone detection script over the corpus, we get the results displayed in figure
+In this chapter we display the differences between clone type 1-3 \cite{roy2007survey} and type 1R-3R as proposed in section \ref{sec:rtypes}. When running our clone detection script over the corpus, we get the results displayed in Fig.~\ref{fig:typeres}.
 
 \begin{figure}[H]
   \caption{Number of cloned declarations/statements.}
     \includegraphics[width=1\columnwidth]{img/TypeResults}
-  \label{fig:tokenthreshold}
+  \label{fig:typeres}
 \end{figure}
 
+In this figure the amount cloned statements per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%), mainly because we allow no variability in used types. T3R and T3 are similar to T2R and T2, because our dataset does not have so many gapped clones for the thresholds used.
+
+We also measured the duration of finding clones by the different clone types. These results are displayed in figure TODO.
 
 \subsection{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is important to consider the context of the clone. We define the following aspects of the clone as its context:
@@ -253,34 +256,13 @@ To be able to refactor code clones, it is important to consider the context of t
   \label{fig:clonecontext}
 \end{figure}
 
-Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
-
-We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in Sec.~\ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in Sec.~\ref{chap:clonelocation}; the content of clone instances are explained, measured and discussed in Sec.~\ref{chap:clonecontents}.
-
-\subsection{Clone detection results}
-Currently, we have implemented two clone detection algorithms into CloneRefactor. The first one finds clones by comparing tokens (excluding whitespace, comments and newlines), equal to the definition of type 1 clones in literature~\cite{roy2007survey}. The second algorithm implements our T1R, as explained in Sec.~\ref{sec:type1r}. The differences between the clones found for these algorithms is displayed in Table \ref{table:clonedet}.
-
-\begin{table}[H]
-  \begin{center}
-  \caption{CloneRefactor clone detection results for the two different algorithms.} \label{table:clonedet}
-  \medskip
-\begin{tabular}{|l|l|l|}
-\hline
- & \textbf{Type 1} & \textbf{T1R} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines cloned\end{tabular} & 200,362 & 129,519 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of statements/\\declarations cloned\end{tabular} & 182,466 & 118,980 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of tokens cloned\end{tabular} & 1,582,845 & 973,596 \\ \hline
-\end{tabular}
-\end{center}
-\end{table}
-
-Looking at Table \ref{table:clonedet}, it becomes apparent that the T1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
+Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored, in order to improve the software design in the process. In this section, we display measurements we conducted on the corpus introduced in Sec.~\ref{chap:corpus}. These measurements are based on an experiment by Fontana et al.~\cite{fontana2015duplicated}, which we will briefly introduce in Sec.~\ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in Sec.~\ref{chap:oursetup}. We then show our results in Sec.~\ref{chap:ourmeasurements}.
 
 \subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
-Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in Figure \ref{fig:clonerelation}. These categories are as follows:
+Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are shown in Fig.~\ref{fig:clonerelation}. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
@@ -299,7 +281,6 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
     \includegraphics[width=1\columnwidth]{img/Relation}
   \label{fig:clonerelation}
 \end{figure}
-Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
 
 \subsubsection{Our setup}\label{chap:oursetup}
 We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al.~\cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool (DCRA). As explained in section~\ref{ch:tool-overview}, we chose to implement our own tool, CloneRefactor. Therefore, the setup for our measurements differs as follows from Fontana et al.:
