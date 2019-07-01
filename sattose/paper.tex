@@ -169,6 +169,11 @@ Type 3R clones allow, different from type 2R clones, a gap between two clone cla
   \item \textbf{The gap may not span a partial block.} To make sure that the type 3R clone can be refactored, we do not allow the gap to span a part of a block, for instance the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could however use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 \end{itemize}
 
+\subsubsection{The challenge of detecting these clones}\label{chap:challenge}
+To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
+
+CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}. JavaParser has a built-in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
+
 \begin{equation}\label{eq:type3r}
 \text{T3R Gap}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100
 \end{equation}
@@ -227,7 +232,7 @@ CloneRefactor walks the AST and collects each declaration and statement. It then
 
 Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
 
-\section{Thresholds}\label{chap:thresholds}
+\subsection{Thresholds}\label{chap:thresholds}
 
 CloneRefactor works on basis of three thresholds for finding clones:
 \begin{enumerate}
@@ -236,11 +241,6 @@ CloneRefactor works on basis of three thresholds for finding clones:
   \item \textbf{Number of lines:} The minimum amount of lines (excluding lines that do not contain any tokens) that should be equal/similar for it to be considered a clone.
 \end{enumerate}
 Of course, if any threshold is set to zero, it will be ignored, thus not all thresholds have to be used at all times. We consider ``number of lines'' to be the least important, as it highly depends on the developer of the codebase (and we want to prevent this dependence).
-
-\subsection{The challenge of detecting these clones}\label{chap:challenge}
-To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
-
-CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}. JavaParser has a built-in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
 
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
