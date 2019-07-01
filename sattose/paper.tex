@@ -273,17 +273,17 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
-  \item \textbf{Superclass}: All instances of the clone class are children and parents of each other.
+  \item \textbf{Superclass}: All instances of the clone class are child or parent of each other.
   \item \textbf{Ancestor class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{Sibling class}: All instances of the clone class have the same parent class.
   \item \textbf{First cousin class}: All instances of the clone class have the same grandparent class.
-\item \textbf{Common hierarchy class}: All instances of the clone class belong to the same hierarchy, but do not belong to any of the other categories.
+\item \textbf{Common hierarchy class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
 \item \textbf{Same external superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
 \item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
 \end{enumerate}
 
 \begin{figure}[H]
-  \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
+  \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
     \medskip
     \includegraphics[width=1\columnwidth]{img/Relation}
   \label{fig:clonerelation}
@@ -318,15 +318,14 @@ Ancestor          & 54 & 0.15          \\ \hline
 \end{center}
 \end{table}
 
-The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (34.44), while for them it was only 15.70\%. This is likely due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a third of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the clones that are in the same method, which are also easy to refactor.
+The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (34.44\%), while for them it was only 15.70\%. This is likely due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a third of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the clones that are in the same method, which are similarly easy to refactor.
 
 \subsubsection{Clone instance location}\label{chap:clonelocation}
-After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. We use the following categories:
+After mapping the relations between individual clones, we considered at the location of individual clone instances. A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus, using the following categories:
 \begin{enumerate}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
   \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
-  \item \textbf{Interface Level:} A clone that is (a part of) an interface.
-  \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
+  \item \textbf{Interface/Enumeration Level:} A clone that is (a part of) an interface or enumeration.
 \end{enumerate}
 
 The results are shown in Table~\ref{table:locations}. Our results indicate that, quite significantly, most clones are found at method level. The number of clones found in interfaces and enumerations is very low.
@@ -356,7 +355,6 @@ Finally, we looked at the contents of individual clone instances: what kind of d
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields and other things, like methods.
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
-  \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
 
 The results for these categories are displayed in Table \ref{table:contents}.
