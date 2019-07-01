@@ -462,7 +462,7 @@ Secondly, we looked at the location of clone instances. Most clone instances (58
 We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
 
 \subsection{Next steps}
-The next step is to integrate our T2R and T3R definitions into our CloneRefactor tool. We then will look into appropriate thresholds for these types of clones. We can then re-run all scripts for T2R and 3R clones. On basis of these results, we can prioritize implementing automated refactorings.
+Our next step is to implement the ``Extract Method'' refactoring for the identified automatic refactoring opportunities. On basis of the resulting code, we can perform experiments comparing the maintainability index of the refactored code to the original code. On basis of these results, we can find better thresholds in order to determine thresholds. We can assess the impact of our work on code volume, complexity, etc. This helps to verify the usability of the proposed type definitions towards our goal of improving the quality of a software system.
 
 \section*{Acknowledgements}
 We would like to thank the Software Improvement Group (SIG) for their continuous support in this project.
