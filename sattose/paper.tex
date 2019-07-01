@@ -373,15 +373,15 @@ The results for these categories are displayed in Table \ref{table:contents}.
 \begin{tabular}{|l|l|l|}
   \hline
   \textbf{Contents} & \textbf{\#} & \textbf{\%} \\ \hline
-  Partial Method     & 18,791 & 57.37 \\ \hline
-  Several Methods         & 8,514 & 25.99 \\ \hline
-  Includes Constructor  & 1,213 & 3.70 \\ \hline
-  Includes Field        & 1,487 & 4.54 \\ \hline
-  Partial Constructor      & 1,078 & 3.29 \\ \hline
-  Only Fields           & 888 & 2.71 \\ \hline
-  Full Method           & 284 & 0.87 \\ \hline
-  Includes Class Declaration  & 258 & 0.79 \\ \hline
-  Other Categories    & 243 & 0.74 \\ \hline
+  Partial Method     & 79,945 & 78.80 \\ \hline
+  Several Methods         & 7,323 & 7.22 \\ \hline
+  Partial Constructor      & 4,385 & 4.32 \\ \hline
+  Full Method           & 3,868 & 3.81 \\ \hline
+  Only Fields           & 3,039 & 3.00 \\ \hline
+  Includes Constructor  & 1,522 & 1.50 \\ \hline
+  Includes Field        & 616 & 0.61 \\ \hline
+  Includes Class Declaration  & 376 & 0.37 \\ \hline
+  Other Categories    & 376 & 0.37\\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -394,7 +394,7 @@ The most used technique to refactor clones is method extraction (creating a new 
 We measured the amount of clones that can be refactored through method extraction (without additional transformations being required). Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
 \begin{itemize}
     \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
-    \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements.
+    \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans part of a block:} This clone spans a part of a statement.
     \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of Table \ref{table:contents}, the ``extract method'' refactoring technique cannot be applied.
 \end{itemize}
@@ -406,15 +406,15 @@ We measured the amount of clones that can be refactored through method extractio
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{}         & \textbf{\#} & \textbf{\%} \\ \hline
-Is not a partial method     & 4,806 & 38.49 \\ \hline
-Complex control flow  & 3,158 & 25.29 \\ \hline
-Spans part of a block   & 3,152 & 25.24 \\ \hline
-Can be extracted & 1,371 & 10.98 \\ \hline
+Can be extracted     & 13,553 & 38.22 \\ \hline
+Spans part of a block  & 12,332 & 34.78 \\ \hline
+Is not a partial method   & 8,074 & 22.77 \\ \hline
+Complex control flow & 1,503 & 4.24 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-From Table \ref{table:refactorability}, we can see that approximately ten percent of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required. Looking into these techniques and transformations will be one of our next steps.
+From Table \ref{table:refactorability}, we can see that 38.22\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our assessments, seemed optimal. However, by using these, we definitely miss some harmful clones.
