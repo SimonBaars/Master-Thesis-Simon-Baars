@@ -52,6 +52,13 @@ Our end goal is to improve upon the current state-of-the-art in clone research \
 
 Section \ref{chap:background} describes the background from literature that we used to conduct this study. Section \ref{chap:clonedetection} presents our clone refactoring tool proposal. Section \ref{chap:clonetypes} outlines challenges with clone type definitions and proposes solutions for them in a refactoring context. Section \ref{chap:clonecontextexpl} outlines our analysis and measurements regarding the context of code clones. Section \ref{chap:mergingdups} shows our measurements regarding the amount of clones that can be refactored through method extraction. Section \ref{chap:threatstovalidity} shows the threats to validity of this study and section \ref{chap:conclusion} draws a conclusion based on our preliminary results.
 
+\subsection{Research questions}
+We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:
+
+\textbf{RQ1.} How do we identify clones that we \textbf{can} refactor?\\
+\textbf{RQ2.} How do we identify clones that we \textbf{should} refactor?\\
+\textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring?
+
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair''is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
 
@@ -220,7 +227,8 @@ CloneRefactor walks the AST and collects each declaration and statement. It then
 
 Whether a node is considered a clone depends on the clone type that is being analyzed. On basis of this graph we detect clone classes. We compare clone classes against the thresholds, and remove the clone classes that do not pass the test.
 
-\subsubsection{Thresholds}\label{chap:thresholds}
+\section{Thresholds}\label{chap:thresholds}
+
 CloneRefactor works on basis of three thresholds for finding clones:
 \begin{enumerate}
   \item \textbf{Number of statements/declarations:} The number of statements/declarations that should be equal/similar for it to be considered a clone.
@@ -234,7 +242,7 @@ To detect each type of clone, we need to parse the fully qualified identifier of
 
 CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}. JavaParser has a built-in symbol solver, which can automatically resolve types, method calls and variables. However, because of this, CloneRefactor does require all libraries that the software project requires (apart from the Java Standard Library). If these are not available, CloneRefactor will estimate types on basis of the information that is available.
 
-\section{Relation, Location and Content Analysis of Clones}\label{chap:clonecontextexpl}
+\section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
 \begin{enumerate}
   \item The relation of clone instances among each other through inheritance (for example: a clone instance resides in a superclass of another clone instance in the same clone class).
