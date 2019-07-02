@@ -33,18 +33,16 @@ Our intermediate results indicate that more than half of the duplication in code
 \end{abstract}
 
 \section{Introduction}
-Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book~\cite{fowler1999refactoring}, he claims that \textit{``If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}.
+Duplication in source code is often seen as one of the most harmful types of technical debt. In Martin Fowler's ``Refactoring'' book~\cite{fowler1999refactoring}, he claims that \textit{``If you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them.''}. A paper by Bruntink et al.~\cite{bruntink2005use} shows that code clones can contribute up to 25\% of the code size, which has a negative impact on the maintainability.
 % In this research, we take a look at the challenges and opportunities in automatically refactoring duplicated code, also known as ``code clones''. The main goal is to improve the maintainability of the refactored code.
 
 Refactoring is used to improve the quality-related attributes of a codebase (maintainability, performance, etc.) without changing the functionality. Many methods were introduced to aid the process of refactoring~\cite{fowler1999refactoring, wake2004refactoring}, and are integrated into most modern IDE's. However, most of these methods still require a manual assessment of where and when to apply them. This means refactoring is either a significant part of the development process~\cite{lientz1978characteristics, mens2004survey}, or does not happen at all~\cite{mens2003refactoring}. For a large part, proper refactoring requires domain knowledge. However, there are also refactoring opportunities that are rather trivial and repetitive to execute. Our goal is investigating to what extend code clones can be automatically refactored.
 
 A survey by Roy et al.~\cite{roy2007survey} describes various ways in which clones can be identified. Most clone detection tools focus on finding clones that align with these definitions. In this paper, we outline challenges with these clone type definitions when considered in a refactoring context. We next propose solutions to these problems that would enable the detection of clones that can and should be refactored, rather than fragments of code that are just similar.
 
-Code clones can be found anywhere in a codebase. The location of a clone in the code has an impact on how it can be refactored. Therefore, we first look at where and how often clones are found, enabling the prioritization of refactoring opportunities.
-
 We focus mainly on the Java programming language as refactoring opportunities feature paradigm and programming language dependent aspects~\cite{choi2011extracting}. However, most practices featured currently in our work will also be applicable to other object-oriented languages, like C\# and Python. This is because these programming languages share many similarities regarding refactoring opportunities.
 
-Our end goal is to improve upon the current state-of-the-art in clone research~\cite{fontana2015duplicated, alwaqfi2017refactoring} by building a clone refactoring tool that automatically applies refactorings to a large percentage of clones found. The design decisions for this tool are made on basis of data gathered from a large corpus of software systems together with our own experience and findings from literature.
+Our end goal is to improve upon the current state-of-the-art in clone research~\cite{fontana2015duplicated, alwaqfi2017refactoring} by building a clone refactoring tool that can analyze the context of code clones to get a profile of how a clone can be refactored. This tool then automatically applies refactorings to a large percentage of clones found. The design decisions for this tool are made on basis of data gathered from a large corpus of software systems together with our own experience and findings from literature.
 
 \subsection{Research questions}
 We have formalized the following research questions in order to improve upon the state-of-the-art in code duplication refactoring:
@@ -54,7 +52,7 @@ We have formalized the following research questions in order to improve upon the
 \textbf{RQ2.} What are the discriminating factors to decide when a clone \textbf{should} be refactored?\\
 \textbf{RQ3.} To what extent can we \textbf{automate} the process of refactoring clones?\\
 
-For \textbf{RQ1} we look into current clone definitions and clone detection methods. We then assess their suitability for refactoring purposes. For \textbf{RQ2} we look into what thresholds we should use to identify clones that, when refactored, improve the design of the system. \textbf{RQ3} is currently work in progress.
+For \textbf{RQ1} we look into current clone definitions and clone detection methods and assess their suitability for refactoring purposes. For \textbf{RQ2} we look into what thresholds we should use to identify clones that, when refactored, improve the design of the system. \textbf{RQ3} is currently work in progress.
 
 \section{Background}\label{chap:background}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied extensively. A survey by Roy et al.~\cite{roy2007survey} states definitions of important concepts in code clone research. For instance, ``clone pair'' is defined as \textit{a set of two code portions/fragments which are identical or similar to each other}; ``clone class'' as \textit{the union of all clone pairs}; ``clone instance'' as a single code portion/fragment that is part of either a clone pair or clone class.
