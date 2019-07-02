@@ -157,9 +157,9 @@ As duplication in source code is a serious problem in many software systems, man
 We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
-\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
-\item \textbf{Can analyze resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be merged. Sometimes, textual equality between code fragments does not imply that these can be merged (this is described more elaborately in Sec.~\ref{sec:type1}). Because of this, we want to use a clone detection tool that can analyze such structures.
-\item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code or by using some configuration file.
+\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of clone detection tools.
+\item \textbf{Can analyze resolved symbols.} When detecting the types proposed in section \ref{sec:rtypes}, it is important that we can analyze FQIs of symbols. The rationale for this is further explained in \ref{chap:challenge}.
+\item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{sec:rtypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code or by using some configuration file.
 \end{enumerate}
 
 \begin{table}[H]
@@ -181,6 +181,8 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{tabular}
 \end{center}
 \end{table}
+
+Apart from these criteria, we found that the output of these clone detection tools cannot be post-processed to find the clone types proposed in section \ref{sec:rtypes}. This is mainly because the clones of T2R are not a subset of type 2 clones and will thus require an analysis of the entire system.
 
 \subsection{CloneRefactor}
 None of the state-of-the-art tools we identified implement all our criteria, so we decided to implement our own clone detection tool: CloneRefactor\footnote{CloneRefactor (WIP) is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. In this tool, we implemented both the literature clone types~\cite{roy2007survey} and our refactoring-oriented clone types as described in Sec.~\ref{sec:rtypes}. %An abstract view of the process flow of CloneRefactor is displayed in figure \ref{fig:clonerefactor}
