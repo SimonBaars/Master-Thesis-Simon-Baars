@@ -14,3 +14,13 @@ We introduce ...
 Make more clear how context relates to the defined types. Eq.~\ref{eq:t3r}
 
 Proportion (0-100) vs ratio (any %)
+
+
+Do we want dynamic thresholds?
+-> Yes, for sure! Token thresholds need to be dependent on:
+				- The relation
+				- The clone type
+
+				- The number of parameters that the refactored method would get
+				- Complexity of the refactored method (?) -> Both cyclomatic and cognitive complexity would do I guess
+				- Size of the refactored method (?)
