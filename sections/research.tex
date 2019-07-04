@@ -24,13 +24,13 @@ In the example in figure \ref{fig:type1}, we see a type 1 clone consisting of tw
 Because of this, type 1 clones may not all be subject to refactoring. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \subsection{Type 2 clones}\label{sec:type2}
-  Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
+Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments} \cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. The two methods displayed in figure \ref{fig:type2} are type 2 clones of each other.
 
-  \begin{figure}[H]
-    \includegraphics[width=1\columnwidth]{img/type2}
-    \caption{Example of a type 2 clone.}
-    \label{fig:type2}
-  \end{figure}
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/type2}
+  \caption{Example of a type 2 clone.}
+  \label{fig:type2}
+\end{figure}
 
 Looking at the example in figure \ref{fig:type2}, we see an example of a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
