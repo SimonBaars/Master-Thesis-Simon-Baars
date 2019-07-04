@@ -29,7 +29,7 @@ Ana Oprescu \\ University of Amsterdam\\
 \begin{abstract}
 Duplication in source code can have a major negative impact on the maintainability of source code, as it creates implicit dependencies between fragments of code. Such implicit dependencies often cause bugs and increase maintenance efforts. In this study, we look into the opportunities to automatically refactor these duplication problems for object-oriented programming languages. We propose a method to detect clones that are suitable for refactoring. This method focuses on the context and scope of clones, ensuring our refactoring improves the design and does not create side effects.
 
-Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. Almost 40 percent of the duplication can be refactored through method extraction, while other clones require other refactoring techniques or further transformations. Future measurements will provide further insight into what clones should be refactored to improve the design of software systems.
+Our intermediate results indicate that more than half of the duplication in code is related to each other through inheritance, making it easier to refactor these clones in a clean way. About 40 percent of the duplication can be refactored through method extraction, while other clones require other refactoring techniques or further transformations. Future measurements will provide further insight into what clones should be refactored to improve the design of software systems.
 \end{abstract}
 
 \section{Introduction}
@@ -400,15 +400,15 @@ We measured the number of clones that can be refactored through method extractio
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{}         & \textbf{\#} & \textbf{\%} \\ \hline
-Can be extracted     & 13,553 & 38.22 \\ \hline
-Spans part of a block  & 12,332 & 34.78 \\ \hline
+Can be extracted     & 14,664 & 41.35 \\ \hline
+Spans part of a block  & 10,801 & 30.46 \\ \hline
 Is not a partial method   & 8,074 & 22.77 \\ \hline
-Complex control flow & 1,503 & 4.24 \\ \hline
+Complex control flow & 1,922 & 5.42 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-From Table~\ref{table:refactorability}, we can see that 38.22\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
+From Table~\ref{table:refactorability}, we can see that 41\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our experiments and assessments, seemed optimal. However, by using these, we might have some ``noise'' in our results of clones that should not be considered for refactoring.
