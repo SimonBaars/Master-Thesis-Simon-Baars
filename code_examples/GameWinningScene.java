@@ -1,29 +1,16 @@
-package com.simonbaars.fruitcollector;
+package com.sb.fruitgame;
 
-import com.simonbaars.fruitcollector.fruits.winning.Apple;
-import com.simonbaars.fruitcollector.images.winning.*;
+import com.sb.fruitgame.Apple;
 
-import com.musiclibrary.music.highvolume.*;
-
-public class GameWinningScene extends GameScene
+public class GameScene extends Scene
 {
-	protected final Player player;
-
-	public GameScene(Player player)
-	{
-		this.player = player;
+	public void collect(Apple apple) {
+		apple.setStatus(this);
 	}
 
-	public String checkAppleCollected(Apple collectedApple) 
-	{
-		if(player.inventory.contains(collectedApple)){
-			showImage(new PNGImage());
-		}
-		playSong(new MusicPlayer());
-	}
-
-	@Override
-	public void playSong(MusicPlayer musicPlayer){
-		musicPlayer.playSong("theme.mp3");
+	public void addTen(int x) {
+		x = x + 10;
+		notifyChanged(x);
+		return x;
 	}
 }

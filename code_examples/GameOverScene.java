@@ -1,29 +1,16 @@
-package com.simonbaars.fruitcollector;
+package com.sb.fruitgame;
 
-import com.simonbaars.fruitcollector.fruits.rotten.Apple;
-import com.simonbaars.fruitcollector.images.losing.*;
+import com.sb.fruitgame.rotten.Apple;
 
-import com.musiclibrary.music.lowvolume.*;
-
-public class GameOverScene extends GameScene
+public class LoseScene extends Scene
 {
-	protected final Player player;
-
-	public GameOverScene(Player player)
-	{
-		super(player);
+	public void collect(Apple apple) {
+		apple.setStatus(this);
 	}
 
-	public String checkAppleCollected(Apple collectedApple) 
-	{
-		if(player.inventory.contains(collectedApple)){
-			showImage(new PNGImage());
-		}
-		playSong(new MusicPlayer());
-	}
-
-	@Override
-	public void playSong(MusicPlayer musicPlayer){
-		musicPlayer.playSong("theme.mp3");
+	public void concatTen(String x) {
+		x = x + 10;
+		notifyChanged(x);
+		return x;
 	}
 }
