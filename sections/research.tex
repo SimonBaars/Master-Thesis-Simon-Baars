@@ -34,7 +34,7 @@ For refactoring purposes, this definition is unsuitable; if we allow any change 
   \label{fig:type2}
 \end{figure}
 
-The example in Fig.~\ref{fig:type2} shows a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
+The example in figure \ref{fig:type2} shows a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
 When looking at refactoring, type 2 clones can be difficult to refactor. For instance, if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and reference types, which further undermines the usefulness of clones detected by this definition.
 
@@ -92,7 +92,7 @@ $$m = \text{Method calls in clone}$$
 $$t = \text{Tokens in clones}$$
 \caption{Type 2R variability threshold formula}\end{eqfloat}
 
-\paragraph{Literal and variable variability}
+\paragraph{Literal and variable variability}\label{sec:t2rliteralandvariable}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
 
 Consider the example in figure \ref{fig:type2literal}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result that is displayed on the right. In this process, we create a method parameter for the corresponding literal.
@@ -118,18 +118,24 @@ The method call variability property of type 2R clones imply that type 2R clones
   \label{fig:type2method}
 \end{figure}
 
-\subsubsection{Allow any variability in method and class names}
+\subsubsection{Allow any variability in some identifiers}
 When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. In the previous section, variability in literals, variables and called methods would result in more parameters for the extracted method, thus indicating a detrimental effect on system design. However, not always does a difference between fragments result in such a tradeoff.
 
 This section explains several patterns of variability that we can allow between cloned fragements without changing the method by which the fragments can be refactored.
 
 \paragraph{Class and method names}
-The names of classes and methods describe the implementation of their body. If two classes/methods are cloned, but their names differ, one of both names should be redundant. When refactoring such clones, we can choose one instance to keep and one to remove. Such a refactoring doesn't affect maintainability in any other way than refactoring a type 1R clone would. The same is true of interface, enumeration and annotation names. Because of this, type 2R allows any variability in class, method, interface, enumeration and annotation names.
+The names of classes and methods describe the implementation of their body. If two classes/methods are cloned, but their names differ, one of both names should be redundant. When refactoring such clones, we can choose one instance to keep and one to remove. Such a refactoring doesn't affect maintainability in any other way than refactoring a type 1R clone would. The same is true of interface, enumeration and annotation names. Because of this, type 2R allows any variability in class, method, interface, enumeration and annotation names. However, this will only open up a good refactoring opportunity if the entire body is cloned.
 
+\paragraph{Variable names}
+In section \ref{sec:t2rliteralandvariable} we described how variability in used variables often creates a design tradeoff. However, there are cases in which a used variable does not create a design tradeoff. For this, the following conditions need to apply:
 
-This is not the case with the name of a method declaration and the name of a class/interface/enumeration declaration.
+\begin{itemize}
+  \item The cloned variables are locally defined.
+  \item The cloned variables have the same type.
+  \item The cloned variables are used at the same places in cloned fragments.
+\end{itemize}
 
-If a full method is cloned with another method, however only their names differ, we can refactor these methods to keep only one of them. Allowing any change in method and class names will only indicate a refactoring opportunity if the full method or class is cloned.
+\todo{Show examples}
 
 \subsection{Type 3R clones}\label{sec:type3r}
 Type 3 clones allow any change in statements, often bounded by a similarity threshold. This means that type 3 clones allow the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. See figure \ref{fig:type3} for an example of such a clone.
