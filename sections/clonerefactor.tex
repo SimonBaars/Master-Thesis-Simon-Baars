@@ -1,4 +1,4 @@
-\section{CloneRefactor}
+\chapter{CloneRefactor}
 CloneRefactor is the name of our clone detection and refactoring tool. It features the following novel functions:
 \begin{itemize}
   \item Detection of clone classes rather than clone pairs.
@@ -17,7 +17,7 @@ In this section we describe our approach and rationale for the design decisions 
 
 Figure \ref{fig:clonerefactorprocess} shows the overall process used by CloneRefactor. First, we detect clones on basis of a Java codebase, given a Java project from disk and a configuration. The clone detection process is further explained in section \ref{sec:clonedetection}. After all clones are found, CloneRefactor maps the context of the clones. On basis of this context, CloneRefactor applies transformations to the source code for clones for which we have configured a refactoring.
 
-\subsection{JavaParser}
+\section{JavaParser}
 A very important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows to parse Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
 
 Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
@@ -26,7 +26,7 @@ In order to be able to trace referenced identifiers SymbolSolver requires access
 
 Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
-\subsection{Clone Detection}\label{sec:clonedetection}
+\section{Clone Detection}\label{sec:clonedetection}
 To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously, in accordance with our clone type philosophy as described in chapter \ref{sec:unifying}.
 
 The overall process regarding clone detection is displayed in figure \ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in section \ref{sec:clonegraph}. On basis of this graph, we detect clone classes and verify them using three thresholds (in order of importance):
@@ -44,15 +44,15 @@ If the detection was configured to detect either type 2R, 3 or 3R clones we perf
   \label{fig:clonedetection}
 \end{figure}
 
-\subsubsection{Generating the clone graph}\label{sec:clonegraph}
+\subsection{Generating the clone graph}\label{sec:clonegraph}
 First of all, we parse the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place (more about this in section \ref{sec:thresholds}).
 
-\paragraph{Filtering the AST}
+\subsubsection{Filtering the AST}
 As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We have decided to consider declarations and statements as the smallest compared entities. The main reasoning for this is because considering smaller AST constructs, like expressions, significantly increases the complexity and CPU usage of our clone detection and refactoring efforts.
 
 Additionally, we exclude package declarations and import statements. These are omitted by most clone detection tools, as clones in import statements hold limited valuable information.
 
-\paragraph{Building the clone graph}\label{sec:buildingclonegraph}
+\subsubsection{Building the clone graph}\label{sec:buildingclonegraph}
 Building the clone graph consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
 \begin{itemize}
   \item The declaration/statement preceding it.
@@ -70,7 +70,7 @@ We do not create a separate graph for each class file, so the statement/declarat
 
 We refer to the declarations and statements in this graph as \textit{nodes}. The relations \textit{next} and \textit{previous} in this graph are represented as an twodirectional arrow. The relations representing duplication are directed. This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in section \ref{sec:detectingclones}.
 
-\subsubsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
+\subsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
 In the previous section we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
 
 CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
@@ -81,7 +81,7 @@ For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit
 
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
-\subsubsection{Mapping graph nodes to code}
+\subsection{Mapping graph nodes to code}
 The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude child declarations and statements from each node. Look at figure \ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
@@ -93,7 +93,7 @@ The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains 
 
 In line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
 
-\subsubsection{Detecting Clones} \label{sec:detectingclones}
+\subsection{Detecting Clones} \label{sec:detectingclones}
 After building the clone clone graph, we use it to detect clones. We decided to focus on the detection of clone classes rather than clone pairs because clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
 
 As stated in the previous section, nodes in the graph link to \textit{preceding} cloned statement. This implies that the first node that is cloned does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in figure \ref{fig:clonegraph} to a clone graph as displayed in figure \label{fig:clonegraph2}.
@@ -113,7 +113,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
-\subsubsection{Validating the type 2R variability threshold}
+\subsection{Validating the type 2R variability threshold}
 In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
 
 \begin{figure}[H]
@@ -126,4 +126,4 @@ In the definition of type 2R clones (see section \ref{sec:type2r}) we described 
 Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone determination process is described in more detail in section \ref{sec:comparingstuff}. Each of the following paragraphs will explain a step from figure \ref{fig:clonerefactort2rflow}.
 
 
-\subsubsection{Checking for type 3 opportunities}
+\subsection{Checking for type 3 opportunities}
