@@ -270,7 +270,7 @@ As a first step towards building the clone graph, we preprocess the AST to decid
 
 Additionally, we exclude package declarations and import statements. These are omitted by most clone detection tools, as clones in import statements hold limited valuable information.
 
-\paragraph{Building the clone graph}
+\paragraph{Building the clone graph}\label{sec:buildingclonegraph}
 Building the clone graph consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
 \begin{itemize}
   \item The declaration/statement preceding it.
@@ -299,10 +299,8 @@ For \textbf{type 2R} clones we allow any variation in literals, variables and me
 
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
-\subsubsection{Detecting Clones} \label{sec:detectingclones}
-After building the clone clone graph, we use it to detect clones. We decided to focus on the detection of clone classes rather than clone pairs because clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
-
-As stated in the previous section, nodes in the graph link to \textit{preceding} cloned statement. This implies that the first node that is cloned does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, see figure \ref{fig:clonegraph} and \label{fig:clonegraph2}.
+\subsubsection{Mapping graph nodes to code}
+The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude child declarations and statements from each node. Look at figure \ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
   \centering
