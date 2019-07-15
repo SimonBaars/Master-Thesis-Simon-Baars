@@ -266,12 +266,9 @@ If the detection was configured to detect either type 2R, 3 or 3R clones we perf
 First of all, we parse the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place (more about this in section \ref{sec:thresholds}).
 
 \paragraph{Filtering the AST}
-As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We filter the following types of nodes:
-\begin{itemize}
-  \item \textbf{Expressions: }The smallest entity in the clone graph is a Statement. Because of that, we filter out all expressions.
-  \item \textbf{Package declaration and import statements: }These are omitted by most clone detection tools, as clones in import statements hold limited valuable information.
-  \item \textbf{Modifiers: }The clone graphs' nodes consist of only declarations and statements. Modifiers are part of the declarations, so they are not considered separately.
-\end{itemize}
+As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We have decided to consider declarations and statements as the smallest compared entities. The main reasoning for this is because considering smaller AST constructs, like expressions, significantly increases the complexity and CPU usage of our clone detection and refactoring efforts.
+
+Additionally, we exclude package declarations and import statements. These are omitted by most clone detection tools, as clones in import statements hold limited valuable information.
 
 \paragraph{Building the clone graph}
 Building the clone graph consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
