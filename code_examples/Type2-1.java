@@ -3,8 +3,7 @@ public boolean containsOnlyRedCircles(List<Circle> circles){
 }
 
 public Apple getEdibleApple(FruitBasket<Apple> basket){
-	return basket.getFruitContainer()
-		.getAppleByCriterium(Fruit::hasNotYetBeenEaten);
+	return basket.getFruit().getApple(Fruit::notEaten);
 }
 
 
