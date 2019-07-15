@@ -1,0 +1,1 @@
+The goal of this thesis is to automate the process of refactoring duplicate fragments from source code by conventional means. This allows for the analysis of the refactored source code, to better assess whether clones by certain definitions and thresholds should be refactored.
