@@ -77,7 +77,7 @@ Type 2R clones are modelled after type 2 clones, which allow any change in ident
 
 We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
 
-\subsubsection{A threshold for variability in literals, variables and method calls}
+\subsubsection{A threshold for variability in literals, variables and method calls}\label{sec:variabilitythreshold}
 Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many. However, this does have a big impact on the meaning of the code fragment and thus the harmfulness of the duplication being there.
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
@@ -107,7 +107,7 @@ Consider the example in figure \ref{fig:type2literal}. In this example, the two 
 \paragraph{Method call variability}
 Most modern programming languages (like Java, Python and C\#) allow to pass method references as a parameter to a method. This helps reducing duplication, as it is possible to refactor two code fragments which differ only by a method call. However, a method call does often not consist of a single token (like variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method.
 
-For type 2R clones, we allow called methods to vary as long as they have the same argument types and return type (both of them should be compared using their fully qualified identifiers). An example of this is shown in figure \ref{fig:type2method}. In this example, we have two methods (\texttt{System.out.println} and \texttt{myFancyPrint}). We use the ``Extract Method'' refactoring method to extract a new method and use a parameter for to pass the used method.
+Type 2R clones allow called methods to vary as long as they have the same argument types and return type. As with type 1R clones, these types are compared using their fully qualified identifiers. An example of this is shown in figure \ref{fig:type2method}. In this example, we have two methods (\texttt{System.out.println} and \texttt{myFancyPrint}). We use the ``Extract Method'' refactoring method to extract a new method and use a parameter to pass the used method.
 
 The method call variability property of type 2R clones imply that type 2R clones are not a subset of type 2 clones. Because methods calls can have a different structure, type 2R clones can be structurally slightly different. The example as shown in figure \ref{fig:type2method} can be a type 2R clone (dependent on the thresholds used), but is not a type 2 clone.
 
@@ -118,8 +118,16 @@ The method call variability property of type 2R clones imply that type 2R clones
   \label{fig:type2method}
 \end{figure}
 
-\subsubsection{Allow any change in method and class names}
-When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. In the previous section, variability in literals, variables and called methods would result in more parameters for the extracted method, thus indicating a detrimental effect on system design. This is not the case with the name of a method declaration and the name of a class/interface/enumeration declaration.
+\subsubsection{Allow any variability in method and class names}
+When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. In the previous section, variability in literals, variables and called methods would result in more parameters for the extracted method, thus indicating a detrimental effect on system design. However, not always does a difference between fragments result in such a tradeoff.
+
+This section explains several patterns of variability that we can allow between cloned fragements without changing the method by which the fragments can be refactored.
+
+\paragraph{Class and method names}
+The names of classes and methods describe the implementation of their body. If two classes/methods are cloned, but their names differ, one of both names should be redundant. When refactoring such clones, we can choose one instance to keep and one to remove. Such a refactoring doesn't affect maintainability in any other way than refactoring a type 1R clone would. The same is true of interface, enumeration and annotation names. Because of this, type 2R allows any variability in class, method, interface, enumeration and annotation names.
+
+
+This is not the case with the name of a method declaration and the name of a class/interface/enumeration declaration.
 
 If a full method is cloned with another method, however only their names differ, we can refactor these methods to keep only one of them. Allowing any change in method and class names will only indicate a refactoring opportunity if the full method or class is cloned.
 
@@ -295,7 +303,7 @@ CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3
 
 For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit{method calls} we trace their declaration and use its fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we trace their declarations and use assemble their fully qualified identifier for comparison with other nodes. For \textit{variables} we trace their declaration and their types. If the variable type is a primitive we can directly use it for comparison. If it is a referenced type, we have to trace this type first in order to collect their fully qualified identifier for comparison.
 
-For \textbf{type 2R} clones we allow any variation in literals, variables and method calls at this stage in the clone detection process. However, for \textit{literals} we do resolve their type in order to verify that they are of the same type. For \textit{variables} we also only verify that their types are the same (but not their names). For \textit{method calls}, we trace their declaration but only compare the fully qualified identifier for its return type and each of its arguments' types. Apart from that, we do not compare the names of method, class, interface and enum declarations.
+\textbf{Type 2R} clones allow any variation in literals, variables and method calls at this stage in the clone detection process. However, for \textit{literals} we do resolve their type in order to verify that they are of the same type. For \textit{variables} we also only verify that their types are the same (but not their names). For \textit{method calls}, we trace their declaration but only compare the fully qualified identifier for its return type and each of its arguments' types. Apart from that, we do not compare the names of method, class, interface and enum declarations.
 
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
@@ -332,7 +340,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
 \subsubsection{Validating the type 2R variability threshold}
-In the definition of type 2R (see section \ref{eq:type2r}) clones we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain the way CloneRefactor uses to verify the type 2R variability threshold.
+In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
 
 \subsubsection{Checking for type 3 opportunities}
 
