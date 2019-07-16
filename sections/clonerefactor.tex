@@ -132,6 +132,11 @@ Where \textit{S} is the set of all clone classes that are found up in until this
 (C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S) = \emptyset \Rightarrow S = S \cup C_{new}
 \end{equation}
 
+For CloneRefactor, we used this conceptual method of removing duplicates, but did not directly implemented these equations. The main reason for this is the runtime overhead, as this process has to iterate over each existing clone class and each of their clone instances. For large projects with a lot of duplication this process has a significant impact on performance.
+
+\subsubsection{Method of removing redundant clone classes}
+\todo{Write this section}
+
 \subsection{Validating the type 2R variability threshold}
 In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
 
