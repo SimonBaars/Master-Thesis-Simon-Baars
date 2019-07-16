@@ -123,13 +123,13 @@ C_1 \subseteq C_2 \Leftrightarrow \forall (i_1 \in C_1) \text{ } \exists (i_2 \i
 Where \textit{C} refers to a clone class (a set of clone instances), \textit{i} refers to a clone instance, \textit{F} is the file in which a clone instance is located and \textit{R} is the range of tokens that a clone instance spans. For each clone added, we remove all existing clones that are a subset of the newly added clone:
 
 \begin{equation}\label{eq:removeall}
-\text{For each new clone }C_{new}\text{ found, remove all clones in }(C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S)
+S = S \setminus (C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S)
 \end{equation}
 
 Where \textit{S} is the set of all clone classes that are found up in until this point. Likewise, we should not add the new clone to our list of clones if its a subset of an existing clone. Because of that, we check for each clone added whether there exists a clone of which the newly added clone is a subset:
 
 \begin{equation}\label{eq:removeexisting}
-(C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S) \neq \emptyset \Rightarrow S = S \cup C_{new}
+(C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S) = \emptyset \Rightarrow S = S \cup C_{new}
 \end{equation}
 
 \subsection{Validating the type 2R variability threshold}
