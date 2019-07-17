@@ -162,16 +162,29 @@ To determine the difference in literals, method calls and variables, we convert 
   \label{fig:equalityarrays}
 \end{figure}
 
-\begin{table}[]
+The equality array for each of the lines in this example is shown in table \ref{table:equalityarrays}.
+
+\begin{table}[H]
+\begin{center}
+ \caption{The equality arrays in our example figure \ref{fig:equalityarrays}.} \label{table:equalityarrays}
+ \medskip
 \begin{tabular}{|l|l|l|}
 \hline
-Line (L) & Equality Array (E)     & Size (S) \\ \hline
+Node (N) & Equality Array (E)     & Size (S) \\ \hline
 1        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
 2        & {[}1, -2, 7, -5, -6{]} & 5        \\ \hline
 3        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
 4        & {[}8, -2, 7, -5, -6{]} & 5        \\ \hline
 \end{tabular}
+\end{center}
 \end{table}
+
+In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of N_1 and N_2) and the fragment on the right (consisting of N_3 and N_4) are two clone instances of a clone class. We calculate the variability between two nodes by the following formula:
+
+\begin{equation}\label{eq:removeexisting}
+\{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S = S \cup C_{new}
+\end{equation}
+%Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
 
 \subsection{Checking for type 3 opportunities}
