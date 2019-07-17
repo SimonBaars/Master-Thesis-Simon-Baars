@@ -136,7 +136,9 @@ Where \textit{S} is the set of all clone classes that are found up in until this
 For CloneRefactor we used this conceptual method of removing duplicates, but did not directly implement these equations. The main reason for this is the runtime overhead, as this process has to iterate over each existing clone class and each of their clone instances. For large projects with a lot of duplication this process has a significant impact on performance.
 
 \subsubsection{CloneRefactor method of removing redundant clone classes}
+Because of the order in which clones are found in the clone graph, removing redundant clone classes can be optimized to not require a search of the entire set of clones. To do this, we mark each node that has been considered for duplication as \textit{visited}. This includes nodes that are interated over and all duplicates of those nodes. When we later find a new clone class of which all nodes are \textit{visited}, we don't add this clone class to the set of clone classes because it is a subset of an existing clone class.
 
+\todo{Removal of existing clones: How does this is possibly redundant thing work?}
 
 \subsection{Validating the type 2R variability threshold}
 In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
@@ -149,6 +151,16 @@ In the definition of type 2R clones (see section \ref{sec:type2r}) we described 
 \end{figure}
 
 Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone determination process is described in more detail in section \ref{sec:comparingstuff}. Each of the following paragraphs will explain a step from figure \ref{fig:clonerefactort2rflow}.
+
+\subsubsection{Create equality array}
+To determine the difference in literals, method calls and variables, we convert the code to an equality array. This equality array converts each (group of) token(s) to a number unique to that (group of) tokens. Each literal, method call or variable becomes a positive number, whereas each other token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in figure \ref{fig:equalityarrays}. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/equality}
+  \caption{The conversion of code to an equality array.}
+  \label{fig:equalityarrays}
+\end{figure}
 
 
 \subsection{Checking for type 3 opportunities}
