@@ -153,7 +153,7 @@ In the definition of type 2R clones (see section \ref{sec:type2r}) we described 
 Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone determination process is described in more detail in section \ref{sec:comparingstuff}. Each of the following paragraphs will explain a step from figure \ref{fig:clonerefactort2rflow}.
 
 \subsubsection{Create equality array}
-To determine the difference in literals, method calls and variables, we convert the code to an equality array. This equality array converts each (group of) token(s) to a number unique to that (group of) tokens. Each literal, method call or variable becomes a positive number, whereas each other token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in figure \ref{fig:equalityarrays}. 
+To determine the difference in literals, method calls and variables, we convert the code to an equality array. This equality array converts each (group of) token(s) to a number unique to that (group of) tokens. Each literal, method call or variable becomes a positive number, whereas each other token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in figure \ref{fig:equalityarrays}.
 
 \begin{figure}[H]
   \centering
@@ -161,6 +161,17 @@ To determine the difference in literals, method calls and variables, we convert 
   \caption{The conversion of code to an equality array.}
   \label{fig:equalityarrays}
 \end{figure}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+Line (L) & Equality Array (E)     & Size (S) \\ \hline
+1        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
+2        & {[}1, -2, 7, -5, -6{]} & 5        \\ \hline
+3        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
+4        & {[}8, -2, 7, -5, -6{]} & 5        \\ \hline
+\end{tabular}
+\end{table}
 
 
 \subsection{Checking for type 3 opportunities}
