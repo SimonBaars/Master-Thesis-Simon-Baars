@@ -1,4 +1,6 @@
-\chapter{Related work}
-\label{ch:related_work}
-We divide the related work into ... categories:  ...
+\chapter{Related work} \label{ch:related_work}
+The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs~\cite{fontana2012duplicated, fontana2015duplicated}. DCRA only focuses on refactoring clone pairs, with the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair. We further look into these measurements in Sec.~\ref{chap:relationsinstances}.
 
+A tool named Aries~\cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They do this based on the relation between clone instances through inheritance, similar to Fontana et al.~\cite{fontana2012duplicated}. This tool only proposes a refactoring opportunity and does not provide help in the process of applying the refactoring.
+
+We investigated several research efforts that look into code clone refactoring~\cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection~\cite{chen2018clone} or being limited to clone pairs~\cite{higo2008metric}.
