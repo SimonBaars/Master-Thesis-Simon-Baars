@@ -3,26 +3,27 @@
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
 \section{Defining clones}
+Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in table \ref{tab:clone-terminology}.
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lllll@{}}
+\begin{tabular}{@{}llll@{}}
 \toprule
-\rowcolor[HTML]{C0C0C0}
-\textbf{Symbol} & \textbf{Meaning} & \textbf{Description} & \textbf{Contents} & \textbf{Properties} \\ \midrule
-\rowcolor[HTML]{EFEFEF}
-S & Clone class collection & \begin{tabular}[c]{@{}l@{}}All clone classes that\\ have been found for a\\ certain software project.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\ classes\end{tabular} & - \\
 \rowcolor[HTML]{FFFFFF}
-C & Clone class & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\ instances\end{tabular} & - \\
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Description} & \textbf{Properties} \\ \midrule
 \rowcolor[HTML]{EFEFEF}
-I & Clone instance & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\ nodes\end{tabular} & \begin{tabular}[c]{@{}l@{}}File (F): The file in which this\\ clone instance is found.\\ Range (R): The range this clone\\ instance spans.\end{tabular} \\
+S & \begin{tabular}[c]{@{}l@{}}Clone class\\ collection\end{tabular} & \begin{tabular}[c]{@{}l@{}}All clone classes that have been\\found for a certain software\\project.\end{tabular} & \textbf{Clones:} Set of clone classes. \\
 \rowcolor[HTML]{FFFFFF}
-N & Node & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & Set of tokens & \begin{tabular}[c]{@{}l@{}}Range (R): The range this node\\ spans.\end{tabular} \\
+C & Clone class & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations.\end{tabular} & \textbf{Instances:} Set of clone instances. \\
 \rowcolor[HTML]{EFEFEF}
-R & Range & A part of a source code file. & Set of tokens & \begin{tabular}[c]{@{}l@{}}Begin line/column: The line and\\ column at which the range starts.\\ End line/column: The line and\\ column at which the range end.\end{tabular} \\
+I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Contents:} Totally ordered set of nodes, ordered\\by their begin positions.\\ \textbf{File:} The file in which this clone instance is \\ found.\\ \textbf{Range:} The range this clone instance spans.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-t & Token & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & - & \begin{tabular}[c]{@{}l@{}}Range (R): The range this token\\ spans.\\ Category: Identifier, Keyword,\\ Literal, Separator, Operator,\\ Comment or Whitespace\end{tabular} \\ \bottomrule
+N & Node & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \textbf{Range:} The range this node spans. \\
+\rowcolor[HTML]{EFEFEF}
+R & Range & A part of a source code file. & \begin{tabular}[c]{@{}l@{}}\textbf{Tokens:} Set of tokens that this range spans.\\ \textbf{Begin line/column:} The line and column at \\ which the range starts.\\ \textbf{End line/column:} The line and column at\\ which the range end.\end{tabular} \\
+\rowcolor[HTML]{FFFFFF}
+T & Token & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this token spans.\\ \textbf{Category:} Identifier, Keyword, Literal, Separator, \\ Operator, Comment or Whitespace\end{tabular} \\ \bottomrule
 \end{tabular}%
 }
 \caption{Clone related terminology and how it maps to the source code.}
