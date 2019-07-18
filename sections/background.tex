@@ -35,49 +35,34 @@ As code clones are seen as one of the most harmful types of technical debt, they
 
 Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. In this case, both cloned fragments, are found in the same class. Each of the cloned fragments can be defined as a ``clone instance''.
 
-\newcommand{\Hilight}{\makebox[0pt][l]{\color{yellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{yellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{blue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{purple}\rule[-4pt]{1\linewidth}{14pt}}}
 \begin{figure}
 \begin{parcolumns}{3}
 \colchunk[1]{
 \begin{javacode}
 // File1.java
-doA();
-|\Hilight|doB();
-doC();
+|\highlightPurple|doA();
+|\highlightPurple|doB();
+|\highlightBlue|doC();
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
 // File2.java
-doA();
-doB();
-doC();
+|\highlightPurple|doA();
+|\highlightPurple|doB();
+|\highlightBlue|doC();
 \end{javacode}}
 \colchunk[3]{
 \begin{javacode}
 // File3.java
-doA();
-doB();
+|\highlightYellow|doA();
+|\highlightYellow|doB();
 doD();
 \end{javacode}}
 \end{parcolumns}
-\caption{Hi}
-\end{figure}
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth]{img/clone-pair}
-	\caption{Example of a clone pair, as found in the \href{https://github.com/Widen/valet}{Valet} project.}
-	\label{fig:clonepair}
-\end{figure}
-
-Figure \ref{fig:cloneclass} displays a clone class with three clone instances.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{img/clone-class}
-	\caption{Example of a clone class, as found in the \href{https://github.com/Widen/valet}{Valet} project.}
-	\label{fig:cloneclass}
+\caption{Two clone classes: One clone class with three clone instances and one with two clone instances.}
 \end{figure}
 
 \section{Clone Types} \ref{chap:backgroundclonetypes}
