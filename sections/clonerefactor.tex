@@ -171,11 +171,11 @@ The equality array for each of the lines in this example is shown in table \ref{
  \medskip
 \begin{tabular}{|l|l|l|}
 \hline
-Node (n) & Equality Array (E)     & Size (s) \\ \hline
-1        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
-2        & {[}1, -2, 7, -5, -6{]} & 5        \\ \hline
-3        & {[}1, -2, 4, -5, -6{]} & 5        \\ \hline
-4        & {[}8, -2, 9, -5, -6{]} & 5        \\ \hline
+Node (n) & Equality Array (E) \\ \hline
+1        & {[}1, -2, 3, -5, -6{]} \\ \hline
+2        & {[}1, -2, 7, -5, -6{]} \\ \hline
+3        & {[}1, -2, 4, -5, -6{]} \\ \hline
+4        & {[}8, -2, 9, -5, -6{]} \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -186,7 +186,7 @@ In the example of figure \ref{fig:equalityarrays} the fragment on the left (cons
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
 \begin{equation}\label{eq:variabilityclonerefactor}
-\frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(s_1+s_2)+(s_3+s_4)}*100
+\frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(|E_1|+|E_2|)+(|E_3|+|E_4|)}*100
 \end{equation}
 
 The symbols in this equation refer to the symbols of the column headers of table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
