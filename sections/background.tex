@@ -9,15 +9,19 @@ This chapter will present the necessary background information for this thesis. 
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
+\rowcolor[HTML]{C0C0C0}
 \textbf{Symbol} & \textbf{Meaning} & \textbf{Description} & \textbf{Contents} & \textbf{Properties} \\ \midrule
 \rowcolor[HTML]{EFEFEF}
 S & Clone class collection & \begin{tabular}[c]{@{}l@{}}All clone classes that\\ have been found for a\\ certain software project.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\ classes\end{tabular} & - \\
+\rowcolor[HTML]{FFFFFF}
 C & Clone class & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\ instances\end{tabular} & - \\
 \rowcolor[HTML]{EFEFEF}
 I & Clone instance & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\ nodes\end{tabular} & \begin{tabular}[c]{@{}l@{}}File (F): The file in which this\\ clone instance is found.\\ Range (R): The range this clone\\ instance spans.\end{tabular} \\
+\rowcolor[HTML]{FFFFFF}
 N & Node & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & Set of tokens & \begin{tabular}[c]{@{}l@{}}Range (R): The range this node\\ spans.\end{tabular} \\
-R & Range & A part of a source code file. & Set of tokens & \begin{tabular}[c]{@{}l@{}}Begin line/column: The line and\\ column at which the range starts.\\ End line/column: The line and\\ column at which the range end.\end{tabular} \\
 \rowcolor[HTML]{EFEFEF}
+R & Range & A part of a source code file. & Set of tokens & \begin{tabular}[c]{@{}l@{}}Begin line/column: The line and\\ column at which the range starts.\\ End line/column: The line and\\ column at which the range end.\end{tabular} \\
+\rowcolor[HTML]{FFFFFF}
 t & Token & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & - & \begin{tabular}[c]{@{}l@{}}Range (R): The range this token\\ spans.\\ Category: Identifier, Keyword,\\ Literal, Separator, Operator,\\ Comment or Whitespace\end{tabular} \\ \bottomrule
 \end{tabular}%
 }
