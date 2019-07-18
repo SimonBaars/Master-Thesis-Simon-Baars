@@ -173,23 +173,27 @@ The equality array for each of the lines in this example is shown in table \ref{
 Node (n) & Equality Array (E)     & Size (s) \\ \hline
 1        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
 2        & {[}1, -2, 7, -5, -6{]} & 5        \\ \hline
-3        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
-4        & {[}8, -2, 7, -5, -6{]} & 5        \\ \hline
+3        & {[}1, -2, 4, -5, -6{]} & 5        \\ \hline
+4        & {[}8, -2, 9, -5, -6{]} & 5        \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of n_1 and n_2) and the fragment on the right (consisting of n_3 and n_4) are two clone instances of a clone class. Note that the size of the equality arrays of all clone instances must equal the size of the equality arrays of the other clone instances for them to be considered a clone class. We calculate the variability of this clone instance as follows:
+In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of n_1 and n_2) and the fragment on the right (consisting of n_3 and n_4) are two clone instances of a clone class. Table \ref{table:equalityarrays} shows their corresponding equality arrays.
 
-
+\subsubsection{Checking global thresholds}
+Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
 \begin{equation}\label{eq:variabilityclonerefactor}
-\frac{|\{x>0 \and y>0 \and x \neq y | x \in E_1 \union E_2, y \in E_3 \union E_4\}|}{(s_1+s_2)+(s_3+s_4)}
+\frac{|\{x>0 \and y>0 \and x \neq y | x \in E_1 \union E_2, y \in E_3 \union E_4\}|}{(s_1+s_2)+(s_3+s_4)}*100
 \end{equation}
 
-The symbols in this equation refer to the symbols of the column headers of table \ref{table:equalityarrays}.
-%Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
+The symbols in this equation refer to the symbols of the column headers of table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
 
+\begin{equation}\label{eq:sumequality}
+\frac{|{(3,4), (1,8), (7,9)}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
+\end{equation}
+%Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
 \subsubsection{bla}
 
