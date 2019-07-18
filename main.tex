@@ -40,31 +40,9 @@
 \usepackage{hyperref}
 \usepackage{wrapfig}
 \usepackage{titlesec}
-\usepackage{listings}
-\usepackage[T1]{fontenc}
-\usepackage{inconsolata}
+\usepackage{minted}
 
-\usepackage{color}
-
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-
-\usepackage{listings}
-\lstset{language=Java,
-  showspaces=false,
-  showtabs=false,
-  breaklines=true,
-  showstringspaces=false,
-  breakatwhitespace=true,
-  commentstyle=\color{pgreen},
-  keywordstyle=\color{pblue},
-  stringstyle=\color{pred},
-  basicstyle=\ttfamily,
-  moredelim=[il][\textcolor{pgrey}]{$$},
-  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
-}
+\renewcommand{\MintedPygmentize}{/Users/sbaars/tmp/pypa-virtualenv-ce9343c/my_new_env/bin/pygmantize}
 
 \newfloat{eqfloat}{h}{eqflts}
 \floatname{eqfloat}{Equation}
