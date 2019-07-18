@@ -4,19 +4,24 @@ This chapter will present the necessary background information for this thesis. 
 
 \section{Defining clones}
 
-\begin{table}[]
+\begin{table}[H]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
 \textbf{Symbol} & \textbf{Meaning} & \textbf{Description} & \textbf{Contents} & \textbf{Properties} \\ \midrule
-S & Clone class collection & All clone classes that have been found for a certain software project. & Set of clone classes & - \\
-C & Clone class & A set of similar code fragments in different locations. & Set of clone instances & - \\
-I & Clone instance & A code fragment that appears in multiple locations. & Set of cloned nodes & \begin{tabular}[c]{@{}l@{}}File (F): The file in which this clone instance is found.\\ Range (R): The range this clone instance spans.\end{tabular} \\
-N & Node & A statement or declaration in a codebase. & Set of tokens. & Range (R): The range this node spans. \\
-t & Token & Smallest relevant entity of a program. & - & \begin{tabular}[c]{@{}l@{}}Range (R): The range this token spans.\\ Category: Identifier, Keyword, Literal, Separator,\\ Operator, Comment or Whitespace\end{tabular} \\ \bottomrule
-\end{tabular}
+\rowcolor[HTML]{EFEFEF}
+S & Clone class collection & \begin{tabular}[c]{@{}l@{}}All clone classes that have been \\ found for a certain software project.\end{tabular} & Set of clone classes & - \\
+C & Clone class & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations.\end{tabular} & Set of clone instances & - \\
+\rowcolor[HTML]{EFEFEF}
+I & Clone instance & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & Set of cloned nodes & \begin{tabular}[c]{@{}l@{}}File (F): The file in which this\\ clone instance is found.\\ Range (R): The range this clone\\ instance spans.\end{tabular} \\
+N & Node & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}Range (R): The range this node\\ spans.\end{tabular} \\
+\rowcolor[HTML]{EFEFEF}
+t & Token & \begin{tabular}[c]{@{}l@{}}Smallest relevant entity of a\\ program.\end{tabular} & - & \begin{tabular}[c]{@{}l@{}}Range (R): The range this token \\ spans.\\ Category: Identifier, Keyword, \\ Literal, Separator, Operator,\\ Comment or Whitespace\end{tabular} \\ \bottomrule
+\end{tabular}%
+}
 \caption{Clone related terminology and how it maps to the source code.}
-\label{tab:cloneterminology}
+\label{tab:clone-terminology}
 \end{table}
 
 \subsection{Clone Class}
