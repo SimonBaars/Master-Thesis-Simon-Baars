@@ -113,7 +113,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
-\subsubsection{Conceptual method of removing redundant clone classes}
+\subsubsection{Conceptual method of removing redundant clone classes}\label{sec:conceptualremovingredundant}
 The clone detection method used by CloneRefactor can, for various reasons,%Should I list these? Listing them could be a section on its own, as I'd have to show examples to make it concrete.
 result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of an existing clone. We define the subset relation between clones as follows:
 
@@ -193,6 +193,9 @@ The symbols in this equation refer to the symbols of the column headers of table
 \begin{equation}\label{eq:sumequality}
 \frac{|{(3,4), (1,8), (7,9)}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
 \end{equation}
+
+So for the example given in figure \ref{fig:equalityarrays} we have a variability of 15\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
+
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
 \subsubsection{bla}
