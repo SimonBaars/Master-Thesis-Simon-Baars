@@ -2,7 +2,7 @@
 \label{ch:background}
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
-\section{Defining clones}
+\section{Code clone terminology}
 Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in table \ref{tab:clone-terminology}.
 
 \begin{table}[H]
@@ -30,29 +30,27 @@ T & Token & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building b
 \label{tab:clone-terminology}
 \end{table}
 
-\subsection{Clone Class}
-As code clones are seen as one of the most harmful types of technical debt, they have been studied very extensively. A survey by Roy et al \cite{roy2007survey} states definitions for various important concepts in code clone research. In this survey, he mentions the concept ``clone pair'', which is \textit{a set of two code portions/fragments which are identical or similar to each other}. Furthermore, he defined ``clone class'' as \textit{the union of all clone pairs}. Apart from this, we use the definition ``clone instance'', which is a single code portion/fragment that is part of either a clone pair or clone class.
+\subsection{Example}
+The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance. 
 
-Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. In this case, both cloned fragments, are found in the same class. Each of the cloned fragments can be defined as a ``clone instance''.
-
-\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{yellow}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{blue}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{purple}\rule[-4pt]{1\linewidth}{14pt}}}
+\definecolor{lightyellow}{HTML}{fffdcc}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{yellow}\rule[-4pt]{1\linewidth}{14pt}}}
 \begin{figure}
 \begin{parcolumns}{3}
 \colchunk[1]{
 \begin{javacode}
 // File1.java
-|\highlightPurple|doA();
-|\highlightPurple|doB();
-|\highlightBlue|doC();
+|\highlightDarkyellow|doA();
+|\highlightDarkyellow|doB();
+|\highlightYellow|doC();
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
 // File2.java
-|\highlightPurple|doA();
-|\highlightPurple|doB();
-|\highlightBlue|doC();
+|\highlightDarkyellow|doA();
+|\highlightDarkyellow|doB();
+|\highlightYellow|doC();
 \end{javacode}}
 \colchunk[3]{
 \begin{javacode}
@@ -62,6 +60,7 @@ Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. I
 doD();
 \end{javacode}}
 \end{parcolumns}
+\label{fig:cloneclasses}
 \caption{Two clone classes: One clone class with three clone instances and one with two clone instances.}
 \end{figure}
 
