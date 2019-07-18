@@ -170,7 +170,7 @@ The equality array for each of the lines in this example is shown in table \ref{
  \medskip
 \begin{tabular}{|l|l|l|}
 \hline
-Node (N) & Equality Array (E)     & Size (S) \\ \hline
+Node (n) & Equality Array (E)     & Size (s) \\ \hline
 1        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
 2        & {[}1, -2, 7, -5, -6{]} & 5        \\ \hline
 3        & {[}1, -2, 3, -5, -6{]} & 5        \\ \hline
@@ -179,13 +179,22 @@ Node (N) & Equality Array (E)     & Size (S) \\ \hline
 \end{center}
 \end{table}
 
-In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of N_1 and N_2) and the fragment on the right (consisting of N_3 and N_4) are two clone instances of a clone class. We calculate the variability of this clone instance as follows:
+In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of n_1 and n_2) and the fragment on the right (consisting of n_3 and n_4) are two clone instances of a clone class. Note that the size of the equality arrays of all clone instances must equal the size of the equality arrays of the other clone instances for them to be considered a clone class. We calculate the variability of this clone instance as follows:
 
-\begin{equation}\label{eq:removeexisting}
-\{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S = S \cup C_{new}
-C
+
+
+\begin{equation}\label{eq:variabilityclonerefactor}
+\frac{|\{x>0 \and y>0 \and x \neq y | x \in E_1 \union E_2, y \in E_3 \union E_4\}|}{(s_1+s_2)+(s_3+s_4)}
 \end{equation}
+
+The symbols in this equation refer to the symbols of the column headers of table \ref{table:equalityarrays}.
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
+
+\subsubsection{bla}
+
+\begin{equation}\label{eq:t2rcloneequality}
+E_1\text{ is cloned with }E_2\text{ iff }|E_1|=|E_2| \and \forall {x<0 \Rightarrow x=y | x \in E_1, y \in E_2}
+\end{equation}
 
 \subsection{Checking for type 3 opportunities}
