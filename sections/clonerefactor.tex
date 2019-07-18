@@ -199,10 +199,30 @@ So for the example given in figure \ref{fig:equalityarrays} we have a variabilit
 
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
-\subsubsection{bla}
+\subsubsection{Convert Equality Array to Graph}
+\todo{TODO}
+\begin{table}[H]
+\begin{center}
+ \caption{The equality arrays in our example figure \ref{fig:equalityarrays}.} \label{table:equalityarrays}
+ \medskip
+\begin{tabular}{|l|l|l|}
+\hline
+Node (n) & Equality Array (E) \\ \hline
+1        & {[}1, -2, 3, -5, -6{]} \\ \hline
+2        & {[}1, -2, 3, -5, -6{]} \\ \hline
+3        & {[}8, -2, 4, -5, -6{]} \\ \hline
+4        & {[}1, -2, 7, -5, -6{]} \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
 
+\subsubsection{Detect Clones on Graph}
+\todo{TODO}
 \begin{equation}\label{eq:t2rcloneequality}
 E_1\text{ is cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1) \exists (y \in E_2) x<0 \lor y<0 \Rightarrow x=y
 \end{equation}
+
+\subsubsection{Try to Expand}
+\todo{TODO}
 
 \subsection{Checking for type 3 opportunities}
