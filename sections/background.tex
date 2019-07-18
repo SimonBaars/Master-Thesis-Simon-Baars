@@ -35,7 +35,8 @@ As code clones are seen as one of the most harmful types of technical debt, they
 
 Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. In this case, both cloned fragments, are found in the same class. Each of the cloned fragments can be defined as a ``clone instance''.
 
-\begin{lstlisting}
+\begin{multicols}{2}
+\begin{lstlisting}[caption={Functions that are type 2 clones but functionally completely different.},language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small]
 // Hello.java
 import javax.swing.JApplet;
 import java.awt.Graphics;
@@ -46,6 +47,7 @@ public class Hello extends JApplet {
     }
 }
 \end{lstlisting}
+\end{multicols}
 
 \begin{figure}[H]
 	\centering
