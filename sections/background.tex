@@ -2,7 +2,24 @@
 \label{ch:background}
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
-\section{Clone Class}
+\section{Defining clones}
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Description} & \textbf{Contents} & \textbf{Properties} \\ \midrule
+S & Clone class collection & All clone classes that have been found for a certain software project. & Set of clone classes & - \\
+C & Clone class & A set of similar code fragments in different locations. & Set of clone instances & - \\
+I & Clone instance & A code fragment that appears in multiple locations. & Set of cloned nodes & \begin{tabular}[c]{@{}l@{}}File (F): The file in which this clone instance is found.\\ Range (R): The range this clone instance spans.\end{tabular} \\
+N & Node & A statement or declaration in a codebase. & Set of tokens. & Range (R): The range this node spans. \\
+t & Token & Smallest relevant entity of a program. & - & \begin{tabular}[c]{@{}l@{}}Range (R): The range this token spans.\\ Category: Identifier, Keyword, Literal, Separator,\\ Operator, Comment or Whitespace\end{tabular} \\ \bottomrule
+\end{tabular}
+\caption{Clone related terminology and how it maps to the source code.}
+\label{tab:cloneterminology}
+\end{table}
+
+\subsection{Clone Class}
 As code clones are seen as one of the most harmful types of technical debt, they have been studied very extensively. A survey by Roy et al \cite{roy2007survey} states definitions for various important concepts in code clone research. In this survey, he mentions the concept ``clone pair'', which is \textit{a set of two code portions/fragments which are identical or similar to each other}. Furthermore, he defined ``clone class'' as \textit{the union of all clone pairs}. Apart from this, we use the definition ``clone instance'', which is a single code portion/fragment that is part of either a clone pair or clone class.
 
 Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. In this case, both cloned fragments, are found in the same class. Each of the cloned fragments can be defined as a ``clone instance''.
