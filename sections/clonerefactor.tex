@@ -180,7 +180,7 @@ Node (n) & Equality Array (E)     & Size (s) \\ \hline
 \end{center}
 \end{table}
 
-In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of n_1 and n_2) and the fragment on the right (consisting of n_3 and n_4) are two clone instances of a clone class. Table \ref{table:equalityarrays} shows their corresponding equality arrays.
+In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of $n_1$ and $n_2$) and the fragment on the right (consisting of $n_3$ and $n_4$) are two clone instances of a clone class. Table \ref{table:equalityarrays} shows their corresponding equality arrays.
 
 \subsubsection{Checking global thresholds}
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
@@ -202,7 +202,7 @@ So for the example given in figure \ref{fig:equalityarrays} we have a variabilit
 \subsubsection{bla}
 
 \begin{equation}\label{eq:t2rcloneequality}
-E_1\text{ is cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall {x<0 \Rightarrow x=y | x \in E_1, y \in E_2}
+E_1\text{ is cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1) \exists (y \in E_2) x<0 \lor y<0 \Rightarrow x=y
 \end{equation}
 
 \subsection{Checking for type 3 opportunities}
