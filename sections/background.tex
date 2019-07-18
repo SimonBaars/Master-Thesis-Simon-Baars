@@ -35,8 +35,10 @@ As code clones are seen as one of the most harmful types of technical debt, they
 
 Figure \ref{fig:clonepair} displays an example of a clone pair or clone class. In this case, both cloned fragments, are found in the same class. Each of the cloned fragments can be defined as a ``clone instance''.
 
-\begin{multicols}{2}
-\begin{lstlisting}[caption={Functions that are type 2 clones but functionally completely different.},language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small]
+\begin{parcolumns}{2}
+
+\colchunk[1]{
+\begin{ccol}
 // Hello.java
 import javax.swing.JApplet;
 import java.awt.Graphics;
@@ -46,8 +48,20 @@ public class Hello extends JApplet {
         g.drawString("Hello, world!", 65, 95);
     }
 }
-\end{lstlisting}
-\end{multicols}
+\end{ccol}}
+\colchunk[2]{
+\begin{acol}
+// Hello.java
+import javax.swing.JApplet;
+import java.awt.Graphics;
+
+public class Hello extends JApplet {
+    public void paintComponent(Graphics g) {
+        g.drawString("Hello, world!", 65, 95);
+    }
+}
+\end{acol}}
+\end{parcolumns}
 
 \begin{figure}[H]
 	\centering
