@@ -146,3 +146,8 @@ Although duplication in source code is generally seen as a harmful coding practi
 The harmfulness of clones depends on a lot of factors. A paper by Kapser et al \cite{kapser2006cloning} describes several patterns of cloning that may not be considered harmful. In this paper Kapser names examples where eliminating clones would compromise other important program qualities. Another study by Jarzabek et al \cite{jarzabek2010clones} categorized ``Essential clones'': clones that are essential because of the solution that is being modelled by the program. Overall, many of the benefits of code clones do not apply to most modern object-oriented programming languages.
 
 In this study, one of the main focus points will be to identify what makes a code clone harmful. Analyzing refactoring opportunities of code clones gives an unique insight in the state of the source code in case the duplication is not present. Analyzing these before- and after states of the source code will provide more insights that will help to rank clones based on their harmfulness.
+
+\section{Maven}
+Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch a projects' dependencies binaries and source code.
+
+In this study we use Maven to analyze software systems in more depth. We parse and analyze the libraries on which they are dependent.
