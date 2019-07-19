@@ -72,3 +72,10 @@ A study by Allamanis et al. \cite{allamanis2015suggesting} proposes a machine le
 In a recent study by Alon et al. \cite{alon2018code2seq} they propose code2seq. Code2seq is a machine learning model that guesses the name of a method given a method body. This model has been trained on a large set of method bodies and names. The model already shows promising results. The source code of code2seq is publicly available, making it possible to embed this model in any application. Although this model is still far from perfect, combining it with our research could already greatly reduce the manual refactoring effort required. The main deficiency of this model lies in that its limited to the directly avail
 
 \subsection{Looking into other languages/paradigms}
+In this study we describe duplicate code refactoring opportunities for object-oriented languages. We built a tool to refactor code clones in Java and used it to run our experiments.
+
+Applying our experiments with other programming languages than just Java might result in valuable results. Refactoring opportunities are greatly dependent on coding conventions, which differ per language. Other languages might result in different results, which might result in different insights regarding the resolution of duplication problems found. We prioritized refactoring efforts based on Java, which might differ from the prioritization that can result from running our experiments with other programming languages.
+
+In this study we focused only on the object-oriented paradigm because of the shared concepts. However, the problems that come with duplication in source code also appears in different programming languages. Because of that, more insights could be obtained when looking into automated refactoring opportunities for other paradigms. For instance, it might be valuable to look into the opportunities to reduce duplication in the functional domain. Dealing with code clones in the functional paradigm is pretty much an unexplored field and might hold valuable results.
+
+\subsection{Running our experiments with a greater diversity of software projects}
