@@ -96,7 +96,7 @@ In line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The nod
 \subsection{Detecting Clones} \label{sec:detectingclones}
 After building the clone clone graph, we use it to detect clones. We decided to focus on the detection of clone classes rather than clone pairs because clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics \cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: clone reference amount increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy \cite{fontana2012duplicated}.
 
-As stated in the previous section, nodes in the graph link to \textit{preceding} cloned statement. This implies that the first node that is cloned does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in figure \ref{fig:clonegraph} to a clone graph as displayed in figure \label{fig:clonegraph2}.
+As stated in the previous section, nodes in the graph link to \textit{preceding} cloned statement. This implies that the first node that is cloned does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in figure \ref{fig:clonegraph} to a clone graph as displayed in figure \ref{fig:clonegraph2}.
 
 \begin{figure}[H]
   \centering
@@ -105,7 +105,7 @@ As stated in the previous section, nodes in the graph link to \textit{preceding}
   \label{fig:clonegraph2}
 \end{figure}
 
-Using the example shown in figure \ref{fig:clonegraph} and \label{fig:clonegraph2} we can explain how we detect clones on basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
+Using the example shown in figure \ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
 
 Next, we move to the previous line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
 
@@ -203,7 +203,7 @@ So for the example given in figure \ref{fig:equalityarrays} we have a variabilit
 \todo{TODO}
 \begin{table}[H]
 \begin{center}
- \caption{The equality arrays in our example figure \ref{fig:equalityarrays}.} \label{table:equalityarrays}
+ \caption{The equality arrays in our example figure \ref{fig:equalityarrays}.} \label{table:equalityarrays2}
  \medskip
 \begin{tabular}{|l|l|l|}
 \hline
