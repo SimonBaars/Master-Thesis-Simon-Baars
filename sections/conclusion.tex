@@ -59,6 +59,16 @@ When programming, there are often trade-offs between technical debt and velocity
 %Many programmers report frequent decisions in which they decide to take technical debt
 
 \subsection{Identifying more types/definitions for clones}
+In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entailed some decisions that have a large impact on the clones we considered for refactoring in this study.
+
+Choosing different
+
+\subsubsection{Type 4 clones}
+In section \ref{chap:backgroundclonetypes} we introduced the clone types that are used in literature. Of these clone types, we considered type 1, 2 and 3 for refactoring. We chose not to consider type 4 clones because they appear far less in source code and are more difficult to detect and refactor. However, that does not mean that these clones should not be refactored.
+
+We think that there are relevant research opportunities in refactoring type 4 clones. Type 4 clones are functionally equal pieces of code that are implemented through different implementations. Although functionally equal, type 4 clones might still differ in other aspects. For instance, for type 4 clones, one alternative might be easier to maintain. Also, they can differ (significantly) in performance.
+
+There are interesting research opportunities in automatically choosing the better alternative among type 4 clone instances.
 
 \subsection{Refactoring the harder to refactor clones}
 
@@ -79,3 +89,6 @@ Applying our experiments with other programming languages than just Java might r
 In this study we focused only on the object-oriented paradigm because of the shared concepts. However, the problems that come with duplication in source code also appears in different programming languages. Because of that, more insights could be obtained when looking into automated refactoring opportunities for other paradigms. For instance, it might be valuable to look into the opportunities to reduce duplication in the functional domain. Dealing with code clones in the functional paradigm is pretty much an unexplored field and might hold valuable results.
 
 \subsection{Running our experiments with a greater diversity of software projects}
+Currently
+
+\subsection{Automatically refactoring code that is duplicated with a library}
