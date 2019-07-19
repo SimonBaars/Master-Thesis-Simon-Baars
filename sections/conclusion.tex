@@ -20,12 +20,32 @@ We noticed that, when doing measurements on a corpus of this size, the threshold
 
 
 \section{Future work} \label{sec:future_work}
-This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated software metric refactoring.
+This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated software metric refactoring. However, we scratched just the tip of the iceberg regarding all research opportunities in this field. In this section we describe possible extensions to this research, aswell as other research opportunities in this field of studies.
 
 \subsection{Automated Refactoring for more metrics}
+In this study we presented evidence regarding the value of applying automated refactoring to analyze the before- and after state of source code and refactored source code. Analyzing these states we were able to analyze the improvement in maintainability after applying certain refactorings. This allows us to better assess thresholds by which maintainability issues in source code are identified. We also get better insights in the costs and values of applying certain refactoring efforts.
+
+For this study we chose to focus only on the automated refactoring of duplication in source code. However, software maintainability depends on more factors and can be measured by more metrics. These factors also have opportunities to automate their refactorings. We think that several similarly sized studies can be conducted to automate the refactoring of other maintainability metrics.
+
+A study by Heitlager et al. \cite{heitlager2007practical} presents several metrics by which the maintainability of source code can be assessed. They propose thresholds that indicate issues with these metrics. Many of these metrics have automated refactoring opportunities. In this section we will focus on several of these metrics to outline their opportunities for automated refactoring.
+
+\subsubsection{Long parameter list}
+
+\subsubsection{Method complexity}
+
+\subsubsection{Method size}
+
+\subsubsection{Combining the metrics}
+Combining the automated refactoring models for each of these metrics can result in a model that ultimately provides significant improvement in the ease of writing well-maintainable source code. In this study, we presented a few tradeoffs that are the result of refactoring code clones. For instance, refactoring code clones with a lot of variability can result in long parameter lists. However, if we can combine this with automated refactoring of long parameter lists, this tradeoff can be mitigated. This way, it is possible to work towards an model of automated refactoring that reduces manual refactoring efforts significantly.
+
+When programming, there are often tradeoffs between technical debt and velocity. When a deadline comes near, often software quality in sacrifised to gain velocity \cite{costello1984software, austin2001effects, shah2014global}. Apart from that, a low programmer aptitude can result in low quality code \ref{cheney1984effects}. This is because often forming appropriate abstractions requires time, effort and critical thinking. By introducing these abstractions automatically, this negative impact can (partly) be mitigated.
+%When programming, many developers must take decisions between velocity
+%Many programmers report frequent decisions in which they decide to take technical debt
 
 \subsection{Identifying more types/definitions for clones}
 
 \subsection{Refactoring the harder to refactor clones}
 
 \subsection{Naming of refactored methods/classes/etc.}
+
+\subsection{Looking into other languages/paradigms}
