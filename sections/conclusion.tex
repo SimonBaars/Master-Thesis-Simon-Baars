@@ -145,8 +145,12 @@ Applying our experiments with other programming languages than just Java might r
 
 In this study we focused only on the object-oriented paradigm because of the shared concepts. However, the problems that come with duplication in source code also appears in different programming languages. Because of that, more insights could be obtained when looking into automated refactoring opportunities for other paradigms. For instance, it might be valuable to look into the opportunities to reduce duplication in the functional domain. Dealing with code clones in the functional paradigm is pretty much an unexplored field and might hold valuable results.
 
-\subsection{Running our experiments with a greater diversity of software projects}
-\todo{TODO}
+\subsection{Running our experiments with a different set of software projects}
+In our experiments we chose to use a GitHub based software corpus. This corpus contains a diversity of projects of many different sizes. We noticed that there is a lot of difference in the quality of these software systems: some systems had a lot of duplication and some did not have any duplication.
+
+We think that there is value in running our experiments with different corpuses. We would, for instance, be interested in the results for industrial projects instead of open source software systems. We are curious to see whether the distributions are comparable, or whether they show large differences.
+
+Furthermore, we think that there is value in running our experiments with a set of larger sized and more professionally developed open source systems. We noticed that in our corpus there were a lot of projects that have only few commits and contributors. We think it would be valuable to for instance perform our experiments with a set of larger open source systems, like the systems in the apache ecosystem.
 
 \subsection{Automatically refactoring code that is duplicated with a library}
 One of the clone detection tools we analyzed in this study is Sisyphus \ref{eremondi2017sisyphus}. This clone detection tool searches a codebase for methods that are part of the Java standard libraries. There are definite automated refactoring opportunities here, automatically switching to the library implementation if available.
