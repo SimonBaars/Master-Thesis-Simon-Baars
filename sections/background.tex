@@ -36,7 +36,7 @@ The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One 
 \definecolor{lightyellow}{HTML}{fffdcc}
 \newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
 \newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{yellow}\rule[-4pt]{1\linewidth}{14pt}}}
-\begin{figure}
+\begin{figure}[H]
 \begin{parcolumns}{3}
 \colchunk[1]{
 \begin{javacode}
@@ -60,8 +60,8 @@ The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One 
 doD();
 \end{javacode}}
 \end{parcolumns}
-\label{fig:cloneclasses}
 \caption{Two clone classes: One clone class with three clone instances and one with two clone instances.}
+\label{fig:cloneclasses}
 \end{figure}
 
 This example can be represented as a tree structure using the concepts from table \ref{tab:clone-terminology}. This tree structure is displayed in figure \ref{fig:terminologyexample}.
@@ -72,7 +72,7 @@ This example can be represented as a tree structure using the concepts from tabl
   \label{fig:terminologyexample}
 \end{figure}
 
-\section{Clone Types} \ref{chap:backgroundclonetypes}
+\section{Clone Types} \label{chap:backgroundclonetypes}
 Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
 \begin{displayquote}
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
@@ -85,10 +85,45 @@ A higher type of clone means that it's harder to detect and refactor. There are 
 \subsection{Type 4 clones}
 For this study we have chosen to take type 4 clones out of the scope, because they are both hard to detect and hard to refactor. A study by Kodhai et al \cite{kodhai2013method} looks into the distribution of the different types of clones in several open source systems (see table 6 of his study). It becomes apparent that type 4 clones exist way less in source code than all of the other types of clones. For instance, for the J2sdk-swing system he finds 8115 type 1 clones, 8205 type 2 clones, 11209 type 3 clones and only 30 type 4 clones. Because of that, we can conclude that type 4 clones are relatively less relevant to study.
 
-\section{Background on refactoring methods}
-One of the main drivers for starting this research is the recent release of the second edition of Martin Fowlers' Refactoring book \ref{fowler2018refactoring}. This book has been updated to the modern state of software engineering. However, the sentence in which he stresses the importance of unifying duplication in source code remains present in both books \ref{fowler1999refactoring, fowler2018refactoring}.
+\section{Refactoring methods}
+One of the main drivers for starting this research is the recent release of the second edition of Martin Fowlers' Refactoring book \ref{fowler2018refactoring}. This book has been updated to the modern state of software engineering. The sentence in which he stresses the importance of unifying duplication in source code remains present in both books \ref{fowler1999refactoring, fowler2018refactoring}.
 
 The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. In most IDE's this refactoring method is called ``Extract Method''.
+
+\subsection{Extract Method}
+Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \ref{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+|\highlightYellow|  doA();
+|\highlightYellow|  doB();
+  doC();
+|\highlightYellow|  doA();
+|\highlightYellow|  doB();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+|\highlightYellow|  doAandB();
+  doC();
+|\highlightYellow|  doAandB();
+}
+
+public void doAandB(){
+  doA();
+  doB();
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring duplication through method extraction.}
+\label{fig:extractmethod}
+\end{figure}
 
 \section{Clone Contexts} %I don't really like this chapter.
 Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
