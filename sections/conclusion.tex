@@ -64,8 +64,49 @@ In this study, we proposed a set of clone type definitions for which a refactori
 \subsubsection{Type 2R clones}
 With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
 
-One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
-%TODO: Might want to show an example here
+One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in figure \ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+  int numbers = 456;
+|\highlightYellow|  doA(getTitle());
+|\highlightYellow|  doB(123);
+  doC();
+|\highlightYellow|  doA("456");
+|\highlightYellow|  doB(numbers);
+}
+
+public String getTitle(){
+  return "123";
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+  int numbers = 456;
+|\highlightYellow|  doAandB(getTitle(), 123);
+  doC();
+|\highlightYellow|  doAandB("456", numbers);
+}
+
+public void doAandB(String var1, int var2){
+  doA(var1);
+  doB(var2);
+}
+
+public String getTitle(){
+  return "123";
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring different expressions that have the same return type.}
+\label{fig:samereturn}
+\end{figure}
 
 \subsubsection{Type 4 clones}
 In section \ref{chap:backgroundclonetypes} we introduced the clone types that are used in literature. Of these clone types, we considered type 1, 2 and 3 for refactoring. We chose not to consider type 4 clones because they appear far less in source code and are more difficult to detect and refactor. However, that does not mean that these clones should not be refactored.
