@@ -20,7 +20,7 @@ We noticed that, when doing measurements on a corpus of this size, the threshold
 
 
 \section{Future work} \label{sec:future_work}
-This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated software metric refactoring. However, we scratched just the tip of the iceberg regarding all research opportunities in this field. In this section we describe possible extensions to this research, aswell as other research opportunities in this field of studies.
+This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated refactoring. However, we scratched just the tip of the iceberg regarding all research opportunities in this field. In this section we describe possible extensions to this research, as well as other research opportunities in this field of studies.
 
 \subsection{Automated Refactoring for more metrics}
 In this study we presented evidence regarding the value of applying automated refactoring to analyze the before- and after state of source code and refactored source code. Analyzing these states we were able to analyze the improvement in maintainability after applying certain refactorings. This allows us to better assess thresholds by which maintainability issues in source code are identified. We also get better insights in the costs and values of applying certain refactoring efforts.
@@ -59,9 +59,10 @@ When programming, there are often trade-offs between technical debt and velocity
 %Many programmers report frequent decisions in which they decide to take technical debt
 
 \subsection{Identifying more types/definitions for clones}
-In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entailed some decisions that have a large impact on the clones we considered for refactoring in this study.
+In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study.
 
-Choosing different
+\subsubsection{Type 2R clones}
+With type 2R cl
 
 \subsubsection{Type 4 clones}
 In section \ref{chap:backgroundclonetypes} we introduced the clone types that are used in literature. Of these clone types, we considered type 1, 2 and 3 for refactoring. We chose not to consider type 4 clones because they appear far less in source code and are more difficult to detect and refactor. However, that does not mean that these clones should not be refactored.
@@ -69,6 +70,9 @@ In section \ref{chap:backgroundclonetypes} we introduced the clone types that ar
 We think that there are relevant research opportunities in refactoring type 4 clones. Type 4 clones are functionally equal pieces of code that are implemented through different implementations. Although functionally equal, type 4 clones might still differ in other aspects. For instance, for type 4 clones, one alternative might be easier to maintain. Also, they can differ (significantly) in performance.
 
 There are interesting research opportunities in automatically choosing the better alternative among type 4 clone instances.
+
+\subsubsection{Proposing new clone type definitions}
+We think that current definitions of clone types still lack in the identification of all duplication issues that a developer should invest his/her refactoring efforts in. Current clone detection techniques still result in many false positives and false negatives. By proposing good definitions for code clones that mark the characteristics of harmful antipatterns, we can create more accurate suggestions to developers.
 
 \subsection{Refactoring the harder to refactor clones}
 
