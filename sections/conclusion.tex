@@ -123,8 +123,8 @@ In section \ref{sec:refactorability} we introduced to what extent clones can be 
 \subsubsection{Partial block}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable.
 
-\subsubsection{Overlap}
-\todo{TODO}
+\subsubsection{Overlap within a clone class}
+We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones might require other techniques to refactor them. We consider analyzing such refactoring methods future work.
 
 \subsubsection{Complex control flow}
 Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
@@ -136,7 +136,7 @@ Break, continue and return statements can obstruct the possibility of performing
 // Original
 public boolean doStuff(){
   int numbers = 456;
-|\highlightYellow|  doA();
+|\highlightYellow|  if(doA());
 |\highlightYellow|    return false;
 |\highlightYellow|  doB();
   doC();
@@ -154,7 +154,7 @@ public boolean doStuff(){
 |\highlightYellow|  if(!doAandB())
 |\highlightYellow|    return false;
   doC();
-|\highlightYellow|  return doAandB("456", numbers);
+|\highlightYellow|  return doAandB();
 }
 
 public boolean doAandB(){
