@@ -46,10 +46,10 @@ Dealing with method complexity can largely be done by method extraction. We extr
 
 Refactoring complex methods can largely be done automatically. Also, many of the results of this study can be reused. To assess an automated refactoring opportunity for complex methods, we should assess which parts of methods can be split to end up with parts of similar complexity. For this, our research can be used to assess whether a given piece of code can be extracted to a new method (see section \ref{sec:refactorability}).
 
-We recommend to extend our tool, CloneRefactor, to allow for such capabilities. CloneRefactor already contains a component that calculates the Cyclomatic Complexity of a given method. Using our automated refactored model, idenfied problems can relatively easily be refactored.
+We recommend to extend our tool, CloneRefactor, to allow for such capabilities. CloneRefactor already contains a component that calculates the Cyclomatic Complexity of a given method. Using our automated refactored model, identified problems can relatively easily be refactored.
 
 \subsubsection{Method size}
-... Although method size is often related to cyclomatic complexity, a study by Landman et al. shows that cyclomatic complexity is not redundant to method size \cite{landman2016empirical}.
+Method size has a strong relation, in terms of refactoring, with Cyclomatic Complexity. Although method size is often related to Cyclomatic Complexity, a study by Landman et al. \cite{landman2016empirical} shows that Cyclomatic Complexity is not redundant to method size. However, they do share a similar method of refactoring. The automated refactoring opportunities described in the previous section also apply to method size.
 
 \subsubsection{Combining the metrics}
 Combining the automated refactoring models for each of these metrics can result in a model that ultimately provides significant improvement in the ease of writing well-maintainable source code. In this study, we presented a few tradeoffs that are the result of refactoring code clones. For instance, refactoring code clones with a lot of variability can result in long parameter lists. However, if we can combine this with automated refactoring of long parameter lists, this tradeoff can be mitigated. This way, it is possible to work towards an model of automated refactoring that reduces manual refactoring efforts significantly.
