@@ -118,7 +118,16 @@ There are interesting research opportunities in automatically choosing the bette
 We think that current definitions of clone types still lack in the identification of all duplication issues that a developer should invest his/her refactoring efforts in. Current clone detection techniques still result in many false positives and false negatives. By proposing good definitions for code clones that mark the characteristics of harmful anti-patterns, we can create more accurate suggestions to developers.
 
 \subsection{Refactoring the harder to refactor clones}
-In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded catagories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable.
+In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
+
+\subsubsection{Partial method}
+\todo{TODO}
+
+\subsubsection{Overlap}
+\todo{TODO}
+
+\subsubsection{Complex control flow}
+\todo{TODO}
 
 \subsection{Naming of refactored methods/classes/etc.}
 In this study, we took naming of refactored entities out of the scope. We applied automated refactoring to duplication, and gave all generated methods, classes and interfaces generated names. For our purposes that was not much of an issue, because of the validation methods used. We validated our approach using the SIG Maintainability model, which does not take naming quality into account. Because of that, the results of our experiments are in no way dependent on the names we give the generated methods, classes and interfaces.
@@ -127,7 +136,7 @@ When using our work with the purpose of refactoring assistance, these names will
 
 A study by Allamanis et al. \cite{allamanis2015suggesting} proposes a machine learning model that can suggest accurate method and class names. This study shows promising results towards generating method and class names on basis of their body and context. However, the source code of this study in not available, making it harder to apply their findings to generate class and method names for any software project.
 
-In a recent study by Alon et al. \cite{alon2018code2seq} they propose code2seq. Code2seq is a machine learning model that guesses the name of a method given a method body. This model has been trained on a large set of method bodies and names. The model already shows promising results. The source code of code2seq is publicly available, making it possible to embed this model in any application. Although this model is still far from perfect, combining it with our research could already greatly reduce the manual refactoring effort required. The main deficiency of this model lies in that its limited to the method body and does currently not consider anything else in a method body. This method is flawed, because the meaning of method bodies depends heavily on their context. For instance, the body of the method \texttt{get()} in \texttt{ArrayList} does not make any sense in relation to its name without considering its context (class, inheritance hierarchy, etc.). 
+In a recent study by Alon et al. \cite{alon2018code2seq} they propose code2seq. Code2seq is a machine learning model that guesses the name of a method given a method body. This model has been trained on a large set of method bodies and names. The model already shows promising results. The source code of code2seq is publicly available, making it possible to embed this model in any application. Although this model is still far from perfect, combining it with our research could already greatly reduce the manual refactoring effort required. The main deficiency of this model lies in that its limited to the method body and does currently not consider anything else in a method body. This method is flawed, because the meaning of method bodies depends heavily on their context. For instance, the body of the method \texttt{get()} in \texttt{ArrayList} does not make any sense in relation to its name without considering its context (class, inheritance hierarchy, etc.).
 
 \subsection{Looking into other languages/paradigms}
 In this study we describe duplicate code refactoring opportunities for object-oriented languages. We built a tool to refactor code clones in Java and used it to run our experiments.
@@ -137,6 +146,7 @@ Applying our experiments with other programming languages than just Java might r
 In this study we focused only on the object-oriented paradigm because of the shared concepts. However, the problems that come with duplication in source code also appears in different programming languages. Because of that, more insights could be obtained when looking into automated refactoring opportunities for other paradigms. For instance, it might be valuable to look into the opportunities to reduce duplication in the functional domain. Dealing with code clones in the functional paradigm is pretty much an unexplored field and might hold valuable results.
 
 \subsection{Running our experiments with a greater diversity of software projects}
-Currently
+\todo{TODO}
 
 \subsection{Automatically refactoring code that is duplicated with a library}
+\todo{TODO}
