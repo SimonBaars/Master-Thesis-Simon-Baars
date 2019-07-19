@@ -3,7 +3,7 @@
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
 \section{Code clone terminology}
-Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in table \ref{tab:clone-terminology}.
+Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and Jiang et al. \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in table \ref{tab:clone-terminology}.
 
 \begin{table}[H]
 \centering
@@ -31,7 +31,7 @@ T & Token & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building b
 \end{table}
 
 \subsection{Example}
-The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance. 
+The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance.
 
 \definecolor{lightyellow}{HTML}{fffdcc}
 \newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
@@ -62,6 +62,14 @@ doD();
 \end{parcolumns}
 \label{fig:cloneclasses}
 \caption{Two clone classes: One clone class with three clone instances and one with two clone instances.}
+\end{figure}
+
+This example can be represented as a tree structure using the concepts from table \ref{tab:clone-terminology}. This tree structure is displayed in figure \ref{fig:terminologyexample}.
+
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/TerminologyExample}
+  \caption{Representation of figure \ref{fig:cloneclasses} using the terminology introduced in table \ref{tab:clone-terminology}}
+  \label{fig:terminologyexample}
 \end{figure}
 
 \section{Clone Types} \ref{chap:backgroundclonetypes}
