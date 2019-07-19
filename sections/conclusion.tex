@@ -120,14 +120,54 @@ We think that current definitions of clone types still lack in the identificatio
 \subsection{Refactoring the harder to refactor clones}
 In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
 
-\subsubsection{Partial method}
-\todo{TODO}
+\subsubsection{Partial block}
+We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable.
 
 \subsubsection{Overlap}
 \todo{TODO}
 
 \subsubsection{Complex control flow}
-\todo{TODO}
+Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public boolean doStuff(){
+  int numbers = 456;
+|\highlightYellow|  doA();
+|\highlightYellow|    return false;
+|\highlightYellow|  doB();
+  doC();
+|\highlightYellow|  if(doA());
+|\highlightYellow|    return false;
+|\highlightYellow|  doB();
+  return true;
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public boolean doStuff(){
+  int numbers = 456;
+|\highlightYellow|  if(!doAandB())
+|\highlightYellow|    return false;
+  doC();
+|\highlightYellow|  return doAandB("456", numbers);
+}
+
+public boolean doAandB(){
+  if(doA())
+    return false;
+  doB(var2);
+  return true;
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a method that is obstructed by a complex control flow.}
+\label{fig:complexcontrolflowrefactoring}
+\end{figure}
 
 \subsection{Naming of refactored methods/classes/etc.}
 In this study, we took naming of refactored entities out of the scope. We applied automated refactoring to duplication, and gave all generated methods, classes and interfaces generated names. For our purposes that was not much of an issue, because of the validation methods used. We validated our approach using the SIG Maintainability model, which does not take naming quality into account. Because of that, the results of our experiments are in no way dependent on the names we give the generated methods, classes and interfaces.
@@ -150,7 +190,7 @@ In our experiments we chose to use a GitHub based software corpus. This corpus c
 
 We think that there is value in running our experiments with different corpuses. We would, for instance, be interested in the results for industrial projects instead of open source software systems. We are curious to see whether the distributions are comparable, or whether they show large differences.
 
-Furthermore, we think that there is value in running our experiments with a set of larger sized and more professionally developed open source systems. We noticed that in our corpus there were a lot of projects that have only few commits and contributors. We think it would be valuable to for instance perform our experiments with a set of larger open source systems, like the systems in the apache ecosystem.
+Furthermore, we think that there is value in running our experiments with a set of larger sized and more professionally developed open source systems. We noticed that in our corpus there were a lot of projects that have only few commits and contributors. We think it would be valuable to for instance perform our experiments with a set of larger open source systems, like the systems in the Apache ecosystem.
 
 \subsection{Automatically refactoring code that is duplicated with a library}
 One of the clone detection tools we analyzed in this study is Sisyphus \ref{eremondi2017sisyphus}. This clone detection tool searches a codebase for methods that are part of the Java standard libraries. There are definite automated refactoring opportunities here, automatically switching to the library implementation if available.
