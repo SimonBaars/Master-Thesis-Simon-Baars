@@ -39,10 +39,17 @@ If a method has many parameters, we can group strongly related parameters into a
 \end{itemize}
 To determine whether parameters are strongly related we must look into at what places they are used in the codebase. We must then define some threshold that denotes the percentage of usages of these variables in which they are used together. If this threshold exceeds a certain amount, we can group them into an object. We must then trace all places in which they are used together and replace the variables by the newly created abstractions.
 
+\subsubsection{Method complexity}
+Method complexity refers to the complexity of the logic in a method body. There are several methods to compute method complexity. The most used complexity metric is (MCCabe) Cyclomatic Complexity \cite{visser2016building}, which refers to the amount of independent paths that can be taken though the source code. Another complexity metric that has recently become fairly popular is Cognitive Complexity \cite{campbell2017cognitive}, which attempts to measure the human perceived complexity. Both indicate an aspect of source code maintainability.
 
+Dealing with method complexity can largely be done by method extraction. We extract a part of a complex method to a new method. This way we split the complexity of the original method into separately testable methods. Also, the methods become easier to read.
 
+Refactoring complex methods can largely be done automatically. Also, many of the results of this study can be reused. To assess an automated refactoring opportunity for complex methods, we should assess which parts of methods can be split to end up with parts of similar complexity. For this, our research can be used to assess whether a given piece of code can be extracted to a new method (see section \ref{sec:refactorability}).
+
+We recommend to extend our tool, CloneRefactor, to allow for such capabilities. CloneRefactor already contains a component that calculates the Cyclomatic Complexity of a given method. Using our automated refactored model, idenfied problems can relatively easily be refactored.
 
 \subsubsection{Method size}
+... Although method size is often related to cyclomatic complexity, a study by Landman et al. shows that cyclomatic complexity is not redundant to method size \cite{landman2016empirical}.
 
 \subsubsection{Combining the metrics}
 Combining the automated refactoring models for each of these metrics can result in a model that ultimately provides significant improvement in the ease of writing well-maintainable source code. In this study, we presented a few tradeoffs that are the result of refactoring code clones. For instance, refactoring code clones with a lot of variability can result in long parameter lists. However, if we can combine this with automated refactoring of long parameter lists, this tradeoff can be mitigated. This way, it is possible to work towards an model of automated refactoring that reduces manual refactoring efforts significantly.
