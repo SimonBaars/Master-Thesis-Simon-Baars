@@ -91,7 +91,7 @@ One of the main drivers for starting this research is the recent release of the 
 The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. In most IDE's this refactoring method is called ``Extract Method''.
 
 \subsection{Extract Method}
-Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \ref{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method.
+Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \ref{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method. An example of this procedure is displayed in figure \ref{fig:extractmethod}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -124,6 +124,15 @@ public void doAandB(){
 \caption{Refactoring duplication through method extraction.}
 \label{fig:extractmethod}
 \end{figure}
+
+\subsection{Move method}
+In the example of the previous section, both duplicated parts are in the same method. However, a study by Fontana et al. \ref{fontana2015duplicated} shows that this is most often not the case. Based on the relation between clone instances, the extracted method must be moved to be accessible by all locations of the clone instances. This might require different techniques.
+
+\subsubsection{Pull up method}
+A refactoring technique to move a method up in its inheritance structure is called ``Pull up method'' \ref{fowler2018refactoring}. This way, if cloned methods are related in any way through inheritance, they can be called by both classes by placing the method in a class they both have in common. This way its possible to refactor both fully cloned methods (by just pulling up the method) and partially cloned methods (by first performing method extraction and then pulling up the refactored method).
+
+\subsubsection{Create class abstraction based on implicit relations}
+\todo{}
 
 \section{Clone Contexts} %I don't really like this chapter.
 Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
