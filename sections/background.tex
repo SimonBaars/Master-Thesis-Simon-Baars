@@ -2,7 +2,7 @@
 \label{ch:background}
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
-\section{Code clone terminology}
+\section{Code clone terminology}\label{sec:terminology}
 Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and Jiang et al. \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in table \ref{tab:clone-terminology}.
 
 \begin{table}[H]
@@ -83,9 +83,12 @@ Duplication in code is found in many different forms. Most often duplicated code
 A higher type of clone means that it's harder to detect and refactor. There are many studies that adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
 \subsection{Type 4 clones}
-For this study we have chosen not to consider type 4 clones for refactoring, because they are both hard to detect and hard to refactor (how to choose the best alternative for a certain computation could be a thesis in itself). A study by Kodhai et al \cite{kodhai2013method} looks into the distribution of the different types of clones in several open source systems (see table 6 of his study). It becomes apparent that type 4 clones exist way less in source code than all of the other types of clones. For instance, for the J2sdk-swing system he finds 8115 type 1 clones, 8205 type 2 clones, 11209 type 3 clones and only 30 type 4 clones. Because of that, we can conclude that type 4 clones are relatively less relevant to study.
+For this study we have chosen to take type 4 clones out of the scope, because they are both hard to detect and hard to refactor. A study by Kodhai et al \cite{kodhai2013method} looks into the distribution of the different types of clones in several open source systems (see table 6 of his study). It becomes apparent that type 4 clones exist way less in source code than all of the other types of clones. For instance, for the J2sdk-swing system he finds 8115 type 1 clones, 8205 type 2 clones, 11209 type 3 clones and only 30 type 4 clones. Because of that, we can conclude that type 4 clones are relatively less relevant to study.
 
 \section{Background on refactoring methods}
+One of the main drivers for starting this research is the recent release of the second edition of Martin Fowlers' Refactoring book \ref{fowler2018refactoring}. This book has been updated to the modern state of software engineering. However, the sentence in which he stresses the importance of unifying duplication in source code remains present in both books \ref{fowler1999refactoring, fowler2018refactoring}.
+
+The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. In most IDE's this refactoring method is called ``Extract Method''.
 
 \section{Clone Contexts} %I don't really like this chapter.
 Code clones can be found anywhere in the code. The most commonly studied type of clone is the method-level clone. Method-level clones are duplicated blocks of code in the body of a method. Many clone detection tools only focus on method-level clones (like CPD\footnote{CPD is part of PMD, a commonly used source code analyzer: \url{https://github.com/pmd/pmd}}, Siamese\footnote{Siamese is an Elasticsearch based clone detector: \url{https://github.com/UCL-CREST/Siamese}}, Sysiphus\footnote{Sisyphus crawls the Java library for existing implementations of parts of a codebase: \url{https://github.com/fruffy/Sisyphus}}). The reason for this is that with method-level clones it's most likely that the clones are harmful, and they are more straight-forward to refactor.
