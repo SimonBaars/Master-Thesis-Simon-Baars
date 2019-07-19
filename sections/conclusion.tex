@@ -63,5 +63,12 @@ When programming, there are often trade-offs between technical debt and velocity
 \subsection{Refactoring the harder to refactor clones}
 
 \subsection{Naming of refactored methods/classes/etc.}
+In this study, we took naming of refactored entities out of the scope. We applied automated refactoring to duplication, and gave all generated methods, classes and interfaces generated names. For our purposes that was not much of an issue, because of the validation methods used. We validated our approach using the SIG Maintainability model, which does not take naming quality into account. Because of that, the results of our experiments are in no way dependent on the names we give the generated methods, classes and interfaces.
+
+When using our work with the purpose of refactoring assistance, these names will have to be manually provided. However, recent studies allow assistance in this process by generating a name that matches the body of a declaration. If this can be done in a reliable way, we can apply refactorings without any manual steps required.
+
+A study by Allamanis et al. \cite{allamanis2015suggesting} proposes a machine learning model that can suggest accurate method and class names. This study shows promising results towards generating method and class names on basis of their body and context. However, the source code of this study in not available, making it harder to apply their findings to generate class and method names for any software project.
+
+In a recent study by Alon et al. \cite{alon2018code2seq} they propose code2seq. Code2seq is a machine learning model that guesses the name of a method given a method body. This model has been trained on a large set of method bodies and names. The model already shows promising results. The source code of code2seq is publicly available, making it possible to embed this model in any application. Although this model is still far from perfect, combining it with our research could already greatly reduce the manual refactoring effort required. The main deficiency of this model lies in that its limited to the directly avail
 
 \subsection{Looking into other languages/paradigms}
