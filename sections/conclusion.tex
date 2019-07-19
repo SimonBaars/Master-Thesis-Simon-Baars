@@ -149,4 +149,6 @@ In this study we focused only on the object-oriented paradigm because of the sha
 \todo{TODO}
 
 \subsection{Automatically refactoring code that is duplicated with a library}
-\todo{TODO}
+One of the clone detection tools we analyzed in this study is Sisyphus \ref{eremondi2017sisyphus}. This clone detection tool searches a codebase for methods that are part of the Java standard libraries. There are definite automated refactoring opportunities here, automatically switching to the library implementation if available.
+
+This doesn't have to be limited to just the Java standard library. Although using a new library for a single cloned library, we can also search the libraries the project are already uses. CloneRefactor is an excellent tool to expand for finding such clones with external libraries and refactoring the source code to use the library implementation if available. This is because CloneRefactor has scripts to gather all dependent libraries for Maven projects. It loads these libraries in order to be able to resolve symbols. If this would be expanded not only to resolve symbols but also to consider the clones between the analyzed project and its dependencies, we could find such refactoring opportunities.
