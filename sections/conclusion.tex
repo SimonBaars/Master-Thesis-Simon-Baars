@@ -121,7 +121,40 @@ We think that current definitions of clone types still lack in the identificatio
 In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
 
 \subsubsection{Partial block}
-We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable.
+We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+|\highlightYellow|  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
+    System.out.println("hello!");
+  }
+|\highlightYellow|  for(int i = 0; i<5; i++) {
+    CoreController.activateCore(i);
+  }
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+|\highlightYellow|  doFiveTimes(() -> System.out.println("hello!"));
+|\highlightYellow|  doFiveTimes(() -> CoreController.activateCore(i));
+}
+
+public void doFiveTimes(Runnable runnable){
+  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
+    runnable.run();
+  }
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a method that is obstructed by a complex control flow.}
+\label{fig:partialblockrefactoring}
+\end{figure}
 
 \subsubsection{Overlap within a clone class}
 We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones might require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in figure \ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
@@ -131,7 +164,7 @@ We do not consider clone classes for refactoring that overlap in the clone class
 \colchunk[1]{
 \begin{javacode}
 // Original
-public boolean sayHello(){
+public void sayHello(){
 |\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring1}|
 |\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring2}|
 |\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring3}|
@@ -142,14 +175,14 @@ public boolean sayHello(){
 \colchunk[2]{
 \begin{javacode}
 // Refactored
-public boolean sayHello(){
+public void sayHello(){
 |\highlightYellow|  for(int i = 0; i<5; i++){
 |\highlightYellow|    System.out.println("hello!");
 |\highlightYellow|  }
 }
 \end{javacode}}
 \end{parcolumns}
-\caption{Refactoring a clone class that has overlap within the clone class due to the clone class existing of equal lines.}
+\caption{Refactoring a clone class that has overlap between clone instances.}
 \label{fig:overlaprefactoring}
 \end{figure}
 
@@ -162,7 +195,6 @@ Break, continue and return statements can obstruct the possibility of performing
 \begin{javacode}
 // Original
 public boolean doStuff(){
-  int numbers = 456;
 |\highlightYellow|  if(doA());
 |\highlightYellow|    return false;
 |\highlightYellow|  doB();
@@ -177,7 +209,6 @@ public boolean doStuff(){
 \begin{javacode}
 // Refactored
 public boolean doStuff(){
-  int numbers = 456;
 |\highlightYellow|  if(!doAandB())
 |\highlightYellow|    return false;
   doC();
@@ -187,7 +218,7 @@ public boolean doStuff(){
 public boolean doAandB(){
   if(doA())
     return false;
-  doB(var2);
+  doB();
   return true;
 }
 \end{javacode}}
