@@ -1,7 +1,5 @@
 \chapter{Experimental setup}
-In this chapter we describe the setup we use for our experiments. Our most prominent contribution is the proposal of a tool called CloneRefactor. This tool allows us to map clones with all clone definitions as described in chapter \ref{chap:clonetypes}.
-
-All results of our experiments, as displayed in chapter \ref{ch:results}, are measured over a corpus of Java projects. In this chapter we will explain how we prepared this corpus.
+In this chapter we describe the setup we use for our experiments. All results of our experiments, as displayed in chapter \ref{ch:results}, are measured over a corpus of Java projects. In this chapter we will explain how we prepared this corpus.
 
 \section{The corpus}\label{chap:corpus}
 For our measurements we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
@@ -24,6 +22,55 @@ Amount of statements/declarations                                               
 \end{center}
 \end{table}
 
+\section{Context Analysis of Clones}\label{chap:contextsetup}
+To be able to refactor code clones, it is important to consider the context of the clone. We define the following aspects of the clone as its context:
+\begin{enumerate}
+  \item \textbf{Relation:} The relation of clone instances among each other through inheritance.
+  \item \textbf{Location:} Where a clone instance occurs in the code.
+  \item \textbf{Contents:} The statements/declarations of a clone instance.
+\end{enumerate}
+We perform experiments on each of these aspects, defining categories and measuring these categories over the corpus.
+
+\begin{figure}[H]
+  \caption{Abstract representation of clone classes and clone instances.}
+    \medskip
+    \includegraphics[width=1\columnwidth]{img/context}
+  \label{fig:clonecontext}
+\end{figure}
+
+Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured for each clone class. The location and contents of clones are measured for each clone instance.
+
+\subsection{Relation}
+When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
+
+Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
+\begin{enumerate}
+  \item \textbf{Same method}: All instances of the clone class are in the same method.
+  \item \textbf{Same class}: All instances of the clone class are in the same class.
+  \item \textbf{Superclass}: All instances of the clone class are child or parent of each other.
+  \item \textbf{Ancestor class}: All instances of the clone class are superclasses except for the direct superclass.
+  \item \textbf{Sibling class}: All instances of the clone class have the same parent class.
+  \item \textbf{First cousin class}: All instances of the clone class have the same grandparent class.
+\item \textbf{Common hierarchy class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
+\item \textbf{Same external superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
+\item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
+\end{enumerate}
+
+We added the following categories, to gain more information about clones and reduce the number of unrelated clones:
+
+\begin{enumerate}
+\item \textbf{Same Interface}: All instances of the clone class are in a class or interface that have a common interface anywhere in their inheritance hierarchy.
+\item \textbf{No Direct Superclass}: All instances of the clone class are in a class that does not have any superclass.
+\item \textbf{No Indirect Superclass}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
+\end{enumerate}
+
+\begin{figure}[H]
+  \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
+    \medskip
+    \includegraphics[width=1\columnwidth]{img/Relation}
+  \label{fig:clonerelation}
+\end{figure}
+
 \chapter{Results}
 
 \label{ch:results}
@@ -31,7 +78,7 @@ In this chapter, we present the results of our experiments.
 
 \section{Thresholds} \label{sec:thresholds}
 
-\section{Relation, Location and Content Analysis of Clones}\label{chap:clonecontextexpl}
+\section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
 \begin{enumerate}
   \item The relation of clone instances among each other through inheritance (for example: a clone instance resides in a superclass of another clone instance in the same clone class).
