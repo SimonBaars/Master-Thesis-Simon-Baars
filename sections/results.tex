@@ -2,7 +2,7 @@
 In this chapter, we present the results of our experiments.
 
 \section{Thresholds} \label{sec:thresholds}
-\TODO{todo}
+\todo{todo}
 
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
@@ -27,28 +27,28 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
-In section \ref{sec:setuprelationsinstances} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in chapter \ref{chap:type1clones}.
+In section \ref{sec:setuprelationsinstances} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances.
 
 \begin{table}[H]
   \begin{center}
   \caption{Clone relations} \label{table:relations}
   \medskip
-\begin{tabular}{|l|l|l|l|l|} \hline
-\textbf{Relation}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-Unrelated          & 6,134           & 35.48  & 4,762 & 38.14            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Same\\Class\end{tabular}          & 4,772            & 27.60  & 3,131 & 25.07             \\ \hline
-Sibling            & 2,680            & 15.50   & 1,949 & 15.61            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Same\\Method\end{tabular}         & 2,247            & 13.00   & 1,685 & 13.49             \\ \hline
-\begin{tabular}[c]{@{}l@{}}External\\Superclass\end{tabular} & 794            & 4.59   & 558 & 4.47             \\ \hline
-\begin{tabular}[c]{@{}l@{}}First\\Cousin\end{tabular}        & 269             & 1.56     & 197 & 1.58           \\ \hline
-Superclass         & 237             & 1.37     & 118 & 0.94           \\ \hline
-\begin{tabular}[c]{@{}l@{}}Common\\Hierarchy\end{tabular}    & 123             & 0.71    & 73 & 0.58            \\ \hline
-Ancestor           & 35              & 0.20     & 14 & 0.11          \\ \hline
+\begin{tabular}{|l|l|l|} \hline
+\textbf{Relation} & \textbf{\#} & \textbf{\%} \\ \hline
+Unrelated          & 12,368 & 34.88            \\ \hline
+Same Class          & 11,483 & 32.38             \\ \hline
+Same Method               & 5,056 & 14.26            \\ \hline
+Sibling         & 4,182 & 11.79             \\ \hline
+External Superclass   & 1,066 & 3.01             \\ \hline
+Superclass          & 558 & 1.57           \\ \hline
+First Cousin          & 489 & 1.38           \\ \hline
+Common Hierarchy    & 206 & 0.58            \\ \hline
+Ancestor          & 54 & 0.15          \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-The most notable difference when comparing it to the results of Fontana et al. \cite{fontana2015duplicated} is that in our results most of the clones are unrelated (38.14\% with type 1R), while for them it was only 15.70\%. This might be due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a fourth of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the ``Sibling'' clones, which can often be refactored using a pull-up refactoring. There are no noteworthy differences between type 1 and type 1R clones.
+The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (34.44\%), while for them it was only 15.70\%. This is likely due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a third of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the clones that are in the same method, which are similarly easy to refactor.
 
 \subsection{Clone instance location}\label{chap:clonelocation}
 After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
