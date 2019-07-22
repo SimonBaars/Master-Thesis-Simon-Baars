@@ -57,14 +57,14 @@ Measuring the clone locations categories defined in section \ref{sec:setuplocati
   \begin{center}
   \caption{Clone instance locations} \label{table:locations}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{Location}  & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-Method Level       & 32,861           & 66.02   & 19,075 & 58.23            \\ \hline
-Class Level        & 15,069           & 30.27   & 12,207 & 37.27            \\ \hline
-\begin{tabular}[c]{@{}l@{}}Constructor\\Level\end{tabular}  & 1,391            & 2.79     & 1,080 & 3.30           \\ \hline
-\begin{tabular}[c]{@{}l@{}}Interface\\Level\end{tabular}    & 282              & 0.57     & 247 & 0.75           \\ \hline
-Enum Level         & 171               & 0.34    & 147 & 0.45            \\ \hline
+\textbf{Location}   & \textbf{\#} & \textbf{\%} \\ \hline
+Method Level        & 83,813 & 82.62            \\ \hline
+Class Level        & 12,534 & 12.35            \\ \hline
+Constructor Level    & 4,391 & 4.33           \\ \hline
+Interface Level   & 567 & 0.56           \\ \hline
+Enum Level         & 145 & 0.14            \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -78,23 +78,23 @@ Measuring the clone contents categories defined in section \ref{sec:setupcontent
   \begin{center}
   \caption{Clone instance contents} \label{table:contents}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
   \hline
-  \textbf{Contents} & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Method\end{tabular}             & 32,214 & 64.72 & 18,791 & 57.37 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Several\\Methods\end{tabular}            & 10,542 & 21.18 & 8,514 & 25.99 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes\\Constructor\end{tabular}       & 1,772  & 3.56  & 1,213 & 3.70 \\ \hline
-  Includes Field                                                      & 1,681  & 3.38  & 1,487 & 4.54 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Partial\\Constructor\end{tabular}        & 1,389  & 2.79  & 1,078 & 3.29 \\ \hline
-  Only Fields                                                         & 962    & 1.93  & 888 & 2.71 \\ \hline
-  Full Method                                                         & 647    & 1.30  & 284 & 0.87 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Includes Class\\Declaration\end{tabular} & 263    & 0.53  & 258 & 0.79 \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Other\\Categories\end{tabular}           & 304    & 0.61  & 243 & 0.74 \\ \hline
+  \textbf{Contents} & \textbf{\#} & \textbf{\%} \\ \hline
+  Partial Method     & 79,945 & 78.80 \\ \hline
+  Several Methods         & 7,323 & 7.22 \\ \hline
+  Partial Constructor      & 4,385 & 4.32 \\ \hline
+  Full Method           & 3,868 & 3.81 \\ \hline
+  Only Fields           & 3,039 & 3.00 \\ \hline
+  Includes Constructor  & 1,522 & 1.50 \\ \hline
+  Includes Field        & 616 & 0.61 \\ \hline
+  Includes Class Declaration  & 376 & 0.37 \\ \hline
+  Other Categories    & 376 & 0.37\\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-Unsurprisingly, most clones span a part of a method. More than a quarter of the clones (for type 1R) span over several methods, which either requires more advanced refactoring techniques or indicates a non-harmful clone.
+Unsurprisingly, most clones span a part of a method. The most used refactoring technique for clones that span part of a method is ``Extract Method''. Because of that, we focus our research efforts on refactoring such clones.
 
 \section{Merging duplicate code through refactoring} \label{sec:refactorability}
 The most used technique to merge clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
@@ -111,15 +111,15 @@ We measured the amount of clones that can be refactored through method extractio
   \begin{center}
   \caption{Refactorability through method extraction} \label{table:refactorability}
   \medskip
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{}        & \textbf{\# T1} & \textbf{\% T1}  & \textbf{\# 1R} & \textbf{\% 1R} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Is not a\\partial method\end{tabular}           & 5,917 & 34.22 & 4,806 & 38.49 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Complex\\control flow\end{tabular} & 5,511 & 31.87 & 3,158 & 25.29 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Spans part of\\a block\end{tabular}             & 3,989 & 23.07 & 3,152 & 25.24 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Can be\\extracted\end{tabular}                  & 1,874 & 10.84 & 1,371 & 10.98 \\ \hline
+\textbf{}         & \textbf{\#} & \textbf{\%} \\ \hline
+Can be extracted     & 14,664 & 41.35 \\ \hline
+Spans part of a block  & 10,801 & 30.46 \\ \hline
+Is not a partial method   & 8,074 & 22.77 \\ \hline
+Complex control flow & 1,922 & 5.42 \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-From Table \ref{table:refactorability}, we can see that approximately ten percent of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required. Looking into these techniques and transformations will be one of our next steps.
+From Table~\ref{table:refactorability}, we can see that 41\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
