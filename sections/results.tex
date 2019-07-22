@@ -47,7 +47,7 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
 \begin{enumerate}
   \item \textbf{Same method}: All instances of the clone class are in the same method.
   \item \textbf{Same class}: All instances of the clone class are in the same class.
-  \item \textbf{Superclass}: All instances of the clone class are child or parent of each other.
+  \item \textbf{Superclass}: All instances of the clone class are in a class that is child or parent of each other.
   \item \textbf{Ancestor class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{Sibling class}: All instances of the clone class have the same parent class.
   \item \textbf{First cousin class}: All instances of the clone class have the same grandparent class.
@@ -64,6 +64,8 @@ We added the following categories, to gain more information about clones and red
 \item \textbf{No Indirect Superclass}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
 \end{enumerate}
 
+Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
+
 \begin{figure}[H]
   \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
     \medskip
@@ -71,30 +73,40 @@ We added the following categories, to gain more information about clones and red
   \label{fig:clonerelation}
 \end{figure}
 
+We analyzed
+
+\subsubsection{Same Class}
+The \textit{``Same method''} and \textit{``Same class''} relations share a common refactoring opportunity. Clones of both these catagories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
+
+A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method:
+
+\begin{equation}\label{eq:samemethod}
+\forall (i_1 \in C) \forall (i_2 in C) Mi_1 = Mi_2
+\end{equation}
+
+Where \textit{M} is the method in which a clone instance is found. Please note that a clone instance may not always be in a method, for which this predicate will fail. Each node in a clone instance is checked for this predicate, so if a single node of a clone instance is outside a method, the predicate will fail.
+
+A clone class is flagged as ``Same class'' if all clone instances in the clone class are in the same class:
+
+\begin{equation}\label{eq:samemethod}
+\forall (i_1 \in C) \forall (i_2 in C) Di_1 = Di_2
+\end{equation}
+
+Where \textit{D} is the class declaration in which the clone instance is found.
+
+\subsubsection{Same Hierarchy}
+The following relations belong to
+
+
 \chapter{Results}
 
 \label{ch:results}
 In this chapter, we present the results of our experiments.
 
 \section{Thresholds} \label{sec:thresholds}
+\TODO{todo}
 
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
-To be able to refactor code clones, it is very important to consider the context of the clone. We define the following aspects of the clone as its context:
-\begin{enumerate}
-  \item The relation of clone instances among each other through inheritance (for example: a clone instance resides in a superclass of another clone instance in the same clone class).
-  \item Where a clone instance occurs in the code (for example: a method-level clone is a clone instance that is in a method).
-  \item The contents of a clone instance (for example: the clone instance spans several methods).
-\end{enumerate}
-
-\begin{figure}[H]
-  \caption{Abstract representation of clone classes and clone instances.}
-    \medskip
-    \includegraphics[width=1\columnwidth]{img/context}
-  \label{fig:clonecontext}
-\end{figure}
-
-Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
-
 We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  the content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
 
 \subsection{Clone detection results}
