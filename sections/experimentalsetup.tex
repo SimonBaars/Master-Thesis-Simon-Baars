@@ -48,8 +48,8 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
   \item \textbf{Same Method}: All instances of the clone class are in the same method.
   \item \textbf{Same Class}: All instances of the clone class are in the same class.
   \item \textbf{Superclass}: All instances of the clone class are in a class that is child or parent of each other.
-  \item \textbf{Ancestor Class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{Sibling Class}: All instances of the clone class have the same parent class.
+    \item \textbf{Ancestor Class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{First Cousin Class}: All instances of the clone class have the same grandparent class.
 \item \textbf{Same Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
 \item \textbf{Same External Superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
@@ -86,7 +86,7 @@ Every clone class only has a single relation, which is the first relation from a
 To check a the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
 
 \begin{equation}\label{eq:sameclass}
-((x)(x + 1) / 2) * y
+\frac{x * (x + 1)}{2} * y
 \end{equation}
 
 comparisons to determine the relation. Each of these checks will result in one of the relations from the list above. Of these relations, the item lowest in the list is going to be the relation of the clone class. So for instance, if a clone class has 15 nodes that denote a \textit{Superclass} relation but 3 nodes are \textit{Unrelated}, the clone class becomes \textit{Unrelated}.
@@ -101,14 +101,16 @@ Cloned nodes are flagged as \textit{Same class} if these nodes are found in the 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
 
-Cloned nodes are flagged as \textit{Superclass} if the classes in which these clones are found are parent and child class of each other. Here, the classes of these nodes follow the same definition as stated in the previous section.
+Cloned nodes are flagged as \textit{Superclass} if the classes in which these nodes are found are parent and child class of each other. Cloned nodes are flagged as \textit{Siblings} if the classes in which these nodes are found all share the same parent and this parent class is not external. Cloned nodes are flagged as \textit{First Cousin} if the classes in which these nodes are found all share the same grandparent and this grandparent class is not external.
 
-Cloned nodes are flagged as \textit{Siblings} if the classes in which these clones are found all share the same parent and this parent class is not external.
-
-Cloned nodes are flagged as \textit{First Cousin} if the classes in which these clones are found all share the same parent and this parent class is not external.
+Cloned nodes are flagged as \textit{Ancestor} if the classes in which these nodes are found are recursively the parent of an antecedent. Cloned nodes are flagged as \textit{Same Hierarchy} if the classes in which these nodes are found are all in the same inheritance hierarchy and not linked by any external classes.
 
 \subsubsection{Common Interface}
-\todo{TODO}
+Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\#8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
+
+The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by setting a stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
+
+To check whether two cloned nodes have common interfaces, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
 
 \subsubsection{Effectively Unrelated}
 \todo{TODO}
