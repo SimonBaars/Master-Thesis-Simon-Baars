@@ -1,6 +1,25 @@
 \chapter{Results}\label{ch:results}
 In this chapter, we present the results of our experiments.
 
+\section{Clone types}\label{sec:clonetypeexperiments}
+In this section we display the differences between clone type 1-3~\cite{roy2007survey} and type 1R-3R as proposed in Sec. \ref{sec:rtypes}. When running our clone detection script over the corpus, we get the results displayed in Fig.~\ref{fig:typeres}.
+
+\begin{figure}[H]
+  \caption{Number of cloned declarations/statements.}
+    \includegraphics[width=1\columnwidth]{img/TypeResults}
+  \label{fig:typeres}
+\end{figure}
+
+In this figure, the number of cloned nodes per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%) because the T2R definition is more strict. T3R and T3 are similar to T2R and T2 because our dataset does not have so many gapped clones for the thresholds used.
+
+We also measured the duration of finding clones by the different clone types. Fig.~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is partly dependent on our implementation of the clone types, there is a notable difference between the refactoring-oriented clone types and the literature clone types. The reason for this is further explained in Sec.~\ref{chap:challenge}.
+
+\begin{figure}[H]
+  \caption{Duration in minutes of identifying clones for clone type definitions.}
+    \includegraphics[width=.95\columnwidth]{img/DurationChart}
+  \label{fig:performance}
+\end{figure}
+
 \section{Thresholds} \label{sec:thresholds}
 \todo{todo}
 
