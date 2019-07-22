@@ -32,15 +32,14 @@ To be able to refactor code clones, it is important to consider the context of t
 We perform experiments on each of these aspects, defining categories and measuring these categories over the corpus.
 
 \begin{figure}[H]
-  \caption{Abstract representation of clone classes and clone instances.}
-    \medskip
-    \includegraphics[width=1\columnwidth]{img/context}
+    \includegraphics[width=0.6\columnwidth]{img/context}
+    \caption{Abstract representation of clone classes and clone instances.}
   \label{fig:clonecontext}
 \end{figure}
 
 Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured for each clone class. The location and contents of clones are measured for each clone instance.
 
-\subsection{Relation}
+\subsection{Relation}\label{sec:setuprelationsinstances}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
 Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
@@ -104,3 +103,10 @@ Where \textit{D} is the class declaration in which the clone instance is found.
 
 \subsubsection{Common Hierarchy}
 The following relations belong to
+\todo{TODO}
+
+\subsubsection{Common Interface}
+\todo{TODO}
+
+\subsubsection{Effectively Unrelated}
+\todo{TODO}

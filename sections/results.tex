@@ -27,42 +27,7 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
-When merging code clones in object-oriented languages, it is very important to consider the relation between clone instances. This relation has a big impact on how a clone should be merged, in order to improve the software design in the process. In this chapter, we display measurements we conducted on the corpus introduced in chapter \ref{chap:corpus}. These measurements are based on an experiment by Fontana et al. \cite{fontana2015duplicated}, which we will briefly introduce in chapter \ref{chap:catcloneinstancerelations}. We use a vastly different setup, which is explained in chapter \ref{chap:oursetup}. We then show our results in chapter \ref{chap:ourmeasurements}.
-
-\subsubsection{Categorizing Clone Instance Relations}\label{chap:catcloneinstancerelations}
-Fontana et al. \cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. A few of these categories are shown in Figure \ref{fig:clonerelation}. These categories are as follows:
-\begin{enumerate}
-  \item \textbf{Same method}: All instances of the clone class are in the same method.
-  \item \textbf{Same class}: All instances of the clone class are in the same class.
-  \item \textbf{Superclass}: All instances of the clone class are children and parents of each other.
-  \item \textbf{Ancestor class}: All instances of the clone class are superclasses except for the direct superclass.
-  \item \textbf{Sibling class}: All instances of the clone class have the same parent class.
-  \item \textbf{First cousin class}: All instances of the clone class have the same grandparent class.
-\item \textbf{Common hierarchy class}: All instances of the clone class belong to the same hierarchy, but do not belong to any of the other categories.
-\item \textbf{Same external superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
-\item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
-\end{enumerate}
-
-\begin{figure}[H]
-  \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
-    \medskip
-    \centering
-    \includegraphics[width=0.6\columnwidth]{img/Relation}
-  \label{fig:clonerelation}
-\end{figure}
-Please note that none of these categories allow external classes (except for ``same external superclass''). So if two clone instances are related through external classes but do not share a common external superclass, it will be flagged as ``unrelated''. The main reason for this is that it is (often) not possible to refactor to external classes.
-
-\subsubsection{Our setup}\label{chap:oursetup}
-We use a similar setup to that used by Fontana et al. (Table~3 of Fontana et al. \cite{fontana2015duplicated}). Fontana et al. measure clones using their own tool (DCRA). As explained in chapter~\ref{ch:tool-overview}, we chose to implement our own tool, CloneRefactor. Therefore, the setup for our measurements differs as follows from Fontana et al.:
-\begin{itemize}
-  \item We consider clone classes rather than clone pairs. The rationale for this is given in chapter \ref{chap:cloneclasses}.
-\item We use different thresholds regarding when a clone should be considered. Fontana et al. seek clones that span a minimum of 7 source lines of code (SLOC). We seek clones with a minimum size of 6 statements/declarations. This is explained detail in chapter \ref{chap:thresholds}.
-\item We seek duplicates by statement/declaration rather than SLOC. This makes our analysis depend less on the coding style (in terms of newline usage) of the author of the software project.
-\item We test a broader range of projects. Fontana et al. use a set of 50 relatively large projects. We use the corpus as explained in \ref{chap:corpus}, which contains a diverse set of projects (diverse both in volume and code quality).
-\end{itemize}
-
-\subsection{Our results} \label{chap:ourmeasurements}
-Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in chapter \ref{chap:type1clones}.
+In section \ref{sec:setuprelationsinstances} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances. In this table, ``T1'' stands for the type 1 algorithm from literature and ``1R'' stands for our type 1R definition as explained in chapter \ref{chap:type1clones}.
 
 \begin{table}[H]
   \begin{center}
