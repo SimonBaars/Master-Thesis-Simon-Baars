@@ -102,8 +102,9 @@ A clone class is flagged as ``Same class'' if all clone instances in the clone c
 Where \textit{D} is the class declaration in which the clone instance is found.
 
 \subsubsection{Common Hierarchy}
-The following relations belong to
-\todo{TODO}
+Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
+
+
 
 \subsubsection{Common Interface}
 \todo{TODO}
