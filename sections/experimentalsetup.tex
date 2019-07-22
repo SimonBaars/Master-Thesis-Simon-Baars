@@ -76,7 +76,7 @@ Figure \ref{fig:clonecontext} shows an abstract representation of clone classes 
 We separate these relations into the following categories, because of their related refactoring opportunities:
 \begin{itemize}
   \item \textbf{Common Class}: \textit{Same Method}, \textit{Same Class}
-  \item \textbf{Common Hierarchy}: \textit{Superclass}, \textit{Ancestor Class}, \textit{Sibling Class}, \textit{First Cousin}, \textit{Same Hierarchy}
+  \item \textbf{Common Hierarchy}: \textit{Superclass}, \textit{Sibling Class}, \textit{Ancestor Class}, \textit{First Cousin}, \textit{Same Hierarchy}
   \item \textbf{Common Interface}: \textit{Same Interface}
   \item \textbf{Effectively Unrelated}: \textit{No Direct Superclass}, \textit{No Indirect Superclass}, \textit{External Superclass}, \textit{Unrelated}
 \end{itemize}
@@ -92,20 +92,20 @@ To check a the relation for a given clone class, we compare each node in a clone
 comparisons to determine the relation. Each of these checks will result in one of the relations from the list above. Of these relations, the item lowest in the list is going to be the relation of the clone class. So for instance, if a clone class has 15 nodes that denote a \textit{Superclass} relation but 3 nodes are \textit{Unrelated}, the clone class becomes \textit{Unrelated}.
 
 \subsubsection{Common Class}
-The \textit{``Same method''} and \textit{``Same class''} relations share a common refactoring opportunity. Clones of both these catagories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
+The \textit{Same method} and \textit{Same class} relations share a common refactoring opportunity. Clones of both these catagories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
-A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method. We check this relation for each node in a clone instance with each other node in each other clone instance within a clone class. We define the method as the first method declaration that is found when tracing  from a node in the clone instance. Please note that a clone instance may not always be in a method, for which this predicate will fail. Each node in a clone instance is checked for this predicate, so if a single node of a clone instance is outside a method, the predicate will fail.
+Cloned nodes are flagged as \textit{Same method} if these nodes are found in the same method. We define the method as the first method declaration that is encountered when following the parent nodes in the ast for a given cloned node. Please note that a clone instance may not always be in a method, for which this predicate will fail.
 
-A clone class is flagged as ``Same class'' if all clone instances in the clone class are in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the ast for a given cloned node.
+Cloned nodes are flagged as \textit{Same class} if these nodes are found in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the ast for a given cloned node.
 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
 
-\begin{equation}\label{eq:sameclass}
-\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Si_1 = Di_2 \lor Si_2 = Di_1
-\end{equation}
+Cloned nodes are flagged as \textit{Superclass} if the classes in which these clones are found are parent and child class of each other. Here, the classes of these nodes follow the same definition as stated in the previous section.
 
-Where\
+Cloned nodes are flagged as \textit{Siblings} if the classes in which these clones are found all share the same parent and this parent class is not external.
+
+Cloned nodes are flagged as \textit{First Cousin} if the classes in which these clones are found all share the same parent and this parent class is not external.
 
 \subsubsection{Common Interface}
 \todo{TODO}
