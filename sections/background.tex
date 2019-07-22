@@ -148,5 +148,14 @@ The harmfulness of clones depends on a lot of factors. A paper by Kapser et al \
 
 In this study, one of the main focus points will be to identify what makes a code clone harmful. Analyzing refactoring opportunities of code clones gives an unique insight in the state of the source code in case the duplication is not present. Analyzing these before- and after states of the source code will provide more insights that will help to rank clones based on their harmfulness.
 
-\section{Maven}
-Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch the binaries and source code of all software projects a given codebase is dependent on. In this study we use Maven to analyze software systems in more depth. We parse and analyze the libraries on which they are dependent.
+\section{Internal and external classes}
+In this study we differentiate between \textit{internal} and \textit{external} classes. Classes are the components of a software system that contain its functionality. When analyzing a software system, \textit{Internal classes} are classes that belong to this software system specifically, and its source code is included in the project.
+
+\textit{External classes} are classes that a software system uses, but do not belong to this specific software system. Typically, the source code of external classes are not included in the source code of the project. Most often these external dependencies are referenced in a file that its build automation system uses to fetch a projects' dependencies.
+
+Regarding refactoring, a software system can often not change the source code of its dependencies. This can sometimes be a burden, when an external dependency does not use proper abstractions that are required by a software system. Because of that, in this study, we consider external classes to see what impact they have on the refactoring process.
+
+\subsection{Maven}
+For this study we perform a shallow analysis on external dependencies, in order to derive more context for internally used concepts. As these external dependencies are most often not included in a software systems' source code, we must first use the projects' build automation system to gather the dependencies. To limit the scope of this process, we decided to focus on only the \textit{Maven} build automation system.
+
+Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch the binaries and source code of all software projects a given codebase is dependent on. Maven can also be used to run tests for the systems and to package the project as an executable file.
