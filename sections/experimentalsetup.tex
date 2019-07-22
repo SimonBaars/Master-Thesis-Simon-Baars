@@ -51,7 +51,7 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
   \item \textbf{Ancestor Class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{Sibling Class}: All instances of the clone class have the same parent class.
   \item \textbf{First Cousin Class}: All instances of the clone class have the same grandparent class.
-\item \textbf{Common Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
+\item \textbf{Same Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
 \item \textbf{Same External Superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
 \item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
 \end{enumerate}
@@ -75,11 +75,15 @@ Figure \ref{fig:clonecontext} shows an abstract representation of clone classes 
 
 We separate these relations into the following categories, because of their related refactoring opportunities:
 \begin{itemize}
-  \item \textbf{Common class}:
-  \item \textbf{Common Hierarchy}
+  \item \textbf{Common Class}: \textit{Same Method}, \textit{Same Class}
+  \item \textbf{Common Hierarchy}: \textit{Superclass}, \textit{Ancestor Class}, \textit{Sibling Class}, \textit{First Cousin}, \textit{Same Hierarchy}
+  \item \textbf{Common Interface}: \textit{Same Interface}
+  \item \textbf{Effectively Unrelated}: \textit{No Direct Superclass}, \textit{No Indirect Superclass}, \textit{External Superclass}, \textit{Unrelated}
 \end{itemize}
 
-\subsubsection{Same Class}
+Every clone class only has a single relation, which is the first relation from above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in above list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
+
+\subsubsection{Common Class}
 The \textit{``Same method''} and \textit{``Same class''} relations share a common refactoring opportunity. Clones of both these catagories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
 A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method:
@@ -98,5 +102,5 @@ A clone class is flagged as ``Same class'' if all clone instances in the clone c
 
 Where \textit{D} is the class declaration in which the clone instance is found.
 
-\subsubsection{Same Hierarchy}
+\subsubsection{Common Hierarchy}
 The following relations belong to
