@@ -97,15 +97,7 @@ Measuring the clone contents categories defined in section \ref{sec:setupcontent
 Unsurprisingly, most clones span a part of a method. The most used refactoring technique for clones that span part of a method is ``Extract Method''. Because of that, we focus our research efforts on refactoring such clones.
 
 \section{Merging duplicate code through refactoring} \label{sec:refactorability}
-The most used technique to merge clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. Sometimes a clone spans a statement partially (like a for-loop of which only it's declaration and a part of the body is cloned). Merging the clones can be harder in such instances. Also, the cloned code can contain statements like \texttt{return}, \texttt{break}, \texttt{continue}. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
-
-We measured the amount of clones that can be refactored through method extraction (without additional transformations being required). Our results are displayed in Table \ref{table:refactorability}. In this table we use the following categories:
-\begin{itemize}
-    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to merge the extracted methods (for instance ``pull up method'' for clones in sibling classes).
-    \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements.
-    \item \textbf{Spans part of a block:} This clone spans a part of a statement.
-    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of Table \ref{table:contents}, the ``extract method'' refactoring technique cannot be applied.
-\end{itemize}
+In section \ref{sec:refactorabilitysetup} we define catagories regarding the extent to which clones can be refactored through method extraction. Our results are displayed in Table \ref{table:refactorability}.
 
 \begin{table}[H]
   \begin{center}
@@ -123,3 +115,6 @@ Complex control flow & 1,922 & 5.42 \\ \hline
 \end{table}
 
 From Table~\ref{table:refactorability}, we can see that 41\% of the clones can directly be refactored through method extraction (and possibly other refactoring techniques based on the relation of the clone instances). For the other clones, other techniques or transformations will be required.
+
+\section{Refactoring clones}
+\todo{TODO}

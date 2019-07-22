@@ -131,3 +131,14 @@ Finally, we looked at what nodes individual clone instances span. We selected th
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
+
+\section{Method extraction opportunities}\label{sec:refactorabilitysetup}
+The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
+
+We measured the number of clones that can be refactored through method extraction (without additional transformations being required). We defined the following categories:
+\begin{itemize}
+    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
+    \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
+    \item \textbf{Spans part of a block:} This clone spans a part of a statement.
+    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of Table~\ref{table:contents}, the ``extract method'' refactoring technique cannot be applied.
+\end{itemize}
