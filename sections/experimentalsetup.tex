@@ -32,7 +32,8 @@ To be able to refactor code clones, it is important to consider the context of t
 We perform experiments on each of these aspects, defining categories and measuring these categories over the corpus.
 
 \begin{figure}[H]
-    \includegraphics[width=0.6\columnwidth]{img/context}
+  \centering
+    \includegraphics[width=0.8\columnwidth]{img/context}
     \caption{Abstract representation of clone classes and clone instances.}
   \label{fig:clonecontext}
 \end{figure}
@@ -66,9 +67,9 @@ We added the following categories, to gain more information about clones and red
 Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
 
 \begin{figure}[H]
-  \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
-    \medskip
-    \includegraphics[width=1\columnwidth]{img/Relation}
+  \centering
+    \includegraphics[width=0.6\columnwidth]{img/Relation}
+      \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
   \label{fig:clonerelation}
 \end{figure}
 
@@ -88,15 +89,15 @@ The \textit{``Same method''} and \textit{``Same class''} relations share a commo
 A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method:
 
 \begin{equation}\label{eq:samemethod}
-\forall (i_1 \in C) \forall (i_2 in C) Mi_1 = Mi_2
+\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Mi_1 = Mi_2
 \end{equation}
 
 Where \textit{M} is the method in which a clone instance is found. Please note that a clone instance may not always be in a method, for which this predicate will fail. Each node in a clone instance is checked for this predicate, so if a single node of a clone instance is outside a method, the predicate will fail.
 
 A clone class is flagged as ``Same class'' if all clone instances in the clone class are in the same class:
 
-\begin{equation}\label{eq:samemethod}
-\forall (i_1 \in C) \forall (i_2 in C) Di_1 = Di_2
+\begin{equation}\label{eq:sameclass}
+\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Di_1 = Di_2
 \end{equation}
 
 Where \textit{D} is the class declaration in which the clone instance is found.
