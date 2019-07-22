@@ -27,7 +27,7 @@ Currently, we have implemented two clone detection algorithms into CloneRefactor
 Looking at Table \ref{table:clonedet}, it becomes apparent that the type 1R algorithm finds significantly less clones than the type 1 algorithm. This indicates that about a third of the clones have textual equality, but are not actually equal when considering the types of expressions. This makes these clones less suitable for automated refactoring.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
-In section \ref{sec:setuprelationsinstances} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances.
+In section \ref{sec:setuprelation} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances.
 
 \begin{table}[H]
   \begin{center}
@@ -51,15 +51,7 @@ Ancestor          & 54 & 0.15          \\ \hline
 The most notable difference when comparing it to the results of Fontana et al.~\cite{fontana2015duplicated} is that in our results most of the clones are unrelated (34.44\%), while for them it was only 15.70\%. This is likely due to the fact that we consider clone classes rather than clone pairs, and mark the clone class ``Unrelated'' even if just one of the clone instances is outside a hierarchy. It could also be that the corpus which we use, as it has generally smaller projects, uses more classes from outside the project (which are marked ``Unrelated'' if they do not have a common external superclass). About a third of all clone classes have all instances in the same class, which is generally easy to refactor. On the third place come the clones that are in the same method, which are similarly easy to refactor.
 
 \subsection{Clone instance location}\label{chap:clonelocation}
-After mapping the relations between individual clones, we looked at the location of individual clone instances. A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We validated this claim over our corpus. The results for the clone instance locations are shown in Table \ref{table:locations}. We chose the following categories:
-\begin{enumerate}
-  \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
-  \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
-  \item \textbf{Interface Level:} A clone that is (a part of) an interface.
-  \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
-\end{enumerate}
-
-Please note that these results are measured over each clone instance rather than each clone class, hence the higher total amount in comparison to the results of chapter \ref{chap:ourmeasurements}.
+Measuring the clone locations categories defined in section \ref{sec:setuplocation} yields the results displayed in Table \ref{table:contents}.
 
 \begin{table}[H]
   \begin{center}
@@ -80,18 +72,7 @@ Enum Level         & 171               & 0.34    & 147 & 0.45            \\ \hli
 Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and type 1R, it seems that there are relatively less method level clones and more class level clones for type 1R. This is probably due to that the main reason for variability between type 1 and type 1R is variable references, which occur more at method level than class level.
 
 \section{Clone instance contents}\label{chap:clonecontents}
-Finally, we looked at the contents of individual clone instances: what kind of declarations and statements do they span. We selected the following categories to be relevant for refactoring:
-\begin{enumerate}
-  \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method/Constructor:} A clone that spans a method partially, optionally including its declaration.
-  \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
-  \item \textbf{Only Fields:} A clone that spans only global variables.
-  \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields and other things, like methods.
-  \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
-  \item \textbf{Other:} Anything that does not match with above-stated categories.
-\end{enumerate}
-
-The results for these categories are displayed in Table \ref{table:contents}.
+Measuring the clone contents categories defined in section \ref{sec:setupcontents} yields the results displayed in Table \ref{table:contents}.
 
 \begin{table}[H]
   \begin{center}
