@@ -83,29 +83,29 @@ We separate these relations into the following categories, because of their rela
 
 Every clone class only has a single relation, which is the first relation from above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in above list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
 
+To check a the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
+
+\begin{equation}\label{eq:sameclass}
+((x)(x + 1) / 2) * y
+\end{equation}
+
+comparisons to determine the relation. Each of these checks will result in one of the relations from the list above. Of these relations, the item lowest in the list is going to be the relation of the clone class. So for instance, if a clone class has 15 nodes that denote a \textit{Superclass} relation but 3 nodes are \textit{Unrelated}, the clone class becomes \textit{Unrelated}.
+
 \subsubsection{Common Class}
 The \textit{``Same method''} and \textit{``Same class''} relations share a common refactoring opportunity. Clones of both these catagories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
-A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method:
+A clone class is flagged as ``Same method'' if all clone instances in the clone class are in the same method. We check this relation for each node in a clone instance with each other node in each other clone instance within a clone class. We define the method as the first method declaration that is found when tracing  from a node in the clone instance. Please note that a clone instance may not always be in a method, for which this predicate will fail. Each node in a clone instance is checked for this predicate, so if a single node of a clone instance is outside a method, the predicate will fail.
 
-\begin{equation}\label{eq:samemethod}
-\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Mi_1 = Mi_2
-\end{equation}
-
-Where \textit{M} is the method in which a clone instance is found. Please note that a clone instance may not always be in a method, for which this predicate will fail. Each node in a clone instance is checked for this predicate, so if a single node of a clone instance is outside a method, the predicate will fail.
-
-A clone class is flagged as ``Same class'' if all clone instances in the clone class are in the same class:
-
-\begin{equation}\label{eq:sameclass}
-\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Di_1 = Di_2
-\end{equation}
-
-Where \textit{D} is the class declaration in which the clone instance is found.
+A clone class is flagged as ``Same class'' if all clone instances in the clone class are in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the ast for a given cloned node.
 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
 
+\begin{equation}\label{eq:sameclass}
+\forall (i_1 \in C)\text{ }\forall (i_2 \in C)\text{ }Si_1 = Di_2 \lor Si_2 = Di_1
+\end{equation}
 
+Where\
 
 \subsubsection{Common Interface}
 \todo{TODO}
