@@ -74,6 +74,7 @@ This example can be represented as a tree structure using the concepts from tabl
 \end{figure}
 
 \section{Clone Types} \label{chap:backgroundclonetypes}
+\simon{What is Structurally/syntactically/functionally/textually, ect ect, all words before EQUAL}
 Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
 \begin{displayquote}
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
@@ -142,6 +143,7 @@ Looking specifically at the Java programming language, recent versions of Java i
 How to refactor clones is highly dependent on their context. Method-level clones can be extracted to a method \cite{kodhai2013method} if all occurrences of the clone reside in the same class. If a method level clone is duplicated among classes in the same inheritance structure, we might need to pull-up a method in the inheritance structure. If instances of a method level clone are not in the same inheritance structure, we might need to either make a static method or create an inheritance structure ourselves. So not only a single instance of a clone has a context, but also the relationship between individual instances in a clone class. This is highly relevant to the way in which the clone has to be refactored.
 
 \section{Code clone harmfulness}
+\simon{You make a promise here. Do we need this section? Maybe remove it completely.}
 Although duplication in source code is generally seen as a harmful coding practise that should be avoided. Most papers view clones as harmful regarding program maintainability. \textit{``Clones are problematic for the maintainability of a program, because if the clone is altered at one location to correct an erroneous behaviour, you cannot be sure that this correction is applied to all the cloned code as well. Additionally, the code base size increases unnecessarily and so increases the amount of code to be handled when conducting maintenance work''} \cite{ostberg2014automatically}. However, in some instances it is undesirable to remove all duplication, as it can lead to unnecessary complexity.
 
 The harmfulness of clones depends on a lot of factors. A paper by Kapser et al \cite{kapser2006cloning} describes several patterns of cloning that may not be considered harmful. In this paper Kapser names examples where eliminating clones would compromise other important program qualities. Another study by Jarzabek et al \cite{jarzabek2010clones} categorized ``Essential clones'': clones that are essential because of the solution that is being modelled by the program. Overall, many of the benefits of code clones do not apply to most modern object-oriented programming languages.
@@ -154,6 +156,7 @@ In this study we differentiate between \textit{internal} and \textit{external} c
 \textit{External classes} are classes that a software system uses, but do not belong to this specific software system. Typically, the source code of external classes are not included in the source code of the project. Most often these external dependencies are referenced in a file that its build automation system uses to fetch a projects' dependencies.
 
 Regarding refactoring, a software system can often not change the source code of its dependencies. This can sometimes be a burden, when an external dependency does not use proper abstractions that are required by a software system. Because of that, in this study, we consider external classes to see what impact they have on the refactoring process.
+\simon{Adapter pattern?}
 
 \subsection{Maven}
 For this study we perform a shallow analysis on external dependencies, in order to derive more context for internally used concepts. As these external dependencies are most often not included in a software systems' source code, we must first use the projects' build automation system to gather the dependencies. To limit the scope of this process, we decided to focus on only the \textit{Maven} build automation system.

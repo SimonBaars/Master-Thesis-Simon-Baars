@@ -1,17 +1,17 @@
 \chapter{Defining refactoring-oriented clone types}\label{chap:clonetypes}
-In section \ref{chap:backgroundclonetypes} we introduced the four clone types as defined in literature. These simple definitions are suitable for analysis of a codebase. Their detection results in simple to understand numbers to argue about a codebase. However, these clone types have a few flaws which makes it hard to argue to what extend two fragments of code are functionally related. For each of type 1-3 clones~\cite{roy2007survey} we list our solutions to their shortcomings to increase the chance that we can refactor the clone while improving the design.
+In section \ref{chap:backgroundclonetypes} we introduced the four clone types as defined in literature. These simple definitions are suitable for analysis of a codebase. Their detection results in simple to understand numbers to argue about a codebase. However, these clone types have a few flaws which makes it hard to argue to what extend two fragments of code can and should be refactored. For each of type 1-3 clones~\cite{roy2007survey} we list our solutions to their shortcomings to increase the chance that we can refactor the clone while improving the design.
 
 We also look into clone detection tools for their suitability to support the proposed clone type definitions. We selected a few criteria  Most clone detection tools support these definitions of clone types. However, many of these tools use a vastly different approach. A study by Saini et al \cite{saini2018towards} outlines different clone detection tools and compares their results for each of type 1-3 clones. Even though they operate on the same type definitions, the tools used in this study yield different results.
 
 \section{Shortcomings of clone types}
-Clone type 1-3 (further explain in section \ref{chap:backgroundclonetypes}) allow reasoning about the duplication in a software system. Clones by these definitions can relatively easily and efficiently be detected. This has allowed for large scale analyses of duplication~\cite{livieri2007very}. However, these clone type definitions have shortcomings which makes the clones detected in correspondence with these definitions less valuable for (automated) refactoring purposes.
+Clone types 1-3 (further explained in section \ref{chap:backgroundclonetypes}) allow reasoning about the duplication in a software system. Clones by these definitions can relatively easily and efficiently be detected. This has allowed for large scale analyses of duplication~\cite{livieri2007very}. However, these clone type definitions have shortcomings which makes the clones detected in correspondence with these definitions less valuable for (automated) refactoring purposes.
 
 In this section, we discuss the shortcomings of the different clone type definitions. Because of these shortcomings, clones found by these definitions are often found to require additional judgment whether they should and can be refactored.
 
 \subsection{Type 1 clones}\label{sec:type1}
 Type 1 clones are \textit{identical clone fragments except for variations in whitespace and comments} \cite{roy2007survey}. This allows for the detection of clones that are the result of copying and pasting existing code, along with other reasons why duplicates might get into a codebase.
 
-Type 1 clones are by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} implemented as textual equality between code fragments (except for whitespace and comments). Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. When aiming to automatically refactor clones, applying refactorings to type 1 clones is bound to be error prone and can result in an uncompilable project or a difference in functionality.
+Type 1 clones are implemented as textual equality between code fragments (except for whitespace and comments) by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. When aiming to automatically refactor clones, applying refactorings to type 1 clones is bound to be error prone and can result in an uncompilable project or a difference in functionality.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/type1}
@@ -67,6 +67,7 @@ In typed programming languages, each variable declaration should declare a name 
   \caption{Variables with different types but the same name.}
   \label{fig:type2variables}
 \end{figure}
+\todo{image is not correct}
 
 The body of both methods in figure \ref{fig:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer to a String.
 
@@ -75,13 +76,15 @@ For type 1R clones variable references should be compared by both type and name.
 \subsection{Type 2R clones} \label{sec:type2r}
 Type 2R clones are modelled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in figure \ref{fig:type2} previously). Refactoring such clones can be harmful instead of helpful.
 
-We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones. All rules that apply to type 1R clones also apply to type 2R clones. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold. Type 2R do not allow any variability in types, as opposed to type 2 clones which do allow variability in types. As type 2R clones are per definition more permissive than type 1R clones, type 1R clones are a subset of type 2R clones.
+We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones \todo{Define this subset relation}. All rules that apply to type 1R clones also apply to type 2R clones\todo{Rules....}. Additionally, type 2R clones allow variability in literals, variables and method calls. This variability however is constrained by a threshold, which is explained in more detail in section \ref{sec:variabilitythreshold}.%to limit the negative effect on system design of variability in these expressions after refactoring.
 
 \subsubsection{A threshold for variability in literals, variables and method calls}\label{sec:variabilitythreshold}
+\simon{Check this text... Harmfulness?! ???}
 Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many. However, this does have a big impact on the meaning of the code fragment and thus the harmfulness of the duplication being there.
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
+\simon{Dividing expressions by tokens... maybe not do that. How to do it then??????}
 \begin{eqfloat}\label{eq:type2r}
 $$\text{T2R Variability Percentage}=\frac{Diff(l) + Diff(v) + Diff(m)}{Total(t)}*100$$
 $$Diff = \text{Amount that differ from other clone instances in the clone class}$$
