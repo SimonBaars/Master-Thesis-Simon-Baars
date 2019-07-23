@@ -201,24 +201,50 @@ When a found clone class does not adhere to the global thresholds as explained i
 \colchunk[1]{
 \begin{javacode}
 doA(a, b, c);
-doA();
-doB();
-doC();
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+|\highlightYellow|doC();
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
 doB(d, e, f);
-doA();
-doB();
-doC();
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+|\highlightYellow|doC();
 \end{javacode}}
 \end{parcolumns}
-\caption{Variables with different types but the same name.}
+\caption{One node in a type 2R clone has a high variability.}
 \label{fig:2rvariabilityhigh1}
 \end{figure}
 
 The first line of the cloned fragment shown in figure \ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragement. However, the rest of this method does not have any variability. The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
 
+\begin{figure}[H]
+\begin{parcolumns}{3}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+|\highlightYellow|doC();
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+|\highlightYellow|doC();
+\end{javacode}}
+\colchunk[3]{
+\begin{javacode}
+doD();
+doE();
+doF();
+\end{javacode}}
+\end{parcolumns}
+\caption{One clone instance in a type 2R clone has a high variability.}
+\label{fig:2rvariabilityhigh2}
+\end{figure}
+
+Another example of high variability between clones, in which a valid subclone can be found, is displayed in figure \ref{fig:2rvariabilityhigh2}. In this case, one clone instance has such a high variability that it shouldn't be refactored. In this case, the clone instance with high variability should be removed.
 
 \todo{TODO}
 \begin{table}[H]
