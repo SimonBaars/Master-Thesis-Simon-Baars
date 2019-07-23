@@ -113,7 +113,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
-\subsubsection{Conceptual method of removing redundant clone classes}\label{sec:conceptualremovingredundant}
+\subsubsection{Removing redundant clone classes}\label{sec:conceptualremovingredundant}
 The clone detection method used by CloneRefactor can, for various reasons,%Should I list these? Listing them could be a section on its own, as I'd have to show examples to make it concrete.
 result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of an existing clone. We define the subset relation between clones as follows:
 
@@ -133,13 +133,7 @@ Where \textit{S} is the set of all clone classes that are found up in until this
 \{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S = S \cup C_{new}
 \end{equation}
 
-For CloneRefactor we used this conceptual method of removing duplicates, but did not directly implement these equations. The main reason for this is the runtime overhead, as this process has to iterate over each existing clone class and each of their clone instances. For large projects with a lot of duplication this process has a significant impact on performance.
-
-\subsubsection{CloneRefactor method of removing redundant clone classes}
-Because of the order in which clones are found in the clone graph, removing redundant clone classes can be optimized to not require a search of the entire set of clones. To do this, we mark each node that has been considered for duplication as \textit{visited}. This includes nodes that are interated over and all duplicates of those nodes. When we later find a new clone class of which all nodes are \textit{visited}, we don't add this clone class to the set of clone classes because it is a subset of an existing clone class.
-
-\todo{Removal of existing clones: How does this is possibly redundant thing work?}
-
+If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
 
 \subsection{Validating the type 2R variability threshold}
 In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
