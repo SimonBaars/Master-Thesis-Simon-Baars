@@ -136,7 +136,7 @@ Where \textit{S} is the set of all clone classes that are found up in until this
 If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
 
 \subsection{Validating the type 2R variability threshold}
-In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold.
+In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold, shown more formally in formula \ref{eq:type2r}, is checked by CloneRefactor. Implementing such a threshold involves some important design decisions, and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in section \ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configure variability threshold.
 
 \begin{figure}[H]
   \centering
@@ -145,7 +145,7 @@ In the definition of type 2R clones (see section \ref{sec:type2r}) we described 
   \label{fig:clonerefactort2rflow}
 \end{figure}
 
-Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone determination process is described in more detail in section \ref{sec:comparingstuff}. Each of the following paragraphs will explain a step from figure \ref{fig:clonerefactort2rflow}.
+Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. Each of the following paragraphs will explain a step from this figure.
 
 \subsubsection{Create equality array}
 To determine the difference in literals, method calls and variables, we convert the code to an equality array. This equality array converts each (group of) token(s) to a number unique to that (group of) tokens. Each literal, method call or variable becomes a positive number, whereas each other token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in figure \ref{fig:equalityarrays}.
@@ -183,7 +183,7 @@ Using the equality arrays explained in the previous section, we can determine th
 \frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(|E_1|+|E_2|)+(|E_3|+|E_4|)}*100
 \end{equation}
 
-The symbols in this equation refer to the symbols of the column headers of table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
+Where \textit{E} refers to the equality arrays shown in table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
 
 \begin{equation}\label{eq:sumequality}
 \frac{|{(3,4), (1,8), (7,9)}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
