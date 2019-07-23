@@ -29,7 +29,7 @@ public class GameScene
 
 	public void addTen(int x) {
 |\highlightYellow|		x = x + 10;
-|\highlightYellow|		ChangeNotifier.notifyChanged(x);
+|\highlightYellow|		Notifier.notifyChanged(x);
 |\highlightYellow|		return x;
 	}
 }
@@ -48,19 +48,14 @@ public class LoseScene
 
 	public void concatTen(String x) {
 |\highlightYellow|		x = x + 10;
-|\highlightYellow|		ChangeNotifier.notifyChanged(x);
+|\highlightYellow|		Notifier.notifyChanged(x);
 |\highlightYellow|		return x;
 	}
 }
 \end{javacode}}
 \end{parcolumns}
-\caption{Variables with different types but the same name.}
-\label{fig:type2variables}
-\end{figure}
-\begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/type1}
-  \caption{Example of a type 1 clone that is functionally different.}
-  \label{fig:type1}
+\caption{Example of a type 1 clone that is functionally different.}
+\label{fig:type1}
 \end{figure}
 
 In the example in figure \ref{fig:type1}, we see a type 1 clone displaying two clone classes. Defining an automatic way to refactor these clone classes is nearly impossible, as both cloned fragments describe different functional concepts. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
@@ -75,12 +70,29 @@ Type 2 clones are \textit{structurally/syntactically identical fragments except 
 For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones. Merging such clones can be harmful instead of helpful.
 
 \begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/type2}
-  \caption{Example of a type 2 clone.}
-  \label{fig:type2}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|public boolean redCircles
+|\highlightYellow|          (List<Circle> circles){
+|\highlightYellow|	return circles.stream()
+|\highlightYellow|           .allMatch(Shape::isRed);
+|\highlightYellow|}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightYellow|public Apple getEdibleApple
+|\highlightYellow|         (Basket<Apple> basket){
+|\highlightYellow|	return basket.getFruit()
+|\highlightYellow|        .getApple(Fruit::notEaten);
+|\highlightYellow|}
+\end{javacode}}
+\end{parcolumns}
+\caption{Example of a type 2 clone with high variability between fragments.}
+\label{fig:type2}
 \end{figure}
 
-The example in figure \ref{fig:type2} shows a type 2 clone that poses no harm to the design of the system. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
+The example in figure \ref{fig:type2} shows a type 2 clone class. Both methods are, except for their matching structure, completely different in functionality. They operate on different types, call different methods, return different things, etc. Having such a method flagged as a clone does not provide much useful information.
 
 When looking at refactoring, type 2 clones can be difficult to refactor. For instance, if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and reference types, which further undermines the usefulness of clones detected by this definition.
 
