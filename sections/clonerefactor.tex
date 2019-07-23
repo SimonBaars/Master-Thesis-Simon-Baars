@@ -270,7 +270,7 @@ doE();
 |\highlightYellow|doB();
 \end{javacode}}
 \end{parcolumns}
-\caption{One clone instance in a type 2R clone has a high variability.}
+\caption{A small subset of nodes has a high variability.}
 \label{fig:2rvariabilityhigh3}
 \end{figure}
 
@@ -279,6 +279,37 @@ Figure \ref{fig:2rvariabilityhigh3} shows an example of a clone class where the 
 If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class except for an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
 
 \subsubsection{Convert Equality Array to Graph}
+After the global threshold check has failed, we build a clone graph on basis of the equality arrays.
+
+\begin{figure}[H]
+\begin{parcolumns}{3}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|doA(); //{1, 2}
+|\highlightYellow|doB(); //{3, 2}
+doC(); //{4, 2}
+doC(); //{4, 2}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+doD(); //{5, 2}
+|\highlightYellow|doA(); //{1, 2}
+|\highlightYellow|doB(); //{3, 2}
+doD(); //{5, 2}
+\end{javacode}}
+\colchunk[3]{
+\begin{javacode}
+doE(); //{6, 2}
+doE(); //{6, 2}
+|\highlightYellow|doA(); //{1, 2}
+|\highlightYellow|doB(); //{3, 2}
+\end{javacode}}
+\end{parcolumns}
+\caption{Cloned code fragments from figure \ref{fig:2rvariabilityhigh3} together with their equality arrays.}
+\label{fig:2rvariabilityhigh4}
+\end{figure}
+
+In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each of the lines of a code example with a complex distribution of cloned fragments. 
 
 \todo{TODO}
 \begin{table}[H]
