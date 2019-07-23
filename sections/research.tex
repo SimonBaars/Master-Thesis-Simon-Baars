@@ -63,11 +63,23 @@ Because of this, for type 1R clones, we compare the fully qualified method signa
 In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in figure \ref{fig:type2variables}.
 
 \begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/type2}
-  \caption{Variables with different types but the same name.}
-  \label{fig:type2variables}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+public int addFive(int x){
+|\highlightYellow|	return x + 5;
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+public String appendFive(String x){
+|\highlightYellow|	return x + 5;
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Variables with different types but the same name.}
+\label{fig:type2variables}
 \end{figure}
-\todo{image is not correct}
 
 The body of both methods in figure \ref{fig:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer to a String.
 
