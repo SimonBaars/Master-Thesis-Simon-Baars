@@ -194,6 +194,32 @@ So for the example given in figure \ref{fig:equalityarrays} we have a variabilit
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
 \subsubsection{Convert Equality Array to Graph}
+When a found clone class does not adhere to the global thresholds as explained in the previous section, we need to determine whether it contains any valid subclones.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+doA(a, b, c);
+doA();
+doB();
+doC();
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+doB(d, e, f);
+doA();
+doB();
+doC();
+\end{javacode}}
+\end{parcolumns}
+\caption{Variables with different types but the same name.}
+\label{fig:2rvariabilityhigh1}
+\end{figure}
+
+The first line of the cloned fragment shown in figure \ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragement. However, the rest of this method does not have any variability. The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
+
+
 \todo{TODO}
 \begin{table}[H]
 \begin{center}
