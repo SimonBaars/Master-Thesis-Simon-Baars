@@ -193,8 +193,8 @@ So for the example given in figure \ref{fig:equalityarrays} we have a variabilit
 
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
-\subsubsection{Convert Equality Array to Graph}
-When a found clone class does not adhere to the global thresholds as explained in the previous section, we need to determine whether it contains any valid subclones.
+
+When a found clone class does not adhere to the global thresholds as explained in the previous section, we need to determine whether it contains any valid subclones. Below, we explain a few cases of valid subclones that may exist within an invalid clone class.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -245,6 +245,40 @@ doF();
 \end{figure}
 
 Another example of high variability between clones, in which a valid subclone can be found, is displayed in figure \ref{fig:2rvariabilityhigh2}. In this case, one clone instance has such a high variability that it shouldn't be refactored. In this case, the clone instance with high variability should be removed.
+
+\begin{figure}[H]
+\begin{parcolumns}{3}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+doC();
+doC();
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+doD();
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+doD();
+\end{javacode}}
+\colchunk[3]{
+\begin{javacode}
+doE();
+doE();
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+\end{javacode}}
+\end{parcolumns}
+\caption{One clone instance in a type 2R clone has a high variability.}
+\label{fig:2rvariabilityhigh3}
+\end{figure}
+
+Figure \ref{fig:2rvariabilityhigh3} shows an example of a clone class where the valid sequence inside the clone does not align.
+
+If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class except for an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
+
+\subsubsection{Convert Equality Array to Graph}
 
 \todo{TODO}
 \begin{table}[H]
