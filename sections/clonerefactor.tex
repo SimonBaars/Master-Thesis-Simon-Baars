@@ -26,7 +26,7 @@ In order to be able to trace referenced identifiers SymbolSolver requires access
 
 Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
-\section{Thresholds}
+\section{Thresholds}\label{sec:clonerefactorthresholds}
 CloneRefactor operates on a set of thresholds to determine the validity of clones that are found. In general, these thresholds are:
 \begin{itemize}
   \item \textbf{Minimum Amount of Nodes}: The minimum amount of nodes that should be in each instance of cloned fragements for them to be considered a clone class.
@@ -88,7 +88,7 @@ We do not create a separate graph for each class file, so the statement/declarat
 
 We refer to the declarations and statements in this graph as \textit{nodes}. The relations \textit{next} and \textit{previous} in this graph are represented as an twodirectional arrow. The relations representing duplication are directed. This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in section \ref{sec:detectingclones}.
 
-\subsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
+\subsubsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
 In the previous section we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
 
 CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
@@ -99,7 +99,7 @@ For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit
 
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
-\subsection{Mapping graph nodes to code}
+\subsubsection{Mapping graph nodes to code}
 The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude child declarations and statements from each node. Look at figure \ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
@@ -194,7 +194,7 @@ Node (n) & Equality Array (E) \\ \hline
 
 In the example of figure \ref{fig:equalityarrays} the fragment on the left (consisting of $n_1$ and $n_2$) and the fragment on the right (consisting of $n_3$ and $n_4$) are two clone instances of a clone class. Table \ref{table:equalityarrays} shows their corresponding equality arrays.
 
-\subsubsection{Checking global thresholds}
+\subsubsection{Checking global thresholds} \label{sec:t2rcheckglobalthres}
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
 \begin{equation}\label{eq:variabilityclonerefactor}
@@ -342,11 +342,10 @@ E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \
 \end{equation}
 
 \subsubsection{Detect Clones on Graph}
-\todo{TODO}
-
+Similar to the clone detection process, we detect clones on basis of the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in section \ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
 
 \subsubsection{Try to Expand}
 \todo{TODO}
 
-\subsection{Checking for type 3 opportunities}
+\subsection{Checking for type 3 opportunities} \label{sec:t3rclonerefactor}
 \todo{TODO}
