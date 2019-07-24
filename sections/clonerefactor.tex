@@ -186,7 +186,7 @@ Using the equality arrays explained in the previous section, we can determine th
 Where \textit{E} refers to the equality arrays shown in table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
 
 \begin{equation}\label{eq:sumequality}
-\frac{|{(3,4), (1,8), (7,9)}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
+\frac{|\{(3,4), (1,8), (7,9)\}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
 \end{equation}
 
 So for the example given in figure \ref{fig:equalityarrays} we have a variability of 15\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
@@ -318,12 +318,14 @@ In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each o
   \label{fig:clonerefactorprocess}
 \end{figure}
 
+Although the duplicate relations allow for variability in the equality arrays as long as it falls under the threshold, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored in the same way.
+\begin{equation}\label{eq:t2rcloneequality}
+E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1, y \in E_2) x<0 \lor y<0 \Rightarrow x=y
+\end{equation}
 
 \subsubsection{Detect Clones on Graph}
 \todo{TODO}
-\begin{equation}\label{eq:t2rcloneequality}
-E_1\text{ is cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1) \exists (y \in E_2) x<0 \lor y<0 \Rightarrow x=y
-\end{equation}
+
 
 \subsubsection{Try to Expand}
 \todo{TODO}
