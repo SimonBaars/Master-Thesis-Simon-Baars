@@ -26,6 +26,24 @@ In order to be able to trace referenced identifiers SymbolSolver requires access
 
 Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
+\section{Thresholds}
+CloneRefactor operates on a set of thresholds to determine the validity of clones that are found. In general, these thresholds are:
+\begin{itemize}
+  \item \textbf{Minimum Amount of Nodes}: The minimum amount of nodes that should be in each instance of cloned fragements for them to be considered a clone class.
+  \item \textbf{Minimum Amount of Tokens}: The minimum amount of tokens that should be in each instance of cloned fragements for them to be considered a clone class.
+  \item \textbf{Minimum Amount of Lines}: The minimum amount of lines that should be in each instance of cloned fragements for them to be considered a clone class.
+\end{itemize}
+
+When we analyze type 2R or type 3R clones we use the following additional threshold:
+\begin{itemize}
+  \item \textbf{T2R Variability}: The percentage of variability we allow in variables, method calls and literals. How this threshold is calculated is explained in section \ref{sec:t2rcheckglobalthres}.
+\end{itemize}
+
+When we analyze type 3 or type 3R clones we use the following additional threshold:
+\begin{itemize}
+  \item \textbf{T3R Gap Size}: The size of the gap we allow between two valid clones. This is a percentage of the size of the gap against the size of both clones combined. How this threshold is calculated is further explained in section \ref{sec:t3rclonerefactor}.
+\end{itemize}
+
 \section{Clone Detection}\label{sec:clonedetection}
 To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously, in accordance with our clone type philosophy as described in chapter \ref{sec:unifying}.
 
