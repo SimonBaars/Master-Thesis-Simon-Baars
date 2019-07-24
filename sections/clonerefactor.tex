@@ -285,47 +285,39 @@ After the global threshold check has failed, we build a clone graph on basis of 
 \begin{parcolumns}{3}
 \colchunk[1]{
 \begin{javacode}
-|\highlightYellow|doA(); //{1, 2}
-|\highlightYellow|doB(); //{3, 2}
-doC(); //{4, 2}
-doC(); //{4, 2}
+|\highlightYellow|doA(); //{1, -2}
+|\highlightYellow|doB(); //{3, -2}
+doC(); //{4, -2}
+doC(); //{4, -2}
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
-doD(); //{5, 2}
-|\highlightYellow|doA(); //{1, 2}
-|\highlightYellow|doB(); //{3, 2}
-doD(); //{5, 2}
+doD(); //{5, -2}
+|\highlightYellow|doA(); //{1, -2}
+|\highlightYellow|doB(); //{3, -2}
+doD(); //{5, -2}
 \end{javacode}}
 \colchunk[3]{
 \begin{javacode}
-doE(); //{6, 2}
-doE(); //{6, 2}
-|\highlightYellow|doA(); //{1, 2}
-|\highlightYellow|doB(); //{3, 2}
+doE(); //{6, -2}
+doE(); //{6, -2}
+|\highlightYellow|doA(); //{1, -2}
+|\highlightYellow|doB(); //{3, -2}
 \end{javacode}}
 \end{parcolumns}
 \caption{Cloned code fragments from figure \ref{fig:2rvariabilityhigh3} together with their equality arrays.}
 \label{fig:2rvariabilityhigh4}
 \end{figure}
 
-In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each of the lines of a code example with a complex distribution of cloned fragments. 
+In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each of the lines of a code example with a complex distribution of cloned fragments. We can convert this to a graph, using a similar process as the graph creation process used for clone detection. In this case, duplicate relations represent nodes of which their equality arrays are within the variability threshold. In figure \ref{fig:2rvariabilityhigh4} all relations are between equal equality arrays, but this does not always have to be the case. Large equality arrays, denoting statements that consist of many tokens, may have some variability and still be considered duplicates in this graph.
 
-\todo{TODO}
-\begin{table}[H]
-\begin{center}
- \caption{The equality arrays in our example figure \ref{fig:equalityarrays}.} \label{table:equalityarrays2}
- \medskip
-\begin{tabular}{|l|l|l|}
-\hline
-Node (n) & Equality Array (E) \\ \hline
-1        & {[}1, -2, 3, -5, -6{]} \\ \hline
-2        & {[}1, -2, 3, -5, -6{]} \\ \hline
-3        & {[}8, -2, 4, -5, -6{]} \\ \hline
-4        & {[}1, -2, 7, -5, -6{]} \\ \hline
-\end{tabular}
-\end{center}
-\end{table}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/T2RGraph}
+  \caption{Graph representation of the code example displayed in figure \ref{fig:2rvariabilityhigh4}.}
+  \label{fig:clonerefactorprocess}
+\end{figure}
+
 
 \subsubsection{Detect Clones on Graph}
 \todo{TODO}
