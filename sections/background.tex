@@ -78,7 +78,6 @@ This example can be represented as a tree structure using the concepts from tabl
 \end{figure}
 
 \section{Clone Types} \label{chap:backgroundclonetypes}
-\simon{What is Structurally/syntactically/functionally/textually, ect ect, all words before EQUAL}
 Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
 \begin{displayquote}
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout) and comments.\\
@@ -92,12 +91,12 @@ A higher type of clone means that it's harder to detect and refactor. There are 
 For this study we have chosen to take type 4 clones out of the scope, because they are both hard to detect and hard to refactor. A study by Kodhai et al \cite{kodhai2013method} looks into the distribution of the different types of clones in several open source systems (see table 6 of his study). It becomes apparent that type 4 clones exist way less in source code than all of the other types of clones. For instance, for the J2sdk-swing system he finds 8115 type 1 clones, 8205 type 2 clones, 11209 type 3 clones and only 30 type 4 clones. Because of that, we can conclude that type 4 clones are relatively less relevant to study.
 
 \section{Refactoring methods}
-One of the main drivers for starting this research is the recent release of the second edition of Martin Fowlers' Refactoring book \ref{fowler2018refactoring}. This book has been updated to the modern state of software engineering. The sentence in which he stresses the importance of unifying duplication in source code remains present in both books \ref{fowler1999refactoring, fowler2018refactoring}.
+Martin Fowler recently released the second edition of his Refactoring book \cite{fowler2018refactoring}. This book has been updated to the modern state of software engineering. The sentence in which he stresses the importance of unifying duplication in source code remains present in both books \cite{fowler1999refactoring, fowler2018refactoring}.
 
 The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. In most IDE's this refactoring method is called ``Extract Method''.
 
 \subsection{Extract Method}
-Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \ref{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method. An example of this procedure is displayed in figure \ref{fig:extractmethod}.
+Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \cite{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method. An example of this procedure is displayed in figure \cite{fig:extractmethod}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -132,16 +131,16 @@ public void doAandB(){
 \end{figure}
 
 \subsection{Move method}
-In the example of the previous section, both duplicated parts are in the same method. However, a study by Fontana et al. \ref{fontana2015duplicated} shows that this is most often not the case. Based on the relation between clone instances, the extracted method must be moved to be accessible by all locations of the clone instances. This might require different techniques.
+In the example of the previous section, both duplicated parts are in the same method. However, a study by Fontana et al. \cite{fontana2015duplicated} shows that this is most often not the case. Based on the relation between clone instances, the extracted method must be moved to be accessible by all locations of the clone instances. This might require different techniques.
 
 \subsubsection{Pull up method}
-A refactoring technique to move a method up in its inheritance structure is called ``Pull up method'' \ref{fowler2018refactoring}. This way, if cloned methods are related in any way through inheritance, they can be called by both classes by placing the method in a class they both have in common. This way its possible to refactor both fully cloned methods (by just pulling up the method) and partially cloned methods (by first performing method extraction and then pulling up the refactored method).
+A refactoring technique to move a method up in its inheritance structure is called ``Pull up method'' \cite{fowler2018refactoring}. This way, if cloned methods are related in any way through inheritance, they can be called by both classes by placing the method in a class they both have in common. This way its possible to refactor both fully cloned methods (by just pulling up the method) and partially cloned methods (by first performing method extraction and then pulling up the refactored method).
 
 \subsubsection{Create class abstraction based on implicit relations}
 Duplication in source code is an implicit relation between fragments of source code. If two classes have many of these implicit relations, then the implementation should be refactored to make this relation explicit. If the classes do not yet have a parent/super class, a parent class can be created and the common functionality can be placed in this newly created class. This makes the relation between these classes explicit and reduces duplication.
 
 \subsubsection{Providing default implementations for common functionality}
-Looking specifically at the Java programming language, recent versions of Java introduce a new method of reducing duplication through refactoring. Java has the concept of \textit{interfaces} as an abstract type that is used to specify a behavior that classes must implement. Since Java version 8, Java also supports default implementations to be provided in interfaces \ref{mohnen2002interfaces}. This gives an opportunity to make the relation between classes explicit and reduce duplication. It can be used in instances where creating a new parent class for duplicated classes is undesirable.
+Looking specifically at the Java programming language, recent versions of Java introduce a new method of reducing duplication through refactoring. Java has the concept of \textit{interfaces} as an abstract type that is used to specify a behavior that classes must implement. Since Java version 8, Java also supports default implementations to be provided in interfaces \cite{mohnen2002interfaces}. This gives an opportunity to make the relation between classes explicit and reduce duplication. It can be used in instances where creating a new parent class for duplicated classes is undesirable.
 
 \subsection{Clone refactoring in relationship to its context}
 How to refactor clones is highly dependent on their context. Method-level clones can be extracted to a method \cite{kodhai2013method} if all occurrences of the clone reside in the same class. If a method level clone is duplicated among classes in the same inheritance structure, we might need to pull-up a method in the inheritance structure. If instances of a method level clone are not in the same inheritance structure, we might need to either make a static method or create an inheritance structure ourselves. So not only a single instance of a clone has a context, but also the relationship between individual instances in a clone class. This is highly relevant to the way in which the clone has to be refactored.
