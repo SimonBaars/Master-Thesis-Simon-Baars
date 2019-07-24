@@ -1,4 +1,5 @@
 \chapter{CloneRefactor}
+% We bridged a gap between clone detection and refactoring .. by designing a tool
 CloneRefactor is the name of our clone detection and refactoring tool. It features the following novel functions:
 \begin{itemize}
   \item Detection of clone classes rather than clone pairs.
@@ -132,23 +133,28 @@ We then go further to the previous node (6). In this case, this node does not ha
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
 \subsubsection{Removing redundant clone classes}\label{sec:conceptualremovingredundant}
+\ana{MOVE THIS, Part of the clone class collection and one that is found but not yet part of the collection. If the new one is a subset of the one in the collection then it is ignored. If the new one is a superset of any clone in the collection it replaces those. If one is a subset of the other it should be replaced.}
+
+
 The clone detection method used by CloneRefactor can, for various reasons,%Should I list these? Listing them could be a section on its own, as I'd have to show examples to make it concrete.
-result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of an existing clone. We define the subset relation between clones as follows:
+result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of another clone. We define the subset relation between clones as follows:
 
 \begin{equation}\label{eq:subset}
 C_1 \subseteq C_2 \Leftrightarrow \forall (i_1 \in C_1) \text{ } \exists (i_2 \in C_2) \text{ } F i_1 = F i_2 \wedge R i_1 \subseteq R i_2
-\end{equation}
+\end{equation} % Right symbol for definition
 
-Where \textit{C} refers to a clone class (a set of clone instances), \textit{i} refers to a clone instance, \textit{F} is the file in which a clone instance is located and \textit{R} is the range of tokens that a clone instance spans. For each clone added, we remove all existing clones that are a subset of the newly added clone:
+Where \textit{C} refers to a clone class (a set of clone instances), \textit{i} refers to a clone instance, \textit{F} is the file in which a clone instance is located and \textit{R} is the range of tokens that a clone instance spans. For each clone found, we remove all existing clones that are a subset of the found clone:
 
 \begin{equation}\label{eq:removeall}
-S = S \setminus \{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\}
+S_{after} = S_{before} \setminus \{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S_{before}\}
 \end{equation}
 
-Where \textit{S} is the set of all clone classes that are found up in until this point. Likewise, we should not add the new clone to our list of clones if its a subset of an existing clone. Because of that, we check for each clone added whether there exists a clone of which the newly added clone is a subset:
+Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point and \textit{$C_{new}$} is the clone class that was just found. \textit{$S_{after}$} is the clone class collection after
+
+We should not add the new clone to our list of clones if its a subset of an existing clone. Because of that, we check for each clone added whether there exists a clone class of which the found clone class is a subset:
 
 \begin{equation}\label{eq:removeexisting}
-\{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S = S \cup C_{new}
+\{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S_{after} = S \cup C_{new}
 \end{equation}
 
 If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
@@ -344,8 +350,39 @@ E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \
 \subsubsection{Detect Clones on Graph}
 Similar to the clone detection process, we detect clones on basis of the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in section \ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
 
+Looking back at the example of the previous section, it would result in the following clone class collection:
+\begin{figure}[H]
+\begin{parcolumns}{3}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|doA(); // |\textcolor{pgreen}{$C_1$ $I_3$}|
+|\highlightYellow|doB(); // |\textcolor{pgreen}{$C_1$ $I_3$}|
+doC(); // |\textcolor{pgreen}{$C_4$ $I_2$}|
+doC(); // |\textcolor{pgreen}{$C_4$ $I_1$}|
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+doD(); // |\textcolor{pgreen}{$C_3$ $I_2$}|
+|\highlightYellow|doA(); // |\textcolor{pgreen}{$C_1$ $I_2$}|
+|\highlightYellow|doB(); // |\textcolor{pgreen}{$C_1$ $I_2$}|
+doD(); // |\textcolor{pgreen}{$C_3$ $I_1$}|
+\end{javacode}}
+\colchunk[3]{
+\begin{javacode}
+doE(); // |\textcolor{pgreen}{$C_2$ $I_2$}|
+doE(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
+|\highlightYellow|doA(); // |\textcolor{pgreen}{$C_1$ $I_1$}|
+|\highlightYellow|doB(); // |\textcolor{pgreen}{$C_1$ $I_1$}|
+\end{javacode}}
+\end{parcolumns}
+\caption{Clone instances in figure \ref{fig:2rvariabilityhigh4} as determined .}
+\label{fig:2rvariabilityhigh5}
+\end{figure}
+
+Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. As the graph is traversed starting at the end, equal to graph traversal during clone detection, the last node in
+
 \subsubsection{Try to Expand}
-\todo{TODO}
+The problem with the graph clone detection technique is that
 
 \subsection{Checking for type 3 opportunities} \label{sec:t3rclonerefactor}
 \todo{TODO}
