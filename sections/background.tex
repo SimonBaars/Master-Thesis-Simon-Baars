@@ -14,15 +14,15 @@ Many studies present different definitions for code clone concepts. For this stu
 \rowcolor[HTML]{FFFFFF}
 \textbf{Symbol} & \textbf{Meaning} & \textbf{Definition} & \textbf{Description} & \textbf{Properties} \\ \midrule
 \rowcolor[HTML]{EFEFEF}
-S & \begin{tabular}[c]{@{}l@{}}Clone class\\ collection \cite{bruntink2005use}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\classes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}All clone classes that have been\\found for a certain software\\project.\end{tabular} & - \\
+T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this token\\spans.\\ \textbf{Category:} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-C & Clone class \cite{bruntink2005use, roy2007survey}& \begin{tabular}[c]{@{}l@{}}Set of clone\\instances.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations. Each of these\\code fragments is called a\\``clone instance''.\end{tabular} & - \\
+N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this node\\spans.\end{tabular} \\
 \rowcolor[HTML]{EFEFEF}
 I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use, roy2007survey}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{File:} The file in which this\\clone instance is found.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-N & Node \ref{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this node\\spans.\end{tabular} \\
+C & Clone class \cite{bruntink2005use, roy2007survey}& \begin{tabular}[c]{@{}l@{}}Set of clone\\instances.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations. Each of these\\code fragments is called a\\``clone instance''.\end{tabular} & - \\
 \rowcolor[HTML]{EFEFEF}
-T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this token\\spans.\\ \textbf{Category:} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
+S & \begin{tabular}[c]{@{}l@{}}Clone class\\ collection \cite{bruntink2005use}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\classes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}All clone classes that have been\\found for a certain software\\project.\end{tabular} & - \\
 \rowcolor[HTML]{FFFFFF}
 %R & Range & A part of a source code file. &  & \begin{tabular}[c]{@{}l@{}}\textbf{Begin line/column:} The line and column at \\ which the range starts.\\ \textbf{End line/column:} The line and column at\\ which the range end.\end{tabular} \\
  \bottomrule
@@ -32,8 +32,10 @@ T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ buildi
 \label{tab:clone-terminology}
 \end{table}
 
+In this study, we use the symbols given in this table in our formulas.
+
 \subsection{Example}
-The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance.
+This section gives an example to make the terminology of table \ref{tab:clone-terminology} more concrete. The code fragment in figure \ref{fig:cloneclasses} shows two clone classes. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance.
 
 \definecolor{lightyellow}{HTML}{fffdcc}
 \definecolor{doublelightyellow}{HTML}{fffa9c}
