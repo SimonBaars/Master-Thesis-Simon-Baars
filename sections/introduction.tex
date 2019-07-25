@@ -42,6 +42,9 @@ We expect this research question to result in a priorization of refactoring oppo
 \end{displayquote}
 Not in all cases will refactoring duplicated code result in a more maintainable codebase. Because of that, we compare the refactored code to the original code and measure the difference in maintainability. To do this, we will use a practical model consisting of metrics to measure maintainability \cite{heitlager2007practical}. Based on this, we can look into what \textit{thresholds} result in better maintainable code when refactored. These thresholds consist of the size of clones and the variability we can allow between cloned fragments to still consider them clones.
 
+\subsection{Research method}
+We perform an \textbf{exploratory} study to look into the opportunities to automatically refactor code clones. To do this, we combine knowledge from literature with our own experience to develop definitions for refactorable clones. We also develop a tool to detect, analyze and refactor such clones. Using this tool, we perform \textbf{quantitative} experiments in which we statistically collect information about duplication in open source software. In these experiments we control several variables to see their impact on the results. During this process we explore concepts and develop understanding, because of which decisions in the study design are based upon the results of the experiments.
+
 \section{Contributions}
 \todo{TODO}
 %Our research makes the following contributions:
