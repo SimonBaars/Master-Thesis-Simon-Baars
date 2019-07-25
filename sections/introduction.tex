@@ -17,10 +17,18 @@ We perform several experiments on a large corpus of open source software to coll
 In this section we describe the problem we address with this study and the research questions that we answer in order to contribute to solving the problem.
 
 \subsection{The problem}
-\todo{How do I formulate this}
+The maintainability of a codebase has a large impact on the time and effort spent on building the desired software system \cite{bakota2012cost, munson1978software}. The maintainability of software is one of the factors to be kept under control in order to avoid major delays and unexpected costs as a result of a software project \cite{fowler2018refactoring}. One factor that has a major impact on the maintainability of a software system is the amount of duplicate code present in a codebase \cite{heitlager2007practical, fowler1999refactoring}.
+
+The process of improving maintainability through the refactoring of duplicate code is time consuming and error-prone. This process mainly consists of these two aspects:
+\begin{itemize}
+	\item Find refactoring candidates, either tool-assisted or manually.
+	\item Refactor identified candidates, either tool-assisted or manually.
+\end{itemize}
+There are tools that assist in the process of finding duplicate code, but none of these tools identify all duplication problems. Often, these clone detection tools result in false-positives and false-negatives \cite{roy2007survey}. Many false-negatives are due to the thresholds that are used. Many clone detection tools \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval} only consider clones that have a minimum of 6 lines. Using such an approach is bound to result in many false-negatives.
+
+A study by Batova et al. \cite{bavota2012does} shows that the process of refactoring often leaves side effects in the code. This study reports that refactorings involving hierarchies (e.g., pull up method), tend to induce faults very frequently. \textit{This suggests more accurate code inspection or testing activities when such specific refactorings are performed.} Such specific refactorings often have to be used when dealing with duplication in software \cite{fowler2018refactoring, fontana2015duplicated}. Because of that, refactoring code clones has been empirically proven to cause bugs or other side effects in code.
 
 \subsection{Research questions}
-\todo{Rewrite this part}
 There is a lot of research on the topic of code clone detection. This research often results in tools that can detect clones by several clone type definitions. However, there is no research yet that looks into how these definitions align with refactoring opportunities. We will align clone type definitions as used in literature \ref{roy2007survey} with their corresponding refactoring methods \ref{fowler2018refactoring}. For this, we answer the following research question:
 \begin{displayquote}
 \textbf{Research Question 1:}\\How can we define clone types such that they \textbf{can} be automatically refactored?
