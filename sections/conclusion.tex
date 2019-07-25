@@ -30,7 +30,7 @@ For this study we chose to focus only on the automated refactoring of duplicatio
 A study by Heitlager et al. \cite{heitlager2007practical} presents several metrics by which the maintainability of source code can be assessed. They propose thresholds that indicate issues with these metrics. Many of these metrics have automated refactoring opportunities. In this section we will focus on several of these metrics to outline their opportunities for automated refactoring.
 
 \subsubsection{Long parameter list}
-When multiple parameters are used together in a method, there is an implicit dependency between these parameters: the dependency of being required by that method. If a lot of data hangs around really tight together, they should be made into their own object \cite{fowler1999refactoring, visser2016building}. Guidelines describe to limit the number of parameters per method to at most 4 \cite{visser2016building}.
+When multiple parameters are used together in a method, there is an implicit dependency between these parameters: the dependency of being required by that method. \textit{If a lot of data hangs around really tight together, they should be made into their own object} \cite{fowler1999refactoring, visser2016building}. Guidelines describe to limit the number of parameters per method to at most 4 \cite{visser2016building}.
 
 If a method has many parameters, we can group strongly related parameters into an object. This can be done automatically, but two things must be considered:
 \begin{itemize}
@@ -58,175 +58,15 @@ When programming, there are often trade-offs between technical debt and velocity
 %When programming, many developers must take decisions between velocity
 %Many programmers report frequent decisions in which they decide to take technical debt
 
-\subsection{Identifying more types/definitions for clones}
-In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study.
-
-\subsubsection{Type 2R clones}
-With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
-
-One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in figure \ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public void doStuff(){
-  int numbers = 456;
-|\highlightYellow|  doA(getTitle());
-|\highlightYellow|  doB(123);
-  doC();
-|\highlightYellow|  doA("456");
-|\highlightYellow|  doB(numbers);
-}
-
-public String getTitle(){
-  return "123";
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public void doStuff(){
-  int numbers = 456;
-|\highlightYellow|  doAandB(getTitle(), 123);
-  doC();
-|\highlightYellow|  doAandB("456", numbers);
-}
-
-public void doAandB(String var1, int var2){
-  doA(var1);
-  doB(var2);
-}
-
-public String getTitle(){
-  return "123";
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring different expressions that have the same return type.}
-\label{fig:samereturn}
-\end{figure}
-
-\subsubsection{Type 4 clones}
+\subsection{Type 4 clones}
 In section \ref{chap:backgroundclonetypes} we introduced the clone types that are used in literature. Of these clone types, we considered type 1, 2 and 3 for refactoring. We chose not to consider type 4 clones because they appear far less in source code and are more difficult to detect and refactor. However, that does not mean that these clones should not be refactored.
 
-We think that there are relevant research opportunities in refactoring type 4 clones. Type 4 clones are functionally equal pieces of code that are implemented through different implementations. Although functionally equal, type 4 clones might still differ in other aspects. For instance, for type 4 clones, one alternative might be easier to maintain. Also, they can differ (significantly) in performance.
+We think that there are relevant research opportunities in refactoring type 4 clones. Type 4 clones are functionally equal pieces of code that are implemented through different implementations. Although functionally equal, type 4 clones might still differ in other aspects. For instance, for type 4 clones, one alternative might be easier to maintain. Also, they can differ in performance.
 
 There are interesting research opportunities in automatically choosing the better alternative among type 4 clone instances.
 
 \subsubsection{Proposing new clone type definitions}
 We think that current definitions of clone types still lack in the identification of all duplication issues that a developer should invest his/her refactoring efforts in. Current clone detection techniques still result in many false positives and false negatives. By proposing good definitions for code clones that mark the characteristics of harmful anti-patterns, we can create more accurate suggestions to developers.
-
-\subsection{Refactoring the harder to refactor clones}
-In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
-
-\subsubsection{Partial block}
-We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public void doStuff(){
-|\highlightYellow|  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
-    System.out.println("hello!");
-  }
-|\highlightYellow|  for(int i = 0; i<5; i++) {
-    CoreController.activateCore(i);
-  }
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public void doStuff(){
-|\highlightYellow|  doFiveTimes(() -> System.out.println("hello!"));
-|\highlightYellow|  doFiveTimes(() -> CoreController.activateCore(i));
-}
-
-public void doFiveTimes(Runnable runnable){
-  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
-    runnable.run();
-  }
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring a method that is obstructed by a complex control flow.}
-\label{fig:partialblockrefactoring}
-\end{figure}
-
-\subsubsection{Overlap within a clone class}
-We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones might require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in figure \ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public void sayHello(){
-|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring1}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring2}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring3}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring4}|
-|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring5}|
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public void sayHello(){
-|\highlightYellow|  for(int i = 0; i<5; i++){
-|\highlightYellow|    System.out.println("hello!");
-|\highlightYellow|  }
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring a clone class that has overlap between clone instances.}
-\label{fig:overlaprefactoring}
-\end{figure}
-
-\subsubsection{Complex control flow}
-Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public boolean doStuff(){
-|\highlightYellow|  if(doA());
-|\highlightYellow|    return false;
-|\highlightYellow|  doB();
-  doC();
-|\highlightYellow|  if(doA());
-|\highlightYellow|    return false;
-|\highlightYellow|  doB();
-  return true;
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public boolean doStuff(){
-|\highlightYellow|  if(!doAandB())
-|\highlightYellow|    return false;
-  doC();
-|\highlightYellow|  return doAandB();
-}
-
-public boolean doAandB(){
-  if(doA())
-    return false;
-  doB();
-  return true;
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring a method that is obstructed by a complex control flow.}
-\label{fig:complexcontrolflowrefactoring}
-\end{figure}
 
 \subsection{Naming of refactored methods/classes/etc.}
 In this study, we took naming of refactored entities out of the scope. We applied automated refactoring to duplication, and gave all generated methods, classes and interfaces generated names. For our purposes that was not much of an issue, because of the validation methods used. We validated our approach using the SIG Maintainability model, which does not take naming quality into account. Because of that, the results of our experiments are in no way dependent on the names we give the generated methods, classes and interfaces.

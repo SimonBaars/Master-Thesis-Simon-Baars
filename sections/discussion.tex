@@ -1,6 +1,7 @@
 \chapter{Discussion}
 \todo{TODO}
 \label{ch:discussion}
+
 In this chapter, we discuss the results of our experiment(s) on ...
 
 \begin{finding}
@@ -9,3 +10,167 @@ In this chapter, we discuss the results of our experiment(s) on ...
 \end{finding}
 
 Refer to Finding~\ref{find:important1}.
+
+
+\section{Clone Type Definitions}
+In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in section \ref{sec:rtypes}.
+
+\subsubsection{Type 2R clones}
+With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
+
+One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in figure \ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+  int numbers = 456;
+|\highlightYellow|  doA(getTitle());
+|\highlightYellow|  doB(123);
+  doC();
+|\highlightYellow|  doA("456");
+|\highlightYellow|  doB(numbers);
+}
+
+public String getTitle(){
+  return "123";
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+  int numbers = 456;
+|\highlightYellow|  doAandB(getTitle(), 123);
+  doC();
+|\highlightYellow|  doAandB("456", numbers);
+}
+
+public void doAandB(String var1, int var2){
+  doA(var1);
+  doB(var2);
+}
+
+public String getTitle(){
+  return "123";
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring different expressions that have the same return type.}
+\label{fig:samereturn}
+\end{figure}
+
+\section{Clone Context Analysis}
+In section \ref{chap:contextsetup} we introduced the catagories we defined for mapping the context of clones. In this section, we discuss this together with the related experiments.
+
+\subsection{Refactorability}
+In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
+
+\subsubsection{Partial block}
+We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+|\highlightYellow|  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
+    System.out.println("hello!");
+  }
+|\highlightYellow|  for(int i = 0; i<5; i++) {
+    CoreController.activateCore(i);
+  }
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+|\highlightYellow|  doFiveTimes(() -> System.out.println("hello!"));
+|\highlightYellow|  doFiveTimes(() -> CoreController.activateCore(i));
+}
+
+public void doFiveTimes(Runnable runnable){
+  for(int i = 0; i<5; i++) { //Only the declaration of this for loop is cloned, but the loop body is not.
+    runnable.run();
+  }
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a method that is obstructed by a complex control flow.}
+\label{fig:partialblockrefactoring}
+\end{figure}
+
+\subsubsection{Overlap within a clone class}
+We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones might require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in figure \ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void sayHello(){
+|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring1}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring2}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring3}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring4}|
+|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring5}|
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void sayHello(){
+|\highlightYellow|  for(int i = 0; i<5; i++){
+|\highlightYellow|    System.out.println("hello!");
+|\highlightYellow|  }
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a clone class that has overlap between clone instances.}
+\label{fig:overlaprefactoring}
+\end{figure}
+
+\subsubsection{Complex control flow}
+Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public boolean doStuff(){
+|\highlightYellow|  if(doA());
+|\highlightYellow|    return false;
+|\highlightYellow|  doB();
+  doC();
+|\highlightYellow|  if(doA());
+|\highlightYellow|    return false;
+|\highlightYellow|  doB();
+  return true;
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public boolean doStuff(){
+|\highlightYellow|  if(!doAandB())
+|\highlightYellow|    return false;
+  doC();
+|\highlightYellow|  return doAandB();
+}
+
+public boolean doAandB(){
+  if(doA())
+    return false;
+  doB();
+  return true;
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a method that is obstructed by a complex control flow.}
+\label{fig:complexcontrolflowrefactoring}
+\end{figure}
