@@ -185,11 +185,11 @@ Type 2 clones allow any variability in literals, variables and method identifier
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
-\begin{eqfloat}\label{eq:type2r}
-\text{T2R Variability}=\frac{\text{Different expressions}}{\text{Total expressions}}*100
-\caption{Type 2R variability threshold formula}\end{eqfloat}
+\begin{equation}\label{eq:type2r}
+\text{T2R Variability}=\frac{\text{Number of different expressions}}{\text{Total number of expressions in clone instance}}*100
+\end{equation}
 
-In this formula, \textit{different expressions} refers to the number of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of expressions in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring. A concrete example of applying this formula to calculate a threshold is given in \ref{sec:t2rcheckglobalthres}.
+In this formula, \textit{number of different expressions} refers to the number of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of expressions in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring. A concrete example of applying this formula to calculate a threshold is given in \ref{sec:t2rcheckglobalthres}.
 
 \paragraph{Literal and variable variability}\label{sec:t2rliteralandvariable}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
