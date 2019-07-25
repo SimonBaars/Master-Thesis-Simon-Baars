@@ -28,7 +28,7 @@ There are tools that assist in the process of finding duplicate code, but none o
 A study by Batova et al. \cite{bavota2012does} shows that the process of refactoring often leaves side effects in the code. This study reports that refactorings involving hierarchies (e.g., pull up method), tend to induce faults very frequently. \textit{This suggests more accurate code inspection or testing activities when such specific refactorings are performed.} Such specific refactorings often have to be used when dealing with duplication in software \cite{fowler2018refactoring, fontana2015duplicated}. Because of that, refactoring code clones has been empirically proven to cause bugs or other side effects in code.
 
 \subsection{Research questions}
-There is a lot of research on the topic of code clone detection. This research often results in tools that can detect clones by several clone type definitions. However, there is no research yet that looks into how these definitions align with refactoring opportunities. We will align clone type definitions as used in literature \ref{roy2007survey} with their corresponding refactoring methods \ref{fowler2018refactoring}. For this, we answer the following research question:
+There is a lot of research on the topic of code clone detection. This research often results in tools that can detect clones by several clone type definitions. However, there is no research yet that looks into how these definitions align with refactoring opportunities. We will align clone type definitions as used in literature \cite{roy2007survey} with their corresponding refactoring methods \cite{fowler2018refactoring}. For this, we answer the following research question:
 \begin{displayquote}
 \textbf{Research Question 1:}\\How can we define clone types such that they \textbf{can} be automatically refactored?
 \end{displayquote}
@@ -43,7 +43,9 @@ We expect this research question to result in a priorization of refactoring oppo
 Not in all cases will refactoring duplicated code result in a more maintainable codebase. Because of that, we want to compare the refactored code to the original code and measure the difference in maintainability. To do this, we will use a practical model consisting of metrics to measure maintainability \cite{heitlager2007practical}. Based on this, we can look into what \textit{thresholds} result in better maintainable code when refactored. These thresholds consist of the size of clones and the variability we can allow between cloned fragments to still consider them clones.
 
 \subsection{Research method}
-\todo{TODO}
+We consider this an \textbf{applied} research in which we solve a practical problem. We propose definitions and tools which allow to automatically refactor and analyze code clones. This is an \textbf{exploratory} research effort in the research field of analyzing maintainability through automated refactoring. We conduct an \textbf{inductive} research that aims to develop the theory to what extent code clones can be automatically refactored to improve the maintainability of software systems.
+
+Our research is entirely \textbf{quantitative}, focused on numbers and statistics.
 
 \section{Contributions}
 \todo{TODO}
