@@ -23,7 +23,7 @@ The process of improving maintainability through the refactoring of duplicate co
 	\item Find refactoring candidates, either tool-assisted or manually.
 	\item Refactor identified candidates, either tool-assisted or manually.
 \end{itemize}
-There are tools that assist in the process of finding duplicate code, but none of these tools identify all duplication problems. Often, these clone detection tools result in false-positives and false-negatives \cite{roy2007survey}. Many false-negatives are due to the thresholds that are used. Many clone detection tools \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval} only consider clones that have a minimum of 6 lines. Using such an approach is bound to result in many false-negatives.
+There are tools that assist in the process of finding duplicate code, but none of these tools identify all duplication problems. Often, these clone detection tools result in false-positives and false-negatives \cite{roy2007survey}. We define false-negatives as clones that can and should be refactored but are not found due to the configuration by which they are detected. We define false-positives as clones that do not improve the system maintainability when refactored. Many false-negatives are due to the thresholds that are used. Many clone detection tools \cite{sajnani2016sourcerercc, svajlenko2016bigcloneeval} only consider clones that have a minimum of 6 lines. Using such an approach is bound to result in many false-negatives, but using a lower threshold is shown to increase the number of false-positives. %TODO cite threshold paper
 
 A study by Batova et al. \cite{bavota2012does} shows that the process of refactoring often leaves side effects in the code. This study reports that refactorings involving hierarchies (e.g., pull up method), tend to induce faults very frequently. \textit{This suggests more accurate code inspection or testing activities when such specific refactorings are performed.} Such specific refactorings often have to be used when dealing with duplication in software \cite{fowler2018refactoring, fontana2015duplicated}. Because of that, refactoring code clones has been empirically proven to cause bugs or other side effects in code.
 
@@ -46,14 +46,13 @@ Not in all cases will refactoring duplicated code result in a more maintainable 
 We perform an \textbf{exploratory} study to look into the opportunities to automatically refactor code clones. To do this, we combine knowledge from literature with our own experience to develop definitions for refactorable clones. We also develop a tool to detect, analyze and refactor such clones. Using this tool, we perform \textbf{quantitative} experiments in which we statistically collect information about duplication in open source software. In these experiments we control several variables to see their impact on the results. During this process we explore concepts and develop understanding, because of which decisions in the study design are based upon the results of the experiments.
 
 \section{Contributions}
-Many modern clone detection techniques and thresholds have been validated by manually assessing a sample of the results \cite{sajnani2016sourcerercc, cordy2011nicad, jiang2007deckard}. 
-%Our research makes the following contributions:
-%\begin{enumerate}
-%	\item We deliver several novel measurements regarding code clones on a large corpus of Java projects.
-%	\item We deliver a novel clone detection tool that finds refactorable clones in Java.
-%	\item We deliver a novel clone refactoring tool that suggests refactorings to be applied, and applies these refactorings.
-%	\item We give further recommendations in how refactoring can be automatically applied to improve maintainability in software projects.
-%\end{enumerate}
+Many studies report that code clones negatively affect maintainability \cite{heitlager2007practical, monden2002software, juergens2009code, chatterji2013effects}. However, no studies yet show in what cases code clones can reduce maintainability in source code. Refactoring often includes tradeoffs between design alternatives. With some code clones, the refactored alternative is worse maintainable than keeping the duplication \cite{kapser2006cloning, aversano2007clones, hotta2010duplicate, kim2005empirical, krinke2007study, saha2010evaluating}. In this study, we analyze the maintainability of refactored code clones, in order to improve the suggestion of code clones that should be refactored. This assists with both the identification and refactoring of code clones.
+
+\subsection{Identification}
+There are many tools to detect clones. The goal of most of these tools is to assist developers in reducing duplication in their code, i.e. assisting in the refactoring process. The problem is that these tools have no limited insight on the impact of refactoring such clones on the design of the software. In this study, we can analyze a before- and after-refactoring snapshot of the code to determine the impact. A higher maintainability after refactoring increases the support for the clone being a true-positive. This way the results of our study can support the clone identification process.
+
+\subsection{Refactoring}
+The tool that results from this research can aid in the process of applying refactorings to clones. The tool will only apply a refactoring if the clone is refactorable and the maintainability of the source code increases as a result of applying the refactoring. The tool applies only refactorings that do not, in any way, influence the functional correctness of the program. Because of this, potential bugs as a result of refactoring can be avoided \cite{bavota2012does}.
 
 \section{Scope}
 In this study, we perform research efforts to be able to detect refactorable clones. We will apply refactoring techniques to a subset of these clones and analyze the maintainability of the resulting source code.
