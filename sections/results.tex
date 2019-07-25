@@ -1,6 +1,27 @@
 \chapter{Results}\label{ch:results}
 In this chapter, we present the results of our experiments.
 
+\section{The corpus}\label{chap:corpus}
+For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+
+As indicated in chapter \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
+
+Some general data regarding this corpus is displayed in Table \ref{table:general}.
+
+\begin{table}[H]
+  \begin{center}
+  \caption{General results for GitHub Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
+  \medskip
+\begin{tabular}{|l|l|}
+\hline
+Amount of projects                                                                                      & 1,361      \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
+Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of tokens (excluding\\whitespace, comments and newlines.)\end{tabular} & 11,643,194 \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
 \section{Clone types}\label{sec:clonetypeexperiments}
 In this section we display the differences between clone type 1-3~\cite{roy2007survey} and type 1R-3R as proposed in chapter \ref{chap:clonetypes}. When running our clone detection script over the corpus, we get the results displayed in Fig.~\ref{fig:typeres}.
 
