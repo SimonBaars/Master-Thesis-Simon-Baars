@@ -91,12 +91,10 @@ A higher type of clone means that it's harder to detect and refactor. There are 
 For this study we have chosen to take type 4 clones out of the scope, because they are both hard to detect and hard to refactor. A study by Kodhai et al \cite{kodhai2013method} looks into the distribution of the different types of clones in several open source systems (see table 6 of his study). It becomes apparent that type 4 clones exist way less in source code than all of the other types of clones. For instance, for the J2sdk-swing system he finds 8115 type 1 clones, 8205 type 2 clones, 11209 type 3 clones and only 30 type 4 clones. Because of that, we can conclude that type 4 clones are relatively less relevant to study.
 
 \section{Refactoring methods}
-Martin Fowler recently released the second edition of his Refactoring book \cite{fowler2018refactoring}. This book has been updated to the modern state of software engineering. The sentence in which he stresses the importance of unifying duplication in source code remains present in both books \cite{fowler1999refactoring, fowler2018refactoring}.
-
-The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. In most IDE's this refactoring method is called ``Extract Method''.
+Martin Fowler recently released the second edition of his Refactoring book \cite{fowler2018refactoring}. In this book he exclaims that \textit{``if you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them''} \cite{fowler1999refactoring, fowler2018refactoring}. He describes several methods to deal with duplication, dependent on the context of the clone. In this section we describe the methods which we use in this study.
 
 \subsection{Extract Method}
-Method extraction is one of the most used methods of refactoring duplication in source code. Several studies have already concluded that most duplication in source code is found in the body of methods \cite{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality between methods to a common place: a new method. An example of this procedure is displayed in figure \cite{fig:extractmethod}.
+The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. This refactoring method is called ``Extract Method''. Several studies have already concluded that most duplication in source code is found in the body of methods \cite{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality in method bodies to a common place, namely a new method. An example of this procedure is displayed in figure \cite{fig:extractmethod}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
