@@ -297,11 +297,6 @@ To detect each type of clone, we need to parse the fully qualified identifier of
 
 Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, the proposed clone definitions may be less suitable for large scale clone detection purposes.
 
-\section{Unifying the types}\label{sec:unifying}
-In this chapter we have proposed refactoring-oriented definitions using the type 1, 2 and 3 clone definitions from literature as a baseline. In literature, these definitions are mainly aimed towards reasoning about duplication in source code. When considering these types for refactoring, the goal becomes slightly different. Because of this, having separate clone type definitions does not have any value. Rather, we need a single clone type definition by which we can detect all clones that can and should be considered for refactoring.
-
-Because of this, the ultimate goal would be not to consider type 1R, 2R and 3R separately, but together. However, this is dependent on good thresholds for the type 2R variability and type 3R gap size. Because of this, we have dedicated section \ref{sec:thresholds} to performing measurements to find good thresholds. The ultimate goal is to have a single unified definition of clones that can and should be refactored. Although it will be next to impossible to define such a definition and its corresponding thresholds that does not detect false positives. However, we strive to find at least a near-optimal set of thresholds regarding the type definitions proposed in this chapter.
-
 \section{Suitability of existing Clone Detection Tools for detecting these clones}
 \label{ch:tool-overview}
 We conducted a short survey on (recent) clone detection tools in order to expand them with the proposed types. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze at least one popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
