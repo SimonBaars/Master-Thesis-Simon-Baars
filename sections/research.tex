@@ -279,23 +279,25 @@ Apart from this threshold, the gap in between clones may not span over different
 The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in the sense that they were designed after the literature type definitions but with a concrete refactoring opportunity in mind. Summarized, these types can be explained as follows:
 
 \begin{itemize}
-\item \textbf{Type 1R:} Allows no difference between cloned fragments, making it possible to refactor both fragments to a method call that contains the code of both locations. \\
-\item \textbf{Type 2R:} Allows difference between cloned fragments in controlled features of a codebase. Refactoring opportunities for these controlled features are known, allowing refactoring with a minor tradeoff. \\
+\item \textbf{Type 1R:} Allows no difference between cloned fragments (both functionally and textually), making it possible to refactor both fragments to a method call that contains the code of both locations. \\
+\item \textbf{Type 2R:} Allows difference between cloned fragments in a controlled set of expressions. Refactoring opportunities for these controlled features are known, allowing refactoring with a minor tradeoff. \\
 \item \textbf{Type 3R:} Allows any difference. When refactored, this difference must be wrapped in a conditionally executed block, which entails a major tradeoff.
 \end{itemize}
 
+Regarding the nodes found as cloned by these clone type definitions, there exists a subset relation between all types:
+
 \begin{equation}\label{eq:typerelation}
-\text{Cloned statements} = T1R \subseteq T2R \subseteq T3R
+\text{Cloned nodes} = T1R \subseteq T2R \subseteq T3R
 \end{equation}
+
+Comparing these clone type definitions to the ones used in literature, type 1R clones are a subset of type 1 clones. However, this subset relation does not exist for type 2R and 3R clones. This is because these definitions allow variability in multi-token method calls, which type 2 and type 3 do not allow. Because of that, the following is true for these clone types:
 
 \begin{equation}\label{eq:typerelation2}
-\text{Cloned lines} = T1R \subseteq T1 \text{, but } T2R	\nsubseteq T2 \text{ and } T3R \nsubseteq T3
+\text{Cloned nodes} = T1R \subseteq T1 \text{, but } T2R	\nsubseteq T2 \text{ and } T3R \nsubseteq T3
 \end{equation}
 
-\section{The challenge of detecting these clones}\label{chap:challenge}
+\subsection{The challenge of detecting these clones}\label{chap:challenge}
 To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on basis of which a fully qualified identifier can be created.
-
-Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, the proposed clone definitions may be less suitable for large scale clone detection purposes.
 
 \section{Suitability of existing Clone Detection Tools for detecting these clones}
 \todo{Is this still up to date?}
