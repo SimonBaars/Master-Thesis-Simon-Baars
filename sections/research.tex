@@ -170,10 +170,10 @@ The names of declarations describe the implementation of their body. Examples of
 If two declaration bodies and signatures are cloned, but their names differ, one of both names should be redundant. When refactoring such clones, we can choose one instance to keep and one to remove. Such a refactoring doesn't affect maintainability in any other way than refactoring a type 1R clone would. Because of this, type 2R allows any variability in declaration names. However, this will only open up a good refactoring opportunity if the entire body and signature of these declarations are cloned.
 
 \paragraph{Variable names}
-In section \ref{sec:t2rliteralandvariable} we described how variability in used variables often creates a design tradeoff. However, there are cases in which a used variable does not create a design tradeoff. For this, the following conditions need to apply:
+Cloned code fragments using variables with different names can be refactored without a design tradeoff if the following conditions apply:
 
 \begin{itemize}
-  \item The cloned variables are locally defined.
+  \item The cloned variables are locally defined or the refactoring method used requires extraction to method argument anyways.
   \item The cloned variables have the same type.
   \item The cloned variables are used at the same places in cloned fragments.
 \end{itemize}
@@ -181,7 +181,7 @@ In section \ref{sec:t2rliteralandvariable} we described how variability in used 
 \todo{Show examples}
 
 \subsubsection{A threshold for variability in literals, variables and method calls}\label{sec:variabilitythreshold}
-Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many \cite{roy2009comparison}. However, this does have a big impact on the meaning of the code fragment and thus the harmfulness of the duplication being there.
+Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many \cite{roy2009comparison}. However, this does have a big impact on the meaning of the code fragment.
 
 For type 2R clones we define a threshold for variability in literals, variables and method calls. We calculate the variability in literals, variables and method calls using the following formula:
 
