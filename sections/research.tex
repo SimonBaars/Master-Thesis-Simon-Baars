@@ -229,13 +229,42 @@ Type 3 clones allow any change in statements, often bounded by a similarity thre
 
 In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}. This gap has a threshold for type 3R, which is calculated by the following formula:
 
-\begin{eqfloat}\label{eq:type3r}
-$$\text{T3R Gap Percentage}=\frac{Statements(C_{gap})}{Statements(C_{above} \cup C_{below})}*100$$
-$$Statements = \text{The amount of statements in this code fragment}$$
-$$C_{gap} = \text{The gap between two clones}$$
-$$C_{above} = \text{The clone instance above the gap}$$
-$$C_{below} = \text{The clone instance below the gap}$$
-\caption{Type 3R clone merge opportunities threshold formula}\end{eqfloat}
+\begin{equation}\label{eq:type3r}
+\text{T3R Gap Size}=\frac{\text{Number of nodes in gap}}{\text{Number of nodes in clones}}*100
+\end{equation}
+
+When applying this formula with the example given in figure \ref{fig:gappedclones}, we get a gap size of 25\%:
+
+\begin{equation}\label{eq:type3r}
+\text{T3R Gap Size}=\frac{\text{|\{doC()\}|}}{\text{|\{doA(), doB(), doD(), doE()\}|}}*100 = \frac{\text{1}}{\text{4}}*100 = 25\%
+\end{equation}
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+public void doStuff(){
+|\highlightYellow|  doA(); // Clone instance of
+|\highlightYellow|  doB(); // two statements
+  doC(); // Gap of one statement
+|\highlightBlue|  doD(); // Clone instance of
+|\highlightBlue|  doE(); // two statements
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+public void doStuff(){
+|\highlightYellow|  doA(); // Clone instance of
+|\highlightYellow|  doB(); // two statements
+  doF(); // Gap of one statement
+|\highlightBlue|  doD(); // Clone instance of
+|\highlightBlue|  doE(); // two statements
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Gapped clones.}
+\label{fig:gappedclones}
+\end{figure}
 
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
