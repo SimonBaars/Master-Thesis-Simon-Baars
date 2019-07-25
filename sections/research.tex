@@ -101,7 +101,7 @@ Type 3 clones are \textit{copied fragments with further modification (with added
 
 Having a definition that allows for any change in code poses serious challenges on refactoring. A Levenshtein distance of one can already change the meaning of a code fragment significantly, for instance, if the name of a type differs by a character (and thus referring to different types).
 
-\section{Refactoring-oriented clone types}
+\section{Refactoring-oriented clone types}\label{sec:rtypes}
 To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions address problems of the corresponding literature definitions. The ``R'' stands for refactoring-oriented (and may be less useful for other analyses).
 
 \subsection{Type 1R clones} \label{sec:type1r}
@@ -298,13 +298,14 @@ To detect each type of clone, we need to parse the fully qualified identifier of
 Mainly the requirement to have access to all external libraries is a difficult one to satisfy in diverse projects. Because of this, the proposed clone definitions may be less suitable for large scale clone detection purposes.
 
 \section{Suitability of existing Clone Detection Tools for detecting these clones}
+\todo{Is this still up to date?}
 \label{ch:tool-overview}
-We conducted a short survey on (recent) clone detection tools in order to expand them with the proposed types. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze at least one popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
+We conducted a short survey on (recent) clone detection tools that we could use to analyze refactoring possibilities. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
-    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method-level clones. We want to perform an analysis on all clones in projects to get a complete overview. We analyzed this behavior using a set of control projects.
-\item \textbf{TODO: Criterium.}\simon{TODO} We assembled a number of test projects to assess the validity of clone detection tools. On basis of this, we checked whether clone detection tools can correctly find clones in diverse contexts.
-\item \textbf{Can analyse resolved symbols.} When detecting clones for refactoring purposes, it is important that clone instances can be refactored. Sometimes, textual equality between code fragments does not imply that these can be refactored (this is described more elaborately in section \ref{sec:type1}). Because of this, we want to use a clone detection tool that can analyze such structures.
-\item \textbf{Extensive detection configuration.} We aim to exclude expressions/statements from matching (more about our rationale in section~\ref{chap:clonetypes}). To achieve this, the tool needs to be able to allow those threshold changes. This can be either through simple changes of the source code, or by using some configuration file.
+    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
+\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of clone detection tools.
+\item \textbf{Can analyze resolved symbols.} When detecting the types proposed in section~\ref{sec:rtypes}, it is important that we can analyze resolved symbols (for instance a type reference). The rationale for this is further explained in~\ref{chap:challenge}.
+\item \textbf{Extensive detection configuration.} Detecting our clone definitions, as proposed in section~\ref{sec:rtypes}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
 \end{enumerate}
 
 \begin{table}[H]
