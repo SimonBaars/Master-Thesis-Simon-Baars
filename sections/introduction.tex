@@ -46,7 +46,7 @@ Not in all cases will refactoring duplicated code result in a more maintainable 
 We perform an \textbf{exploratory} study to look into the opportunities to automatically refactor code clones. To do this, we combine knowledge from literature with our own experience to develop definitions for refactorable clones. We also develop a tool to detect, analyze and refactor such clones. Using this tool, we perform \textbf{quantitative} experiments in which we statistically collect information about duplication in open source software. In these experiments we control several variables to see their impact on the results. During this process we explore concepts and develop understanding, because of which decisions in the study design are based upon the results of the experiments.
 
 \section{Contributions}
-\todo{TODO}
+Many modern clone detection techniques and thresholds have been validated by manually assessing a sample of the results \cite{sajnani2016sourcerercc, cordy2011nicad, jiang2007deckard}. 
 %Our research makes the following contributions:
 %\begin{enumerate}
 %	\item We deliver several novel measurements regarding code clones on a large corpus of Java projects.
@@ -65,5 +65,4 @@ Applying refactoring often entails creating new method declarations, class decla
 It is very disputable whether unit tests apply to the same maintainability metrics that applies to the functional code. Because of that, for this research, unit tests are not taken into scope. The findings of this research may be applicable to those classes, but we will not argue the validity.
 
 \section{Outline}
-\todo{Rewrite this part}
 In Chapter~\ref{ch:background} we describe the background of this thesis. In Chapter~\ref{chap:clonetypes} we list shortcomings with clone definitions from literature and propose a set of clone type definitions which can be automatically refactored. In Chapter \ref{ch:clonerefactor} we propose a tool to detect, analyze and automatically refactor such clones that can be refactored. Using this tool we perform a set of experiments, of which the results are shown in Chapter~\ref{ch:results} and discussed in Chapter~\ref{ch:discussion}. Chapter~\ref{ch:related_work} contains the work related to this thesis. Finally, we present our concluding remarks in Chapter~\ref{ch:conclusion} together with future work.
