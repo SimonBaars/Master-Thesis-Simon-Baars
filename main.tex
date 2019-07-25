@@ -68,6 +68,23 @@
   moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
 }
 
+\definecolor{lightyellow}{HTML}{fffdcc}
+\definecolor{doublelightyellow}{HTML}{fffa9c}
+\definecolor{lightgreen}{HTML}{dcffd4}
+\definecolor{lightblue}{HTML}{e0ffff}
+\definecolor{lightred}{HTML}{ffe0e0}
+\definecolor{lightpink}{HTML}{ffe0ff}
+\definecolor{lightorange}{HTML}{ffede0}
+\definecolor{lightpurple}{HTML}{f0e0ff}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+
 \lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
 \newfloat{eqfloat}{h}{eqflts}
