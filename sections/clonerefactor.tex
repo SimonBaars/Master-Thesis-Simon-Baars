@@ -418,19 +418,19 @@ In the example in figure \ref{fig:trytoexpand} the largest instance has a volume
 Starting from this clone, we will try to expand it. We will include the previous node in the clone class and verify its variability threshold (node $N_2$). In this case, using the formulas shown in section \ref{sec:t2rcheckglobalthres}, we can check whether this clone class would be valid by the variability threshold:
 
 \begin{equation}\label{eq:variabilitycombined}
-\frac{|\{(5,6)\}|}{(5,6),(7,7),(8,8),(9,9),(10,10)}*100 = \frac{1}{5}*100 = 20\%
+\frac{|\{(5,6)\}|}{|\{(5,6),(7,7),(8,8),(9,9),(10,10)\}|}*100 = \frac{1}{5}*100 = 20\%
 \end{equation}
 
 Dependent on the actual variability threshold, the clone class would get expanded with node $N_2$. For this example, we assume the variability threshold is set to 15\%. In such a case, including this node would not result in a valid clone class. However, we continue trying to expand this clone class until we have reached the first node of the originally cloned fragment (the cloned fragment that did not take the variability threshold into account). Thus, we now try to expand with $\{N_1, N_2\}$. We then get the following formula:
 
 \begin{equation}\label{eq:variabilitycombined}
-\frac{|\{(5,6)\}|}{(1,1),(7,7),(5,6),(7,7),(8,8),(9,9),(10,10)}*100 = \frac{1}{7}*100 = 14\%
+\frac{|\{(5,6)\}|}{|\{(1,1),(7,7),(5,6),(7,7),(8,8),(9,9),(10,10)\}|}*100 = \frac{1}{7}*100 = 14\%
 \end{equation}
 
 This falls under the threshold of 15\% so we expand the clone class. Thus, the clone class $\{N_3, N_4, N_5\}$ will become $\{N_1, N_2, N_3, N_4, N_5\}$. We cannot expand further because we have reached the end of the original cloned fragment. When we are done expanding to previous nodes, we will try to expand to next nodes. In this case, we check whether we can include $N_6$ into the clone class. If $N_6$ would be included, the variability threshold would be as follows:
 
 \begin{equation}\label{eq:variabilitycombined}
-\frac{|\{(5,6),(11,12),(7,13)\}|}{(1,1),(7,7),(5,6),(7,7),(8,8),(9,9),(10,10),(11,12),(7,13)}*100 = \frac{3}{9}*100 = 33\%
+\frac{|\{(5,6),(11,12),(7,13)\}|}{|\{(1,1),(7,7),(5,6),(7,7),(8,8),(9,9),(10,10),(11,12),(7,13)\}|}*100 = \frac{3}{9}*100 = 33\%
 \end{equation}
 
 This does not fall within the variability threshold, so we do not include this node in the clone class. After we have checked a single clone class within the bigger cloned fragment for expansion opportunities, we go on with the next clone class (by volume). In this case, the other clone class within this fragment has become a subset of the clone class we just expanded. Because of that, this other clone class is discarded. For the example code fragment in figure \ref{fig:trytoexpand} the resulting clone class is $\{N_1, N_2, N_3, N_4, N_5\}$.
