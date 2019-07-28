@@ -302,6 +302,7 @@ If the check for global thresholds fails, we have to seek for valid clones withi
 \subsubsection{Convert Equality Array to Graph}
 After the global threshold check has failed, we build a clone graph on basis of the equality arrays.
 
+\todo{These equality arrays do not include the ( and ) separators. This is not completely right. Should we change it?}
 \begin{figure}[H]
 \begin{parcolumns}{3}
 \colchunk[1]{
@@ -339,9 +340,9 @@ In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each o
   \label{fig:clonerefactorprocess}
 \end{figure}
 
-Although the duplicate relations allow for variability in the equality arrays as long as it falls under the threshold, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored in the same way.
+Although the duplicate relations allow for variability in the equality arrays as long as it falls under the threshold, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored in the same way:
 \begin{equation}\label{eq:t2rcloneequality}
-E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1, y \in E_2) x<0 \lor y<0 \Rightarrow x=y
+E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1, y \in E_2)\text{ }x<0 \lor y<0 \Rightarrow x=y
 \end{equation}
 
 \subsubsection{Detect Clones on Graph}
@@ -376,10 +377,39 @@ doE(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
 \label{fig:2rvariabilityhigh5}
 \end{figure}
 
-Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. As the graph is traversed starting at the end, equal to graph traversal during clone detection, the last node in
+Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. The graph is traversed, starting from the last node in the code fragment (equal to graph traversal during clone detection). Because of that, $C_1$ $I_1$ is the very last clone instance in this example. 
 
 \subsubsection{Try to Expand}
-The problem with the graph clone detection technique is that ...
+The problem with the graph clone detection technique is that only single nodes that are within the variability threshold are considered duplicates of each other. However, single nodes that are not within this threshold could still be part of a clone class if the other cloned nodes are more towards the lower bound of the threshold.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+doA(a); //{1, -2, 3, -8, -9}
+|\highlightYellow|doB();
+doC(a);
+|\highlightYellow|doD();
+|\highlightYellow|doE();
+|\highlightYellow|doF();
+doG(a, b, c);
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+doB(d, e, f);
+|\highlightYellow|doA();
+|\highlightYellow|doB();
+|\highlightYellow|doC();
+doB(d, e, f);
+\end{javacode}}
+\end{parcolumns}
+\caption{Type 2R clones with equality arrays and variability percentages.}
+\label{fig:trytoexpand}
+\end{figure}
+
+As an example, consider the clone fragment in figure \ref{fig:trytoexpand}.
+
+
 \todo{TODO}
 
 \subsection{Checking for type 3 opportunities} \label{sec:t3rclonerefactor}
