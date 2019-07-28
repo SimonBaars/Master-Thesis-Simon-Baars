@@ -302,7 +302,6 @@ If the check for global thresholds fails, we have to seek for valid clones withi
 \subsubsection{Convert Equality Array to Graph}
 After the global threshold check has failed, we build a clone graph on basis of the equality arrays.
 
-\todo{These equality arrays do not include the ( and ) separators. This is not completely right. Should we change it?}
 \begin{figure}[H]
 \begin{parcolumns}{3}
 \colchunk[1]{
@@ -331,7 +330,7 @@ doE(); //{6, -2}
 \label{fig:2rvariabilityhigh4}
 \end{figure}
 
-In figure \ref{fig:2rvariabilityhigh4} we display the equality arrays for each of the lines of a code example with a complex distribution of cloned fragments. We can convert this to a graph, using a similar process as the graph creation process used for clone detection. In this case, duplicate relations represent nodes of which their equality arrays are within the variability threshold. In figure \ref{fig:2rvariabilityhigh4} all relations are between equal equality arrays, but this does not always have to be the case. Large equality arrays, denoting statements that consist of many tokens, may have some variability and still be considered duplicates in this graph.
+In figure \ref{fig:2rvariabilityhigh4} we display clone classes and their (simplified) equality arrays. We can convert this to a graph, using a similar process as the graph creation process used for clone detection. In this case, duplicate relations represent nodes of which their equality arrays are within the variability threshold. In figure \ref{fig:2rvariabilityhigh4} all relations are between equal equality arrays, but this does not always have to be the case. Large equality arrays, denoting statements that consist of many tokens, may have some variability and still be considered duplicates in this graph.
 
 \begin{figure}[H]
   \centering
