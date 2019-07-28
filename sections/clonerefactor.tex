@@ -201,7 +201,7 @@ In the example of figure \ref{fig:equalityarrays} the fragment on the left (cons
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
 \begin{equation}\label{eq:variabilityclonerefactor}
-\frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(|E_1|+|E_2|)+(|E_3|+|E_4|)}*100
+\text{T2R Variability} = \frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(|E_1|+|E_2|)+(|E_3|+|E_4|)}*100
 \end{equation}
 
 Where \textit{E} refers to the equality arrays shown in table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
@@ -386,28 +386,40 @@ The problem with the graph clone detection technique is that only single nodes t
 \begin{parcolumns}{2}
 \colchunk[1]{
 \begin{javacode}
-doA(a); //{1, -2, 3, -8, -9}
-|\highlightYellow|doB();
-doC(a);
-|\highlightYellow|doD();
-|\highlightYellow|doE();
-|\highlightYellow|doF();
-doG(a, b, c);
+|\highlightYellow|doA(); //{1, -2, -3, -4}
+doB(a); //{5, -2, 7, -3, -4}
+|\highlightYellow|doD(); //{8, -2, -3, -4}
+|\highlightYellow|doE(); //{9, -2, -3, -4}
+|\highlightYellow|doF(); //{10, -2, -3, -4}
+doG(a, b); //{11, -2, 7, -3, -4}
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
-doB(d, e, f);
-|\highlightYellow|doA();
-|\highlightYellow|doB();
-|\highlightYellow|doC();
-doB(d, e, f);
+|\highlightYellow|doA(); //{1, -2, -3, -4}
+doC(a); //{6, -2, 7, -3, -4}
+|\highlightYellow|doD(); //{8, -2, -3, -4}
+|\highlightYellow|doE(); //{9, -2, -3, -4}
+|\highlightYellow|doF(); //{10, -2, -3, -4}
+doH(b); //{12, -2, 13, -3, -4}
 \end{javacode}}
 \end{parcolumns}
-\caption{Type 2R clones with equality arrays and variability percentages.}
+\caption{Type 2R clones with their equality arrays.}
 \label{fig:trytoexpand}
 \end{figure}
 
-As an example, consider the clone fragment in figure \ref{fig:trytoexpand}.
+As an example, consider the clone fragment in figure \ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances on basis of the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the amount of clone instances in a clone class and the amount of nodes in any of its instances.
+
+In the example in figure \ref{fig:trytoexpand} the largest instance has a volume of:
+
+\begin{equation}\label{eq:clonevolume}
+3 \text{ nodes} * 2 \text{ clone instances} = 6
+\end{equation}
+
+Starting from this clone, we will try to expand it. We will include the previous node in the clone class and verify its variability threshold. In this case, using the formulas shown in section \ref{sec:t2rcheckglobalthres}, we can check whether this clone class would be valid by the variability threshold:
+
+\begin{equation}\label{eq:variabilitycombined}
+\frac{|\{(5,6)\}|}{(5+4+4+4)+(5+4+4+4)}*100 = \frac{1}{34}*100 = 15\%
+\end{equation}
 
 
 \todo{TODO}
