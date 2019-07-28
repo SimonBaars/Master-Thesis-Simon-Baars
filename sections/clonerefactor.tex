@@ -201,16 +201,16 @@ In the example of figure \ref{fig:equalityarrays} the fragment on the left (cons
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
 \begin{equation}\label{eq:variabilityclonerefactor}
-\text{T2R Variability} = \frac{|\{x>0 \land y>0 \land x \neq y\text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{(|E_1|+|E_2|)+(|E_3|+|E_4|)}*100
+\text{T2R Variability} = \frac{|\{x>0 \land y>0 \land x \neq y \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{|\{x>0 \land y>0 \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}*100
 \end{equation}
 
-Where \textit{E} refers to the equality arrays shown in table \ref{table:equalityarrays}. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
+Where $E_x$ refers to the equality arrays shown in table \ref{table:equalityarrays} and \textit{x} is the node number displayed in the same table. When we apply this equation to the example clone classes displayed in figure \ref{fig:equalityarrays}, we get the following sum:
 
 \begin{equation}\label{eq:sumequality}
-\frac{|\{(3,4), (1,8), (7,9)\}|}{(5+5)+(5+5)}*100 = \frac{3}{20}*100 = 15\%
+\frac{|\{(3,4), (1,8), (7,9)\}|}{|\{(1,1), (3,4), (1,8), (7,9)\}|}*100 = \frac{3}{4}*100 = 75\%
 \end{equation}
 
-So for the example given in figure \ref{fig:equalityarrays} we have a variability of 15\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
+So for the example given in figure \ref{fig:equalityarrays} we have a variability of 75\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
 
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
