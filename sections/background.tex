@@ -14,11 +14,11 @@ Many studies present different definitions for code clone concepts. For this stu
 \rowcolor[HTML]{FFFFFF}
 \textbf{Symbol} & \textbf{Meaning} & \textbf{Definition} & \textbf{Description} & \textbf{Properties} \\ \midrule
 \rowcolor[HTML]{EFEFEF}
-T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this token\\spans.\\ \textbf{Category:} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
+T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} The range this token\\spans.\\ \textbf{Category (C):} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range:} The range this node\\spans.\end{tabular} \\
+N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} The range this node\\spans.\end{tabular} \\
 \rowcolor[HTML]{EFEFEF}
-I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use, roy2007survey}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{File:} The file in which this\\clone instance is found.\end{tabular} \\
+I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use, roy2007survey}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{File (F):} The file in which this\\clone instance is found.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
 C & Clone class \cite{bruntink2005use, roy2007survey}& \begin{tabular}[c]{@{}l@{}}Set of clone\\instances.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations. Each of these\\code fragments is called a\\``clone instance''.\end{tabular} & - \\
 \rowcolor[HTML]{EFEFEF}
