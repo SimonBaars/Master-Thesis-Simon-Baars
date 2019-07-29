@@ -447,7 +447,7 @@ Where \textit{S} is the set of all found clone classes. \textit{$\text{isType3R}
 \text{isType3R}(C_1, C_2) = \forall (i_1 \in C_1) \exists (i_2 \in C_2) Fi_1 = Fi_2 \land (gap(i_1, i_2) < gap_threshold \lor gap(i_2, i_1) < gap_threshold)
 \end{equation}
 
-Where \textit{F} is the file in which the clone instance is located. \textit{gap_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. \textit{$gap(I_1, I_2)$} is the function that calculates the gap between two clone instances. 
+Where \textit{F} is the file in which the clone instance is located. \textit{gap_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. \textit{$\text{gap}(I_1, I_2)$} is the function that calculates the gap between two clone instances.
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
