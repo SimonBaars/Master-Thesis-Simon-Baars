@@ -447,7 +447,61 @@ Where \textit{S} is the set of all found clone classes. \textit{$\text{isType3R}
 \text{isType3R}(C_1, C_2) = \forall (i_1 \in C_1) \exists (i_2 \in C_2) Fi_1 = Fi_2 \land gap(i_1, i_2) < gap\_threshold
 \end{equation}
 
-Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. \textit{$\text{gap}(I_1, I_2)$} is the function that calculates the gap between two clone instances.
+Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. \textit{$\text{gap}(I_1, I_2)$} is the function that calculates the gap between two clone instances. This gap is calculated by dividing the amount of statements in the gap by the amount of statements that both clone instances span together:
+
+\begin{equation}\label{eq:t3rgap}
+\text{gap}(i_1, i_2) = \frac{|\{(Rn>Ri_1 \land Rn<Ri_2) \lor (Rn>Ri_2 \land Rn<Ri_1)\text{ }|\text{ } n \in nodes(Fi_1)\}|}{|i_1| + |i_2|} * 100
+\end{equation}
+
+Where \textit{F} is the file in which the clone instance is located and \textit{R} is the range of a clone instance or node. A range denotes the line and column at which a code fragment starts and ends. We define the partial order relationship on ranges as follows:
+
+\begin{equation}\label{eq:rangetotalorder}
+R_1 < R_2 \text{ iff } end_line(R_1) < begin_line(R_2) \lor (end_line(R_1) = begin_line(R_2) \land end_column(R_1) < begin_column(R_2))
+\end{equation}
+\begin{equation}\label{eq:rangetotalorder2}
+R_1 > R_2 \text{ iff } begin_line(R_1) > end_line(R_2) \lor (begin_line(R_1) = end_line(R_2) \land begin_column(R_1) > end_column(R_2))
+\end{equation}
+
+\subsubsection{Example}
+In this section we show an example of the identification of a type 3R clone.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+//File1.java
+|\highlightYellow|doA(); // |\textcolor{pgreen}{$C_1$ $I_1$}|
+|\highlightYellow|doB(); // |\textcolor{pgreen}{$C_1$ $I_1$}|
+doC();
+|\highlightBlue|doC(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
+|\highlightBlue|doD(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+//File2.java
+|\highlightYellow|doA(); // |\textcolor{pgreen}{$C_1$ $I_2$}|
+|\highlightYellow|doB(); // |\textcolor{pgreen}{$C_1$ $I_2$}|
+|\highlightBlue|doC(); // |\textcolor{pgreen}{$C_2$ $I_2$}|
+|\highlightBlue|doD(); // |\textcolor{pgreen}{$C_2$ $I_2$}|
+\end{javacode}}
+\end{parcolumns}
+\caption{Gapped clones.}
+\label{fig:3ropportunities}
+\end{figure}
+
+In the example of figure \ref{fig:3ropportunities} we see two clone classes, which are separated by a single node. Using equation \ref{eq:t3rgap} we can calculate the size of the gap as follows:
+
+\begin{equation}\label{eq:t3rexample}
+\text{gap}(C_1\text{ }I_1, C_2\text{ }I_1) = \frac{|\{n_4\}|}{|\{n_2, n_3\}| + |\{n_5, n_6\}|} * 100 = frac{1}{4} = 25\%
+\end{equation}
+
+The same calculation is conducted for the other clone instances:
+
+\begin{equation}\label{eq:t3rexample}
+\text{gap}(C_1\text{ }I_2, C_2\text{ }I_2) = \frac{|\emptyset|}{|\{n_2, n_3\}| + |\{n_4, n_5\}|} * 100 = frac{0}{4} = 0\%
+\end{equation}
+
+If all resulting percentages are under the threshold, this clone will be added to the collection of found clones and all of its subsets will be removed. 
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
