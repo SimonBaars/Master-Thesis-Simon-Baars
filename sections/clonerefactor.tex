@@ -456,11 +456,13 @@ Where \textit{F} is the file in which the clone instance is located. \textit{gap
 Where \textit{F} is the file in which the clone instance is located and \textit{R} is the range of a clone instance or node. A range denotes the line and column at which a code fragment starts and ends. We define the partial order relationship on ranges as follows:
 
 \begin{equation}\label{eq:rangetotalorder}
-R_1 < R_2 \text{ iff } end\_line(R_1) < begin\_line(R_2) \lor (end\_line(R_1) = begin\_line(R_2) \land end\_column(R_1) < begin\_column(R_2))
+r_1 < r_2 \text{ iff } ELr_1 < BLr_2 \lor (ELr_1 = BLr_2) \land ECr_1 < BCr_2)
 \end{equation}
 \begin{equation}\label{eq:rangetotalorder2}
-R_1 > R_2 \text{ iff } begin\_line(R_1) > end\_line(R_2) \lor (begin\_line(R_1) = end\_line(R_2) \land begin\_column(R_1) > end\_column(R_2))
+r_1 > r_2 \text{ iff } BLr_1 > ELr_2 \lor (BLr_1 = ELr_2 \land BCr_1 > ECr_2)
 \end{equation}
+
+Where \textit{BL} is the begin line of a range, \textit{EL} is the end line of a range, \textit{BC} is the begin column of a range and \textit{EC} is the end column of a range.
 
 \subsubsection{Example}
 In this section we show an example of the identification of a type 3R clone.
