@@ -616,10 +616,10 @@ We check the location of each clone instance for each of its nodes. If any node 
 \subsubsection{Method/Constructor Level Clones}
 Method/Constructor Level clones denote clones that span are found in either a method or contructor. A constructor is a special method that is called when an object is instantiated. Current clone refactoring studies only focus on clones at method level \cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places \cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques \cite{kodhai2013method, fontana2015duplicated}.
 
-To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration:
+To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
 
 \begin{equation}\label{eq:sameclass}
-\text{a clone instance I is considered ``Method Level'' iff \forall (n \in I)\text{ } Tn = ``MethodDeclaration'' \lor \exists (p \in ancestors(n)) \text{ } Tp = ``MethodDeclaration'' }
+\forall (n \in I)\text{ } Tn = \text{ MethodDeclaration } \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{ MethodDeclaration }
 \end{equation}
 
 Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
@@ -649,6 +649,8 @@ public class Class2 { // |\textcolor{pgreen}{$p_3$}|
 \caption{Example of a method level clone and its parents.}
 \label{fig:methodlevelclone}
 \end{figure}
+
+\subsubsection{Class Level Clones}
 
 \subsection{Contents}\label{sec:setupcontents}
 Finally, we looked at what nodes individual clone instances span. We selected the following categories to be relevant for refactoring:
