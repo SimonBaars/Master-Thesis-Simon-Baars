@@ -667,12 +667,18 @@ Finally, we looked at what nodes individual clone instances span. We selected th
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
 
+\subsubsection{Full Method/Class/Interface/Enumeration}
+These catagories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to solve: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
+
+\subsubsection{Partial Method/Constructor}
+
+
 \section{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
 
 We measured the number of clones that can be refactored through method extraction (without additional transformations being required). We defined the following categories:
 \begin{itemize}
-    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
+    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
     \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans part of a block:} This clone spans a part of a statement.
     \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of Table~\ref{table:contents}, the ``extract method'' refactoring technique cannot be applied.
