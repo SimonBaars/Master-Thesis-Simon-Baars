@@ -619,7 +619,7 @@ Method/Constructor Level clones denote clones that span are found in either a me
 To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
 
 \begin{equation}\label{eq:sameclass}
-\forall (n \in I)\text{ } Tn = \text{ MethodDeclaration } \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{ MethodDeclaration }
+\forall (n \in I)\text{ } Tn = \text{MethodDeclaration} \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{MethodDeclaration}
 \end{equation}
 
 Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
@@ -650,21 +650,22 @@ public class Class2 { // |\textcolor{pgreen}{$p_3$}|
 \label{fig:methodlevelclone}
 \end{figure}
 
-\subsubsection{Class Level Clones}
+\subsubsection{Class/Interface/Enumeration Level Clones}
+Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain a fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in a inheritance hierarchy. Or, we might have to perform a refactoring on more of an architectural level, if a large set of methods is cloned.
+
+We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
 Finally, we looked at what nodes individual clone instances span. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method/Constructor:} A clone that spans a method partially, optionally including its declaration.
+  \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method. The declaration itself is not included.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Includes Fields/Constructor:} A clone that spans a combination of fields and other things, like methods.
   \item \textbf{Method/Class/Interface/Enumeration Declaration:} A clone that contains the declaration (usually the first line) of a class, method, interface or enumeration.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
-
-\todo{Explain each category in more detail}
 
 \section{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
