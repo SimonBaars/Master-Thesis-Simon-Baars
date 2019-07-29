@@ -456,7 +456,7 @@ Where \textit{F} is the file in which the clone instance is located. \textit{gap
 Where \textit{F} is the file in which the clone instance is located and \textit{R} is the range of a clone instance or node. A range denotes the line and column at which a code fragment starts and ends. We define the partial order relationship on ranges as follows:
 
 \begin{equation}\label{eq:rangetotalorder}
-r_1 < r_2 \text{ iff } ELr_1 < BLr_2 \lor (ELr_1 = BLr_2) \land ECr_1 < BCr_2)
+r_1 < r_2 \text{ iff } ELr_1 < BLr_2 \lor (ELr_1 = BLr_2 \land ECr_1 < BCr_2)
 \end{equation}
 \begin{equation}\label{eq:rangetotalorder2}
 r_1 > r_2 \text{ iff } BLr_1 > ELr_2 \lor (BLr_1 = ELr_2 \land BCr_1 > ECr_2)
@@ -494,13 +494,13 @@ doC();
 In the example of figure \ref{fig:3ropportunities} we see two clone classes, which are separated by a single node. Using equation \ref{eq:t3rgap} we can calculate the size of the gap as follows:
 
 \begin{equation}\label{eq:t3rexample}
-\text{gap}(C_1\text{ }I_1, C_2\text{ }I_1) = \frac{|\{n_4\}|}{|\{n_2, n_3\}| + |\{n_5, n_6\}|} * 100 = frac{1}{4} = 25\%
+\text{gap}(C_1\text{ }I_1, C_2\text{ }I_1) = \frac{|\{n_4\}|}{|\{n_2, n_3\}| + |\{n_5, n_6\}|} * 100 = \frac{1}{4} = 25\%
 \end{equation}
 
 The same calculation is conducted for the other clone instances:
 
 \begin{equation}\label{eq:t3rexample}
-\text{gap}(C_1\text{ }I_2, C_2\text{ }I_2) = \frac{|\emptyset|}{|\{n_2, n_3\}| + |\{n_4, n_5\}|} * 100 = frac{0}{4} = 0\%
+\text{gap}(C_1\text{ }I_2, C_2\text{ }I_2) = \frac{|\emptyset|}{|\{n_2, n_3\}| + |\{n_4, n_5\}|} * 100 = \frac{0}{4} = 0\%
 \end{equation}
 
 If all resulting percentages are under the threshold, this clone will be added to the collection of found clones and all of its subsets will be removed.
