@@ -438,16 +438,16 @@ This does not fall within the variability threshold, so we do not include this n
 As described in section \ref{sec:type3r}, we define type 3R clones as gapped clones. This means that two existing clones may have a gap of non-gapped clones. We check for every found clone class whether it is a type 3R clone with another clone:
 
 \begin{equation}\label{eq:crtype3r}
-\forall (c_1 \in S) \exists (c_2 \in S) x \neq y \land isType3R(c_1, c_2)
+\forall (c_1 \in S) \text{ }\exists (c_2 \in S)\text{ }x \neq y \land isType3R(c_1, c_2)
 \end{equation}
 
-Where \textit{S} is the set of all found clone classes. \textit{$\text{isType3R}(C_1, C_2)$} is a Boolean-valued function that denotes whether two clone classes are type 3R clones of each other. Two clone classes are type 3R clones of each other if each of their instances are within a certain distance of each other:
+Where \textit{S} is the set of all found clone classes. $\text{isType3R}(C_1, C_2)$ is a Boolean-valued function that returns whether two clone classes are type 3R clones of each other. Two clone classes are type 3R clones of each other if each of their instances are within a certain distance of each other:
 
 \begin{equation}\label{eq:istype3r}
-\text{isType3R}(C_1, C_2) = \forall (i_1 \in C_1) \exists (i_2 \in C_2) Fi_1 = Fi_2 \land gap(i_1, i_2) < gap\_threshold
+\text{isType3R}(C_1, C_2) = \forall (i_1 \in C_1)\text{ } \exists (i_2 \in C_2)\text{ } Fi_1 = Fi_2 \land gap(i_1, i_2) < gap\_threshold
 \end{equation}
 
-Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. \textit{$\text{gap}(I_1, I_2)$} is the function that calculates the gap between two clone instances. This gap is calculated by dividing the amount of statements in the gap by the amount of statements that both clone instances span together:
+Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. $\text{gap}(I_1, I_2)$ is the function that calculates the gap between two clone instances. This gap is calculated by dividing the amount of statements in the gap by the amount of statements that both clone instances span together:
 
 \begin{equation}\label{eq:t3rgap}
 \text{gap}(i_1, i_2) = \frac{|\{(Rn>Ri_1 \land Rn<Ri_2) \lor (Rn>Ri_2 \land Rn<Ri_1)\text{ }|\text{ } n \in nodes(Fi_1)\}|}{|i_1| + |i_2|} * 100
@@ -456,10 +456,10 @@ Where \textit{F} is the file in which the clone instance is located. \textit{gap
 Where \textit{F} is the file in which the clone instance is located and \textit{R} is the range of a clone instance or node. A range denotes the line and column at which a code fragment starts and ends. We define the partial order relationship on ranges as follows:
 
 \begin{equation}\label{eq:rangetotalorder}
-R_1 < R_2 \text{ iff } end_line(R_1) < begin_line(R_2) \lor (end_line(R_1) = begin_line(R_2) \land end_column(R_1) < begin_column(R_2))
+R_1 < R_2 \text{ iff } end\_line(R_1) < begin\_line(R_2) \lor (end\_line(R_1) = begin\_line(R_2) \land end\_column(R_1) < begin\_column(R_2))
 \end{equation}
 \begin{equation}\label{eq:rangetotalorder2}
-R_1 > R_2 \text{ iff } begin_line(R_1) > end_line(R_2) \lor (begin_line(R_1) = end_line(R_2) \land begin_column(R_1) > end_column(R_2))
+R_1 > R_2 \text{ iff } begin\_line(R_1) > end\_line(R_2) \lor (begin\_line(R_1) = end\_line(R_2) \land begin\_column(R_1) > end\_column(R_2))
 \end{equation}
 
 \subsubsection{Example}
@@ -501,7 +501,7 @@ The same calculation is conducted for the other clone instances:
 \text{gap}(C_1\text{ }I_2, C_2\text{ }I_2) = \frac{|\emptyset|}{|\{n_2, n_3\}| + |\{n_4, n_5\}|} * 100 = frac{0}{4} = 0\%
 \end{equation}
 
-If all resulting percentages are under the threshold, this clone will be added to the collection of found clones and all of its subsets will be removed. 
+If all resulting percentages are under the threshold, this clone will be added to the collection of found clones and all of its subsets will be removed.
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
