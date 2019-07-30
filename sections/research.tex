@@ -325,21 +325,25 @@ void modifyA(boolean multiply){
 In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. There is a \textit{gap} of non-cloned lines in between two clone classes. The following rules apply to this gap:
 
 \begin{itemize}
-  \item \textbf{The difference in statements must bridge a gap between two clones that were valid by the original thresholds}. This entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones.
+  \item \textbf{The difference in statements must bridge a gap between two valid clones}. This entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones.
   \item \textbf{The size of the gap between two clones is limited by a threshold.} This threshold is calculated by taking the percentage of the number of statements in the gap over the number of statements that both clones that are being bridged span.
   \item \textbf{The gap may not span a partial block.} To make sure that the T3R clone can be refactored, we do not allow the gap to span a part of a block, for instance, the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could, however, use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for T3R clones.
 \end{itemize}
 
 \subsubsection{Gap Threshold}
+For type 3R, the size of the gap between two clones is bounded by a threshold. This threshold is calculated by the following formula:
+
 \begin{equation}\label{eq:type3r}
 \text{T3R Gap Size}=\frac{\text{Number of nodes in gap}}{\text{Number of nodes in clones}}*100
 \end{equation}
 
-When applying this formula with the example given in figure \ref{fig:gappedclones}, we get a gap size of 25\%:
+In this formula, the ``Number of nodes in gap'' concerns the amount of non-cloned nodes that are in between both clone instances. The ``Number of nodes in clones'' is the amount of nodes that are in the clone instances surrounding the gap:
 
 \begin{equation}\label{eq:type3r}
-\text{T3R Gap Size}=\frac{\text{|\{doC()\}|}}{\text{|\{doA(), doB(), doD(), doE()\}|}}*100 = \frac{\text{1}}{\text{4}}*100 = 25\%
+\text{Number of nodes in clones}=|I_{before}| + |I_{after}|.
 \end{equation}
+
+As an example, consider the code fragment in figure \ref{fig:gappedclones}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
