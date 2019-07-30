@@ -656,9 +656,9 @@ Class/Interface/Enumeration Level clone instances are found inside the body of o
 We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
-Finally, we looked at what nodes individual clone instances span. We selected the following categories to be relevant for refactoring:
+Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
-  \item \textbf{Full Method/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
+  \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method. The declaration itself is not included.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
@@ -667,7 +667,7 @@ Finally, we looked at what nodes individual clone instances span. We selected th
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
 
-\subsubsection{Full Method/Class/Interface/Enumeration}
+\subsubsection{Full Method/Constructor/Class/Interface/Enumeration}
 These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to solve: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
 
 \subsubsection{Partial Method/Constructor}
