@@ -152,5 +152,10 @@ For this study we perform a shallow analysis on external dependencies, in order 
 Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch the binaries and source code of all software projects a given codebase is dependent on. Maven can also be used to run tests for the systems and to package the project as an executable file.
 
 
-\section{Java}
-\todo{Describe the relevant parts of the Java ecosystem}
+\section{(Object-Oriented) Programming Languages}
+In this section we describe the relevant parts of the programming languages we research and experiment on.
+
+\subsection{AST}
+An Abstract Syntax Tree (AST) is a tree consisting of an hierarchical representation of the source code of a program. Detecting code clones on the AST of a program allows for a deeper understanding of the concepts that are being analyzed. Having an AST, we know how concepts in the code are related. This helps to determine in what classes and methods cloned code is found.
+
+Having access to a programs' AST also helps in the process of refactoring. Moving AST nodes rather than textual modifications reduces error margins because the tree structure stays intact.
