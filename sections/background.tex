@@ -174,7 +174,8 @@ Code smells are patterns in code that should be avoided, because they have a neg
 \subsubsection{Design Patterns}
 Most code smells have design patterns that can be used to mitigate the smell. For instance, duplicate code can be mitigated by using appropriate abstractions or refactoring duplicate code to a common place. Design patterns differ from refactoring methods in the sense that they are more about an architectural pattern rather than a certain kind of code modification.
 
-\subsubsection{Code Quality Metrics}
+\subsubsection{Maintainability Metrics}
+Maintainability metrics are features of source code by which an indication of the maintainability of the source code can be measured. Heitlager at al. \cite{heitlager2007practical} propose a maintainability model that catagorize the results of metrics into different ``score'' catagories. For instance, with duplication, if 0-3\% of the project is duplicated, the project will get the highest score on a scale of 1 to 5 (only integers, no floating point numbers). Such a maintainability model is intuitive for measuring the quality of a software system, especially large software systems with a lot of source code to base the metrics on. However, this maintainability model \cite{heitlager2007practical} lacks in measuring fine-grained changes: most small changes will not fall into a different category. Because of that, this model is less suitable for measuring the impact of single refactorings.
 
 \subsection{Java}
 \todo{Describe the relevant parts of the Java ecosystem: interfaces, enumerations, annotations, etc.}
