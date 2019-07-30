@@ -327,7 +327,7 @@ In figure \ref{fig:type3} a single statement is added. This statement is found i
 \begin{itemize}
   \item \textbf{The difference in statements must bridge a gap between two valid clones}. This entails that, different from type 3 clones, the difference in statements cannot be at the beginning or the end of a cloned block. It is rather somewhere within, as it must bridge two existent clones.
   \item \textbf{The size of the gap between two clones is limited by a threshold.} This threshold is calculated by taking the percentage of the number of statements in the gap over the number of statements that both clones that are being bridged span.
-  \item \textbf{The gap may not span a partial block.} To make sure that the T3R clone can be refactored, we do not allow the gap to span a part of a block, for instance, the declaration and a part of the body of a for-loop. The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could, however, use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for T3R clones.
+  \item \textbf{The gap may not span a partial block.} To make sure that the T3R clone can be refactored, we do not allow the gap to span a part of a block. This is further explained in section \ref{sec:t3rpartialblock}.
 \end{itemize}
 
 \subsubsection{Gap Threshold}
@@ -369,7 +369,7 @@ When applying this formula with the example given in figure \ref{fig:gappedclone
 \text{T3R Gap Size}=\frac{|\{N_{2-2}\}|}{|\{N_{2-1}\}| + |\{N_{2-3}\}|}*100 = \frac{1}{2}*100 = 50\%
 \end{equation}
 
-\subsubsection{The gap may not span a partial block}
+\subsubsection{The gap may not span a partial block} \label{sec:t3rpartialblock}
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
 \begin{figure}[H]
@@ -396,6 +396,8 @@ doD(a); // part of gap
 \caption{Statements between clones in different blocks.}
 \label{fig:type3invalid}
 \end{figure}
+
+The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could, however, use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for T3R clones.
 
 \subsection{Clone types summarized}
 The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in the sense that they were designed after the literature type definitions but with a concrete refactoring opportunity in mind. Summarized, these types can be explained as follows:
