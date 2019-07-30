@@ -166,10 +166,13 @@ Object-Oriented programming languages use inheritance to model real-world relati
 When looking at the inheritance structure of a program, we can get a deeper understanding of a programs' architecture. The use of inheritance to group common functionality and data is called ``Abstraction''. Duplication in source code can be a result of an inadequate use of abstraction. Because of that, refactoring code clones might require to create such abstractions of common functionality.
 
 \subsection{Code Quality}
+Different programming languages have different ways to measure code quality. For object-oriented programming languages this largely comes in the form of code smells (patterns that should be avoided) and design patterns (patterns which may improve code design and comprehensibility when used correctly).
 
 \subsubsection{Code Smells}
+Code smells are patterns in code that should be avoided, because they have a negative effect on system design. Duplicate code is, among many others, one example of a code smell. Having many code smells present in source code can significantly increase maintainence costs of the source code or even render a software system unmaintainable. This increases technical debt: a debt present in the system the will have to be repaid at a later point of time. Such technical debt often comes at the expense of developing new features, fixing bugs and other aspects surrounding a programs functional behaviour.
 
 \subsubsection{Design Patterns}
+Most code smells have design patterns that can be used to mitigate the smell. For instance, duplicate code can be mitigated by using appropriate abstractions or refactoring duplicate code to a common place. Design patterns differ from refactoring methods in the sense that they are more about an architectural pattern rather than a certain kind of code modification.
 
 \subsubsection{Code Quality Metrics}
 
