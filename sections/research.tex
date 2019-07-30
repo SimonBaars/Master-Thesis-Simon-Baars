@@ -375,10 +375,28 @@ public void doStuff(){
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=0.6\columnwidth]{img/type3invalid}
-  \caption{Statements between clones in different blocks.}
-  \label{fig:type3invalid}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|int a = getA(); // |\textcolor{pgreen}{$N_{1-1}$}|
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5; // |\textcolor{pgreen}{$N_{2-2}$}|
+}
+|\highlightBlue|doC(a); // |\textcolor{pgreen}{$N_{1-2}$}|
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightYellow|int a = getA();
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5;
+  doB(a); // nested gap
+} // gap between blocks
+doD(a); // part of gap
+|\highlightBlue|doC(a);
+\end{javacode}}
+\end{parcolumns}
+\caption{Statements between clones in different blocks.}
+\label{fig:type3invalid}
 \end{figure}
 
 \subsection{Clone types summarized}
