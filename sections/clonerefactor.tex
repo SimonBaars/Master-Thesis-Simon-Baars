@@ -711,6 +711,34 @@ This does not mean that clones outside the ``Can be extracted'' category cannot 
 
 If there is a \texttt{break} and/or \texttt{continue} statement in the cloned fragment, we walk up the AST to find the loop- or switch-statement it corresponds with. If this statement is included in the clone class, then the \texttt{break} and/or \texttt{continue} will be no problem for refactoring. However, if it isn't, then we mark it ``Complex Control Flow''.
 
+\subsubsection{Spans Part Of A Block}
+When applying an ``Abstract Method'' refactoring, we author a new method declaration. The body of this method declaration consists of a set of statements. However, if a single statement is only partially cloned, this might give issues with refactoring. An example of this is shown in figure \ref{fig:refactorabilitypartialblock}
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|int a = getA();
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5;
+  doC();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightYellow|int a = getA();
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5;
+  doB(a);
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Partial block.}
+\label{fig:refactorabilitypartialblock}
+\end{figure}
+
+In this example, the while loop is partially cloned. This obstructs us from extracting the cloned code to a new method.
+
 \todo{Finish this section}
 
 \subsection{Applying refactorings}
