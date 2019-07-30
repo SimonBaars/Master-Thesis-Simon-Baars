@@ -159,6 +159,14 @@ An Abstract Syntax Tree (AST) is a tree consisting of an hierarchical representa
 
 Having access to a programs' AST also helps in the process of refactoring. Moving AST nodes rather than textual modifications reduces error margins because the tree structure stays intact.
 
+The AST consists of nodes of the following types (examples are for Java):
+\begin{itemize}
+  \item \textbf{Declarations}: Method-declaration, class-declaration, etc.
+  \item \textbf{Statements}: If-statement, switch-statement, expression-statement, etc.
+  \item \textbf{Expressions}: Variables, literals, method calls, variable assignments, etc.
+  \item \textbf{Types}: Primitives, reference types, void, etc.
+\end{itemize}
+
 \subsection{Inheritance}
 Object-Oriented programming languages use inheritance to model real-world relations between data concepts. Inheritance allows an object to inherit all functionality from another object. For instance, a ``Car'' object would inherit functionality and data from generalized concepts, such as ``Vehicle''. Using inheritance it is possible to reduce duplication, as multiple objects can inherit common functionality.
 
@@ -191,3 +199,6 @@ In Java, all declarations used from outside the package a declaration is in, mus
 
 \subsubsection{Visibility}
 In Java, we can protect declarations from being used in scopes in which they are supposed to be used. If a method should only be used within the class itself, we can give it a ``private'' visibility. If a method is to be used by its children in its inheritance hierarchy, we can set its visibility to ``protected''. If a method is supposed to be part of the public contract of an object, we can set it to ``public'' visibility. Alternatively, there is ``package'' visibility, for declarations that should only be referenced within the same package. This allows control over what parts of an application should be able to access what declarations.
+
+\section{Git}
+\todo{TODO}
