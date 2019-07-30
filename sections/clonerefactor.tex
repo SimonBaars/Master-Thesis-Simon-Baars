@@ -692,16 +692,23 @@ The most used technique to refactor clones is ``Extract Method'' (creating a new
 
 Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. We defined the following categories:
 \begin{itemize}
-    \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a statement.
     \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of the previous section, the ``extract method'' refactoring technique cannot be applied.
     \item \textbf{Top-level Node Is Not A Statement}: The topmost node of a clone instance is not a statement.
     \item \textbf{Overlaps}: There is overlap within the clone class.
+    \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
 \end{itemize}
 
 This does not mean that clones outside the ``Can be extracted'' category cannot be refactored using method extraction. However, they may require additional transformations, other refactoring techniques, etc. Because of that, we took those categories out of the scope for our automated refactoring efforts. We further explain opportunities to refactor such clones outside the ``Can be extracted'' category in section \ref{sec:discussrefactorability}.
 
-\subsubsection{Can Be Extracted}
+\subsubsection{Complex Control Flow}
+\texttt{break}, \texttt{continue} and \texttt{return} statements in clone classes can obstruct the possibility of refactoring. This is the case if:
+\begin{itemize}
+  \item The clone class has at least one \texttt{return} statements, but not all paths through the clone class return.
+  \item There are \texttt{break} and/or \texttt{continue} statements in the clone class, but the corresponding loop/switch is not included.
+\end{itemize}
+
+If there is a \texttt{break} and/or \texttt{continue} statement in the cloned fragment, we walk up the AST to find the loop- or switch-statement it corresponds with. If this statement is included in the clone class, then the \texttt{break} and/or \texttt{continue} will be no problem for refactoring. However, if it isn't, then we mark it ``Complex Control Flow''. 
 
 \todo{Explain each category in more detail}
