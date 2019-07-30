@@ -618,11 +618,11 @@ Method/Constructor Level clones denote clones that span are found in either a me
 
 To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
 
-\begin{equation}\label{eq:sameclass}
+\begin{equation}\label{eq:samemethod}
 \forall (n \in I)\text{ } Tn = \text{MethodDeclaration} \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{MethodDeclaration}
 \end{equation}
 
-Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
+Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -672,6 +672,9 @@ These categories denote that a full declaration, including its body, is cloned w
 
 \subsubsection{Partial Method/Constructor}
 These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has a parent node that is a methoddeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in section \ref{sec:methodlevelcr}.
+
+\subsubsection{Several Methods}
+Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately. We detect such clones by checking that each cloned node has a parent node that is a MethodDeclaration. This is the same process as described in equation \ref{eq:samemethod}. Additionally, we check that the MethodDeclaration ancestor of the first node in the clone instance differs from the last, to be sure that the clone instance spans over at least two methods.
 
 \section{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
