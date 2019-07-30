@@ -201,13 +201,13 @@ Consider the example in figure \ref{fig:type2literal}. In this example, the two 
 \colchunk[1]{
 \begin{javacode}
 // Original
-public void doABC(){
+void doABC(){
 	doA();
 	doB("abc");
 	doC();
 }
 
-public void doDEF(){
+void doDEF(){
   doA();
   doB("def");
   doC();
@@ -216,15 +216,15 @@ public void doDEF(){
 \colchunk[2]{
 \begin{javacode}
 // Refactored
-public void doABC(){
+void doABC(){
 	printNice("abc");
 }
 
-public void doDEF(){
+void doDEF(){
 	printNice(s, "def");
 }
 
-public void doThis(String letters){
+void doThis(String letters){
   doA();
   doB(letters);
   doC();
@@ -243,10 +243,42 @@ Type 2R clones allow called methods to vary as long as they have the same argume
 The method call variability property of type 2R clones imply that type 2R clones are not a subset of type 2 clones. Because methods calls can have a different structure, type 2R clones can be structurally slightly different. The example as shown in figure \ref{fig:type2method} can be a type 2R clone (dependent on the thresholds used), but is not a type 2 clone.
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=1\columnwidth]{img/type2method}
-  \caption{Method variability refactored.}
-  \label{fig:type2method}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+void doABC(){
+	doA();
+	doB();
+	doC();
+}
+
+void doADC(){
+  doA();
+  doD();
+  doC();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+void doABC(){
+	printNice(this::doB);
+}
+
+void doDEF(){
+	printNice(this::doD);
+}
+
+void doThis(Runnable r){
+  doA();
+  r.run();
+  doC();
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Method variability refactored.}
+\label{fig:type2method}
 \end{figure}
 
 \subsection{Type 3R clones}\label{sec:type3r}
