@@ -159,3 +159,21 @@ In this section we describe the relevant parts of the programming languages we r
 An Abstract Syntax Tree (AST) is a tree consisting of an hierarchical representation of the source code of a program. Detecting code clones on the AST of a program allows for a deeper understanding of the concepts that are being analyzed. Having an AST, we know how concepts in the code are related. This helps to determine in what classes and methods cloned code is found.
 
 Having access to a programs' AST also helps in the process of refactoring. Moving AST nodes rather than textual modifications reduces error margins because the tree structure stays intact.
+
+\subsection{Inheritance}
+Object-Oriented programming languages use inheritance to model real-world relations between data concepts. Inheritance allows an object to inherit all functionality from another object. For instance, a ``Car'' object would inherit functionality and data from generalized concepts, such as ``Vehicle''. Using inheritance it is possible to reduce duplication, as multiple objects can inherit common functionality.
+
+When looking at the inheritance structure of a program, we can get a deeper understanding of a programs' architecture. The use of inheritance to group common functionality and data is called ``Abstraction''. Duplication in source code can be a result of an inadequate use of abstraction. Because of that, refactoring code clones might require to create such abstractions of common functionality.
+
+\subsection{Code Quality}
+
+\subsubsection{Code Smells}
+
+\subsubsection{Design Patterns}
+
+\subsubsection{Code Quality Metrics}
+
+\subsection{Java}
+\todo{Describe the relevant parts of the Java ecosystem: interfaces, enumerations, annotations, etc.}
+
+\subsubsection{Visibility}
