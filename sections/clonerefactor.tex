@@ -16,14 +16,14 @@ In this section we describe our approach and rationale for the design decisions 
   \label{fig:clonerefactorprocess}
 \end{figure}
 
-Figure \ref{fig:clonerefactorprocess} shows the overall process used by CloneRefactor. First, we detect clones on basis of a Java codebase, given a Java project from disk and a configuration. The clone detection process is further explained in section \ref{sec:clonedetection}. After all clones are found, CloneRefactor maps the context of the clones. On basis of this context, CloneRefactor applies transformations to the source code for clones for which we have configured a refactoring.
+Figure \ref{fig:clonerefactorprocess} shows the overall process used by CloneRefactor. First, we detect clones on the basis of a Java codebase, given a Java project from disk and a configuration. The clone detection process is further explained in section \ref{sec:clonedetection}. After all clones are found, CloneRefactor maps the context of the clones. On the basis of this context, CloneRefactor applies transformations to the source code for clones for which we have configured a refactoring.
 
 \section{JavaParser}
 A very important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows to parse Java source files to an abstract syntax tree (AST\footnote{An AST is a tree-representation of a source code file.}). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
 
 Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
 
-In order to be able to trace referenced identifiers SymbolSolver requires access to not only the analyzed Java projects, but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency.
+In order to be able to trace referenced identifiers SymbolSolver requires access to not only the analyzed Java projects, but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency. This is visible in our results, as displayed in section \ref{sec:clonetypeexperiments}.
 
 Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
@@ -46,9 +46,9 @@ When we analyze type 3 or type 3R clones we use the following additional thresho
 \end{itemize}
 
 \section{Clone Detection}\label{sec:clonedetection}
-To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously, in accordance with our clone type philosophy as described in chapter \ref{sec:unifying}.
+To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On the basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously.
 
-The overall process regarding clone detection is displayed in figure \ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in section \ref{sec:clonegraph}. On basis of this graph, we detect clone classes and verify them using three thresholds (in order of importance):
+The overall process regarding clone detection is displayed in figure \ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in section \ref{sec:clonegraph}. On the basis of this graph, we detect clone classes and verify them using three thresholds (in order of importance):
 \begin{itemize}
   \item Amount of tokens.
   \item Amount of statements.
@@ -101,7 +101,7 @@ For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
 \subsubsection{Mapping graph nodes to code}
-The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude child declarations and statements from each node. Look at figure \ref{fig:clonegraph} for an example of how source code maps to AST nodes.
+The clone graph, as explained in section \ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. Look at figure \ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
   \centering
@@ -124,7 +124,7 @@ As stated in the previous section, nodes in the graph link to \textit{preceding}
   \label{fig:clonegraph2}
 \end{figure}
 
-Using the example shown in figure \ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
+Using the example shown in figure \ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on the basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
 
 Next, we move to the previous line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
 
@@ -132,9 +132,10 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
 
+\todo{Explain the complexity of the algorithm: O(n)?}
+
 \subsubsection{Removing redundant clone classes}\label{sec:conceptualremovingredundant}
-The clone detection method used by CloneRefactor can, for various reasons,%Should I list these? Listing them could be a section on its own, as I'd have to show examples to make it concrete.
-result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of another clone. We define the subset relation between clones as follows:
+The clone detection method used by CloneRefactor can, for various reasons, result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of another clone. We define the subset relation between clones as follows:
 
 \begin{equation}\label{eq:subset}
 C_1 \subseteq C_2 := \forall (i_1 \in C_1) \text{ } \exists (i_2 \in C_2) \text{ } F i_1 = F i_2 \wedge R i_1 \subseteq R i_2
@@ -155,9 +156,10 @@ We should not add the new clone to our list of clones if its a subset of an exis
 \end{equation}
 
 If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
+\todo{Think about an example}
 
 \subsection{Validating the type 2R variability threshold}
-In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on basis of a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of underwater complexity. In this section we explain how CloneRefactor detects type 2R clones on basis of this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in section \ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configure variability threshold.
+In the definition of type 2R clones (see section \ref{sec:type2r}) we described how type 2R clones work on the basis of a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of complexity. In this section we explain how CloneRefactor detects type 2R clones on the basis of this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in section \ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configure variability threshold.
 
 \begin{figure}[H]
   \centering
@@ -200,6 +202,7 @@ In the example of figure \ref{fig:equalityarrays} the fragment on the left (cons
 \subsubsection{Checking global thresholds} \label{sec:t2rcheckglobalthres}
 Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in table \ref{table:equalityarrays} as follows:
 
+\todo{This is not correct set theory. Sets have duplicates and have an order.}
 \begin{equation}\label{eq:variabilityclonerefactor}
 \text{T2R Variability} = \frac{|\{x>0 \land y>0 \land x \neq y \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{|\{x>0 \land y>0 \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}*100
 \end{equation}
@@ -210,7 +213,8 @@ Where $E_x$ refers to the equality arrays shown in table \ref{table:equalityarra
 \frac{|\{(3,4), (1,8), (7,9)\}|}{|\{(1,1), (3,4), (1,8), (7,9)\}|}*100 = \frac{3}{4}*100 = 75\%
 \end{equation}
 
-So for the example given in figure \ref{fig:equalityarrays} we have a variability of 75r \%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
+\todo{Usage of the word adheres is questionable here...}
+So for the example given in figure \ref{fig:equalityarrays} we have a variability of 75\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in section \ref{sec:conceptualremovingredundant}).
 
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
 
@@ -300,7 +304,7 @@ Figure \ref{fig:2rvariabilityhigh3} shows an example of a clone class where the 
 If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class except for an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
 
 \subsubsection{Convert Equality Array to Graph}
-After the global threshold check has failed, we build a clone graph on basis of the equality arrays. The process used for building this graph is the same as the process described in \ref{sec:buildingclonegraph}.
+After the global threshold check has failed, we build a clone graph on the basis of the equality arrays. The process used for building this graph is the same as the process described in \ref{sec:buildingclonegraph}.
 
 \begin{figure}[H]
 \begin{parcolumns}{3}
@@ -345,7 +349,7 @@ E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \
 \end{equation}
 
 \subsubsection{Detect Clones on Graph}
-Similar to the clone detection process, we detect clones on basis of the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in section \ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
+Similar to the clone detection process, we detect clones on the basis of the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in section \ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
 
 Looking back at the example of the previous section, it would result in the following clone class collection:
 \begin{figure}[H]
@@ -406,7 +410,7 @@ doH(b); //{12, -2, 13, -3, -4}
 \label{fig:trytoexpand}
 \end{figure}
 
-As an example, consider the clone fragment in figure \ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances on basis of the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the amount of clone instances in a clone class and the amount of nodes in any of its instances.
+As an example, consider the clone fragment in figure \ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances on the basis of the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the amount of clone instances in a clone class and the amount of nodes in any of its instances.
 
 In the example in figure \ref{fig:trytoexpand} the largest instance has a volume of:
 
@@ -656,7 +660,7 @@ Class/Interface/Enumeration Level clone instances are found inside the body of o
 We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
-Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
+Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on the basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method. The declaration itself is not included.
@@ -684,7 +688,7 @@ The ``Other'' category denotes all configurations of clone contents that do not 
 After clone detection and context analysis, CloneRefactor applies refactorings to a subset of the identified clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
 
 \subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
-The most used technique to refactor clones is ``Extract Method'' (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
+The most used technique to refactor clones is ``Extract Method'' (creating a new method on the basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
 
 Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. We defined the following categories:
 \begin{itemize}
@@ -698,6 +702,6 @@ Because of this, we defined a set of categories of things that can obstruct a re
 
 This does not mean that clones outside the ``Can be extracted'' category cannot be refactored using method extraction. However, they may require additional transformations, other refactoring techniques, etc. Because of that, we took those categories out of the scope for our automated refactoring efforts. We further explain opportunities to refactor such clones outside the ``Can be extracted'' category in section \ref{sec:discussrefactorability}.
 
-\subsection{}
+\subsubsection{Can Be Extracted}
 
 \todo{Explain each category in more detail}
