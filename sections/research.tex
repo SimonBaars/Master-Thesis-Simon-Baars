@@ -197,10 +197,42 @@ We allow only variability in the value of literals and variables, but not in the
 Consider the example in figure \ref{fig:type2literal}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result that is displayed on the right. In this process, we create a method parameter for the corresponding literal.
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=1\columnwidth]{img/type2literal}
-  \caption{Literal variability refactored.}
-  \label{fig:type2literal}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void printNice(String s){
+	System.out.println("===");
+	System.out.println(s);
+	System.out.println("===");
+}
+
+public void printNice2(String s){
+	System.out.println("---");
+	System.out.println(s);
+	System.out.println("---");
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void printNice(String s){
+	printNice(s, "===");
+}
+
+public void printNice2(String s){
+	printNice(s, "---");
+}
+
+public void printNice(String s, String decoration){
+	System.out.println(decoration);
+	System.out.println(s);
+	System.out.println(decoration);
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Literal variability refactored.}
+\label{fig:type2literal}
 \end{figure}
 
 \paragraph{Method call variability}
