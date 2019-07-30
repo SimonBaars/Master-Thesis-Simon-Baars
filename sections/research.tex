@@ -266,7 +266,7 @@ void doABC(){
 	doThis(this::doB);
 }
 
-void doDEF(){
+void doADC(){
 	doThis(this::doD);
 }
 
@@ -285,13 +285,44 @@ void doThis(Runnable r){
 Type 3 clones allow any change in statements, often bounded by a similarity threshold. This means that type 3 clones allow the inclusion of a statement that is not detected by type 1 or 2 clone detection. When looking at how we can refactor a statement that is not included by one clone instance but is in another, we find that we require a conditional block to make up for the difference in statements. See figure \ref{fig:type3} for an example of such a clone.
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=1\columnwidth]{img/type3_3}
-  \caption{Added statement between cloned methods.}
-  \label{fig:type3}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+void doCwithA(){
+	int a = getA();
+	doC(a);
+}
+
+void multiplyA(){
+  int a = getA();
+  a *= 5;
+  doC(a);
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+void doCwithA(){
+	modifyA(false);
+}
+
+void multiplyA(){
+	modifyA(true);
+}
+
+void modifyA(boolean multiply){
+  int a = getA();
+  if(multiply) a *= 5;
+  doC(a);
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Added statement between cloned fragments refactored.}
+\label{fig:type3}
 \end{figure}
 
-In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. We have named this difference between the two clones, in this examples containing a single statement, the \textit{gap}. This gap has a threshold for type 3R, which is calculated by the following formula:
+In figure \ref{fig:type3} a single statement is added. This statement is found in between cloned lines. There is a \textit{gap} of non-cloned lines in between two clone classes. For type 3R, the size of this gap is bounded by a threshold. It is calculated by the following formula:
 
 \begin{equation}\label{eq:type3r}
 \text{T3R Gap Size}=\frac{\text{Number of nodes in gap}}{\text{Number of nodes in clones}}*100
