@@ -217,11 +217,11 @@ void doDEF(){
 \begin{javacode}
 // Refactored
 void doABC(){
-	printNice("abc");
+	doThis("abc");
 }
 
 void doDEF(){
-	printNice(s, "def");
+	doThis(s, "def");
 }
 
 void doThis(String letters){
@@ -263,11 +263,11 @@ void doADC(){
 \begin{javacode}
 // Refactored
 void doABC(){
-	printNice(this::doB);
+	doThis(this::doB);
 }
 
 void doDEF(){
-	printNice(this::doD);
+	doThis(this::doD);
 }
 
 void doThis(Runnable r){
