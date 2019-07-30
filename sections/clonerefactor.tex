@@ -680,17 +680,24 @@ This category denotes that the clone spans over only global variables, fields th
 \subsubsection{Other}
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of above states concepts. For instance, a combination of constructors and methods is clones, or a combination of fields and methods. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
 
-\section{Method extraction opportunities}\label{sec:refactorabilitysetup}
-The most used technique to refactor clones is ``Extract Method'' (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
+\section{Automated Refactoring}
+After clone detection and context analysis, CloneRefactor applies refactorings to a subset of the identified clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
+
+\subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
+The most used technique to refactor clones is ``Extract Method'' (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
 
 Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. We defined the following categories:
 \begin{itemize}
-    \item \textbf{Can be extracted:} This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
-    \item \textbf{Complex control flow:} This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
-    \item \textbf{Spans part of a block:} This clone spans a part of a statement.
-    \item \textbf{Is not a partial method:} If the clone does not fall in the ``Partial method'' category of the previous section, the ``extract method'' refactoring technique cannot be applied.
+    \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
+    \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
+    \item \textbf{Spans Part Of A Block}: This clone spans a part of a statement.
+    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of the previous section, the ``extract method'' refactoring technique cannot be applied.
+    \item \textbf{Top-level Node Is Not A Statement}: The topmost node of a clone instance is not a statement.
+    \item \textbf{Overlaps}: There is overlap within the clone class.
 \end{itemize}
 
-Clones that are not in the ``Can be extracted'' are not per definition not refactorable using method extraction. However, they may require additional transformations, other refactoring techniques, etc. We further explain opportunities to refactor such clones outside the ``Can be extracted'' category in section \ref{sec:discussrefactorability}.
+This does not mean that clones outside the ``Can be extracted'' category cannot be refactored using method extraction. However, they may require additional transformations, other refactoring techniques, etc. Because of that, we took those categories out of the scope for our automated refactoring efforts. We further explain opportunities to refactor such clones outside the ``Can be extracted'' category in section \ref{sec:discussrefactorability}.
+
+\subsection{}
 
 \todo{Explain each category in more detail}
