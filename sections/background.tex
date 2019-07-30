@@ -151,7 +151,6 @@ For this study we perform a shallow analysis on external dependencies, in order 
 
 Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch the binaries and source code of all software projects a given codebase is dependent on. Maven can also be used to run tests for the systems and to package the project as an executable file.
 
-
 \section{(Object-Oriented) Programming Languages}
 In this section we describe the relevant parts of the programming languages we research and experiment on.
 
@@ -175,9 +174,20 @@ Code smells are patterns in code that should be avoided, because they have a neg
 Most code smells have design patterns that can be used to mitigate the smell. For instance, duplicate code can be mitigated by using appropriate abstractions or refactoring duplicate code to a common place. Design patterns differ from refactoring methods in the sense that they are more about an architectural pattern rather than a certain kind of code modification.
 
 \subsubsection{Maintainability Metrics}
-Maintainability metrics are features of source code by which an indication of the maintainability of the source code can be measured. Heitlager at al. \cite{heitlager2007practical} propose a maintainability model that catagorize the results of metrics into different ``score'' catagories. For instance, with duplication, if 0-3\% of the project is duplicated, the project will get the highest score on a scale of 1 to 5 (only integers, no floating point numbers). Such a maintainability model is intuitive for measuring the quality of a software system, especially large software systems with a lot of source code to base the metrics on. However, this maintainability model \cite{heitlager2007practical} lacks in measuring fine-grained changes: most small changes will not fall into a different category. Because of that, this model is less suitable for measuring the impact of single refactorings.
+Maintainability metrics are features of source code by which an indication of the maintainability of the source code can be measured. Heitlager at al. \cite{heitlager2007practical} propose a maintainability model that categorize the results of metrics into different ``score'' categories. For instance, with duplication, if 0-3\% of the project is duplicated, the project will get the highest score on a scale of 1 to 5 (only integers, no floating point numbers). Such a maintainability model is intuitive for measuring the quality of a software system, especially large software systems with a lot of source code to base the metrics on. However, this maintainability model \cite{heitlager2007practical} lacks in measuring fine-grained changes: most small changes will not fall into a different category. Because of that, this model is less suitable for measuring the impact of single refactorings.
 
 \subsection{Java}
-\todo{Describe the relevant parts of the Java ecosystem: interfaces, enumerations, annotations, etc.}
+We run all our experiments on projects written in Java. Because of that, we get some information that is specific to Java systems. Additionally, we perform automated refactorings on Java systems, which requires the use of Java language concepts. These are explained in this section. Many of these concepts also exist in other programming languages, but often not in all.
+
+\subsubsection{Interfaces}
+Java uses the concept of interfaces to loosely couple a specification and its implementation. Interfaces are specifications about what a (group of) objects do. Often, methods don't need an entire object, but just use a few properties of it. Because of that, Java recommends to program to an interface rather than an implementation. This means that we should use abstractions of expected functionality rather than complete implementations of functionality. This can make switching implementations at a later point in time easier.
+
+Often, duplication is the result of an inappropriate use of abstractions. Two methods might describe operations on types following the same contract, but because of a lack of abstraction the programmer may choose to clone such methods. This will result in duplicated methods with minor modifications to match a different implementation. Such duplicates can be mitigated by using proper abstractions, of which one option is to program methods against interfaces (contracts of expected functionality) rather than their full implementations.
+
+\subsubsection{Packages}
+Packages (sometimes called ``modules'' in other programming languages) are hierarchical groupings of related concepts. For instance, all UI logic in an application might go into the ``ui'' package. The ``ui'' package can have a subpackage named ``keyhandling'' for all keyhandling operations. These packages contain package-level declarations, like classes and interfaces. Names of class-level declarations must be unique within the package. However, duplicate declaration names may exists in subpackages and parent packages.
+
+In Java, all declarations used from outside the package a declaration is in, must be \textit{imported}. Importing a declaration from outside the current package goes by the fully qualified identifier (FQI) of the declaration. The FQI of a declaration gives an unique identifier for a symbol in a codebase. For instance, if our ``keyhandling'' package would contain a ``KeyHandler'' class, its fully qualified identifier would be ``ui.keyhandling.KeyHandler''.
 
 \subsubsection{Visibility}
+In Java, we can protect declarations from being used in scopes in which they are supposed to be used. If a method should only be used within the class itself, we can give it a ``private'' visibility. If a method is to be used by its children in its inheritance hierarchy, we can set its visibility to ``protected''. If a method is supposed to be part of the public contract of an object, we can set it to ``public'' visibility. Alternatively, there is ``package'' visibility, for declarations that should only be referenced within the same package. This allows control over what parts of an application should be able to access what declarations.
