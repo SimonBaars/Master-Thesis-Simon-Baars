@@ -201,33 +201,33 @@ Consider the example in figure \ref{fig:type2literal}. In this example, the two 
 \colchunk[1]{
 \begin{javacode}
 // Original
-public void printNice(String s){
-	System.out.println("===");
-	System.out.println(s);
-	System.out.println("===");
+public void doABC(){
+	doA();
+	doB("abc");
+	doC();
 }
 
-public void printNice2(String s){
-	System.out.println("---");
-	System.out.println(s);
-	System.out.println("---");
+public void doDEF(){
+  doA();
+  doB("def");
+  doC();
 }
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
 // Refactored
-public void printNice(String s){
-	printNice(s, "===");
+public void doABC(){
+	printNice("abc");
 }
 
-public void printNice2(String s){
-	printNice(s, "---");
+public void doDEF(){
+	printNice(s, "def");
 }
 
-public void printNice(String s, String decoration){
-	System.out.println(decoration);
-	System.out.println(s);
-	System.out.println(decoration);
+public void doThis(String letters){
+  doA();
+  doB(letters);
+  doC();
 }
 \end{javacode}}
 \end{parcolumns}
