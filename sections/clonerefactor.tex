@@ -709,6 +709,20 @@ This does not mean that clones outside the ``Can be extracted'' category cannot 
   \item There are \texttt{break} and/or \texttt{continue} statements in the clone class, but the corresponding loop/switch is not included.
 \end{itemize}
 
-If there is a \texttt{break} and/or \texttt{continue} statement in the cloned fragment, we walk up the AST to find the loop- or switch-statement it corresponds with. If this statement is included in the clone class, then the \texttt{break} and/or \texttt{continue} will be no problem for refactoring. However, if it isn't, then we mark it ``Complex Control Flow''. 
+If there is a \texttt{break} and/or \texttt{continue} statement in the cloned fragment, we walk up the AST to find the loop- or switch-statement it corresponds with. If this statement is included in the clone class, then the \texttt{break} and/or \texttt{continue} will be no problem for refactoring. However, if it isn't, then we mark it ``Complex Control Flow''.
 
-\todo{Explain each category in more detail}
+\todo{Finish this section}
+
+\subsection{Applying refactorings}
+\todo{Write this section}
+
+\subsection{Saving refactored code}
+CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
+\begin{itemize}
+  \item \textbf{Do not refactor}: CloneRefactor does not apply refactorings at all, it only reports found clones.
+  \item \textbf{Replace}: CloneRefactor replaces the source code with the refactored source code.
+  \item \textbf{Copy Only Changes}: CloneRefactor writes only the changed files to a new location.
+  \item \textbf{Copy All}: CloneRefactor copies the entire project to a new location and applies the refactorings there. This makes sure the original project stays unmodified, while also having a snapshot of the refactored project.
+  \item \textbf{Git Replace}: CloneRefactor creates a branch on the git VCS, or initializes a git repository if it is not available. For every clone class refactored, CloneRefactor creates a commit in the git repository.
+  \item \textbf{Git Copy}: CloneRefactor copies the entire project to a new location. CloneRefactor then performs the same procedure as for ``Git Replace'', except now at the new location so the original project remains unmodified.
+\end{itemize}
