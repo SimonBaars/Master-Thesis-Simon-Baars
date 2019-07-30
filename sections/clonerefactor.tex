@@ -663,7 +663,7 @@ We detect these clones in the same way we detect method level clones: we walk up
 Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on the basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method. The declaration itself is not included.
+  \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor. The declaration itself is not included.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
@@ -694,7 +694,7 @@ Because of this, we defined a set of categories of things that can obstruct a re
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a statement.
-    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of the previous section, the ``extract method'' refactoring technique cannot be applied.
+    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of section \ref{sec:setupcontents}, the ``extract method'' refactoring technique cannot be applied.
     \item \textbf{Top-level Node Is Not A Statement}: The topmost node of a clone instance is not a statement.
     \item \textbf{Overlaps}: There is overlap within the clone class.
     \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
@@ -738,6 +738,9 @@ When applying an ``Abstract Method'' refactoring, we author a new method declara
 \end{figure}
 
 In this example, the while loop is partially cloned. This obstructs us from extracting the cloned code to a new method.
+
+\subsubsection{Is Not A Partial Method}
+The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in section \ref{sec:setuplocation}. Here we defined the ``Partial Method'' catagory as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is probably not the correct technique for refactoring such clones.
 
 \todo{Finish this section}
 
