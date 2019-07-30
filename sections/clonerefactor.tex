@@ -676,6 +676,9 @@ These categories describe clone instances which are found in the body of a metho
 \subsubsection{Several Methods}
 Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately. We detect such clones by checking that each cloned node has a parent node that is a MethodDeclaration. This is the same process as described in equation \ref{eq:samemethod}. Additionally, we check that the MethodDeclaration ancestor of the first node in the clone instance differs from the last, to be sure that the clone instance spans over at least two methods.
 
+\subsubsection{Only Fields}
+This category denotes that the clone spans over only global variables, fields that are declared outside of a method. This is to indicate data redundancy: pieces of data have an implicit dependency. In such cases, these fields may have to be encapsulated in a new object. Or, the fields should be somewhere in the inheritance structure where all objects containing the clone can access them. We check for this category by validating that all nodes in the clone instance are a VariableDeclarator. Because VariableDeclarators in methods would already fall into the ``Partial Method'' category, this includes only globally defined fields.
+
 \section{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is method extraction (creating a new method on basis of the contents of clones). However, method extraction cannot be applied in all cases. In these instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all.
 
