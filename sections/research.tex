@@ -349,29 +349,27 @@ As an example, consider the code fragment in figure \ref{fig:gappedclones}.
 \begin{parcolumns}{2}
 \colchunk[1]{
 \begin{javacode}
-public void doStuff(){
-|\highlightYellow|  doA(); // Clone instance of
-|\highlightYellow|  doB(); // two statements
-  doC(); // Gap of one statement
-|\highlightBlue|  doD(); // Clone instance of
-|\highlightBlue|  doE(); // two statements
-}
+|\highlightYellow|int a = getA(); // |\textcolor{pgreen}{$N_{1-1}$}|
+|\highlightBlue|doC(a); // |\textcolor{pgreen}{$N_{1-2}$}|
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
-public void doStuff(){
-|\highlightYellow|  doA(); // Clone instance of
-|\highlightYellow|  doB(); // two statements
-  doF(); // Gap of one statement
-|\highlightBlue|  doD(); // Clone instance of
-|\highlightBlue|  doE(); // two statements
-}
+|\highlightYellow|int a = getA(); // |\textcolor{pgreen}{$N_{2-1}$}|
+a *= 5; // |\textcolor{pgreen}{$N_{2-2}$}|
+|\highlightBlue|doC(a); // |\textcolor{pgreen}{$N_{2-3}$}|
 \end{javacode}}
 \end{parcolumns}
 \caption{Gapped clones.}
 \label{fig:gappedclones}
 \end{figure}
 
+When applying this formula with the example given in figure \ref{fig:gappedclones}, we get a gap size of 50\%:
+
+\begin{equation}\label{eq:type3r}
+\text{T3R Gap Size}=\frac{|\{N_{2-2}\}|}{|\{N_{2-1}\}| + |\{N_{2-3}\}|}*100 = \frac{1}{2}*100 = 50\%
+\end{equation}
+
+\subsubsection{The gap may not span a partial block}
 Apart from this threshold, the gap in between clones may not span over different blocks. Look at figure \ref{fig:type3invalid} for an example of this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
 \begin{figure}[H]
