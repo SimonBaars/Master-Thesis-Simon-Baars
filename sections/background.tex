@@ -120,7 +120,7 @@ public void doAandB(){
 }
 \end{javacode}}
 \end{parcolumns}
-\caption{Refactoring duplication through method extraction.}
+\caption{Refactoring a clone class through method extraction.}
 \label{fig:extractmethod}
 \end{figure}
 
@@ -200,6 +200,3 @@ In Java, all declarations used from outside the package a declaration is in, mus
 
 \subsubsection{Visibility}
 In Java, we can protect declarations from being used in scopes in which they are supposed to be used. If a method should only be used within the class itself, we can give it a ``private'' visibility. If a method is to be used by its children in its inheritance hierarchy, we can set its visibility to ``protected''. If a method is supposed to be part of the public contract of an object, we can set it to ``public'' visibility. Alternatively, there is ``package'' visibility, for declarations that should only be referenced within the same package. This allows control over what parts of an application should be able to access what declarations.
-
-\section{Git}
-\todo{TODO}

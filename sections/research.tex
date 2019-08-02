@@ -178,7 +178,59 @@ Cloned code fragments using variables with different names can be refactored wit
   \item The cloned variables are used at the same places in cloned fragments.
 \end{itemize}
 
-\todo{Show examples}
+Figure \ref{fig:type2variablerefactoringnotradeoff} shows an example where different variables do not create a tradeoff. Both clone instances in this example use different variables, but in the same places and with the same type. Because these variables are locally defined, the extraced method requires an extra argument for the variable anyways. If the second clone instances would be completely equal, so also use the same variable, the refactoring would be very similar (it would only differ by a single character).
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+String a = "a";
+String b = "b";
+|\highlightYellow|doA(a);
+|\highlightYellow|doB(a);
+doC();
+|\highlightYellow|doA(b);
+|\highlightYellow|doB(b);
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+String a = "a";
+String b = "b";
+|\highlightYellow|doAandB(a);
+doC();
+|\highlightYellow|doAandB(b);
+\end{javacode}}
+\end{parcolumns}
+\caption{Different variables in cloned fragments without a difference in tradeoff on system design when refactored.}
+\label{fig:type2variablerefactoringnotradeoff}
+\end{figure}
+
+The example in figure \ref{fig:type2variablerefactoringwithtradeoff} shows the same example as figure \ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \label{sec:variabilitythreshold}, whereas the example in figure \ref{fig:type2variablerefactoringnotradeoff} does not. 
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+String a = "a";
+String b = "b";
+|\highlightYellow|doA(a);
+|\highlightYellow|doB(a);
+doC();
+|\highlightYellow|doA(a);
+|\highlightYellow|doB(b);
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+String a = "a";
+String b = "b";
+|\highlightYellow|doAandB(a, a);
+doC();
+|\highlightYellow|doAandB(a, b);
+\end{javacode}}
+\end{parcolumns}
+\caption{Different variables in cloned fragments without a difference in tradeoff on system design when refactored.}
+\label{fig:type2variablerefactoringwithtradeoff}
+\end{figure}
 
 \subsubsection{A threshold for variability in literals, variables and method calls}\label{sec:variabilitythreshold}
 Type 2 clones allow any variability in literals, variables and method identifiers. However, this information tells a lot about the meaning of the code fragment. Most clone detection tools do not differentiate between a type 2 clone that differs by a single literal/identifier and one that differs by many \cite{roy2009comparison}. However, this does have a big impact on the meaning of the code fragment.
@@ -189,7 +241,7 @@ For type 2R clones we define a threshold for variability in literals, variables 
 \text{T2R Variability}=\frac{\text{Number of different expressions}}{\text{Total number of expressions in clone instance}}*100
 \end{equation}
 
-In this formula, \textit{number of different expressions} refers to the number of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of expressions in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring. A concrete example of applying this formula to calculate a threshold is given in \ref{sec:t2rcheckglobalthres}.
+In this formula, \textit{number of different expressions} refers to the number of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of literals, variables and method calls in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring. A concrete example of applying this formula to calculate a threshold is given in \ref{sec:t2rcheckglobalthres}.
 
 \paragraph{Literal and variable variability}\label{sec:t2rliteralandvariable}
 We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
