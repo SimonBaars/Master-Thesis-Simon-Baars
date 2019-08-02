@@ -205,7 +205,7 @@ doC();
 \label{fig:type2variablerefactoringnotradeoff}
 \end{figure}
 
-The example in figure \ref{fig:type2variablerefactoringwithtradeoff} shows the same example as figure \ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \label{sec:variabilitythreshold}, whereas the example in figure \ref{fig:type2variablerefactoringnotradeoff} does not. 
+The example in figure \ref{fig:type2variablerefactoringwithtradeoff} shows the same example as figure \ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \label{sec:variabilitythreshold}, whereas the example in figure \ref{fig:type2variablerefactoringnotradeoff} does not.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -463,7 +463,7 @@ The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in th
 Regarding the nodes found as cloned by these clone type definitions, there exists a subset relation between all types:
 
 \begin{equation}\label{eq:typerelation}
-\text{Cloned nodes} = T1R \subseteq T2R \subseteq T3R
+Cloned nodes T1R \subseteq Cloned nodes T2R \subseteq T3R
 \end{equation}
 
 Comparing these clone type definitions to the ones used in literature, type 1R clones are a subset of type 1 clones. However, this subset relation does not exist for type 2R and 3R clones. This is because these definitions allow variability in multi-token method calls, which type 2 and type 3 do not allow. Because of that, the following is true for these clone types:

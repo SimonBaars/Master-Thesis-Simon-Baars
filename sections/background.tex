@@ -144,7 +144,7 @@ In this study we differentiate between \textit{internal} and \textit{external} c
 
 \textit{External classes} are classes that a software system uses, but do not belong to this specific software system. Typically, the source code of external classes are not included in the source code of the project. Most often these external dependencies are referenced in a file that its build automation system uses to fetch a projects' dependencies.
 
-Regarding refactoring, a software system can often not change the source code of its dependencies. This can sometimes be a burden, when an external dependency does not use proper abstractions that are required by a software system. Because of that, in this study, we differentiate between internal and external classes to see what impact they have on the refactoring process.
+Regarding refactoring, a software system can often not change the source code of its dependencies. This can sometimes be a burden, when an external dependency does not use proper abstractions that are required by a software system. Because of that, in this study, we differentiate between internal and external classes to see what impact they have on the refactoring process.\todo{you don't consider external right?}
 
 \subsection{Maven}
 For this study we perform a shallow analysis on external dependencies, in order to derive more context for internally used concepts. As these external dependencies are most often not included in a software systems' source code, we must first use the projects' build automation system to gather the dependencies. To limit the scope of this process, we decided to focus on only the \textit{Maven} build automation system.
