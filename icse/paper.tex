@@ -11,11 +11,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Paper Title*\\
-{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
-should not be used}
-\thanks{Identify applicable funding agency here. If none, delete this.}
-}
+\title{Improving Software Maintainability through Automated Refactoring of Code Clones}
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Simon Baars}
 \IEEEauthorblockA{%\textit{Software Engineering} \\
@@ -41,13 +37,15 @@ code clones, refactoring, static code analysis, object-oriented programming
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits.
+
 
 \section{Background}
 
 \subsection{Code clone terminology}
 Clone class collection, clone class, clone instance, cloned node, token.
+
+\subsection{Code clone definitions}
+Quick overview of clone type definitions
 
 \subsection{Refactoring techniques}
 Extract method, move method.
@@ -67,7 +65,7 @@ Explain type 2, why it is not always refactorable, solution
 Explain type 3, why it is not always refactorable, solution
 
 \section{CloneRefactor}
-The tool: Detect Clones -> Map Context -> Refactor.
+The tool: Detect Clones, Map Context, Refactor.
 
 \subsection{Clone Detection}
 Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
@@ -85,21 +83,25 @@ Show my categories to show what clones can be dealt with by method extraction.
 Explain what AST transformations I do to apply the refactorings.
 
 \subsubsection{The cyclic nature of refactoring}
-Explain how refactoring code clones might open up new refactoring opportunities.
+Explain how refactoring code clones might open up new refactoring opportunities. We refactor a project until there are no more open refactoring opportunities.
 
 \section{Results}
 
 \subsection{Clone context}
-How many clones are there in certain contexts?
+How many clones are there in certain contexts? Experiments for relation, location and context.
 
 \subsection{Clone refactorability}
 To what extent can found clones be refactored through method extraction, without requiring additional transformations.
 
 \subsection{Thresholds}
-I think the ultimate goal with this thesis is to experiment the refactored source code
+I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
 
 \section{Discussion}
+\subsection{Clone Definitions}
 
+\subsection{CloneRefactor}
+
+\subsection{Experimental setup}
 
 \section{Conclusion}
 
