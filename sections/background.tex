@@ -154,7 +154,7 @@ Maven is a build automation tool, mainly used with the Java programming language
 \section{(Object-Oriented) Programming Languages}
 In this section we describe the relevant parts of the programming languages we research and experiment on.
 
-\subsection{AST}
+\subsection{AST} \label{sec:astbackground}
 An Abstract Syntax Tree (AST) is a tree consisting of an hierarchical representation of the source code of a program. Detecting code clones on the AST of a program allows for a deeper understanding of the concepts that are being analyzed. Having an AST, we know how concepts in the code are related. This helps to determine in what classes and methods cloned code is found.
 
 Having access to a programs' AST also helps in the process of refactoring. Moving AST nodes rather than textual modifications reduces error margins because the tree structure stays intact.
@@ -165,6 +165,7 @@ The AST consists of nodes of the following types (examples are for Java):
   \item \textbf{Statements}: If-statement, switch-statement, expression-statement, etc.
   \item \textbf{Expressions}: Variables, literals, method calls, variable assignments, etc.
   \item \textbf{Types}: Primitives, reference types, void, etc.
+  \item \textbf{Clauses}: Catch-clause, else-clause, etc.
 \end{itemize}
 
 \subsection{Inheritance}

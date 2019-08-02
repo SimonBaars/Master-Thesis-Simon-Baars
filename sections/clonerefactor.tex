@@ -740,9 +740,43 @@ When applying an ``Abstract Method'' refactoring, we author a new method declara
 In this example, the while loop is partially cloned. This obstructs us from extracting the cloned code to a new method.
 
 \subsubsection{Is Not A Partial Method}
-The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in section \ref{sec:setuplocation}. Here we defined the ``Partial Method'' catagory as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is probably not the correct technique for refactoring such clones.
+The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in section \ref{sec:setuplocation}. Here we defined the ``Partial Method'' catagory as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is likely not to be correct technique for refactoring such clones.
 
-\todo{Finish this section}
+\subsubsection{Top-level Node Is Not A Statement}
+A method body can only consist of statements. We cannot put declarations in a method. However, there are possibilities where a clone consists of something else than a statement as top level node. The most prominent example is when a clause is cloned (see section \ref{sec:astbackground} for examples of such concepts). For instance, we cannot extract only the catch-clause of a try-statement to a new method. In such a case, we should either extract the complete try-statement, or only the contents of the catch clause.
+
+\subsubsection{Overlaps}
+We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in figure \ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void sayHello(){
+|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring1}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring2}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring3}|
+|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring4}|
+|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring5}|
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void sayHello(){
+|\highlightYellow|  for(int i = 0; i<5; i++){
+|\highlightYellow|    System.out.println("hello!");
+|\highlightYellow|  }
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a clone class that has overlap between clone instances.}
+\label{fig:overlaprefactoring}
+\end{figure}
+
+\subsubsection{Can be extracted}
+All clones that do not adhere to any of above-stated categories, are considered suitable for method extraction.
 
 \subsection{Applying refactorings}
 \todo{Write this section}
@@ -751,6 +785,7 @@ The ``Extract Method'' refactoring can only refactor code in the body of a metho
 CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
 \begin{itemize}
   \item \textbf{Do not refactor}: CloneRefactor does not apply refactorings at all, it only reports found clones.
+  \item \textbf{Simulate}: CloneRefactor only applies the refactorings to its internal AST structure and calculates the results of applying these refactorings. It does not modify/copy the codebase on disk.
   \item \textbf{Replace}: CloneRefactor replaces the source code with the refactored source code.
   \item \textbf{Copy Only Changes}: CloneRefactor writes only the changed files to a new location.
   \item \textbf{Copy All}: CloneRefactor copies the entire project to a new location and applies the refactorings there. This makes sure the original project stays unmodified, while also having a snapshot of the refactored project.

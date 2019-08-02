@@ -104,36 +104,6 @@ public void doFiveTimes(Runnable runnable){
 \label{fig:partialblockrefactoring}
 \end{figure}
 
-\subsubsection{Overlap within a clone class}
-We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones might require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in figure \ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public void sayHello(){
-|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring1}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring2}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring3}|
-|\highlightDarkyellow|  System.out.println("hello!"); |\label{line:overlaprefactoring4}|
-|\highlightYellow|  System.out.println("hello!"); |\label{line:overlaprefactoring5}|
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public void sayHello(){
-|\highlightYellow|  for(int i = 0; i<5; i++){
-|\highlightYellow|    System.out.println("hello!");
-|\highlightYellow|  }
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring a clone class that has overlap between clone instances.}
-\label{fig:overlaprefactoring}
-\end{figure}
-
 \subsubsection{Complex control flow}
 Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
 
