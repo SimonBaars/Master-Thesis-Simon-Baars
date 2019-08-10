@@ -776,9 +776,36 @@ public void sayHello(){
 \end{figure}
 
 \subsubsection{Can be extracted}
-All clones that do not adhere to any of above-stated categories, are considered suitable for automated method extraction. 
+All clones that do not adhere to any of above-stated categories, are considered suitable for automated method extraction.
 
 \subsection{Applying refactorings}
+All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST in order to refactor clones.
+
+First, we create a new method and give it an uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy the nodes that were removed from a single clone instance in the new method.
+
+\subsubsection{Relation}
+For each of the identified clone relations (section \ref{sec:setuprelation}) we define a method of automatically refactoring clones in these categories. The relation determines the location at which we place the newly created method.
+
+\paragraph{Common Class}
+For clone instances that are in the same class, we place the method in the body of that class. We give the method a \texttt{private} visibility, which indicates that the method can only be used within its class.
+
+\paragraph{Common Hierarchy}
+We place the extracted method in the class which all clone instances share as a superclass. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
+
+\paragraph{Common Interface}
+We place the extracted method in the interface all clone instances have in common.  We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
+
+\paragraph{Unrelated}
+If all clone instances in a clone class are in different classes that do not yet have a superclass, or their ancestors have no superclass, we create a superclass abstraction for them. This way we make the implicit dependency between both clone fragments explicit, while provisioning a common place for common functionality. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
+
+If the clone instances have an external superclass or ancestor, we create an interface abstraction instead to place the extracted method in. We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
+
+Because for unrelated clone instances we create new abstractions, we could change the relation of other clones. When we introduce a new superclass abstraction, other clones might turn from ``unrelated'' into ``common hierarchy''. Because of this, creating a single abstraction could favor multiple refactoring opportunities.
+
+For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study we refrain from doing this, because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
+
+\subsubsection{Populate method}
+After placing the newly abstracted method at an appropriate location, we analyze the method content to result 
 \todo{Write this section}
 
 \subsection{Saving refactored code}
