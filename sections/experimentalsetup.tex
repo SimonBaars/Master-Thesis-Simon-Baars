@@ -1,0 +1,28 @@
+\chapter{Experimental Setup}
+In this chapter we explain the setup of our experiments. All our experiments are quantitative experiments, measured over a corpus using CloneRefactor. In this chapter, we first explain the corpus we use. We then explain the way in which we calculate the impact of refactorings on the software maintainability.
+
+\section{The corpus}\label{chap:corpus}
+For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus contains a set of Java projects from GitHub, selected by number of forks. The projects in this corpus were then de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+
+For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus and the rationale behind those steps.
+
+\subsection{Project dependencies}
+As explained
+
+As indicated in chapter \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on the basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
+
+Some general data regarding this corpus is displayed in Table \ref{table:general}.
+
+\begin{table}[H]
+  \begin{center}
+  \caption{General results for GitHub Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
+  \medskip
+\begin{tabular}{|l|l|}
+\hline
+Amount of projects                                                                                      & 1,361      \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
+Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
+\begin{tabular}[c]{@{}l@{}}Amount of tokens (excluding\\whitespace, comments and newlines.)\end{tabular} & 11,643,194 \\ \hline
+\end{tabular}
+\end{center}
+\end{table}

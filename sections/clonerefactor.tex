@@ -1,12 +1,7 @@
 \chapter{CloneRefactor} \label{ch:clonerefactor}
 % We bridged a gap between clone detection and refactoring .. by designing a tool
-CloneRefactor is the name of our clone detection and refactoring tool. It features the following novel functions:
-\begin{itemize}
-  \item Detection of clone classes rather than clone pairs.
-  \item A novel detection method, aimed at extensibility.
-  \item Detection of refactoring-oriented clone types, in addition to the literature clone types.
-  \item Allows for automated refactoring of a subset of the detected duplication issues.
-\end{itemize}
+We bridged a gap between clone detection and refactoring by designing a tool that can detect clones by our refactoring-oriented clone types (chapter \ref{chap:clonetypes}). This tool, named CloneRefactor, performs a comprehensive context analysis on the detected clones. Based on this this context, CloneRefactor can automatically refactor a subset of the detected clones by applying transformations to the source code of the analyzed software project(s).
+
 In this section we describe our approach and rationale for the design decisions regarding this tool.
 
 \begin{figure}[H]
@@ -846,7 +841,7 @@ In this case we are dealing with single refactorings and we want to measure the 
 \item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
 \end{itemize}
 
-We can deduct the change of the values of these metrics by considering the transformations that are done by the refactoring. We calculate these metrics as follows:
+We can determine the change of the values of these metrics by considering the transformations that are done by the refactoring. We calculate these metrics as follows:
 
 \begin{itemize}
 \item \textbf{Duplication}: The duplication can only decrease as a result of the refactoring. We calculate the reduction of duplication as the product of the number of tokens in the body of the extracted and the number of clone instances in the clone class.
