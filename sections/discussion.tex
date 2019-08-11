@@ -13,12 +13,12 @@ Refer to Finding~\ref{find:important1}.
 
 
 \section{Clone Type Definitions}
-In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in section \ref{sec:rtypes}.
+In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
 
 \subsubsection{Type 2R clones}
 With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
 
-One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in figure \ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
+One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in Figure~\ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -63,10 +63,10 @@ public String getTitle(){
 \end{figure}
 
 \section{Clone Context Analysis}
-In section \ref{chap:contextsetup} we introduced the categories we defined for mapping the context of clones. In this section, we discuss this together with the related experiments.
+In Section~\ref{chap:contextsetup} we introduced the categories we defined for mapping the context of clones. In this section, we discuss this together with the related experiments.
 
 \subsection{Refactorability} \label{sec:discussrefactorability}
-In section \ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
+In Section~\ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
 
 \subsubsection{Partial block}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
