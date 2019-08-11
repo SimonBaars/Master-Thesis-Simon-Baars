@@ -810,7 +810,7 @@ After placing the newly abstracted method at an appropriate location, we analyze
 \paragraph{Method parameters}
 We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods we add a parameter to the extracted method. We then pass the appropriate data to each method call.
 
-\paragraph{Return value}
+\paragraph{Return value}\label{sec:refreturn}
 The exracted method has a return value if one of these three conditions is met:
 \begin{itemize}
 \item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we set the type of the returned variable as the type of the extracted method. We turn all method calls of the extracted method into return statements followed by the method call.
@@ -822,7 +822,15 @@ The exracted method has a return value if one of these three conditions is met:
 If a method in Java throws an exception that is not a \textbf{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \textbf{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
 
 \subsection{Collecting data}
-\todo{Write this section}
+To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. We define the following characteristics that have an impact on the refactoring of the clone class:
+\begin{itemize}
+\item \textbf{Nodes}: The number of nodes that \textit{each clone instance of the clone class} spans. This concerns the size of a single clone instance before it was refactored.
+\item \textbf{Tokens}: The number of tokens that the \textit{each clone instance of the clone class} spans. This concerns the size of a single clone instance before it was refactored.
+\item \textbf{Relation}: The relation category (section \ref{sec:setuprelation}) that this clone class belongs to.
+\item \textbf{Returns}: The category of what the extracted method returns (section \ref{sec:refreturn}).
+\item \textbf{Parameters}: The number of parameters the extracted method has.
+\end{itemize}
+These characteristics define the \textbf{input} of the refactoring. As an output, we measure the impact of applying these refactorings on system maintainability metrics. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. 
 
 \subsection{Saving refactored code}
 CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
@@ -835,3 +843,4 @@ CloneRefactor features several ``Refactoring Strategies'', that indicate how and
   \item \textbf{Git Replace}: CloneRefactor creates a branch on the git VCS, or initializes a git repository if it is not available. For every clone class refactored, CloneRefactor creates a commit in the git repository.
   \item \textbf{Git Copy}: CloneRefactor copies the entire project to a new location. CloneRefactor then performs the same procedure as for ``Git Replace'', except now at the new location so the original project remains unmodified.
 \end{itemize}
+These ``Refactoring Strategies'' can be used to get more data regarding the transformations applied by CloneRefactor. In our experiments, we only make use of the ``Simulate'' ``Refactoring Strategy''.
