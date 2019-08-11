@@ -805,7 +805,23 @@ Because for unrelated clone instances we create new abstractions, we could chang
 For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study we refrain from doing this, because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
 
 \subsubsection{Populate method}
-After placing the newly abstracted method at an appropriate location, we analyze the method content to result 
+After placing the newly abstracted method at an appropriate location, we analyze the method content to determine whether we need to add parameters, a return value or a \texttt{throws} clause to the method declaration.
+
+\paragraph{Method parameters}
+We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods we add a parameter to the extracted method. We then pass the appropriate data to each method call.
+
+\paragraph{Return value}
+The exracted method has a return value if one of these three conditions is met:
+\begin{itemize}
+\item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we set the type of the returned variable as the type of the extracted method. We turn all method calls of the extracted method into return statements followed by the method call.
+\item \textbf{A method parameter is re-assigned in the extracted fragment}: If a method parameter is re-assigned, we must return its changed value. We add a return statement to the end of the body of the extracted method returning the variable that was changed. We set the return type of the extracted method to the type of the variable that was assigned. We turn all method calls of the extracted method into variable assignment statements in which we assign the changed variable.
+\item \textbf{A variable is declared in the extracted fragment}: If a variable is declared in the extracted fragment, but used outside it, we return the declared variable. We add a return statement to the end of the body of the extracted method that returns the declared variable. If the variable declaration statement is the final statement in the method body, we remove the variable declaration and directly return the value it assigns to the declared variable. We set the return type of the extracted method to the type of the variable that was declared. We turn all method calls of the extracted method into variable declaration statements in which we declare the variable returned by the extracted method.
+\end{itemize}
+
+\paragraph{Thrown exception}
+If a method in Java throws an exception that is not a \textbf{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \textbf{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
+
+\subsection{Collecting data}
 \todo{Write this section}
 
 \subsection{Saving refactored code}
