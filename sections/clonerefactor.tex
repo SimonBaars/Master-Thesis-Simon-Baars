@@ -843,8 +843,17 @@ In this case we are dealing with single refactorings and we want to measure the 
 \item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
 \item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the amount of tokens instead.
 \item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantative measure of the number of linearly independent paths through a method.
+\item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
 \end{itemize}
 
+We can deduct the change of the values of these metrics by considering the transformations that are done by the refactoring. We calculate these metrics as follows:
+
+\begin{itemize}
+\item \textbf{Duplication}: The duplication can only decrease as a result of the refactoring. We calculate the reduction of duplication as the product of the number of tokens in the body of the extracted and the number of clone instances in the clone class.
+\item \textbf{Volume}: The volume can both decrease and increase as a result of the refactoring. The reduction of volume is equal to the reduction of duplication. The volume is increased by the amount of tokens in each method call to the extracted method, plus optionally the return, assignment or declaration of the extracted method. We also add the size in tokens of the extracted method itself to the volume. If the extracted method is moved to a newly created class or interface, we use volume of that declaration instead (because it in turn contains the extracted method). The added volume minus the reduced volume results in the change in volume.
+\item \textbf{Complexity}: The complexity can both decrease and increase as a result of the refactoring. To calculate the reduction of complexity, we take the sum of all branching statements in all clone instances. The increase in complexity is the complexity of the extracted method (the number of branches plus one). The added volume complexity the reduced complexity results in the change in complexity.
+\item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the amount of parameters in the extracted method.
+\end{itemize}
 
 \subsection{Saving refactored code}
 CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
