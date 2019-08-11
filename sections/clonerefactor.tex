@@ -822,7 +822,10 @@ The exracted method has a return value if one of these three conditions is met:
 If a method in Java throws an exception that is not a \textbf{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \textbf{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
 
 \subsection{Collecting data}
-To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. We define the following characteristics that have an impact on the refactoring of the clone class:
+To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. For each refactored clone class, we map the characteristics of the extracted method to the impact of the refactoring on the maintainability of the system/
+
+\subsubsection{Characteristics of the extracted method}
+We define the following characteristics that have an impact on the refactoring of the clone class:
 \begin{itemize}
 \item \textbf{Nodes}: The number of nodes that \textit{each clone instance of the clone class} spans. This concerns the size of a single clone instance before it was refactored.
 \item \textbf{Tokens}: The number of tokens that the \textit{each clone instance of the clone class} spans. This concerns the size of a single clone instance before it was refactored.
@@ -830,7 +833,18 @@ To find out whether clones should be refactored (RQ3) we collect data about the 
 \item \textbf{Returns}: The category of what the extracted method returns (section \ref{sec:refreturn}).
 \item \textbf{Parameters}: The number of parameters the extracted method has.
 \end{itemize}
-These characteristics define the \textbf{input} of the refactoring. As an output, we measure the impact of applying these refactorings on system maintainability metrics. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. 
+We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
+
+\subsubsection{Impact on maintainability metrics}
+We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
+
+In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
+\begin{itemize}
+\item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
+\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the amount of tokens instead.
+\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantative measure of the number of linearly independent paths through a method.
+\end{itemize}
+
 
 \subsection{Saving refactored code}
 CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
