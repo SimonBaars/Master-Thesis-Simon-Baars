@@ -4,25 +4,20 @@ In this chapter we explain the setup of our experiments. All our experiments are
 \section{The corpus}\label{chap:corpus}
 For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus contains a set of Java projects from GitHub, selected by number of forks. The projects in this corpus were then de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
-For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus and the rationale behind those steps.
+For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} and the rationale behind those steps.
 
-\subsection{Project dependencies}
-As explained
+\subsection{Filtering Maven projects}
+As explained in Section~\ref{chap:challenge}, CloneRefactor requires all the libraries a software project is dependent on in order to perform its clone analysis. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to limit our scope to a single build automation system. We chose Maven, as it is one of the most used build automation systems for Java projects. Maven uses a file, named \texttt{pom.xml}, to describe a projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file (which indicates that those do not use the Maven build automation system).
 
-As indicated in chapter \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on the basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
+Because we cloned the projects (and do not use the sources provided in the corpus), they still included generated source code. Because we do not want to analyze generated Java files, we decided to further filter the corpus to only include projects with a conventional structure. For Maven, projects are recommended to put their production code in the folder structure \texttt{src/main/java}. We omitted Maven projects that do not adhere to this convention.
 
-Some general data regarding this corpus is displayed in Table \ref{table:general}.
+\subsection{Gathering Dependencies}
+As a next step, we collect all dependencies of the downloaded software projects. Maven uses the following command to automate this process: \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib}. This process can fail if external dependencies are no longer available. We removed such projects for which we could not obtain all dependencies.
 
-\begin{table}[H]
-  \begin{center}
-  \caption{General results for GitHub Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
-  \medskip
-\begin{tabular}{|l|l|}
-\hline
-Amount of projects                                                                                      & 1,361      \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
-Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of tokens (excluding\\whitespace, comments and newlines.)\end{tabular} & 11,643,194 \\ \hline
-\end{tabular}
-\end{center}
-\end{table}
+\subsection{Building an AST of all Java files}
+To verify the correctness of all Java files in the projects, we used JavaParser \cite{tomassetti2017javaparser} to create an AST of every Java file in the \texttt{src/main/java} folder of the software projects. A very small set of projects had syntactical errors, which we removed from the corpus.
+
+\subsection{Inspecting outliers}
+We ran CloneRefactor over every project in the corpus and inspected the output for each project. Some projects gave unusual high numbers of projects of a certain size, which we manually inspected. Often these projects contained generated source files. We removed these projects from the corpus.
+
+The result is a set of 674 Java projects that we use for all our experiments.
