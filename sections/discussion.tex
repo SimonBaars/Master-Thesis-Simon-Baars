@@ -1,21 +1,13 @@
 \chapter{Discussion}
-\todo{TODO}
 \label{ch:discussion}
 
-In this chapter, we discuss the results of our experiment(s) on ...
-
-\begin{finding}
-	Highlight like this an important finding of your analysis of the results.
-	\label{find:important1}
-\end{finding}
-
-Refer to Finding~\ref{find:important1}.
+In this chapter, we discuss the results of our research and experiments.
 
 
 \section{Clone Type Definitions}
 In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known. We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
 
-\subsubsection{Type 2R clones}
+\subsection{Type 2R clones}
 With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
 
 One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in Figure~\ref{fig:samereturn}. The only thing to watch out for is method that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
@@ -144,3 +136,9 @@ public boolean doAandB(){
 \caption{Refactoring a method that is obstructed by a complex control flow.}
 \label{fig:complexcontrolflowrefactoring}
 \end{figure}
+
+\section{CloneRefactor}
+In this section we discuss our decisions for the design of our CloneRefactor tool.
+
+\subsection{Clone Detection}
+For CloneRefactor we chose to design a novel method of detecting clones, rather than using an existing clone detection technique or tool. 
