@@ -51,12 +51,24 @@ Quick overview of clone type definitions
 Extract method, move method.
 
 \section{Defining refactorable clones}
-Instead of defining clone types, I just define how we can ensure that clones can be refactored. I do not plan to differentiate between T1R, T2R and T3R here, because I think it makes the paper confusing.
-
-To be honest, I'm not even sure how relevant it is to name the literature clone types. Maybe not focus on their shortcomings, but just start from the core (sourcecode) and define how we can get to refactorable clones.
+% Instead of defining clone types, I just define how we can ensure that clones can be refactored. I do not plan to differentiate between T1R, T2R and T3R here, because I think it makes the paper confusing.
+% To be honest, I'm not even sure how relevant it is to name the literature clone types. Maybe not focus on their shortcomings, but just start from the core (sourcecode) and define how we can get to refactorable clones.
+In literature, several clone type definitions have been used to argue about duplication in source code \cite{roy2007survey}. In this section, we discuss how we can define clones such that they can be refactored without side effects on the source code.
 
 \subsection{Ensuring Equality}
-Explain type 1, why it is not always refactorable, solution
+% Explain type 1, why it is not always refactorable, solution
+Most modern clone detection tools detect clones by comparing the code textually together with the ommission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textua comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is as follows:
+\begin{itemize}
+  \item \textbf{The type of variable references}: Equally named variables may be of different types between code fragments.
+  \item \textbf{Contextual information of type references}: Equally named types may refer to different
+  \item \textbf{What method method reference}
+\end{itemize}
+To detect clones that can be refactored, we propose to:
+\begin{itemize}
+  \item Compare variable references not only by their name, but also by their type.
+  \item Compare types by their fully qualified identifier (FQI). The FQI of a type describes the full path to the declaration of the type.
+  \item Compare method references by their fully qualified signature (FQS). The FQS
+\end{itemize}
 
 \subsection{Allowing variability in a controlled set of expressions}
 Explain type 2, why it is not always refactorable, solution
