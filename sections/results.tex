@@ -1,29 +1,8 @@
 \chapter{Results}\label{ch:results}
-In this chapter, we present the results of our experiments.
-
-\section{The corpus}\label{chap:corpus}
-For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus has been assembled to contain relatively higher quality projects. Also, any duplicate projects were removed from this corpus. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
-
-As indicated in chapter \ref{chap:challenge} CloneRefactor requires all libraries of software projects we test. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to filter the corpus to only include Maven projects. Maven is a build automation tool used primarily for Java, and works on the basis of an \texttt{pom.xml} file to describe the projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file. As a final step, we collected all dependencies for each project by using the \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib} Maven command, and removed each project for which not all dependencies were available (due to non-Maven dependencies being used or unsatisfiable dependencies being referenced in the \texttt{pom.xml} file).
-
-Some general data regarding this corpus is displayed in Table \ref{table:general}.
-
-\begin{table}[H]
-  \begin{center}
-  \caption{General results for GitHub Java projects corpus \cite{githubCorpus2013}.} \label{table:general}
-  \medskip
-\begin{tabular}{|l|l|}
-\hline
-Amount of projects                                                                                      & 1,361      \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of lines (excluding\\whitespace, comments and newlines.)\end{tabular} & 1,414,996  \\ \hline
-Amount of statements/declarations                                                                       & 1,212,189  \\ \hline
-\begin{tabular}[c]{@{}l@{}}Amount of tokens (excluding\\whitespace, comments and newlines.)\end{tabular} & 11,643,194 \\ \hline
-\end{tabular}
-\end{center}
-\end{table}
+In this chapter, we present the results of our experiments. All these results were obtained using CloneRefactor.
 
 \section{Clone types}\label{sec:clonetypeexperiments}
-In this section we display the differences between clone type 1-3~\cite{roy2007survey} and type 1R-3R as proposed in chapter \ref{chap:clonetypes}. When running our clone detection script over the corpus, we get the results displayed in Fig.~\ref{fig:typeres}.
+In this section we display the differences between clone type 1-3~\cite{roy2007survey} and type 1R-3R as proposed in Chapter \ref{chap:clonetypes}. When running our clone detection script over the corpus, we get the results displayed in Figure~\ref{fig:typeres}.
 
 \begin{figure}[H]
   \centering
@@ -34,7 +13,7 @@ In this section we display the differences between clone type 1-3~\cite{roy2007s
 
 In this figure, the number of cloned nodes per clone type are displayed. The difference between T1R and T1 is small (10.9\%), because most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\%) because the T2R definition is more strict. T3R and T3 are similar to T2R and T2 because our dataset does not have so many gapped clones for the thresholds used.
 
-We also measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is partly dependent on our implementation of the clone types, there is a notable difference between the refactoring-oriented clone types and the literature clone types. The reason for this is further explained in section~\ref{chap:challenge}.
+We also measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is partly dependent on our implementation of the clone types, there is a notable difference between the refactoring-oriented clone types and the literature clone types. The reason for this is further explained in Section~\ref{chap:challenge}.
 
 \begin{figure}[H]
   \centering
@@ -43,15 +22,12 @@ We also measured the duration of finding clones by the different clone types. Fi
   \label{fig:performance}
 \end{figure}
 
-\section{Thresholds} \label{sec:thresholds}
-\todo{todo}
-
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
-We analyzed the context of clones in a large corpus of open source projects. For these experiments, we used our CloneRefactor tool. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  he content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
+We analyzed the context of clones in a large corpus of open source projects. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  he content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
 
 \subsection{Relations Between Clone Instances} \label{chap:relationsinstances}
 \todo{update these results}
-In section \ref{sec:setuprelation} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances.
+In Section~\ref{sec:setuprelation} we introduced our experiments regarding relations between clones. Table~\ref{table:relations} contains our results regarding the relations between clone instances.
 
 \begin{table}[H]
   \begin{center}
@@ -76,7 +52,7 @@ The most notable difference when comparing it to the results of Fontana et al.~\
 
 \subsection{Clone instance location}\label{chap:clonelocation}
 \todo{update these results}
-Measuring the clone locations categories defined in section \ref{sec:setuplocation} yields the results displayed in Table \ref{table:contents}.
+Measuring the clone locations categories defined in Section~\ref{sec:setuplocation} yields the results displayed in Table \ref{table:contents}.
 
 \begin{table}[H]
   \begin{center}
@@ -96,9 +72,9 @@ Enum Level         & 145 & 0.14            \\ \hline
 
 Our results indicate that around 58\% of the clones are produced at method-level. About 39\% of clones either span several methods/constructors or contain something like a field declaration. Another 3\% of the clones are found in constructors. The amount of clones found in interfaces and enumerations is very low. Regarding the differences between type 1 and type 1R, it seems that there are relatively less method level clones and more class level clones for type 1R. This is probably due to that the main reason for variability between type 1 and type 1R is variable references, which occur more at method level than class level.
 
-\section{Clone instance contents}\label{chap:clonecontents}
+\subsection{Clone instance contents}\label{chap:clonecontents}
 \todo{update these results}
-Measuring the clone contents categories defined in section \ref{sec:setupcontents} yields the results displayed in Table \ref{table:contents}.
+Measuring the clone contents categories defined in Section~\ref{sec:setupcontents} yields the results displayed in Table \ref{table:contents}.
 
 \begin{table}[H]
   \begin{center}
@@ -124,7 +100,7 @@ Unsurprisingly, most clones span a part of a method. The most used refactoring t
 
 \section{Merging duplicate code through refactoring} \label{sec:refactorability}
 \todo{update these results}
-In section \ref{sec:refactorabilitysetup} we define categories regarding the extent to which clones can be refactored through method extraction. Our results are displayed in Table \ref{table:refactorability}.
+In Section~\ref{sec:refactorabilitysetup} we define categories regarding the extent to which clones can be refactored through method extraction. Our results are displayed in Table \ref{table:refactorability}.
 
 \begin{table}[H]
   \begin{center}
