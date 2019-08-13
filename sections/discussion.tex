@@ -141,9 +141,21 @@ public boolean doAandB(){
 In this section we discuss our decisions for the design of our CloneRefactor tool.
 
 \subsection{Clone Detection}
-For CloneRefactor we chose to design a novel method of detecting clones, rather than using an existing clone detection technique or tool.
+For CloneRefactor we chose to design a novel method of detecting clones, rather than using an existing clone detection technique or tool. Our rationale is as follows:
+\begin{itemize}
+  \item We perform comprehensive analysis on the source code which requires us to use an AST-based clone detection method.
+  \item We perform dependency graph analysis, which requires us to resolve symbols in the source code.
+  \item None of the existing clone detection methods implement all criteria required to build such a system.
+\end{itemize}
+By building a graph that maps relations between nodes in the AST, we can find clones in an efficient manner, allowing to perform a comprehensive analysis of large systems. This method has worked well for our purposes.
+
+The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for industry projects our tool might require optimization.
+
+\subsection{Context Analysis}
+In this study we identified categories for three \todo{todo}
 
 \section{Experimental setup}
+In this section we discuss the setup of our experiments. We discuss alternative setups that could lead to other perspectives on the problem addressed.
 
 \subsection{Java Corpus}
 In our experiments we chose to use a GitHub based software corpus. This corpus contains a diversity of projects of many different sizes. We noticed that there is a lot of difference in the quality of these software systems: some systems had a lot of duplication and some did not have any duplication. Furthermore, it took an extensive filtering process to remove all files not suitable for application in this research (like generated files).
