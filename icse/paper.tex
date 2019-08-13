@@ -29,7 +29,11 @@ ana.oprescu@uva.nl}
 \maketitle
 
 \begin{abstract}
-Coming up!
+Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such antipatterns, a developer should refactor the codebase. There are many tools that assist in this process. However, these are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of such tools is often of limited assistance to the developer in the refactoring process.
+
+We propose method and tool for the detection and automated refactoring of clones. We use this tool on a corpus of open source Java systems. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored.
+
+We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -37,9 +41,14 @@ code clones, refactoring, static code analysis, object-oriented programming
 \end{IEEEkeywords}
 
 \section{Introduction}
+Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and create implicit dependencies between fragments of code \cite{ostberg2014automatically}. Bruntink et al.~\cite{bruntink2005use} show that code clones can contribute up to 25\% of the code size.
+
+Current code clone detection detection techniques base their thresholds and prioritization on a limited set of metrics. Often, clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
+
 
 
 \section{Background}
+This study researches an intersection of code clone and refactoring research.
 
 \subsection{Code clone terminology}
 Clone class collection, clone class, clone instance, cloned node, token.
@@ -48,6 +57,7 @@ Clone class collection, clone class, clone instance, cloned node, token.
 Quick overview of clone type definitions
 
 \subsection{Refactoring techniques}
+In this section, we describe
 Extract method, move method.
 
 \section{Defining refactorable clones}
@@ -57,21 +67,20 @@ In literature, several clone type definitions have been used to argue about dupl
 
 \subsection{Ensuring Equality}
 % Explain type 1, why it is not always refactorable, solution
-Most modern clone detection tools detect clones by comparing the code textually together with the ommission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textua comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is as follows:
-\begin{itemize}
-  \item \textbf{The type of variable references}: Equally named variables may be of different types between code fragments.
-  \item \textbf{Contextual information of type references}: Equally named types may refer to different
-  \item \textbf{What method method reference}
-\end{itemize}
+Most modern clone detection tools detect clones by comparing the code textually together with the ommission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textua comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if benificial at all.
+
 To detect clones that can be refactored, we propose to:
 \begin{itemize}
   \item Compare variable references not only by their name, but also by their type.
-  \item Compare types by their fully qualified identifier (FQI). The FQI of a type describes the full path to the declaration of the type.
-  \item Compare method references by their fully qualified signature (FQS). The FQS
+  \item Compare referenced types by their fully qualified identifier (FQI). The FQI of a type reference describes the full path to where it is declared.
+  \item Compare method references by their fully qualified signature (FQS). The FQS of a method reference describes the full path to where it is declared, plus the FQI of each of its parameters.
 \end{itemize}
 
+% Do we want an example here?
+
 \subsection{Allowing variability in a controlled set of expressions}
-Explain type 2, why it is not always refactorable, solution
+%Explain type 2, why it is not always refactorable, solution
+Often, fragments in source code do not match exactly. Often when developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we looked into in what expressions we can allow variability while still being refactorable.
 
 \subsection{Gapped clones}
 Explain type 3, why it is not always refactorable, solution
@@ -124,7 +133,7 @@ I think the ultimate goal with this thesis is to do experiments with different c
 \section{Conclusion}
 
 \section*{Acknowledgment}
-:-)
+We would like to thank the Software Improvement Group for their continuous support in this project. In particular, we would like to thank Xander Schrijen for his invaluable input in this research. Furthermore, we would like to thank Sander Meester for his proofreading efforts and feedback.
 
 \section*{References}
 
