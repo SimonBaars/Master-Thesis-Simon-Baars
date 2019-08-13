@@ -1,5 +1,9 @@
 \chapter{Discussion}
 \label{ch:discussion}
+%Interpretations: what do the results mean?
+%Implications: why do the results matter?
+%Limitations: what can’t the results tell us?
+%Recommendations: what practical actions or scientific studies should follow?
 
 In this chapter, we discuss the results of our research and experiments.
 
@@ -152,7 +156,16 @@ By building a graph that maps relations between nodes in the AST, we can find cl
 The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for industry projects our tool might require optimization.
 
 \subsection{Context Analysis}
-In this study we identified categories for three \todo{todo}
+In this study we identified categories for three properties of clones: relation, location and contents. %Mapping the location and contents was mainly to find out what the best method of refactoring is to refactor most clones.
+We chose a set of relations that indicate different refactoring opportunities. However, as our CloneRefactor tool only analyses Java source code, we we biased towards categories that are often found in Java source code. For other languages, other categories might be valuable to analyze to find suitable categories for that programming language.
+
+\subsection{Refactoring}
+
+
+\subsubsection{Metrics}
+For this study we chose to focus on a set of four metrics to measure maintainability: method size, duplication, method parameters and cyclomatic complexity. These metrics give an indication of the impact of the refactoring, but do not give a complete overview. There are many more metrics that could be considered to measure the maintainability impact on the system. An example of such a metric is ``coupling'', which focuses on the amount of incoming calls into a method or class and what modules these calls come from. This metric is also influenced by the transformations we applied and might deliver valuable insights in the quality of the refactoring.
+
+In general, considering other metrics can result in a more reliable measure of the increase or decrease of maintainability after applying a specific refactoring.
 
 \section{Experimental setup}
 In this section we discuss the setup of our experiments. We discuss alternative setups that could lead to other perspectives on the problem addressed.
