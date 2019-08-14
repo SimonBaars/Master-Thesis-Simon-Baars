@@ -1,15 +1,14 @@
 \documentclass[sigconf,review]{acmart}
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
+
 \usepackage{graphicx}
-\usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{float}
 
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\setcopyright{acmcopyright}
+\copyrightyear{2019}
+\acmYear{2019}
+\acmDOI{10.1145/1122445.1122456}
+
 \begin{document}
 
 \title{Improving Software Maintainability through Automated Refactoring of Code Clones}
@@ -22,8 +21,6 @@
 \affiliation{\institution{University of Amsterdam}}
 \email{ana.oprescu@uva.nl}
 
-\maketitle
-
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such antipatterns, a developer should refactor the codebase. There are many tools that assist in this process. The thresholds and prioritization of the clones detected by such tools can be improved by considering the maintainability of the codebase after a detected clone would be refactored.
 
@@ -32,9 +29,9 @@ In this study, we define clones that can be refactored. We propose a tool to det
 Given these maintainability influencing factors and their effect on the source code, we measure their impact over a large corpus of open source Java projects. This results in a set of thresholds by which clones can be found that should be refactored to improve system maintainability.
 \end{abstract}
 
-\begin{IEEEkeywords}
-code clones, refactoring, static code analysis, object-oriented programming
-\end{IEEEkeywords}
+\keywords{code clones, refactoring, static code analysis, object-oriented programming}
+
+\maketitle
 
 \section{Introduction}
 Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and create implicit dependencies between fragments of code \cite{ostberg2014automatically}. Bruntink et al.~\cite{bruntink2005use} show that code clones can contribute up to 25\% of the code size.
@@ -217,8 +214,6 @@ I think the ultimate goal with this thesis is to do experiments with different c
 
 \section*{Acknowledgment}
 We would like to thank the Software Improvement Group for their continuous support in this project. In particular, we would like to thank Xander Schrijen for his invaluable input in this research. Furthermore, we would like to thank Sander Meester for his proofreading efforts and feedback.
-
-\section*{References}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
