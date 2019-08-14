@@ -7,6 +7,50 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{parcolumns}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  numbers = left,
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\definecolor{lightyellow}{HTML}{fffdcc}
+\definecolor{doublelightyellow}{HTML}{fffa9c}
+\definecolor{lightgreen}{HTML}{dcffd4}
+\definecolor{lightblue}{HTML}{e0ffff}
+\definecolor{lightred}{HTML}{ffe0e0}
+\definecolor{lightpink}{HTML}{ffe0ff}
+\definecolor{lightorange}{HTML}{ffede0}
+\definecolor{lightpurple}{HTML}{f0e0ff}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
+
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -31,7 +75,7 @@ ana.oprescu@uva.nl}
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such antipatterns, a developer should refactor the codebase. There are many tools that assist in this process. The thresholds and prioritization of the clones detected by such tools can be improved by considering the maintainability of the codebase after a detected clone would be refactored.
 
-In this study, we define a technique to detect clones such that they can be refactored. We propose a tool to detect such clones and automatically refactor a subset of them. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored. We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
+In this study, we define clones that can be refactored. We propose a tool to detect such clones and automatically refactor a subset of them. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored. %We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
 
 Given these maintainability influencing factors and their effect on the source code, we measure their impact over a large corpus of open source Java projects. This results in a set of thresholds by which clones can be found that should be refactored to improve system maintainability.
 \end{abstract}
@@ -48,13 +92,15 @@ Current code clone detection detection techniques base their thresholds and prio
 In this study, we define a technique to detect clones such that they can be refactored. We evaluate the context of clones to determine refactoring techniques are required to refactor clones in a specific context. We propose a tool for the automated refactoring of a subset of the detected clones, by extracting a new method out of duplicated code.
 
 \section{Background}
-This study researches an intersection of code clone and refactoring research.
+This study researches an intersection of code clone and refactoring research. In this background section, we will explain the required background knowledge for terms used throughout this study.
 
 \subsection{Code clone terminology}
-Clone class collection, clone class, clone instance, cloned node, token.
+In this study we use two concepts used to argue about code clones \cite{roy2007survey}:
+\textbf{Clone instance}: A single cloned fragment.
+\textbf{Clone class}: A set of similar clone instances.
 
-\subsection{Code clone definitions}
-Quick overview of clone type definitions
+%\subsection{Code clone definitions} Optional -> may do this if it adds something to the story
+%Quick overview of clone type definitions
 
 \subsection{Refactoring techniques}
 In this section, we describe refactoring techniques that are relevant to refactoring code clones.
@@ -85,7 +131,54 @@ To detect clones that can be refactored, we propose to:
 
 \subsection{Allowing variability in a controlled set of expressions}
 %Explain type 2, why it is not always refactorable, solution
-Often, fragments in source code do not match exactly. Often when developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we looked into in what expressions we can allow variability while still being refactorable.
+Often, duplication fragments in source code do not match exactly \cite{kodhai2013method}. Often when developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we looked into in what expressions we can allow variability while still being refactorable.
+
+We define the following expressions as refactorable when varied:
+\begin{itemize}
+  \item \textbf{Literals}: Only if all varying literals in a clone class have the same type.
+  \item \textbf{Variables}: Only if all varying variables in a clone class have the same type.
+  \item \textbf{Method references}: Only if the return value of referenced method match (or are not used).
+\end{itemize}
+Often when allowing such variance, tradeoffs come into play. For instance, variance in literals may require the introduction of a parameter, increasing the required effort to comprehend the code.
+
+\begin{figure}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+void doABC(){
+	doA();
+	doB("abc");
+	doC();
+}
+
+void doDEF(){
+  doA();
+  doB("def");
+  doC();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+void doABC(){
+	do("abc");
+}
+
+void doDEF(){
+	do(s, "def");
+}
+
+void doThis(String s){
+  doA();
+  doB(s);
+  doC();
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Literal variability refactored.}
+\label{fig:type2literal}
+\end{figure}
 
 \subsection{Gapped clones}
 Explain type 3, why it is not always refactorable, solution
