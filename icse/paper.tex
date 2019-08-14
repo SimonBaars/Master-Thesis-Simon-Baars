@@ -168,7 +168,7 @@ Clone instances in a clone class can have a relation with each other through inh
 
 Based on these relations, we determine where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
-\subsubsection{Contents}
+\subsubsection{Contents}\label{sec:contents}
 % The rationale for our categories regarding clone contents.
 The contents of a clone instance determine what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the contents of clones:
 \begin{enumerate}
@@ -183,10 +183,18 @@ The contents of a clone instance determine what refactoring techniques can be ap
 The categories denote that a full declaration (method, class, etc.) often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. Clones in the ``Partial Method/Constructor'' category can often be refactored using the ``Extract Method'' refactoring technique. Clones consisting of \textit{Several Methods} give a strong indication that cloned classes are missing some form of abstraction, or their abstraction is used inadequately. Clones consisting of \textit{Only Fields} often indicate data redundancy: different classes use the same data.
 
 \subsection{Refactoring}
-CloneRefactor can refactor clones using the ``Extract Method'' refactoring technique. In this section...
+CloneRefactor can refactor clones using the ``Extract Method'' refactoring technique. In this section we show which clones we refactor and how we apply these transformations.
 
 \subsubsection{Extract Method}
-Show my categories to show what clones can be dealt with by method extraction.
+There are several influencing factors that may obstruct the possibility to extract code to a new method:
+\begin{itemize}
+    \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
+    \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement.
+    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:contents}, the ``Extract Method'' refactoring technique cannot be applied.
+    \item \textbf{Returns multiple values}: If a clone modifies or declares multiple pieces of data that it should return.
+    \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
+\end{itemize}
+Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CloneRefactor only refactors the clones that \textit{Can Be Extracted}.
 
 \subsubsection{AST Transformation}
 Explain what AST transformations I do to apply the refactorings.

@@ -665,7 +665,7 @@ Finally, we looked at what nodes individual clone instances span. We selected a 
 \end{enumerate}
 
 \subsubsection{Full Method/Constructor/Class/Interface/Enumeration}
-These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to solve: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
+These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
 
 \subsubsection{Partial Method/Constructor}
 These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has a ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
