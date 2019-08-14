@@ -190,15 +190,21 @@ Clones that do not fall in the \textit{Can Be Extracted} category may require ad
 
 \subsubsection{AST Transformation}
 % Explain what AST transformations I do to apply the refactorings.
-CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CloneRefactor creates a new method declaration and moves all statements from the 
+CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CloneRefactor creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CloneRefactor analyzes the source code of the extracted method and populates it with the following properties:
+\begin{itemize}
+  \item \textbf{Parameters}: For each variable used that is not accessible from the scope of the extracted method.
+  \item \textbf{A return value}: If the method modifies or declares local data that is needed outside of its scope, or if the cloned fragments already returned data.
+  \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \texttt{RuntimeException}.
+\end{itemize}
+CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, we either assign the call result, declare it or return it accordingly.
 
 \subsection{Characteristics of the extracted method}
-We define the following characteristics that have an impact on the refactoring of the clone class:
+We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
-\item \textbf{Statements}: The number of statements that \textit{each clone instance of the clone class} spans.
-\item \textbf{Tokens}: The number of tokens that the \textit{each clone instance of the clone class} spans.
-\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) that this clone class belongs to.
-\item \textbf{Returns}: The category of what the extracted method returns (Section~\ref{sec:refreturn}).
+\item \textbf{Statements}: The number of statements in the body of the method.
+\item \textbf{Tokens}: The number of tokens in the body of the method.
+\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined.
+\item \textbf{Returns}: Whether the method calls return, declare, assign or don't use any data from the extracted method.
 \item \textbf{Parameters}: The number of parameters the extracted method has.
 \end{itemize}
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.

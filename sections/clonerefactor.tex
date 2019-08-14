@@ -814,7 +814,7 @@ The exracted method has a return value if one of these three conditions is met:
 \end{itemize}
 
 \paragraph{Thrown exception}
-If a method in Java throws an exception that is not a \textbf{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \textbf{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
+If a method in Java throws an exception that is not a \texttt{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \texttt{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
 
 \subsection{Collecting data}
 To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. For each refactored clone class, we map the characteristics of the extracted method to the impact of the refactoring on the maintainability of the system/
