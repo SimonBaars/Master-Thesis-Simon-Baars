@@ -136,6 +136,7 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 After clones are detected, we map the context of these clones. We have identifier three properties of clones as their context: relation, location and contents. We identify categories for each of these properties, to get a detailed insight in the context of clones.
 
 \subsubsection{Relation}
+% The rationale for our categories regarding clone relations.
 Clone instances in a clone class can have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, for instance belonging to a library) unless explicitly stated:
 \begin{itemize}
     \item \textbf{Common Class}: All clone instances are in the same class.
@@ -164,6 +165,7 @@ Clone instances in a clone class can have a relation with each other through inh
         \item \textbf{Indirect External Ancestor}: All clone instances are in a hierarchy that contains a class that has an external class as parent.
     \end{itemize}
 \end{itemize}
+Based on these relations, we determine where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
 \subsubsection{Location}
 The rationale for our categories regarding clone locations.
