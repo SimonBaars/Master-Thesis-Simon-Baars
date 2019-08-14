@@ -54,8 +54,8 @@ This study researches an intersection of code clone and refactoring research. In
 
 \subsection{Code clone terminology}
 In this study we use two concepts used to argue about code clones \cite{roy2007survey}:
-\textbf{Clone instance}: A single cloned fragment.
-\textbf{Clone class}: A set of similar clone instances.
+\\ \textbf{Clone instance}: A single cloned fragment.
+\\ \textbf{Clone class}: A set of similar clone instances.
 
 %\subsection{Code clone definitions} Optional -> may do this if it adds something to the story
 %Quick overview of clone type definitions
@@ -168,10 +168,25 @@ Clone instances in a clone class can have a relation with each other through inh
 Based on these relations, we determine where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
 \subsubsection{Location}
-The rationale for our categories regarding clone locations.
+% The rationale for our categories regarding clone locations.
+
+\begin{enumerate}
+  \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor.
+  \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
+  \item \textbf{Interface/Enumeration Level:} A clone that is (a part of) an interface or enumeration.
+\end{enumerate}
 
 \subsubsection{Contents}
-The rationale for our categories regarding clone contents.
+% The rationale for our categories regarding clone contents.
+
+\begin{enumerate}
+  \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
+  \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor.
+  \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods.
+  \item \textbf{Only Fields:} A clone that spans only global variables.
+  \item \textbf{Other:} Anything that does not match with above-stated categories.
+\end{enumerate}
+
 
 \subsection{Refactoring}
 \subsubsection{Extract Method}
