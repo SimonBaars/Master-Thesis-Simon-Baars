@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{float}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -86,7 +87,7 @@ To detect clones that can be refactored, we propose to:
 
 % Do we want an example here?
 
-\subsection{Allowing variability in a controlled set of expressions}
+\subsection{Allowing variability in a controlled set of expressions} \label{sec:t2r}
 %Explain type 2, why it is not always refactorable, solution
 Often, duplication fragments in source code do not match exactly \cite{kodhai2013method}. Often when developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we looked into in what expressions we can allow variability while still being refactorable.
 
@@ -99,14 +100,29 @@ We define the following expressions as refactorable when varied:
 Often when allowing such variance, tradeoffs come into play. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
 
 \subsection{Gapped clones}
-Explain type 3, why it is not always refactorable, solution
+%Explain type 3, why it is not always refactorable, solution
+Sometimes, when fragments are duplicated, a statement in inserted or changed severely for the code to fit its new context. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones''. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
+\begin{itemize}
+  \item We wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
+  \item We use a lambda function to pass the difference in statements from each location of the clone.
+\end{itemize}
+Again, a tradeoff is at play, as these solutions increase the complexity in favor of removing a clone.
 
 \section{CloneRefactor}
 % NEED TO EXPLAIN WHY DO CURRENT DETECTION TOOLS NOT SUFFICE
-The tool: Detect Clones, Map Context, Refactor.
+% The tool: Detect Clones, Map Context, Refactor.
+To automate the process of refactoring clones, we propose a tool named CloneRefactor. This tool goes through a 3-step process in order to refactor clones. This process is displayed in figure \ref{fig:clonerefactorflow}.
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/flow}
+  \caption{Simple flow diagram of CloneRefactor.}
+  \label{fig:clonerefactorflow}
+\end{figure}
+In this section, we explain each of these steps.
+
 
 \subsection{Clone Detection}
-Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
+% Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
+We detect clones, allowing any variability between indicated expressions (see Sec.~\ref{sec:t2r}).
 
 \subsection{Context Mapping}
 \subsubsection{Relation}
