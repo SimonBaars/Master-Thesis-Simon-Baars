@@ -111,7 +111,7 @@ Again, a tradeoff is at play, as these solutions increase the complexity in favo
 \section{CloneRefactor}
 % NEED TO EXPLAIN WHY DO CURRENT DETECTION TOOLS NOT SUFFICE
 % The tool: Detect Clones, Map Context, Refactor.
-To automate the process of refactoring clones, we propose a tool named CloneRefactor. This tool goes through a 3-step process in order to refactor clones. This process is displayed in figure \ref{fig:clonerefactorflow}.
+To automate the process of refactoring clones, we propose a tool named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process in order to refactor clones. This process is displayed in Fig.~\ref{fig:clonerefactorflow}.
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/flow}
   \caption{Simple flow diagram of CloneRefactor.}
@@ -186,6 +186,7 @@ The categories denote that a full declaration (method, class, etc.) often denote
 CloneRefactor can refactor clones using the ``Extract Method'' refactoring technique. In this section we show which clones we refactor and how we apply these transformations.
 
 \subsubsection{Extract Method}
+% Show my categories to show what clones can be dealt with by method extraction.
 There are several influencing factors that may obstruct the possibility to extract code to a new method:
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
@@ -197,7 +198,7 @@ There are several influencing factors that may obstruct the possibility to extra
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CloneRefactor only refactors the clones that \textit{Can Be Extracted}.
 
 \subsubsection{AST Transformation}
-Explain what AST transformations I do to apply the refactorings.
+% Explain what AST transformations I do to apply the refactorings.
 
 \section{Results}
 
