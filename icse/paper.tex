@@ -99,7 +99,7 @@ We define the following expressions as refactorable when varied:
 \end{itemize}
 Often when allowing such variance, tradeoffs come into play. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
 
-\subsection{Gapped clones}
+\subsection{Gapped clones} \label{sec:t3r}
 %Explain type 3, why it is not always refactorable, solution
 Sometimes, when fragments are duplicated, a statement in inserted or changed severely for the code to fit its new context. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones''. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
 \begin{itemize}
@@ -122,11 +122,48 @@ In this section, we explain each of these steps.
 
 \subsection{Clone Detection}
 % Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
-We detect clones, allowing any variability between indicated expressions (see Sec.~\ref{sec:t2r}).
+We use an AST-based method to detect clones. Clones are detected on a statement level: only full statements are considered as clones. In this process, we limit the variability between indicated expressions (see Sec.~\ref{sec:t2r}) by a threshold. This threshold is the percentage of different expressions against the total number of expressions in the source code:
+\begin{equation}\label{eq:type2r}
+\text{Variability}=\frac{\text{Different expressions}}{\text{Total expressions}}*100
+\end{equation}
+
+After all clones have been detected, CloneRefactor determines whether clone classes can be merged into gapped clones (see Sec.~\ref{sec:t3r}). The maximum size of the gap is limited by a threshold. This threshold is the percentage of (not-cloned) statements in the gap against the sum of statements in both clones surrounding it. Unlike the expression variability threshold, this threshold can exceed 100\%:
+\begin{equation}\label{eq:type3r}
+\text{Gap Size}=\frac{\text{Statements in gap}}{\text{Statements in clones}}*100
+\end{equation}
 
 \subsection{Context Mapping}
+After clones are detected, we map the context of these clones. We have identifier three properties of clones as their context: relation, location and contents. We identify categories for each of these properties, to get a detailed insight in the context of clones.
+
 \subsubsection{Relation}
-The rationale for our categories regarding clone relations.
+Clone instances in a clone class can have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, for instance belonging to a library) unless explicitly stated:
+\begin{itemize}
+    \item \textbf{Common Class}: All clone instances are in the same class.
+    \begin{itemize}
+        \item \textbf{Same Method}: All clone instances are in the same method.
+        \item \textbf{Same Class}: All clone instances are in the same class.
+    \end{itemize}
+    \item \textbf{Common Hierarchy}: All clone instances are in the same inheritance hierarchy.
+    \begin{itemize}
+        \item \textbf{Superclass}: Clone instances reside in a class or its parent class.
+        \item \textbf{Sibling Class}: All clone instances reside in classes with the same parent class.
+        \item \textbf{Ancestor Class}: All clone instances reside in a class, or any of its recursive parents.
+        \item \textbf{First Cousin}: All clone instances reside in classes with the same grandparent class.
+        \item \textbf{Same Hierarchy}: All clone instances are part of the same inheritance hierarchy.
+    \end{itemize}
+    \item \textbf{Common Interface}: All clone instances are in classes that have the same interface.
+    \begin{itemize}
+        \item \textbf{Same Direct Interface}: All clone instances are in a class that have the same interface.
+        \item \textbf{Same Class}: All clone instances are in an inheritance hierarchy that contains the same interface.
+    \end{itemize}
+    \item \textbf{Unrelated}: All clone instances are in classes that have the same interface.
+    \begin{itemize}
+        \item \textbf{No Direct Superclass}: All clone instances are in classes that have the Object class as parent.
+        \item \textbf{No Indirect Superclass}: All clone instances are in a hierarchy that contains a class that has the Object class as parent.
+        \item \textbf{External Superclass}: All clone instances are in classes the same external class as parent.
+        \item \textbf{Indirect External Ancestor}: All clone instances are in a hierarchy that contains a class that has an external class as parent.
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{Location}
 The rationale for our categories regarding clone locations.
@@ -140,9 +177,6 @@ Show my categories to show what clones can be dealt with by method extraction.
 
 \subsubsection{AST Transformation}
 Explain what AST transformations I do to apply the refactorings.
-
-\subsubsection{The cyclic nature of refactoring}
-Explain how refactoring code clones might open up new refactoring opportunities. We refactor a project until there are no more open refactoring opportunities.
 
 \section{Results}
 
