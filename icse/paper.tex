@@ -7,49 +7,6 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{color}
-\usepackage{listings}
-\usepackage{parcolumns}
-
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-
-\lstset{language=Java,
-  showspaces=false,
-  showtabs=false,
-  breaklines=true,
-  showstringspaces=false,
-  breakatwhitespace=true,
-  commentstyle=\color{pgreen},
-  keywordstyle=\color{pblue},
-  numbers = left,
-  stringstyle=\color{pred},
-  basicstyle=\ttfamily,
-  moredelim=[il][\textcolor{pgrey}]{$$},
-  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
-}
-
-\definecolor{lightyellow}{HTML}{fffdcc}
-\definecolor{doublelightyellow}{HTML}{fffa9c}
-\definecolor{lightgreen}{HTML}{dcffd4}
-\definecolor{lightblue}{HTML}{e0ffff}
-\definecolor{lightred}{HTML}{ffe0e0}
-\definecolor{lightpink}{HTML}{ffe0ff}
-\definecolor{lightorange}{HTML}{ffede0}
-\definecolor{lightpurple}{HTML}{f0e0ff}
-\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
-\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
-
-\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
-
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -139,46 +96,7 @@ We define the following expressions as refactorable when varied:
   \item \textbf{Variables}: Only if all varying variables in a clone class have the same type.
   \item \textbf{Method references}: Only if the return value of referenced method match (or are not used).
 \end{itemize}
-Often when allowing such variance, tradeoffs come into play. For instance, variance in literals may require the introduction of a parameter, increasing the required effort to comprehend the code.
-
-\begin{figure}
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-void doABC(){
-	doA();
-	doB("abc");
-	doC();
-}
-
-void doDEF(){
-  doA();
-  doB("def");
-  doC();
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-void doABC(){
-	do("abc");
-}
-
-void doDEF(){
-	do(s, "def");
-}
-
-void doThis(String s){
-  doA();
-  doB(s);
-  doC();
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Literal variability refactored.}
-\label{fig:type2literal}
-\end{figure}
+Often when allowing such variance, tradeoffs come into play. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
 
 \subsection{Gapped clones}
 Explain type 3, why it is not always refactorable, solution
