@@ -24,7 +24,7 @@
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such antipatterns, a developer should refactor the codebase. There are many tools that assist in this process. The thresholds and prioritization of the clones detected by such tools can be improved by considering the maintainability of the codebase after a detected clone would be refactored.
 
-In this study, we define clones that can be refactored. We propose a tool to detect such clones and automatically refactor a subset of them. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored. %We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
+In this study, we define clones that can be refactored. We propose a tool to detect such clones and automatically refactor a subset of them. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity \cite{mccabe1976complexity}, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored. %We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
 
 Given these maintainability influencing factors and their effect on the source code, we measure their impact over a large corpus of open source Java projects. This results in a set of thresholds by which clones can be found that should be refactored to improve system maintainability.
 \end{abstract}
@@ -126,7 +126,7 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 \subsection{Context Mapping}
 After clones are detected, we map the context of these clones. We have identifier three properties of clones as their context: relation and contents. We identify categories for each of these properties, to get a detailed insight in the context of clones.
 
-\subsubsection{Relation}
+\subsubsection{Relation}\label{sec:relation}
 % The rationale for our categories regarding clone relations.
 Clone instances in a clone class can have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, for instance belonging to a library) unless explicitly stated:
 \begin{itemize}
@@ -190,7 +190,29 @@ Clones that do not fall in the \textit{Can Be Extracted} category may require ad
 
 \subsubsection{AST Transformation}
 % Explain what AST transformations I do to apply the refactorings.
+CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CloneRefactor creates a new method declaration and moves all statements from the 
 
+\subsection{Characteristics of the extracted method}
+We define the following characteristics that have an impact on the refactoring of the clone class:
+\begin{itemize}
+\item \textbf{Statements}: The number of statements that \textit{each clone instance of the clone class} spans.
+\item \textbf{Tokens}: The number of tokens that the \textit{each clone instance of the clone class} spans.
+\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) that this clone class belongs to.
+\item \textbf{Returns}: The category of what the extracted method returns (Section~\ref{sec:refreturn}).
+\item \textbf{Parameters}: The number of parameters the extracted method has.
+\end{itemize}
+We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
+
+\subsection{Impact on maintainability metrics}
+We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
+
+In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
+\begin{itemize}
+\item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
+\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the amount of tokens instead.
+\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantative measure of the number of linearly independent paths through a method.
+\item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
+\end{itemize}
 
 \section{Results}
 
