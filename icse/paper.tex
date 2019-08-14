@@ -1,5 +1,4 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
+\documentclass[sigconf,review]{acmart}
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -15,18 +14,13 @@
 
 \title{Improving Software Maintainability through Automated Refactoring of Code Clones}
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Simon Baars}
-\IEEEauthorblockA{%\textit{Software Engineering} \\
-\textit{University of Amsterdam}\\
-Amsterdam, the Netherlands \\
-simon.mailadres@gmail.com}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Ana Oprescu}
-\IEEEauthorblockA{%\textit{dept. name of organization (of Aff.)} \\
-\textit{University of Amsterdam}\\
-Amsterdam, the Netherlands \\
-ana.oprescu@uva.nl}
-}
+\author{Simon Baars}
+\affiliation{\institution{University of Amsterdam}}
+\email{simon.mailadres@gmail.com}
+
+\author{Ana Oprescu}
+\affiliation{\institution{University of Amsterdam}}
+\email{ana.oprescu@uva.nl}
 
 \maketitle
 
@@ -200,6 +194,7 @@ Clones that do not fall in the \textit{Can Be Extracted} category may require ad
 \subsubsection{AST Transformation}
 % Explain what AST transformations I do to apply the refactorings.
 
+
 \section{Results}
 
 \subsection{Clone context}
@@ -225,5 +220,7 @@ We would like to thank the Software Improvement Group for their continuous suppo
 
 \section*{References}
 
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
 
 \end{document}
