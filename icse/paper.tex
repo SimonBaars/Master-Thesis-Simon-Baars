@@ -167,14 +167,7 @@ Clone instances in a clone class can have a relation with each other through inh
 \end{itemize}
 Based on these relations, we determine where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
-\subsubsection{Location}
-% The rationale for our categories regarding clone locations.
 
-\begin{enumerate}
-  \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor.
-  \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
-  \item \textbf{Interface/Enumeration Level:} A clone that is (a part of) an interface or enumeration.
-\end{enumerate}
 
 \subsubsection{Contents}
 % The rationale for our categories regarding clone contents.
