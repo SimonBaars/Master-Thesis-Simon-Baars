@@ -345,12 +345,14 @@ Figure \ref{fig:duplication} shows the obtained results when plotting the clone 
 
 \begin{figure*}
   \includegraphics[width=1\textwidth]{img/duplication}
-  \caption{Size in tokens of the refactored clone vs maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
+  \caption{A graph that shows how the size in tokens of the refactored clone affects maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
   \label{fig:duplication}
 \end{figure*}
 
+The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, for our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
+
 \subsubsection{Relation}
-Table \ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance. For these results, we have set the minimum amount of tokens for clones to 18 because otherwise the small clones dominate the results and turn them all towards unmaintainable.
+Table \ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
 
 \begin{table}[]
 \centering
@@ -397,12 +399,12 @@ Assign & -1,29 & 3 \\ \bottomrule
 \label{tab:return}
 \end{table}
 
-\subsubsection{Arguments}
-Figure \ref{fig:arguments} shows how an increase in arguments lowers the maintainability of the refactored code. On the
+\subsubsection{Parameters}
+Figure \ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis the maintainability is displayed, the secundary x-axis shows the amount of refactorings and the y-axis shows the amount of parameters.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/flow}
-  \caption{Simple flow diagram of CloneRefactor.}
+  \caption{Influence of number of method parameters on system maintainability.}
   \label{fig:arguments}
 \end{figure}
 
