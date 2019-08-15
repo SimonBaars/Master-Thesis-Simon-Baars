@@ -261,13 +261,13 @@ In this section we share the results of our experiments.
 
 \subsection{Clone context}
 % How many clones are there in certain contexts? Experiments for relation, location and context.
-Our initial experiments look into how many clones are found in different contexts (see Sec.~\ref{sec:context}). This results in the Table~\ref{tab:relation}.
+Our initial experiments look into how many clones are found in different contexts (see Sec.~\ref{sec:context}). This results in the Table~\ref{tab:relation}. In this table, the number of clone classes found for the entire corpus for different relations is shown.
 
-\begin{table*}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}llll@{}}
 \toprule
-Category & Relation & Amount of clone classes & Total \\ \midrule
+\textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{Total}} \\ \midrule
 \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Class\end{tabular}} & Same Class & 22,893 & \multirow{2}{*}{31,848} \\ \cmidrule(lr){2-3}
  & Same Method & 8,955 &  \\ \midrule
 \multirow{5}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Hierarchy\end{tabular}} & Sibling & 15,588 & \multirow{5}{*}{20,342} \\ \cmidrule(lr){2-3}
@@ -282,9 +282,9 @@ Category & Relation & Amount of clone classes & Total \\ \midrule
 \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Interface\end{tabular}} & Same Direct Interface & 7,522 & \multirow{2}{*}{13,074} \\ \cmidrule(lr){2-3}
  & Same Indirect Interface & 5,552 &  \\ \bottomrule
 \end{tabular}
-\caption{Amount of clone classes per clone relation}
+\caption{Number of clone classes per clone relation}
 \label{tab:relation}
-\end{table*}
+\end{table}
 
 
 \subsection{Clone refactorability}
