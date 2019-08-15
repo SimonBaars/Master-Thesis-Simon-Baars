@@ -124,7 +124,7 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 
 To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
 
-\subsection{Context Mapping}
+\subsection{Context Mapping} \label{sec:context}
 After clones are detected, we map the context of these clones. We have identifier three properties of clones as their context: relation and contents. We identify categories for each of these properties, to get a detailed insight in the context of clones.
 
 \subsubsection{Relation}\label{sec:relation}
@@ -254,7 +254,10 @@ A_M = \frac{dup}{A_{dup}} + \frac{com}{A_{com}} + \frac{par}{A_{par}} + \frac{vo
 Where \textit{dup} is the decrease in duplication, \textit{com} is the decrease in complexity, \textit{par} is the decrease is method parameters and \textit{vol} is the decrease in system volume after the refactoring is applied. When comparing the maintainability of a set of refactorings we divide the sum of the maintainability score by the amount of clone instances of all refactored clones in the set.
 
 \section{Results}
+In this section we share the results of our experiments.
 
+\subsection{Clone context}
+Our initial experiments look into how many clones are found in different contexts (see Sec.~\ref{sec:context}). This results in the Table~\ref{}.
 
 \subsection{Clone context}
 How many clones are there in certain contexts? Experiments for relation, location and context.
