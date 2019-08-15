@@ -419,7 +419,7 @@ In this section we discuss the results of our experiments.
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring, because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Also 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
 
-Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level.
+Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \subsection{Extract Method}
 28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
@@ -436,9 +436,15 @@ Regarding the return type of refactored clones, we see in Table \ref{tab:return}
 A higher number of parameters directly influences the corresponding metric. Because of this, we see in Fig.~\ref{fig:arguments} that more parameters negatively influence maintainability. Not only the number of parameters metric is negatively influenced, more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
 
 \section{Conclusion}
+We defined refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
 
+We defined two aspects as part of the context of a clone: relation and contents. Regarding relations, we found that most clones are found in the same class, over 37\%. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 7\% of clones have the same interface. Regarding contents, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
 
-\section*{Acknowledgment}
+We built a tool that can automatically apply refactorings to 28\% of clones in our corpus using the ``Extract Method'' refactoring technique. The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, for instance when code outside a method is part of a clone.
+
+We measured four maintainability metrics before- and after applying each refactoring to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 29 tokens per clone instance for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the amount of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+
+\section*{Acknowledgments}
 We would like to thank the Software Improvement Group for their continuous support in this project. In particular, we would like to thank Xander Schrijen for his invaluable input in this research. Furthermore, we would like to thank Sander Meester for his proofreading efforts and feedback.
 
 \bibliographystyle{ACM-Reference-Format}
