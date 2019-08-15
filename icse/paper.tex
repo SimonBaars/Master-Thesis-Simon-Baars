@@ -294,7 +294,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \end{table}
 
 \subsubsection{Contents}
-Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
 
 \begin{table}[]
 \centering
@@ -358,7 +358,7 @@ Table \ref{tab:relation_refactor} shows our data regarding how different relatio
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-Category & Maintainability Score & Number of Refactorings \\ \midrule
+\textit{\textbf{Category}} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Maintainability}}\\\textit{\textbf{Score}}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Number of}}\\\textit{\textbf{Refactorings}}\end{tabular} \\ \midrule
 \rowcolor[HTML]{FFCCC9}
 Common Hierarchy & 0,63 & 27 \\
 Sibling & 0,53 & 664 \\
@@ -388,7 +388,7 @@ Table \ref{tab:return} shows how the return value of the extracted method influe
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-Return Value & Maintainability Score & Number of Refactorings \\ \midrule
+\textit{\textbf{Return Value}} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Maintainability}}\\\textit{\textbf{Score}}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Number of}}\\\textit{\textbf{Refactorings}}\end{tabular} \\ \midrule
 Return & 0,20 & 421 \\
 Void & 0,19 & 2052 \\
 Declare & 0,03 & 1318 \\
@@ -403,7 +403,7 @@ Assign & -1,29 & 3 \\ \bottomrule
 Figure \ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis the maintainability is displayed, the secundary x-axis shows the amount of refactorings and the y-axis shows the amount of parameters.
 
 \begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/flow}
+  \includegraphics[width=1\columnwidth]{img/arguments}
   \caption{Influence of number of method parameters on system maintainability.}
   \label{fig:arguments}
 \end{figure}
