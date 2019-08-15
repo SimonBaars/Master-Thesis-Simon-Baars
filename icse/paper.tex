@@ -11,6 +11,10 @@
 \copyrightyear{2019}
 \acmYear{2019}
 \acmDOI{10.1145/1122445.1122456}
+\acmMonth{8}
+
+\acmConference[ICSE 2020]{Technical Papers}{May
+23--29}{Seoul, North Korea}
 
 \begin{document}
 
@@ -292,20 +296,20 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \subsubsection{Contents}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
 
-\begin{table}[H]
+\begin{table}[]
 \centering
 \begin{tabular}{@{}llll@{}}
 \toprule
-Category & Contents & Clone instances & Total \\ \midrule
-\multirow{2}{*}{Partial} & Partial Method & 219,540 & 229,521 \\
- & Partial Constructor & 9,981 &  \\
-Full & Full Method & 12,990 & 13,173 \\
- & Full Interface & 64 &  \\
- & Full Constructor & 58 &  \\
- & Full Class & 37 &  \\
- & Full Enum & 24 &  \\
-Other & Several Methods & 22,749 & 53,773 \\
- & Only Fields & 17,700 &  \\
+\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
+\multirow{2}{*}{Partial} & Partial Method & 219,540 & \multirow{2}{*}{229,521} \\ \cmidrule(lr){2-3}
+ & Partial Constructor & 9,981 &  \\ \midrule
+\multirow{5}{*}{Full} & Full Method & 12,990 & \multirow{5}{*}{13,173} \\ \cmidrule(lr){2-3}
+ & Full Interface & 64 &  \\ \cmidrule(lr){2-3}
+ & Full Constructor & 58 &  \\ \cmidrule(lr){2-3}
+ & Full Class & 37 &  \\ \cmidrule(lr){2-3}
+ & Full Enum & 24 &  \\ \midrule
+\multirow{3}{*}{Other} & Several Methods & 22,749 & \multirow{3}{*}{53,773} \\ \cmidrule(lr){2-3}
+ & Only Fields & 17,700 &  \\ \cmidrule(lr){2-3}
  & Other & 13,324 &  \\ \bottomrule
 \end{tabular}
 \caption{Number of clone instances for clone contents categories}
