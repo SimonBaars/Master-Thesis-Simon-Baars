@@ -6,6 +6,7 @@
 
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{nonfloat}
 
 \setcopyright{acmcopyright}
 \copyrightyear{2019}
@@ -343,11 +344,12 @@ In our corpus CloneRefactor has refactored 12.710 clone classes and measured the
 \subsubsection{Clone Token Volume}
 Figure \ref{fig:duplication} shows the obtained results when plotting the clone size (in tokens) vs the maintainability increase/decrease. On the secondary axis the amount of refactorings that have refactored a clone with the specified amount of tokens is displayed (e.g. the amount of datapoints the data is based on). As the amount of datapoints decreases, the datapoints gain less statistical significance.
 
-\begin{figure*}
+\begin{minipage}{\linewidth} 
+\centering%
   \includegraphics[width=1\textwidth]{img/duplication}
-  \caption{A graph that shows how the size in tokens of the refactored clone affects maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
-  \label{fig:duplication}
-\end{figure*}
+\figcaption{A graph that shows how the size in tokens of the refactored clone affects maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}%
+\label{fig:duplication}%
+\end{minipage}
 
 The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, for our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
