@@ -1,7 +1,7 @@
-\documentclass[sigconf,review]{acmart}
+\documentclass[sigconf,review, table]{acmart}
 
+\usepackage{xcolor}
 \usepackage{graphicx}
-\usepackage[table,xcdraw]{xcolor}
 \usepackage{float}
 
 \usepackage{booktabs}
@@ -318,31 +318,24 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \end{table}
 
 \subsection{Clone refactorability}
-To what extent can found clones be refactored through method extraction, without requiring additional transformations.
+%To what extent can found clones be refactored through method extraction, without requiring additional transformations.
+Table \ref{tab:refactorability} shows to what extend clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-% \usepackage[table,xcdraw]{xcolor}
-% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
 \begin{table}[]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-\rowcolor[HTML]{C0C0C0}
 \textit{\textbf{Category}} & \textit{\textbf{All}} & \textit{\textbf{Method Body}} \\ \midrule
-\rowcolor[HTML]{EFEFEF}
 Can Be Extracted & 24,157 & 26,109 \\
 Is Not A Partial Method & 21,625 & 0 \\
-\rowcolor[HTML]{EFEFEF}
-Top-level Node is not a Statement &  & 4,607 \\
-Spans Part of a Block & 12,964 & 13460 \\
-\rowcolor[HTML]{EFEFEF}
+Top-level Node is not a Statement & 19,887 & 4,607 \\
+Spans Part of a Block & 12,964 & 13,460 \\
 Multiple Return Values & 5,622 & 6,131 \\
 Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
 \end{tabular}
 \caption{Number of clones that can be extracted using the ``Extract Method'' refactoring technique}
 \label{tab:refactorability}
-\end{table}
+\end{table}s
 
 \subsection{Thresholds}
 I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
