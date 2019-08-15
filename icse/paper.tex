@@ -110,7 +110,6 @@ To automate the process of refactoring clones, we propose a tool named CloneRefa
 \end{figure}
 In this section, we explain each of these steps.
 
-
 \subsection{Clone Detection}
 % Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
 We use an AST-based method to detect clones. Clones are detected on a statement level: only full statements are considered as clones. In this process, we limit the variability between indicated expressions (see Sec.~\ref{sec:t2r}) by a threshold. This threshold is the percentage of different expressions against the total number of expressions in the source code:
@@ -122,6 +121,8 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 \begin{equation}\label{eq:type3r}
 \text{Gap Size}=\frac{\text{Statements in gap}}{\text{Statements in clones}}*100
 \end{equation}
+
+To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
 
 \subsection{Context Mapping}
 After clones are detected, we map the context of these clones. We have identifier three properties of clones as their context: relation and contents. We identify categories for each of these properties, to get a detailed insight in the context of clones.
@@ -198,6 +199,8 @@ CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing li
 \end{itemize}
 CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, CloneRefactor either assigns the call result, declares it or returns it accordingly.
 
+We verified the correctness of the resulting refactorings manually. We ran the tool over a large software project and verified over 1.000 applied refactorings.
+
 \subsubsection{Characteristics of the extracted method}
 We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
@@ -231,7 +234,7 @@ CloneRefactor requires all libraries of the projects it analyses, in order to fi
 This procedure results in 2.267 Java projects including all their dependencies. The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is VisAD with 502K lines.
 
 \subsection{Minimum clone size}
-In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. This implies that
+In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability because the detrimental effect of added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
 
 \subsection{Calculating a maintainability score}
 In this study we use four metrics to determine maintainability \ref{sec:metrics}. For our experiments, we want to aggregate the scores obtained by these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
@@ -248,8 +251,7 @@ Where \textit{M} is the multiset of all change in a certain metric for all refac
 \begin{equation}\label{eq:type3r}
 A_M = \frac{dup}{A_{dup}} + \frac{com}{A_{com}} + \frac{par}{A_{par}} + \frac{vol}{A_{vol}}
 \end{equation}
-Where \textit{dup} is the decrease in duplication, \textit{com} is the decrease in complexity, \textit{par} is the decrease is method parameters and \textit{vol} is the decrease in system volume after the refactoring is applied. When comparing the maintainability of
-
+Where \textit{dup} is the decrease in duplication, \textit{com} is the decrease in complexity, \textit{par} is the decrease is method parameters and \textit{vol} is the decrease in system volume after the refactoring is applied. When comparing the maintainability of a set of refactorings we divide the sum of the maintainability score by the amount of clone instances of all refactored clones in the set.
 
 \section{Results}
 
