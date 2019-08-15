@@ -292,7 +292,25 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \subsubsection{Contents}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
 
-
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Category & Contents & Clone instances & Total \\ \midrule
+\multirow{2}{*}{Partial} & Partial Method & 219,540 & 229,521 \\
+ & Partial Constructor & 9,981 &  \\
+Full & Full Method & 12,990 & 13,173 \\
+ & Full Interface & 64 &  \\
+ & Full Constructor & 58 &  \\
+ & Full Class & 37 &  \\
+ & Full Enum & 24 &  \\
+Other & Several Methods & 22,749 & 53,773 \\
+ & Only Fields & 17,700 &  \\
+ & Other & 13,324 &  \\ \bottomrule
+\end{tabular}
+\caption{Number of clone instances for clone contents categories}
+\label{tab:contents}
+\end{table}
 
 \subsection{Clone refactorability}
 To what extent can found clones be refactored through method extraction, without requiring additional transformations.
