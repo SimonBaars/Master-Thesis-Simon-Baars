@@ -341,13 +341,43 @@ Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
 In our corpus CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
 
 \subsubsection{Clone Token Volume}
-Figure \ref{fig:duplication} shows the obtained results when plotting the clone size (in tokens) vs the maintainability increase/decrease. On the secondary axis the amount of refactorings that have refactored a clone with the specified amount of tokens is displayed (e.g. the amount of datapoints the data is based on). As the amount of datapoints decreases, the datapoints become more noisy. 
+Figure \ref{fig:duplication} shows the obtained results when plotting the clone size (in tokens) vs the maintainability increase/decrease. On the secondary axis the amount of refactorings that have refactored a clone with the specified amount of tokens is displayed (e.g. the amount of datapoints the data is based on). As the amount of datapoints decreases, the datapoints gain less statistical significance.
 
 \begin{figure*}
   \includegraphics[width=1\textwidth]{img/duplication}
   \caption{How the size of the refactored clone influences the maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
   \label{fig:duplication}
 \end{figure*}
+
+\subsubsection{Relation}
+Table \ref{} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance. For these results, we have set the minimum amount of tokens for clones to 18 because otherwise the small clones dominate the results and turn them all towards unmaintainable.
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Row Labels & Maintainability Score & Number of Refactorings \\ \midrule
+\rowcolor[HTML]{FFCCC9}
+Common Hierarchy & 0,63 & 27 \\
+Sibling & 0,53 & 664 \\
+No Direct Superclass & 0,11 & 295 \\
+Same Method & 0,06 & 740 \\
+\rowcolor[HTML]{FFCCC9}
+Superclass & 0,03 & 68 \\
+Same Class & 0,02 & 1273 \\
+External Superclass & 0,01 & 209 \\
+\rowcolor[HTML]{FFCCC9}
+No Indirect Superclass & -0,06 & 36 \\
+Same Interface & -0,07 & 269 \\
+\rowcolor[HTML]{FFCCC9}
+First Cousin & -0,19 & 54 \\
+External Ancestor & -0,28 & 154 \\
+\rowcolor[HTML]{FFCCC9}
+Ancestor & -0,52 & 5 \\ \bottomrule
+\end{tabular}
+\caption{Influence on maintainability of refactoring clones by certain relations.}
+\label{tab:relation_refactor}
+\end{table}
 
 \section{Discussion}
 \subsection{Clone Definitions}
