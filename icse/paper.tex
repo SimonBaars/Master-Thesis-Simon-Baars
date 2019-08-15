@@ -65,7 +65,7 @@ Often, ``Extract Method'' alone is not enough to refactor clones. This is becaus
 % To be honest, I'm not even sure how relevant it is to name the literature clone types. Maybe not focus on their shortcomings, but just start from the core (sourcecode) and define how we can get to refactorable clones.
 In literature, several clone type definitions have been used to argue about duplication in source code \cite{roy2007survey}. In this section, we discuss how we can define clones such that they can be refactored without side effects on the source code.
 
-\subsection{Ensuring Equality}
+\subsection{Ensuring Equality}\label{sec:t1r}
 % Explain type 1, why it is not always refactorable, solution
 Most modern clone detection tools detect clones by comparing the code textually together with the ommission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textua comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if benificial at all.
 
@@ -196,9 +196,9 @@ CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing li
   \item \textbf{A return value}: If the method modifies or declares local data that is needed outside of its scope, or if the cloned fragments already returned data.
   \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \texttt{RuntimeException}.
 \end{itemize}
-CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, we either assign the call result, declare it or return it accordingly.
+CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, CloneRefactor either assigns the call result, declares it or returns it accordingly.
 
-\subsection{Characteristics of the extracted method}
+\subsubsection{Characteristics of the extracted method}
 We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
 \item \textbf{Statements}: The number of statements in the body of the method.
@@ -209,7 +209,7 @@ We define the following characteristics of the extracted method and/or the call:
 \end{itemize}
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
 
-\subsection{Impact on maintainability metrics}
+\subsubsection{Impact on maintainability metrics} \label{sec:metrics}
 We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
 In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
@@ -220,7 +220,39 @@ In this case we are dealing with single refactorings and we want to measure the 
 \item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
 \end{itemize}
 
+\section{Experimental setup}
+In this section we describe the setup of our experiments.
+
+\subsection{Corpus}
+We ran all our experiments using CloneRefactor on a corpus of open source Java projects. This corpus is derived from the corpus of a study that uses machine learning to determine the suitability of Java projects on GitHub for data analysis purposes \cite{githubCorpus2013}.
+
+CloneRefactor requires all libraries of the projects it analyses, in order to find the full paths of all referenced symbols in the source code (see Sec.~\ref{sec:t1r}). Because of that requirement, we decided to filter the corpus to only projects using the Maven build automation system. We created a set of scripts\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} to prepare such a corpus with all dependencies included.
+
+This procedure results in 2.267 Java projects including all their dependencies. The projects vary in size and quality.
+
+\subsection{Minimum clone size}
+In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. This implies that
+
+\subsection{Calculating a maintainability score}
+In this study we use four metrics to determine maintainability \ref{sec:metrics}. For our experiments, we want to aggregate the scores obtained by these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
+\begin{itemize}
+  \item All metrics are equal in terms of weight towards system maintenance effort.
+  \item Higher values for the metrics imply lower maintainability.
+  \item The obtained increase of the metric divided by the average distance from zero over our corpus weights the metric equally against the other metrics.
+\end{itemize}
+We calculate the average deviation as follows:
+\begin{equation}\label{eq:type3r}
+A = \frac{\sum_{x \in M} abs(x)}{|M|}
+\end{equation}
+Where \textit{M} is the multiset of all values obtained for a certain metric over our corpus and \textit{|M|} is the cardinality of this set. We then calculate the maintainability for a specific refactoring as follows:
+\begin{equation}\label{eq:type3r}
+A_M = \frac{dup}{A_{dup}} + \frac{com}{A_{com}} + \frac{par}{A_{par}} + \frac{vol}{A_{vol}}
+\end{equation}
+Where \textit{dup} is the decrease in duplication, \textit{com} is the decrease in complexity, \textit{par} is the decrease is method parameters and \textit{vol} is the decrease in system volume after the refactoring is applied.
+
+
 \section{Results}
+
 
 \subsection{Clone context}
 How many clones are there in certain contexts? Experiments for relation, location and context.
