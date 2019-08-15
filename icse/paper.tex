@@ -296,7 +296,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \subsubsection{Contents}
 Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -320,7 +320,7 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
 Table \ref{tab:refactorability} shows to what extend clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -354,7 +354,7 @@ The volume of the clone is the dominating factor regarding the maintainability i
 \subsubsection{Relation}
 Table \ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -384,7 +384,7 @@ Ancestor & -0,52 & 5 \\ \bottomrule
 \subsubsection{Return Value}
 Table \ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system.
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
