@@ -350,13 +350,13 @@ Figure \ref{fig:duplication} shows the obtained results when plotting the clone 
 \end{figure*}
 
 \subsubsection{Relation}
-Table \ref{} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance. For these results, we have set the minimum amount of tokens for clones to 18 because otherwise the small clones dominate the results and turn them all towards unmaintainable.
+Table \ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance. For these results, we have set the minimum amount of tokens for clones to 18 because otherwise the small clones dominate the results and turn them all towards unmaintainable.
 
 \begin{table}[]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-Row Labels & Maintainability Score & Number of Refactorings \\ \midrule
+Category & Maintainability Score & Number of Refactorings \\ \midrule
 \rowcolor[HTML]{FFCCC9}
 Common Hierarchy & 0,63 & 27 \\
 Sibling & 0,53 & 664 \\
@@ -378,6 +378,26 @@ Ancestor & -0,52 & 5 \\ \bottomrule
 \caption{Influence on maintainability of refactoring clones by certain relations.}
 \label{tab:relation_refactor}
 \end{table}
+
+\subsubsection{Return Value}
+Table \ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system.
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Return Value & Maintainability Score & Number of Refactorings \\ \midrule
+Return & 0,20 & 421 \\
+Void & 0,19 & 2052 \\
+Declare & 0,03 & 1318 \\
+\rowcolor[HTML]{FFCCC9}
+Assign & -1,29 & 3 \\ \bottomrule
+\end{tabular}
+\caption{Maintainability scores for different return values}
+\label{tab:return}
+\end{table}
+
+\subsubsection{Arguments}
 
 \section{Discussion}
 \subsection{Clone Definitions}
