@@ -327,7 +327,7 @@ Table \ref{tab:refactorability} shows to what extend clone classes can be refact
 \textit{\textbf{Category}} & \textit{\textbf{All}} & \textit{\textbf{Method Body}} \\ \midrule
 Can Be Extracted & 24,157 & 26,109 \\
 Is Not A Partial Method & 21,625 & 0 \\
-Top-level Node is not a Statement & 19,887 & 4,607 \\
+Top-level AST-Node is not a Statement & 19,887 & 4,607 \\
 Spans Part of a Block & 12,964 & 13,460 \\
 Multiple Return Values & 5,622 & 6,131 \\
 Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
@@ -409,11 +409,18 @@ Figure \ref{fig:arguments} shows how an increase in parameters lowers the mainta
 \end{figure}
 
 \section{Discussion}
-\subsection{Clone Definitions}
+In this section we discuss the results of our experiments.
 
-\subsection{CloneRefactor}
+\subsection{Clone Context}
+Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring, because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Also 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
 
-\subsection{Experimental setup}
+Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level.
+
+\subsection{Extract Method}
+28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
+
+\subsection{Refactoring}
+
 
 \section{Conclusion}
 
