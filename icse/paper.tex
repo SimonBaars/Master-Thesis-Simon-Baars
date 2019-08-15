@@ -29,7 +29,7 @@
 \email{ana.oprescu@uva.nl}
 
 \begin{abstract}
-Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such anti-patterns, a developer should refactor the codebase. There are many tools that assist in this process. The thresholds and prioritization of the clones detected by such tools can be improved by considering the maintainability of the codebase after a detected clone would be refactored.
+Duplication in source code is often seen as one of the most harmful types of technical debt, because it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such anti-patterns, a developer should refactor the codebase. There are many tools that assist in this process. The thresholds and prioritization of the clones detected by such tools can be improved by considering the maintainability of the codebase after a detected clone would be refactored. We perform an exploratory study into the data that can be gathered from comparing before- and after snapshots of an automatically refactored system.
 
 In this study, we define clones that can be refactored. We propose a tool to detect such clones and automatically refactor a subset of them. We use a set of metrics to determine the impact of the applied refactorings to the maintainability of the systems. These metrics are system size, cyclomatic complexity \cite{mccabe1976complexity}, duplication and number of method parameters. On basis of these results, we decide which clones improve system design and thus should be refactored. %We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
 
@@ -209,7 +209,7 @@ CloneRefactor then removes all cloned code and replaces it with a method call to
 
 We verified the correctness of the resulting refactorings manually. We ran the tool over a large software project and verified over 1.000 applied refactorings.
 
-\subsubsection{Characteristics of the extracted method}
+\subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
 We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
 \item \textbf{Statements}: The number of statements in the body of the method.
@@ -244,7 +244,7 @@ This procedure results in 2.267 Java projects including all their dependencies. 
 \subsection{Minimum clone size}
 In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability because the detrimental effect of added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
 
-\subsection{Calculating a maintainability score}
+\subsection{Calculating a maintainability score}\label{sec:metricformula}
 In this study we use four metrics to determine maintainability \ref{sec:metrics}. For our experiments, we want to aggregate the scores obtained by these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
@@ -317,7 +317,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \label{tab:contents}
 \end{table}
 
-\subsection{Clone refactorability}
+\subsection{Extract Method}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
 Table \ref{tab:refactorability} shows to what extend clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
 
@@ -335,10 +335,14 @@ Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
 \end{tabular}
 \caption{Number of clones that can be extracted using the ``Extract Method'' refactoring technique}
 \label{tab:refactorability}
-\end{table}s
+\end{table}
 
-\subsection{Thresholds}
-I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
+\subsection{Refactoring}
+%I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
+In our corpus CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+
+\subsubsection{Statements}
+
 
 \section{Discussion}
 \subsection{Clone Definitions}
