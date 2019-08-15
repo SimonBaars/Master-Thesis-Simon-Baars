@@ -212,7 +212,6 @@ We verified the correctness of the resulting refactorings manually. We ran the t
 \subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
 We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
-\item \textbf{Statements}: The number of statements in the body of the method.
 \item \textbf{Tokens}: The number of tokens in the body of the method.
 \item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined.
 \item \textbf{Returns}: Whether the method calls return, declare, assign or don't use any data from the extracted method.
@@ -341,8 +340,14 @@ Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
 In our corpus CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
 
-\subsubsection{Statements}
+\subsubsection{Clone Token Volume}
+Figure \ref{fig:duplication} shows the obtained results when plotting the clone size (in tokens) vs the maintainability increase/decrease. On the secondary axis the amount of refactorings that have refactored a clone with the specified amount of tokens is displayed (e.g. the amount of datapoints the data is based on). As the amount of datapoints decreases, the datapoints become more noisy. 
 
+\begin{figure*}
+  \includegraphics[width=1\textwidth]{img/duplication}
+  \caption{How the size of the refactored clone influences the maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
+  \label{fig:duplication}
+\end{figure*}
 
 \section{Discussion}
 \subsection{Clone Definitions}
