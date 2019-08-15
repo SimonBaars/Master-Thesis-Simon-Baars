@@ -1,7 +1,7 @@
 \documentclass[sigconf,review]{acmart}
 
 \usepackage{graphicx}
-\usepackage{xcolor}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{float}
 
 \usepackage{booktabs}
@@ -191,7 +191,8 @@ There are several influencing factors that may obstruct the possibility to extra
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement.
     \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:contents}, the ``Extract Method'' refactoring technique cannot be applied.
-    \item \textbf{Returns multiple values}: If a clone modifies or declares multiple pieces of data that it should return.
+    \item \textbf{Returns Multiple Values}: If a clone modifies or declares multiple pieces of data that it should return.
+    \item \textbf{Top-Level Non-Statement}: If one of the top-level AST nodes of the clone is not a statement. For instance, if a (part of) an anonymous class is cloned.
     \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
 \end{itemize}
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CloneRefactor only refactors the clones that \textit{Can Be Extracted}.
@@ -318,6 +319,30 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 
 \subsection{Clone refactorability}
 To what extent can found clones be refactored through method extraction, without requiring additional transformations.
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\rowcolor[HTML]{C0C0C0}
+\textit{\textbf{Category}} & \textit{\textbf{All}} & \textit{\textbf{Method Body}} \\ \midrule
+\rowcolor[HTML]{EFEFEF}
+Can Be Extracted & 24,157 & 26,109 \\
+Is Not A Partial Method & 21,625 & 0 \\
+\rowcolor[HTML]{EFEFEF}
+Top-level Node is not a Statement &  & 4,607 \\
+Spans Part of a Block & 12,964 & 13460 \\
+\rowcolor[HTML]{EFEFEF}
+Multiple Return Values & 5,622 & 6,131 \\
+Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
+\end{tabular}
+\caption{Number of clones that can be extracted using the ``Extract Method'' refactoring technique}
+\label{tab:refactorability}
+\end{table}
 
 \subsection{Thresholds}
 I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability and gap size.
