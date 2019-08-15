@@ -354,7 +354,6 @@ The volume of the clone is the dominating factor regarding the maintainability i
 \subsubsection{Relation}
 Table \ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
 
-
 \begin{table}[]
 \centering
 \begin{tabular}{@{}lll@{}}
@@ -426,9 +425,18 @@ Regarding clone contents, 74\% of clones span part of a method body (77\% if we 
 28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
 
 \subsection{Refactoring}
+In Fig.~\ref{fig:duplication} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie around 28 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
 
+In Table \ref{tab:relation_refactor} we see the results regarding refactorings that are applied to clones with diverse relations. We see that most refactored clones are in a common class, over 54\%. This is significantly more than the percentage of clones in the common class relation as reported in Table~\ref{tab:relation}. Meanwhile, the number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
+
+The maintainability scores displayed in Table \ref{tab:relation_refactor} show that the most favorable clone to refactor are clones with a Sibling relation. The most unfavorable is to refactor clones to interfaces.
+
+Regarding the return type of refactored clones, we see in Table \ref{tab:return} that this has no major impact on maintainability. A method call to the extracted method that is directly returned and no return type extracted methods are slightly more favorable than the others. We think the main reason that the ``Return'' category is on top is that when a variable is declared at the end of the cloned fragment, CloneRefactor directly returns its value and removes the declaration. This decreases volume slightly.
+
+A higher number of parameters directly influences the corresponding metric. Because of this, we see in Fig.~\ref{fig:arguments} that more parameters negatively influence maintainability. Not only the number of parameters metric is negatively influenced, more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
 
 \section{Conclusion}
+
 
 \section*{Acknowledgment}
 We would like to thank the Software Improvement Group for their continuous support in this project. In particular, we would like to thank Xander Schrijen for his invaluable input in this research. Furthermore, we would like to thank Sander Meester for his proofreading efforts and feedback.
