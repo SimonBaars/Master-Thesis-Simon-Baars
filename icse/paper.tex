@@ -102,17 +102,17 @@ Often when allowing such variance, trade-offs come into play. For instance, vari
 
 \subsection{Gapped clones} \label{sec:t3r}
 %Explain type 3, why it is not always refactorable, solution
-Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context \cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones''. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
+Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context \cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones'' \cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
 \begin{itemize}
   \item We wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
   \item We use a lambda function to pass the difference in statements from each location of the clone.
 \end{itemize}
-Again, a trade-off is at play, as these solutions increase the complexity in favor of removing a clone.
+For both refactoring techniques a trade-off is at play, as these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
 \section{CloneRefactor}
 % NEED TO EXPLAIN WHY DO CURRENT DETECTION TOOLS NOT SUFFICE
 % The tool: Detect Clones, Map Context, Refactor.
-To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques \cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output. None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing} seemed suitable, because of which we decided to implement our own tool. 
+To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques \cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output. None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing} seemed suitable, because of which we decided to implement our own tool.
 
 To automate the process of refactoring clones, we propose a tool named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process to refactor clones. This process is displayed in Fig.~\ref{fig:clonerefactorflow}.
 \begin{figure}[H]
