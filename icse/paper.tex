@@ -42,11 +42,13 @@ We have identified that the size of the duplication problem is the biggest influ
 \maketitle
 
 \section{Introduction}
-Duplication in source code is often seen as one of the most harmful types of technical debt because it increases the size of the codebase and creates implicit dependencies between fragments of code \cite{ostberg2014automatically}. Bruntink et al.~\cite{bruntink2005use} show that code clones can contribute up to 25\% of the code size.
+Duplicate fragments in source code (also named ``code clones'') are often seen as one of the most harmful types of technical debt \cite{fowler2018refactoring}. Duplicate fragments create implicit dependencies that make the code harder to maintain as the resolution of erroneous behaviour in one location may have to be applied to all the cloned code as well \cite{ostberg2014automatically}. Apart from that, code clones can contribute up to 25\% of the code size~\cite{bruntink2005use}.
 
 Current code clone detection techniques base their thresholds and prioritization on a limited set of metrics. Often, clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
 
-In this study, we define a technique to detect clones such that they can be refactored. We evaluate the context of clones to determine refactoring techniques are required to refactor clones in a specific context. We propose a tool for the automated refactoring of a subset of the detected clones, by extracting a new method out of duplicated code.
+In this study, we define a technique to detect clones such that they can be refactored. We evaluate the context of clones to determine which refactoring techniques are required to refactor clones in a specific context. We propose a tool for the automated refactoring of a subset of the detected clones, by extracting a new method out of duplicated code.
+
+We use automated refactoring to compare the maintainability of the before- and after snapshots of a codebase for each duplication problem that is refactored. This gives us insight into whether clones detected by certain thresholds should be refactored to improve the maintainability of the codebase. This allows for more accurate suggestion of code clones for refactoring and can provide assistance in the refactoring process.
 
 \section{Background}
 This study researches an intersection of code clone and refactoring research. In this background section, we will explain the required background knowledge for terms used throughout this study.
