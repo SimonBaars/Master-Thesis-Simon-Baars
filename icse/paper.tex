@@ -255,7 +255,9 @@ In this study, we use four metrics to determine maintainability (see Sec.~\ref{s
   \item Higher values for the metrics imply lower maintainability.
   \item The obtained increase of the metric divided by the average distance from zero over our corpus weights the metric equally against the other metrics.
 \end{itemize}
-We calculate the average deviation as follows:
+We derived these assumptions partly from Heitlager et al~\cite{heitlager2007practical} and our own expert intuition. The validity of these metrics influences the validity of the conclusions we can draw from our data. Because of that, in our experiments we focus mainly on significant differences in maintainability to draw a conclusion.
+
+By dividing the obtained metric scores by the average distance from zero of all obtained values for a specific metric, we ensure that each metric is weighted equally towards the final maintainability score. We calculate this average distance as follows:
 \begin{equation}\label{eq:scoredev}
 A = \frac{\sum_{x \in M} abs(x)}{|M|}
 \end{equation}
