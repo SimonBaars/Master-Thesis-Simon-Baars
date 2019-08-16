@@ -22,6 +22,156 @@ We also measured the duration of finding clones by the different clone types. Fi
   \label{fig:performance}
 \end{figure}
 
+\subsection{Clone context}
+% How many clones are there in certain contexts? Experiments for relation, location, and context.
+To determine the refactoring method(s) that can be used to refactor most clones, we perform statistical analysis on the context of clones (see Sec.~\ref{sec:context}).
+
+\subsubsection{Relation}
+Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Sec.~\ref{sec:relation}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{Total}} \\ \midrule
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Class\end{tabular}} & Same Class & 22,893 & \multirow{2}{*}{31,848} \\ \cmidrule(lr){2-3}
+ & Same Method & 8,955 &  \\ \midrule
+\multirow{5}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Hierarchy\end{tabular}} & Sibling & 15,588 & \multirow{5}{*}{20,342} \\ \cmidrule(lr){2-3}
+ & Superclass & 2,616 &  \\ \cmidrule(lr){2-3}
+ & First Cousin & 1,219 &  \\ \cmidrule(lr){2-3}
+ & Common Hierarchy & 720 &  \\ \cmidrule(lr){2-3}
+ & Ancestor & 199 &  \\ \midrule
+\multirow{4}{*}{Unrelated} & No Direct Superclass & 10,677 & \multirow{4}{*}{20,314} \\ \cmidrule(lr){2-3}
+ & External Superclass & 4,525 &  \\ \cmidrule(lr){2-3}
+ & External Ancestor & 3,347 &  \\ \cmidrule(lr){2-3}
+ & No Indirect Superclass & 1,765 &  \\ \midrule
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Interface\end{tabular}} & Same Direct Interface & 7,522 & \multirow{2}{*}{13,074} \\ \cmidrule(lr){2-3}
+ & Same Indirect Interface & 5,552 &  \\ \bottomrule
+\end{tabular}
+\caption{Number of clone classes per clone relation}
+\label{tab:relation}
+\end{table}
+
+\subsubsection{Contents}
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
+\multirow{2}{*}{Partial} & Partial Method & 219,540 & \multirow{2}{*}{229,521} \\ \cmidrule(lr){2-3}
+ & Partial Constructor & 9,981 &  \\ \midrule
+\multirow{5}{*}{Full} & Full Method & 12,990 & \multirow{5}{*}{13,173} \\ \cmidrule(lr){2-3}
+ & Full Interface & 64 &  \\ \cmidrule(lr){2-3}
+ & Full Constructor & 58 &  \\ \cmidrule(lr){2-3}
+ & Full Class & 37 &  \\ \cmidrule(lr){2-3}
+ & Full Enum & 24 &  \\ \midrule
+\multirow{3}{*}{Other} & Several Methods & 22,749 & \multirow{3}{*}{53,773} \\ \cmidrule(lr){2-3}
+ & Only Fields & 17,700 &  \\ \cmidrule(lr){2-3}
+ & Other & 13,324 &  \\ \bottomrule
+\end{tabular}
+\caption{Number of clone instances for clone contents categories}
+\label{tab:contents}
+\end{table}
+
+\subsection{Extract Method}
+%To what extent can found clones be refactored through method extraction, without requiring additional transformations.
+Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{All}} & \textit{\textbf{Method Body}} \\ \midrule
+Can Be Extracted & 24,157 & 26,109 \\
+Is Not A Partial Method & 21,625 & 0 \\
+Top-level AST-Node is not a Statement & 19,887 & 4,607 \\
+Spans Part of a Block & 12,964 & 13,460 \\
+Multiple Return Values & 5,622 & 6,131 \\
+Complex Control Flow & 1,106 & 1,216 \\ \bottomrule
+\end{tabular}
+\caption{Number of clones that can be extracted using the ``Extract Method'' refactoring technique}
+\label{tab:refactorability}
+\end{table}
+
+\subsection{Refactoring}
+%I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
+In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+
+\subsubsection{Clone Token Volume}
+Figure \ref{fig:duplication} shows the obtained results when plotting the clone size (in tokens) vs the maintainability increase/decrease. On the secondary axis the amount of refactorings that have refactored a clone with the specified amount of tokens is displayed (e.g. the amount of data points the data is based on). As the amount of data points decreases, the datapoints gain less statistical significance.
+
+\begin{figure*}
+  \includegraphics[width=1\textwidth]{img/duplication}
+  \caption{A graph that shows how the size in tokens of the refactored clone affects maintainability. Maintainability on the primary axis and amount of refactorings on the secondary axis.}
+  \label{fig:duplication}
+\end{figure*}
+
+The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, for our further experiments, we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
+
+\subsubsection{Relation}
+Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textit{\textbf{Relation}} & \textit{\textbf{\begin{tabular}[c]{@{}l@{}}Maintainability\\ Score\end{tabular}}} & \textit{\textbf{\begin{tabular}[c]{@{}l@{}}Number of\\ Refactorings\end{tabular}}} \\ \midrule
+\textbf{Common Hierarchy} & \textbf{0.51} & \textbf{792} \\ \midrule
+\hspace{10pt} Sibling & 0.57 & 637 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} Same Hierarchy & 0.55 & 22 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} Superclass & 0.20 & 74 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} First Cousin & -0.02 & 53 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} Ancestor & -0.65 & 6 \\ \midrule
+\textbf{Common Class} & \textbf{0.01} & \textbf{2,025}\\ \midrule
+\hspace{10pt} Same Method & 0.01 & 762  \\
+\hspace{10pt} Same Class & 0.01 & 1,263 \\ \midrule
+\textbf{Unrelated} & \textbf{-0.02} & \textbf{688}\\ \midrule
+\hspace{10pt} No Direct Superclass & 0.08 & 289 \\
+\hspace{10pt} External Superclass & -0.02 & 225  \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} No Indirect Superclass & -0.04 & 30  \\
+\hspace{10pt} External Ancestor & -0.26 & 144  \\ \midrule
+\textbf{Common Interface} & \textbf{-0.11} & \textbf{283} \\ \midrule
+\hspace{10pt} Same Direct Interface & 0.02 & 160 \\
+\hspace{10pt} Same Indirect Interface & -0.31 & 123
+\end{tabular}
+\caption{Influence on maintainability of refactoring clones by certain relations.}
+\label{tab:relation_refactor}
+\end{table}
+
+\subsubsection{Return Value}
+Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textit{\textbf{Return Value}} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Maintainability}}\\\textit{\textbf{Score}}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Number of}}\\\textit{\textbf{Refactorings}}\end{tabular} \\ \midrule
+Return & 0.20 & 421 \\
+Void & 0.19 & 2052 \\
+Declare & 0.03 & 1318 \\
+\rowcolor[HTML]{FFCCC9}
+Assign & -1.29 & 3 \\ \bottomrule
+\end{tabular}
+\caption{Maintainability scores for different return values}
+\label{tab:return}
+\end{table}
+
+\subsubsection{Parameters}
+Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters.
+
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/arguments}
+  \caption{Influence of number of method parameters on system maintainability.}
+  \label{fig:arguments}
+\end{figure}
+
 \section{Context Analysis of Clones}\label{chap:clonecontextexpl}
 We analyzed the context of clones in a large corpus of open source projects. These experiments follow the structure of the context: The relation between clone instances is explained, measured and discussed in chapter \ref{chap:relationsinstances}; the location of clone instances is explained, measured and discussed in chapter \ref{chap:clonelocation};  he content of clone instances are explained, measured and discussed in chapter \ref{chap:clonecontents}.
 

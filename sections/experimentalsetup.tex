@@ -26,7 +26,7 @@ This procedure results in 2,267 Java projects including all their dependencies. 
 \section{Minimum clone size}
 In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
 
-\subsection{Calculating a maintainability score}\label{sec:metricformula}
+\section{Calculating a maintainability score}\label{sec:metricformula}
 In this study, we use four metrics to determine maintainability (see Section~\ref{sec:metrics}). For our experiments, we aggregate the scores obtained by these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
