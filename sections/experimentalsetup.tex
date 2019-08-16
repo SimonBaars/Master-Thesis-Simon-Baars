@@ -20,4 +20,25 @@ To verify the correctness of all Java files in the projects, we used JavaParser 
 \subsection{Inspecting outliers}
 We ran CloneRefactor over every project in the corpus and inspected the output for each project. Some projects gave unusual high numbers of projects of a certain size, which we manually inspected. Often these projects contained generated source files. We removed these projects from the corpus.
 
-The result is a set of 674 Java projects that we use for all our experiments.
+\subsection{Resulting corpus}
+This procedure results in 2,267 Java projects including all their dependencies. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527.
+
+\section{Minimum clone size}
+In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
+
+\subsection{Calculating a maintainability score}\label{sec:metricformula}
+In this study, we use four metrics to determine maintainability \ref{sec:metrics}. For our experiments, we want to aggregate the scores obtained by these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
+\begin{itemize}
+  \item All metrics are equal in terms of weight towards system maintenance effort.
+  \item Higher values for the metrics imply lower maintainability.
+  \item The obtained increase of the metric divided by the average distance from zero over our corpus weights the metric equally against the other metrics.
+\end{itemize}
+We calculate the average deviation as follows:
+\begin{equation}\label{eq:scoredev}
+A = \frac{\sum_{x \in M} abs(x)}{|M|}
+\end{equation}
+Where \textit{M} is the multiset of all change in a certain metric for all refactorings over all systems in  obtained for a certain metric over our corpus and \textit{|M|} is the cardinality of this set. We then calculate the maintainability for a specific refactoring as follows:
+\begin{equation}\label{eq:scoreref}
+A_M = \frac{dup}{A_{dup}} + \frac{com}{A_{com}} + \frac{par}{A_{par}} + \frac{vol}{A_{vol}}
+\end{equation}
+Where \textit{dup} is the decrease in duplication, \textit{com} is the decrease in complexity, \textit{par} is the decrease is method parameters and \textit{vol} is the decrease in system volume after the refactoring is applied. When comparing the maintainability of a set of refactorings we divide the sum of the maintainability score by the amount of clone instances of all refactored clones in the set.
