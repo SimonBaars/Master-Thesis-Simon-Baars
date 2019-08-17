@@ -3,7 +3,6 @@
 This chapter will present the necessary background information for this thesis. Here, we define some basic terminology that will be used throughout this thesis.
 
 \section{Code clone terminology}\label{sec:terminology}
-% The sets are actually definitions, NOT PROPERTIES. This should be clearer.
 Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and Jiang et al. \cite{jiang2007deckard}. We created a summary of these concepts, which can be found in Table~\ref{tab:clone-terminology}.
 
 \begin{table}[H]
@@ -16,7 +15,7 @@ Many studies present different definitions for code clone concepts. For this stu
 \rowcolor[HTML]{EFEFEF}
 T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} The range this token\\spans.\\ \textbf{Category (C):} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration in a \\ codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} The range this node\\spans.\end{tabular} \\
+N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration node\\in the AST of a codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} The range this node\\spans.\end{tabular} \\
 \rowcolor[HTML]{EFEFEF}
 I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use, roy2007survey}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{File (F):} The file in which this\\clone instance is found.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
