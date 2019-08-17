@@ -55,18 +55,18 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \begin{tabular}{@{}llllll@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
-\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Class\end{tabular}} & Same Class & 22,893 & 26.8\% & \multirow{2}{*}{31,848} & \multirow{2}{*}{37.2\%} \\ \cmidrule(lr){2-4}
+\multirow{2}{*}{Common Class} & Same Class & 22,893 & 26.8\% & \multirow{2}{*}{31,848} & \multirow{2}{*}{37.2\%} \\ \cmidrule(lr){2-4}
  & Same Method & 8,955 & 10.5\% & & \\ \midrule
-\multirow{5}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Hierarchy\end{tabular}} & Sibling & 15,588 & 18.2\% & \multirow{5}{*}{20,342}& \multirow{5}{*}{23.8\%} \\ \cmidrule(lr){2-3}
- & Superclass & 2,616 & 3.1\% & & \\ \cmidrule(lr){2-3}
- & First Cousin & 1,219 & 1.4\% & & \\ \cmidrule(lr){2-3}
- & Common Hierarchy & 720 & 0.8\% & & \\ \cmidrule(lr){2-3}
+\multirow{5}{*}{Common Hierarchy} & Sibling & 15,588 & 18.2\% & \multirow{5}{*}{20,342}& \multirow{5}{*}{23.8\%} \\ \cmidrule(lr){2-4}
+ & Superclass & 2,616 & 3.1\% & & \\ \cmidrule(lr){2-4}
+ & First Cousin & 1,219 & 1.4\% & & \\ \cmidrule(lr){2-4}
+ & Common Hierarchy & 720 & 0.8\% & & \\ \cmidrule(lr){2-4}
  & Ancestor & 199 & 0.2\% & & \\ \midrule
-\multirow{4}{*}{Unrelated} & No Direct Superclass & 10,677 & 12.5\% & \multirow{4}{*}{20,314}& \multirow{4}{*}{23.7\%} \\ \cmidrule(lr){2-3}
- & External Superclass & 4,525 & 5.3\% & & \\ \cmidrule(lr){2-3}
- & External Ancestor & 3,347 & 3.9\% & & \\ \cmidrule(lr){2-3}
+\multirow{4}{*}{Unrelated} & No Direct Superclass & 10,677 & 12.5\% & \multirow{4}{*}{20,314}& \multirow{4}{*}{23.7\%} \\ \cmidrule(lr){2-4}
+ & External Superclass & 4,525 & 5.3\% & & \\ \cmidrule(lr){2-4}
+ & External Ancestor & 3,347 & 3.9\% & & \\ \cmidrule(lr){2-4}
  & No Indirect Superclass & 1,765 & 2.1\% & & \\ \midrule
-\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Common\\ Interface\end{tabular}} & Same Direct Interface & 7,522 & 8.8\% & \multirow{2}{*}{13,074} & \multirow{2}{*}{15.3\%} \\ \cmidrule(lr){2-3}
+\multirow{2}{*}{Common Interface} & Same Direct Interface & 7,522 & 8.8\% & \multirow{2}{*}{13,074} & \multirow{2}{*}{15.3\%} \\ \cmidrule(lr){2-4}
  & Same Indirect Interface & 5,552 & 6.5\% & & \\ \bottomrule
 \end{tabular}
 \caption{Number of clone classes per clone relation}
@@ -78,19 +78,19 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}llllll@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
-\multirow{2}{*}{Partial} & Partial Method & 219,540 & \multirow{2}{*}{229,521} \\ \cmidrule(lr){2-3}
- & Partial Constructor & 9,981 &  \\ \midrule
-\multirow{5}{*}{Full} & Full Method & 12,990 & \multirow{5}{*}{13,173} \\ \cmidrule(lr){2-3}
- & Full Interface & 64 &  \\ \cmidrule(lr){2-3}
- & Full Constructor & 58 &  \\ \cmidrule(lr){2-3}
- & Full Class & 37 &  \\ \cmidrule(lr){2-3}
- & Full Enum & 24 &  \\ \midrule
-\multirow{3}{*}{Other} & Several Methods & 22,749 & \multirow{3}{*}{53,773} \\ \cmidrule(lr){2-3}
- & Only Fields & 17,700 &  \\ \cmidrule(lr){2-3}
- & Other & 13,324 &  \\ \bottomrule
+\multirow{2}{*}{Partial} & Partial Method & 219,540 & 74.05\% & \multirow{2}{*}{229,521}& \multirow{2}{*}{77.42\%} \\ \cmidrule(lr){2-4}
+ & Partial Constructor & 9,981 & 3.37\% & & \\ \midrule
+\multirow{5}{*}{Full} & Full Method & 12,990 & 4.38\% & \multirow{5}{*}{13,173}& \multirow{5}{*}{4,44\%} \\ \cmidrule(lr){2-4}
+ & Full Interface & 64 & 0.02\% & & \\ \cmidrule(lr){2-4}
+ & Full Constructor & 58 & 0.02\% & & \\ \cmidrule(lr){2-4}
+ & Full Class & 37 & 0.01\% & & \\ \cmidrule(lr){2-4}
+ & Full Enum & 24 & 0.01\% & & \\ \midrule
+\multirow{3}{*}{Other} & Several Methods & 22,749 & 7.67\% & \multirow{3}{*}{53,773} & \multirow{3}{*}{18.14\%} \\ \cmidrule(lr){2-4}
+ & Only Fields & 17,700 & 5.97\% & & \\ \cmidrule(lr){2-4}
+ & Other & 13,324 & 4.49\% & & \\ \bottomrule
 \end{tabular}
 \caption{Number of clone instances for clone contents categories}
 \label{tab:contents}
