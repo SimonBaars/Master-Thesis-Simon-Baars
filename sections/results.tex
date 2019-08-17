@@ -9,35 +9,21 @@ In this section, we display our results regarding the differences in found nodes
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{img/TypeResults}
     \caption{Number of cloned nodes.}
 \label{fig:typeres}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{img/DurationChart}
-    \caption{Duration in minutes of identifying clones for clone type definitions.}
+    \caption{Clone type performance.}
   \label{fig:performance}
   \end{minipage}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.5\columnwidth]{img/TypeResults}
-      \caption{Number of cloned nodes.}
-  \label{fig:typeres}
-\end{figure}
-
 \subsection{Performance}
-We also measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. Although this data is partly dependent on our implementation of the clone types, there is a notable difference between the refactoring-oriented clone types and the literature clone types. The reason for this is further explained in Section~\ref{chap:challenge}.
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.5\columnwidth]{img/DurationChart}
-    \caption{Duration in minutes of identifying clones for clone type definitions.}
-  \label{fig:performance}
-\end{figure}
+To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which do not have many background processes severely affecting the results. The durations are of course dependent on our implementation of the clone types.
 
 \section{Clone context}
 % How many clones are there in certain contexts? Experiments for relation, location, and context.
