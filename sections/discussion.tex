@@ -187,6 +187,9 @@ To limit the scope of this research, we chose not to include human subjects in t
 \section{Results}
 In this section, we discuss the results of our experiments.
 
+\subsection{Clone Types}
+In this section, we discuss the differences between clone types 1-3 and 1R-3R. In Figure \ref{fig:typeres} we see that the difference between T1R and T1 is relatively small (11\% more cloned nodes found for T1). Often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (34.7\% more cloned nodes for T2). The main reason for this is that T2R does not allow any variability in types, wheareas T2 allows any variability in types. T3R and T3 only a little bit higher than T2R and T2.
+
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
 
