@@ -68,7 +68,7 @@ In Section~\ref{chap:contextsetup} we introduced the categories we defined for m
 \subsection{Refactorability} \label{sec:discussrefactorability}
 In Section~\ref{sec:refactorability} we introduced to what extent clones can be refactored through method extraction. Because we strived to get results fast, we excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with a bit more effort.
 
-\subsubsection{Partial block}
+\subsubsection{Partial block} \label{sec:partialblockdiscussion}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
 
 \begin{figure}[H]
