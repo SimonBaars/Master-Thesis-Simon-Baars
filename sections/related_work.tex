@@ -1,4 +1,32 @@
 \chapter{Related work} \label{ch:related_work}
+In this chapter we present the work related to this study.
+
+\section{Refactoring suggestion tooling}
+We are novel in the introduction of a fully automated refactoring tool. However, several tools have already been proposed for refactoring suggestion. In this section we discuss these tools.
+
+\subsection{SUPREMO}
+A thesis by Golomingi~\cite{koni2001scenario} is the first to explore mapping the relation between clone instances to refactoring methods. In this thesis, the author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring}. Mapping these to relations between clones, this results in Table \ref{tab:relationrefactoring}.
+
+\begin{table}[H]
+\begin{tabular}{lllllllll}
+                     & Ancestor   & \begin{tabular}[c]{@{}l@{}}Common\\ Hierarchy\end{tabular} & \begin{tabular}[c]{@{}l@{}}First\\ Cousin\end{tabular} & \begin{tabular}[c]{@{}l@{}}Same\\ Method\end{tabular} & Sibling    & \begin{tabular}[c]{@{}l@{}}Single\\ Class\end{tabular} & Superclass & Unrelated \\
+Extract Method       & \checkmark & \checkmark                                                 & \checkmark                                             & \checkmark                                            & \checkmark & \checkmark                                             &            &           \\
+Insert Method Call   &            &                                                            &                                                        & \checkmark                                            &            & \checkmark                                             &            &           \\
+Insert Super Call    &            &                                                            &                                                        &                                                       &            &                                                        & \checkmark &           \\
+Parameterization     & \checkmark & \checkmark                                                 & \checkmark                                             & \checkmark                                            & \checkmark & \checkmark                                             & \checkmark &           \\
+Pull Up Method       & \checkmark & \checkmark                                                 & \checkmark                                             &                                                       & \checkmark &                                                        & \checkmark &           \\
+Form Template Method & \checkmark & \checkmark                                                 & \checkmark                                             & \checkmark                                            & \checkmark & \checkmark                                             & \checkmark &           \\
+Push Down Method     &            &                                                            &                                                        &                                                       &            &                                                        & \checkmark &           \\
+Extract Superclass   &            & \checkmark                                                 & \checkmark                                             &                                                       & \checkmark &                                                        &            &
+\end{tabular}
+\caption{Mapping clone relations to refactoring techniques \cite{koni2001scenario}}
+\label{tab:relationrefactoring}
+\end{table}
+
+The author then proposes a tool named ``SUPREMO''. This tool determines the relations between clone instances, computes the impact of the clones and proposes refactorings. Their tool features visualizations to show how clones are related in the inheritance structure. This tool is written for the Smalltalk programming language. The authors verify their approach by presenting several cases in which their tool analyses source code and outputs a refactoring suggestion.
+
+\subsection{Duplicated Code Refactoring Advisor (DCRA)}
+Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} perform literature analyses to match clone context to refactoring opportunities. On basis of this literature study, they match refactoring methods \cite{fowler1999refactoring} to clone relations \cite{koni2001scenario}
 The Duplicated Code Refactoring Advisor (DCRA) looks into refactoring opportunities for clone pairs~\cite{fontana2012duplicated, fontana2015duplicated}. DCRA only focuses on refactoring clone pairs, with the authors arguing that \textit{clone pairs are much easier to manage when considered singularly.} As intermediate steps, the authors measure a corpus of Java systems for some clone-related properties of the systems, like the relation (in terms of inheritance) between code fragments in a clone pair. We further look into these measurements in Sec.~\ref{chap:relationsinstances}.
 
 A tool named Aries~\cite{higo2004aries, higo2008metric} focuses on the detection of refactorable clones. They do this based on the relation between clone instances through inheritance, similar to Fontana et al.~\cite{fontana2012duplicated}. This tool only proposes a refactoring opportunity and does not provide help in the process of applying the refactoring.
