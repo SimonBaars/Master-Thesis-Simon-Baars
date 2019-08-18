@@ -1,7 +1,7 @@
 \chapter{Related work} \label{ch:related_work}
 In this chapter we present the work related to this study.
 
-\section{Refactoring suggestion tools}
+\section{Code clone refactoring suggestion tools}
 We are novel in the introduction of a fully automated refactoring tool. However, several tools have already been proposed for refactoring suggestion. In this section we discuss these tools. The tools are ordered on basis of the year in which they were proposed.
 
 \subsection{SUPREMO}
@@ -66,6 +66,9 @@ Ancestor Class           & 13     & 0.1\%      & 281    & 0.2\%      \\ \bottomr
 
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} propose DCRA, a tool to suggest refactorings for the clones found by the NiCAD tool \cite{roy2008nicad, cordy2011nicad}. DCRA suggests refactorings to clones found in Java projects based on the mapping between relation and refactoring techniques shown in Table~\ref{tab:relationrefactoring}.
 
+\subsection{JDeodorant}
+\todo{TODO}
+
 \subsection{Refactoring Technique for Large Groups of Software Clones}
 A thesis by AlWaqfi~\cite{alwaqfi2017refactoring} propose a method for assessing refactorability of clone classes (whereas the previous tools only focus on clone pairs). The author surveys a set of clone detection tools \cite{kamiya2002ccfinder, baxter1999clonedr, jiang2007deckard, cordy2011nicad} and uses a publicly available dataset \cite{tsantalis2015assessing} to measure the amount of clones found by these tools. The resulting data shows that significant portions of source code of the measured systems are cloned. The data also shows that there are large differences between different tools in the amount of clones found. The author also measures of how many clone instances clone classes consist. According to these experiments, about 68\% of clone classes consist of 2 clone instances, 13\% have 3 clone instances, 7\% have 4 clone instances and about 12\% is even larger.
 
@@ -73,6 +76,14 @@ The authors perform a lot of statistical comparisons between clone detection too
 
 \subsection{Pattern‐based clone Refactoring Inspection (PRI)}
 A study by Chen et al.~\ref{chen2018clone} addresses the problem that developers cannot easily determine which clones can be refactored or how they should be maintained scattered
-throughout a large code base in evolving systems. They propose PRI, a technique for managing clone refactorings for clones with a Sibling relation. PRI is a plugin for the Eclipse IDE that shows which refactoring techniques can be used to refactor clones. Because it is integrated in the Eclipse IDE, the refactorings can be executed largely automatically, as this IDE has a large set of tools for performing such transformations.
+throughout a large code base in evolving systems. They propose PRI, a technique for managing refactorings for clones with a Sibling relation. PRI is a plugin for the Eclipse IDE that shows which refactoring techniques can be used to refactor clones. Because it is integrated in the Eclipse IDE, the refactorings can be executed largely automatically, as this IDE has a large set of tools for performing such transformations.
 
-PRI traces clones through revisions of a software project. This makes this tool able to find incompletely refactored clones. PRI produces false positives in that several groups are incorrectly classified since the clone detector suffers the inaccuracy in finding semantically equivalent behaviors between clones.
+Another feature of the PRI tool is to find incompletely refactored clones. To do this, PRI traces clones through revisions of a software project. When a clone class is incompletely refactored, PRI informs the user that there are clone instances for which an extracted method has already been created.
+
+\section{Clone refatoring}
+In this section, we shortly introduce recent studies about refactoring code clones.
+
+\subsection{Impact of Clone Refactoring on External Quality Attributes}
+A study by Vashisht et al.~\cite{vashisht2018impact} determines the impact of clone refactoring on several quality attributes. They calculate the metrics of the system before refactoring, detect clones using CCFinder \cite{kamiya2002ccfinder}, use JDeodorant to refactor a subset of the detected clones \cite{mazinanian2016jdeodorant} and measure the metrics again after refactoring to assess the impact of the refactoring process on quality attributes. They conclude that some metrics affect some quality attributes positively and some negatively.
+
+In this study, the authors only compare before and after snapshots of refactoring the entire system. This makes it hard to determine why some metrics are negatively influenced.

@@ -105,7 +105,7 @@ Often when allowing such variance, trade-offs come into play. For instance, vari
 Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context \cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones'' \cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
 \begin{itemize}
   \item We wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
-  \item We use a lambda function to pass the difference in statements from each location of the clone.
+  \item We use a lambda function to pass the difference in statements from each location of the clone \cite{tsantalis2017clone}.
 \end{itemize}
 For both refactoring techniques a trade-off is at play, as these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
