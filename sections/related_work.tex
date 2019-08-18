@@ -2,7 +2,7 @@
 In this chapter we present the work related to this study.
 
 \section{Refactoring suggestion tools}
-We are novel in the introduction of a fully automated refactoring tool. However, several tools have already been proposed for refactoring suggestion. In this section we discuss these tools.
+We are novel in the introduction of a fully automated refactoring tool. However, several tools have already been proposed for refactoring suggestion. In this section we discuss these tools. The tools are ordered on basis of the year in which they were proposed.
 
 \subsection{SUPREMO}
 A thesis by Golomingi~\cite{koni2001scenario} is the first to explore mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring}. Mapping these to relations between clones, this results in Table \ref{tab:relationrefactoring}.
@@ -29,6 +29,19 @@ Extract Superclass   &            & \checkmark                                  
 
 The author then proposes a tool named ``SUPREMO''. This tool determines the relations between clone instances, computes the impact of the clones and proposes refactorings. Their tool features visualizations to show how clones are related in the inheritance structure. This tool is written for the Smalltalk programming language. The authors verify their approach by presenting several cases in which their tool analyses source code and outputs a refactoring suggestion.
 
+\subsection{Aries}
+A study by Higo et al.~\cite{higo2004aries, higo2008metric} looks into to what extent clones can be refactored. They show code examples and to what entent they can be cloned. For instance, they look into what parts of a clone can be extracted to a new method. They define that partially cloned blocks obstruct method extraction. They propose t make the clone smaller to find a part of the clone that can be refactored. This is similar to our ``partial block'' category of Section~\ref{sec:refactorabilitysetup} and our discussion in Section~\ref{sec:partialblockdiscussion}.
+
+Higo et al. also look into the amount of variability that can be allowed between clone fragments. Figure~\ref{fig:higomerge} shows an example of merging two code fragments from this study. In this figure, the clone spans a part of a different block so it cannot be refactored. However, they propose to ommit both ``else if'' lines from the merged fragment so that it can be refactored (in our study we would have flagged these clones as ``partial block'' and thus unsuitable for refactoring). They also allow variability in literals and variables and replace them with method parameters.
+
+\begin{figure}[H]
+  \includegraphics[width=1\textwidth]{img/higo}
+  \caption{Example of merging two code fragments from Higo et al.~\cite{higo2008metric}.}
+  \label{fig:higomerge}
+\end{figure}
+
+Higo et al. propose a tool named Aries~\cite{higo2004aries, higo2008metric} that focuses on the detection of refactorable clones. They focus entirely on whether a clone \textbf{can} be refactored and not whether it \textbf{should} be refactored. This tool only proposes refactoring opportunities and does not provide help in the process of applying the refactoring.
+
 \subsection{Duplicated Code Refactoring Advisor (DCRA)}
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analysis of clone relations together with clone types. Table \ref{tab:dcra-relation} displays the result of this analysis. We added percentages and ordering to this table for easier comparison with the results of our studies (see \ref{sec:relationresults}).
 
@@ -52,19 +65,6 @@ Ancestor Class           & 13     & 0.1\%      & 281    & 0.2\%      \\ \bottomr
 \end{table}
 
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} propose a tool to suggest refactorings for the clones found by the NiCAD tool \cite{roy2008nicad, cordy2011nicad}. This tool is named Duplicated Code Refactoring Advisor (DCRA). The DCRA suggests refactorings, based on Table~\ref{tab:relationrefactoring}, to clones found in Java projects.
-
-\subsection{Aries}
-A study by Higo et al.~\cite{higo2004aries, higo2008metric} looks into to what extent clones can be refactored. They show code examples and to what entent they can be cloned. For instance, they look into what parts of a clone can be extracted to a new method. They define that partially cloned blocks obstruct method extraction. They propose t make the clone smaller to find a part of the clone that can be refactored. This is similar to our ``partial block'' category of Section~\ref{sec:refactorabilitysetup} and our discussion in Section~\ref{sec:partialblockdiscussion}.
-
-Higo et al. also look into the amount of variability that can be allowed between clone fragments. Figure~\ref{fig:higomerge} shows an example of merging two code fragments from this study. In this figure, the clone spans a part of a different block so it cannot be refactored. However, they propose to ommit both ``else if'' lines from the merged fragment so that it can be refactored (in our study we would have flagged these clones as ``partial block'' and thus unsuitable for refactoring). They also allow variability in literals and variables and replace them with method parameters.
-
-\begin{figure}[H]
-  \includegraphics[width=1\textwidth]{img/higo}
-  \caption{Example of merging two code fragments from Higo et al.~\cite{higo2008metric}.}
-  \label{fig:higomerge}
-\end{figure}
-
-Higo et al. propose a tool named Aries~\cite{higo2004aries, higo2008metric} that focuses on the detection of refactorable clones. They focus entirely on whether a clone \textbf{can} be refactored and not whether it \textbf{should} be refactored. This tool only proposes a refactoring opportunity and does not provide help in the process of applying the refactoring.
 
 \subsection{Coming up :)}
 We investigated several research efforts that look into code clone refactoring~\cite{alwaqfi2017refactoring, chen2018clone, koni2001scenario}. However, all of these tools only support a subset of all harmful clones that are found. Also, these tools are limited to suggesting refactoring opportunities, rather than actually applying refactorings where suitable. Finally, all published approaches have limitations, such as false positives in their clone detection~\cite{chen2018clone} or being limited to clone pairs~\cite{higo2008metric}.
