@@ -67,6 +67,31 @@ Ancestor Class           & 13     & 0.1\%      & 281    & 0.2\%      \\ \bottomr
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} propose DCRA, a tool to suggest refactorings for the clones found by the NiCAD tool \cite{roy2008nicad, cordy2011nicad}. DCRA suggests refactorings to clones found in Java projects based on the mapping between relation and refactoring techniques shown in Table~\ref{tab:relationrefactoring}.
 
 \subsection{JDeodorant}
+The most used tool used to help in the process of refactoring clones is JDeodorant \cite{mazinanian2016jdeodorant}. This tool is based on a set of studies, that look into several aspects of the clone refactoring process. The first of these studies is ``Refactoring Clones: An Optimization Problem'' by Krishnan et al.~\cite{krishnan2013refactoring}. The authors describe clones that are refactored by extracting their functionality to a single method. They also describe that variability between identifiers and literals have to become parameters in the extracted method. They identify the optimization problem where the variability between cloned fragments should be limited, to avoid limiting the reusability of methods because of too many method parameters. They propose an algorithm that calculates the variance between code fragments on basis of the difference in AST nodes.
+
+The second study, ``Unification and Refactoring of Clones'' by Krishnan et al.~\cite{krishnan2014unification}, the authors address the problem of the modifications made to copied fragments and their impact on the refactoring process. They identify a list of expressions in which they have found variability, which is displayed in Table~\ref{tab:krishnanvariability}.
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textit{\textbf{Difference Type}} & \multicolumn{2}{c}{\textit{\textbf{Example}}}                                                \\ \midrule
+Variable Identifier               & \multicolumn{1}{c|}{\texttt{int x = \textbf{y};}}       & \texttt{int x = \textbf{z};}       \\
+Literal Value                     & \multicolumn{1}{c|}{\texttt{String s = \textbf{"s1"};}} & \texttt{String s = \textbf{"s2"};} \\
+Method Name                       & \multicolumn{1}{c|}{\texttt{expr.\textbf{foo}(arg);}}   & \texttt{expr.\textbf{bar}(arg);}   \\
+Argument Number                   & \multicolumn{1}{c|}{\texttt{foo(\textbf{arg0, arg1});}} & \texttt{foo(\textbf{arg0});}       \\
+Caller Expression                 & \multicolumn{1}{c|}{\texttt{\textbf{expr.}foo(arg);}}   & \texttt{foo(arg);}                 \\
+Array Dimension                   & \multicolumn{1}{c|}{\texttt{int x = a\textbf{[i]};}}    & \texttt{int x = a\textbf{[i][j]};} \\
+AST Compatible                    & \multicolumn{1}{c|}{\texttt{int x = \textbf{foo()};}}   & \texttt{int x = \textbf{5};}       \\ \midrule
+Operator                          & \multicolumn{1}{c|}{\texttt{int x = y \textbf{+} z;}}   & \texttt{int x = y \textbf{-} z;}   \\
+Variable Type                     & \multicolumn{1}{c|}{\texttt{\textbf{int} x = 5;}}       & \texttt{\textbf{double} x = 5;}    \\ \bottomrule
+\end{tabular}%
+}
+\caption{Expression variability table from Krishnan et al.~\cite{krishnan2014unification}}
+\label{tab:krishnanvariability}
+\end{table}
+
 \cite{krishnan2013refactoring, krishnan2014unification, tsantalis2015assessing, mazinanian2016jdeodorant, tsantalis2017clone}
 \todo{TODO}
 
