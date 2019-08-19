@@ -90,8 +90,7 @@ A study by Vashisht et al.~\cite{vashisht2018impact} determines the impact of cl
 In this study, the authors only compare before and after snapshots of refactoring the entire system. This makes it hard to determine why some metrics are negatively influenced.
 
 \subsection{Clone Recommendation System for Extract Method Refactoring}
-\cite{yoshida2019proactive}
-\todo{TODO}
+Yoshida et al.~\cite{yoshida2019proactive} propose a plugin for the Eclipse IDE that recommends clone refactoring candidates on basis of keystroke tracking. Whenever the user performs the ``Extract Method'' refactoring, the proposed system scans the project for clones that can now use the extracted method. It then shows the developer all places that should be refactored aswell now that a new method has been created. The approach was validated by requesting human participants to apply refactorings to open source systems. On average, it took participants 1,043 seconds to refactor 2.75 clones. They indicate that this is 35\% faster than when working with a popular clone detection tool (GemX).
 
 \subsection{Effect of clone refactoring on the size of unit test cases}
 \cite{badri2019measuring}
