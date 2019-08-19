@@ -685,7 +685,7 @@ After clone detection and context analysis, CloneRefactor applies refactorings t
 \subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is ``Extract Method'' (creating a new method on the basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
 
-Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. We defined the following categories:
+Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. These categories are party derived from the clone refactoring preconditions defined by Tsantalis et al.~\cite{tsantalis2015assessing} (see Section \ref{sec:jdeodorant}). These categories are as follows:
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a statement.
