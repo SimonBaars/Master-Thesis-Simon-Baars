@@ -680,7 +680,7 @@ This category denotes that the clone spans over only global variables, fields th
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of above states concepts. For instance, a combination of constructors and methods is clones, or a combination of fields and methods. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
 
 \section{Automated Refactoring}
-After clone detection and context analysis, CloneRefactor applies refactorings to a subset of the identified clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
+After clone detection and context analysis, CloneRefactor applies refactorings to a subset of type 1R clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
 
 \subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
 The most used technique to refactor clones is ``Extract Method'' (creating a new method on the basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
@@ -773,7 +773,7 @@ public void sayHello(){
 \subsubsection{Can be extracted}
 All clones that do not adhere to any of above-stated categories, are considered suitable for automated method extraction.
 
-\subsection{Applying refactorings}
+\subsection{Applying refactorings} \label{sec:applyingrefactorings}
 All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST in order to refactor clones.
 
 First, we create a new method and give it an uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy the nodes that were removed from a single clone instance in the new method.

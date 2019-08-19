@@ -90,7 +90,7 @@ In this section, we discuss our implementation decisions to refactor source code
 In Section~\ref{sec:refactorability} we introduced catagories to determine the refactorability of clones through method extraction. We excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
 
 \subsubsection{Partial block} \label{sec:partialblockdiscussion}
-We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
+We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression \cite{tsantalis2017clone}. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -165,6 +165,9 @@ public boolean doAandB(){
 \caption{Refactoring a method that is obstructed by a complex control flow.}
 \label{fig:complexcontrolflowrefactoring}
 \end{figure}
+
+\subsubsection{Applying refactorings}
+CloneRefactor can refactor all clones that are flagged ``can be extracted''. This is done through a series of AST transformations as described in Section \ref{sec:applyingrefactorings}. Currently, these refactoring methods do not yet allow for variability (type 2R and 3R), as allowing variability quickly increases the complexity of the refactoring problem and the amount of edge cases to consider \cite{tsantalis2015assessing}. Because of this, CloneRefactor does not yet realistically emulate human refactoring efforts, as humans would take variability between code fragments into account. To get a more 
 
 \subsubsection{Metrics}
 For this study we chose to focus on a set of four metrics to measure maintainability: method size, duplication, method parameters and cyclomatic complexity. These metrics give an indication of the impact of the refactoring, but do not give a complete overview. There are many more metrics that could be considered to measure the maintainability impact on the system. An example of such a metric is ``coupling'', which focuses on the amount of incoming calls into a method or class and what modules these calls come from. This metric is also influenced by the transformations we applied and might deliver valuable insights in the quality of the refactoring.
