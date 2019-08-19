@@ -1,20 +1,13 @@
-\chapter{Conclusion}
-\todo{Rewrite}
-\label{ch:conclusion}
-In the research we have conducted so far we have made three novel contributions:
-\begin{itemize}
-    \item We proposed a method with which we can detect clones that can/should be refactored.
-    \item We mapped the context of clones in a large corpus of open source systems.
-    \item We mapped the opportunities to perform method extraction on clones this corpus.
-\end{itemize}
+\chapter{Conclusion} \label{ch:conclusion}
+We defined automatically refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
 
-We have looked into existing definitions for different types of clones \cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that fully qualified identifiers of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the merged unit shall have.
+%For cloned fragments to be refactorable, we propose that fully qualified identifiers of method call signatures and type references should be considered instead of their plain text representation, to be sure that they refer to the same implementations. , we propose that one should define thresholds for variability in variables, literals and method calls, in order to limit the number of parameters that the merged unit shall have.
 
-The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a fourth of the clone classes all of its instances are in the same class. About a sixth of the clone classes have clone instances that are siblings of each other (share the same superclass).
+We defined three aspects as part of the context of a clone: relation, location and contents. Regarding relations, we found that 37\% of clones are found in the same class. 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 7\% of clones have the same interface. Regarding where a clone is found, 78\% of clones is found at method-level of which 77\% is found in the body of a method or constructor. Because of this, the ``Extract Method'' refactoring method is most suitable to refactor most clones.
 
-Secondly, we looked at the location of clone instances. Most clone instances (58 percent) are found at method level. About 37 percent of clone instances were found at class level. We defined ``class level clones'' as clones that exceed the boundaries of a single method or contain something else in the class (like field declarations, other methods, etc.). Thirdly, we looked at the contents of clone instances. Most clones span a part of a method (57 percent). About 26 percent of clones span over several methods.
+We built a tool that can automatically apply refactorings to 28\% of clones in our corpus using the ``Extract Method'' refactoring technique. The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, for instance when code outside a method is part of a clone.
 
-We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
+We measured the effect of clone refactoring on the volume, cyclomatic complexity, duplication and method parameters metrics of the codebase. We measured these metrics before- and after each clone class that was refactored to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. For our dataset, at a clone volume of 29 tokens per clone instance the average clone refactoring improved system maintainability. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
 In this section we share some factors that can influence the validity of the obtained results.
