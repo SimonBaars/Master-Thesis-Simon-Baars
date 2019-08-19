@@ -69,11 +69,17 @@ Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} propose DCRA,
 \subsection{JDeodorant}
 The most used tool used to help in the process of refactoring clones is JDeodorant \cite{mazinanian2016jdeodorant}. This tool is based on a set of studies, that look into several aspects of the clone refactoring process. The first of these studies is ``Refactoring Clones: An Optimization Problem'' by Krishnan et al.~\cite{krishnan2013refactoring}. The authors describe clones that are refactored by extracting their functionality to a single method. They also describe that variability between identifiers and literals have to become parameters in the extracted method. They identify the optimization problem where the variability between cloned fragments should be limited, to avoid limiting the reusability of methods because of too many method parameters. They propose an algorithm that calculates the variance between code fragments on basis of the difference in AST nodes.
 
-The second study, ``Unification and Refactoring of Clones'' by Krishnan et al.~\cite{krishnan2014unification}, the authors address the problem of the modifications made to copied fragments and their impact on the refactoring process. They identify a list of expressions in which they have found variability, which is displayed in Table~\ref{tab:krishnanvariability}.
+The second study, ``Unification and Refactoring of Clones'' by Krishnan et al.~\cite{krishnan2014unification}, the authors address the problem of the modifications made to copied fragments and their impact on the refactoring process. They identify a list of expressions in which they have found variability, which is displayed in Table~\ref{tab:krishnanvariability}. The authors map the variability in this table to refactoring opportunities. They list a set of four preconditions for the refactoring process:
+\begin{enumerate}
+  \item The parameterization of differences between the matched statements should not break existing data-, anti-, and output-dependences.
+  \item The unmatched statements should be movable before or after the matched statements without breaking existing data-, anti-, and output-dependences.
+  \item The duplicated code fragments should return at most one variable of the same type.
+  \item Matched branching (\texttt{break}, \texttt{continue}) statements should be accompanied with corresponding matched loop statements.
+\end{enumerate}
+In our study, we address precondition 1 and 2 and propose a solution. To address precondition 1, we only refactor variability in such a way that existing data-, anti-, and output-dependences are not affected (see Section \ref{sec:type2r}). For precondition 2, we propose using conditional or lambda expressions to wrap the difference in statements (see Section \ref{sec:type3r}). For precondition 3 and 4, we flag these clones as ``not refactorable'' (see Section \ref{sec:refactorabilitysetup}).
 
 \begin{table}[H]
 \centering
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcc@{}}
 \toprule
 \textit{\textbf{Difference Type}} & \multicolumn{2}{c}{\textit{\textbf{Example}}}                                                \\ \midrule
@@ -86,8 +92,7 @@ Array Dimension                   & \multicolumn{1}{c|}{\texttt{int x = a\textbf
 AST Compatible                    & \multicolumn{1}{c|}{\texttt{int x = \textbf{foo()};}}   & \texttt{int x = \textbf{5};}       \\ \midrule
 Operator                          & \multicolumn{1}{c|}{\texttt{int x = y \textbf{+} z;}}   & \texttt{int x = y \textbf{-} z;}   \\
 Variable Type                     & \multicolumn{1}{c|}{\texttt{\textbf{int} x = 5;}}       & \texttt{\textbf{double} x = 5;}    \\ \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \caption{Expression variability table from Krishnan et al.~\cite{krishnan2014unification}}
 \label{tab:krishnanvariability}
 \end{table}
