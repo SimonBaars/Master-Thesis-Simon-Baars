@@ -106,10 +106,10 @@ Type 3 clones are \textit{copied fragments with further modification (with added
 Having a definition that allows for any change in code poses serious challenges on refactoring. A Levenshtein distance of one can already change the meaning of a code fragment significantly, for instance, if the name of a type differs by a character (and thus referring to different types).
 
 \section{Refactoring-oriented clone types}\label{sec:rtypes}
-To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types directed at detecting clones that can and should be refactored. We have named these clones T1R (type 1R), T2R and T3R clones. These definitions address problems of the corresponding literature definitions. The ``R'' stands for refactoring-oriented (and may be less useful for other analyses) % TODO: Sander - zou dat laatste remark miss weglaten of echt uitleggen.
+To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions address problems of the corresponding literature definitions. The ``R'' stands for refactoring-oriented.
 
 \subsection{Type 1R clones} \label{sec:type1r}
-To solve the issues identified in Section~\ref{sec:type1}, we introduce an alternative definition: cloned fragments have to be both textually \textit{and} functionally equal. Like type 1 clones, type 1R clones do not consider comments and whitespace. Therefore, T1R clones are a subset of type 1 clones.
+To solve the issues identified in Section~\ref{sec:type1}, we introduce an alternative definition: cloned fragments have to be both textually \textit{and} functionally equal. Like type 1 clones, type 1R clones do not consider comments and whitespace. Therefore, type 1R clones are a subset of type 1 clones.
 
 We check functional equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object).
 
