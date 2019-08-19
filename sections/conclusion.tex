@@ -17,10 +17,13 @@ Secondly, we looked at the location of clone instances. Most clone instances (58
 We also looked into the refactorability of clones that span a part of a method. Over 10 percent of the clones can directly be refactored by extracting them to a new method (and calling the method at all usages using their relation). The main reason that most clones that span a part of a method cannot directly be refactored by method extraction, is that they contain \texttt{return}, \texttt{break} or \texttt{continue} statements.
 
 \section{Threats to validity}\label{chap:threatstovalidity}
-\todo{Rewrite}
-We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our manual assessment, seemed optimal. However, by using these, we definitely miss some harmful clones.
-\todo{Possible stuff: future work might be a threat to validity}
-\todo{Implementation specific for CloneRefactor: limited validation}
+In this section we share some factors that can influence the validity of the obtained results.
+
+\subsection{CloneRefactor}
+CloneRefactor can refactor all clones that are flagged ``can be extracted''. This is done through a series of AST transformations as described in Section \ref{sec:applyingrefactorings}. Currently, these refactoring methods do not yet allow for variability (type 2R and 3R), as allowing variability quickly increases the complexity of the refactoring problem and the amount of edge cases to consider \cite{tsantalis2015assessing}. Because of this, CloneRefactor does not yet realistically emulate human refactoring efforts, as humans would take variability between code fragments into account. This influences the results, as the numbers obtained might be higher if it would more realistically emulate human behavior.
+
+\subsection{Corpus}
+We used a corpus of 2,267 open source Java projects from GitHub for our experiments. This corpus consists of only Maven projects and we only take the ``production sources'' folder of these projects take into account. We inspected the results of CloneRefactor for outliers and excluded projects that have generated sources in their ``production sources'' folder. This increases the chance that we are not taking into account test sources and generated files, but it does not eliminate this chance. Because of that, there is a threat to validity in the source code in the corpus, as it potentially includes sources that do not reflect human-maintained production code.
 
 \section{Future work} \label{sec:future_work}
 This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated refactoring. However, we scratched just the tip of the iceberg regarding all research opportunities in this field. In this section we describe possible extensions to this research, as well as other research opportunities in this field of studies.
