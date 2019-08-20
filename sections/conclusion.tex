@@ -9,6 +9,8 @@ We built a tool that can automatically apply refactorings to 28\% of clones in o
 
 We measured the effect of clone refactoring on the volume, cyclomatic complexity, number of parameters and duplication metrics of the codebase. We measured these metrics before- and after each clone class that was refactored to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. For our dataset, at a clone volume of 29 tokens per clone instance the average clone refactoring improved system maintainability. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
 
+% We recommend to extend our tool, CloneRefactor, to allow for such capabilities. CloneRefactor already contains a component that calculates the Cyclomatic Complexity of a given method. Using our automated refactored model, identified problems can relatively easily be refactored.
+
 \section{Threats to validity}\label{chap:threatstovalidity}
 In this section we share some factors that can influence the validity of the obtained results.
 
@@ -50,6 +52,8 @@ Method size has a strong relation, in terms of refactoring, with Cyclomatic Comp
 
 \subsubsection{Combining the metrics}
 Combining the automated refactoring models for each of these metrics can result in a model that ultimately provides significant improvement in the ease of writing well-maintainable source code. In this study, we presented a few tradeoffs that are the result of refactoring code clones. For instance, refactoring code clones with a lot of variability can result in long parameter lists. However, if we can combine this with automated refactoring of long parameter lists, this tradeoff can be mitigated. This way, it is possible to work towards an model of automated refactoring that reduces manual refactoring efforts significantly.
+
+% When programming, there are often trade-offs between technical debt and velocity. When a deadline comes near, often software quality in sacrificed to gain velocity \cite{costello1984software, austin2001effects, shah2014global}. Apart from that, a low programmer aptitude can result in low quality code \cite{cheney1984effects}. This is because often forming appropriate abstractions requires time, effort and critical thinking. By introducing these abstractions automatically, this negative impact can (partly) be mitigated.
 
 %When programming, many developers must take decisions between velocity
 %Many programmers report frequent decisions in which they decide to take technical debt
