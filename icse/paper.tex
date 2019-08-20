@@ -48,7 +48,7 @@ Duplicate fragments in source code (also named ``code clones'') are often seen a
 
 Current code clone detection techniques base their thresholds and prioritization on a limited set of metrics. Often, clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
 
-In this study, we define a technique to detect clones such that they can be automatically refactored. We evaluate the relation and location of clones to determine which refactoring techniques are best suited. We introduce a tool that automatically refactors clones by extracting new methods out of duplicated code.
+In this study, we define a technique to detect clones such that they can be automatically refactored. We list a set of criteria that can obtruct refactoring opportunities. We evaluate the relation and location of clones to determine which refactoring techniques are best suited. We introduce a tool that automatically refactors clones by extracting new methods out of duplicated code.
 
 %TODO: Hint about results. Hint about methodology.
 We evaluate our approach by comparing the maintainability of before- and after snapshots of a codebase for each duplication problem that is refactored. This gives us insight into whether clones detected by certain thresholds should be refactored to improve the maintainability of the codebase. This allows for more accurate suggestion of code clones for refactoring and can provide assistance in the refactoring process.
@@ -64,22 +64,22 @@ We use two concepts to argue about code clones \cite{roy2007survey}:
 
 %\subsection{Refactoring techniques}
 %In this section, we describe refactoring techniques that are relevant to refactoring code clones.
-There are several refactoring techniques that are relevant to refactoring duplicated code:
-\\ \textbf{Extract Method}: A common technique to refactor duplicate code is ``Extract Method'' \cite{fowler2018refactoring}, which can be applied on code inside the body of a method. This technique moves functionality in method bodies to a new method. To reduce duplication, we extract the contents of a single clone instance to a new method and replace all clone instances in a clone class by a call to this method.
-\\ \textbf{Move Method}: Often, ``Extract Method'' alone is not enough to refactor clones. This is because the extracted method has to be moved to a location that is accessible by all clone instances. To do this, we apply the ``Move Method'' refactoring technique \cite{fowler2018refactoring}. In object-oriented programming languages, we often move methods up in the inheritance structure of classes, also called ``Pull Up Method'' \cite{fowler2018refactoring}.
+The most common technique for refactoring clones is ``Extract Method'' \cite{fowler2018refactoring}, which can be applied on code inside the body of a method. This technique moves functionality in method bodies to a new method. This technique extracts the contents of a single clone instance to a new method and replace all clone instances in a clone class by a call to this method.
+
+%TODO: Maybe explain something about ASTs, declarations, types, etc.?
 
 \section{Defining refactorable clones}
 % Instead of defining clone types, I just define how we can ensure that clones can be refactored. I do not plan to differentiate between T1R, T2R, and T3R here, because I think it makes the paper confusing.
 % To be honest, I'm not even sure how relevant it is to name the literature clone types. Maybe not focus on their shortcomings, but just start from the core (source code) and define how we can get to refactorable clones.
-In literature, several clone type definitions have been used to argue about duplication in source code \cite{roy2007survey}. In this section, we discuss how we can define clones such that they can be refactored without side effects on the source code.
+In literature, several clone type definitions have been used to argue about duplication in source code \cite{roy2007survey}. We discuss how we can define clones such that they can be automatically refactored without side effects on the source code.
 
 \subsection{Ensuring Equality}\label{sec:t1r}
 % Explain type 1, why it is not always refactorable, solution
-Most modern clone detection tools detect clones by comparing the code textually together with the omission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if beneficial at all.
+Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if beneficial at all.
 
-To detect clones that can be refactored, we propose to:
+To detect clones that can be automatically refactored, we propose to:
 \begin{itemize}
-  \item Compare variable references not only by their name but also by their type.
+  \item Compare variable references not only by their name, but also by their type.
   \item Compare referenced types by their fully qualified identifier (FQI). The FQI of a type reference describes the full path to where it is declared.
   \item Compare method references by their fully qualified signature (FQS). The FQS of a method reference describes the full path to where it is declared, plus the FQI of each of its parameters.
 \end{itemize}
@@ -88,7 +88,7 @@ To detect clones that can be refactored, we propose to:
 
 \subsection{Allowing variability in a controlled set of expressions} \label{sec:t2r}
 %Explain type 2, why it is not always refactorable, solution
-Often, duplication fragments in source code do not match exactly \cite{kodhai2013method}. Often when developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into in what expressions we can allow variability while still being refactorable.
+Often, duplication fragments in source code do not match exactly \cite{kodhai2013method}. When developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into what expressions we can allow variability in, while still being refactorable.
 
 We define the following expressions as refactorable when varied:
 \begin{itemize}
@@ -107,18 +107,17 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 \end{itemize}
 For both refactoring techniques a trade-off is at play, as these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
-\section{CloneRefactor}
+\section{The CloneRefactor tool}
 % NEED TO EXPLAIN WHY DO CURRENT DETECTION TOOLS NOT SUFFICE
 % The tool: Detect Clones, Map Context, Refactor.
-To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques \cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output. None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we decided to implement our own tool.
+To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques \cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects\footnote{Control projects for assessing clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output.
 
-To automate the process of refactoring clones, we propose a tool named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process to refactor clones. This process is displayed in Fig.~\ref{fig:clonerefactorflow}.
+None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we decided to implement our own tool: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/flow}
   \caption{Simple flow diagram of CloneRefactor.}
   \label{fig:clonerefactorflow}
 \end{figure}
-In this section, we explain each of these steps.
 
 \subsection{Clone Detection}
 % Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
@@ -135,11 +134,11 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
 
 \subsection{Context Mapping} \label{sec:context}
-After clones are detected, we map the context of these clones. We have identified three properties of clones as their context: relation and contents. We identify categories for each of these properties, to get a detailed insight into the context of clones.
+After clones are detected, we map the context of these clones. We have identified three properties of clones as their context: relation and location. We identify categories for each of these properties, to get a detailed insight into the context of clones.
 
 \subsubsection{Relation}\label{sec:relation}
 % The rationale for our categories regarding clone relations.
-Clone instances in a clone class can have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, for instance, belonging to a library) unless explicitly stated:
+Clone instances in a clone class may have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, e.g. belonging to a library) unless explicitly stated:
 \begin{itemize}
     \item \textbf{Common Class}: All clone instances are in the same class.
     \begin{itemize}
@@ -168,14 +167,14 @@ Clone instances in a clone class can have a relation with each other through inh
     \end{itemize}
 \end{itemize}
 
-Based on these relations, we determine where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
+Based on these relations, CloneRefactor determines where to place the cloned code when refactored. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
-\subsubsection{Contents}\label{sec:contents}
-% The rationale for our categories regarding clone contents.
-The contents of a clone instance determine what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the contents of clones:
+\subsubsection{Location}\label{sec:location}
+% The rationale for our categories regarding clone locations.
+The location of a clone instance determine what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the location of clones:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
-  \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor.
+  \item \textbf{Partial Method/Constructor Body:} A clone that spans (a part of) the body of a method/constructor.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods.
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
@@ -193,7 +192,7 @@ Several influencing factors may obstruct the possibility to extract code to a ne
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement.
-    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:contents}, the ``Extract Method'' refactoring technique cannot be applied.
+    \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:location}, the ``Extract Method'' refactoring technique cannot be applied.
     \item \textbf{Returns Multiple Values}: If a clone modifies or declares multiple pieces of data that it should return.
     \item \textbf{Top-Level Non-Statement}: If one of the top-level AST nodes of the clone is not a statement. For instance, if a (part of) an anonymous class is cloned.
     \item \textbf{Can Be Extracted}: This clone is a fragment of code that can directly be extracted to a new method. Then, based on the relation between the clone instances, further refactoring techniques can be used to refactor the extracted methods (for instance ``pull up method'' for clones in sibling classes).
@@ -298,14 +297,14 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \label{tab:relation}
 \end{table}
 
-\subsubsection{Contents}
-Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different contents (see Sec.~\ref{sec:contents}).
+\subsubsection{Location}
+Table~\ref{tab:location} displays the number of clone classes found for the entire corpus for different locations (see Sec.~\ref{sec:location}).
 
 \begin{table}[H]
 \centering
 \begin{tabular}{@{}llll@{}}
 \toprule
-\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
+\textit{\textbf{Category}} & \textit{\textbf{Location}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
 \multirow{2}{*}{Partial} & Partial Method & 219,540 & \multirow{2}{*}{229,521} \\ \cmidrule(lr){2-3}
  & Partial Constructor & 9,981 &  \\ \midrule
 \multirow{5}{*}{Full} & Full Method & 12,990 & \multirow{5}{*}{13,173} \\ \cmidrule(lr){2-3}
@@ -317,8 +316,8 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
  & Only Fields & 17,700 &  \\ \cmidrule(lr){2-3}
  & Other & 13,324 &  \\ \bottomrule
 \end{tabular}
-\caption{Number of clone instances for clone contents categories}
-\label{tab:contents}
+\caption{Number of clone instances for clone location categories}
+\label{tab:location}
 \end{table}
 
 \subsection{Extract Method}
@@ -424,7 +423,7 @@ In this section, we discuss the results of our experiments.
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
 
-Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
+Regarding clone locations, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \subsection{Extract Method}
 28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
@@ -443,7 +442,7 @@ A higher number of parameters directly influences the corresponding metric. Beca
 \section{Conclusion}
 We defined automatically refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
 
-We defined two aspects as part of the context of a clone: relation and contents. Regarding relations, we found that most clones are found in the same class, over 37\%. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 7\% of clones have the same interface. Regarding contents, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
+We defined two aspects as part of the context of a clone: relation and location. Regarding relations, we found that most clones are found in the same class, over 37\%. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 7\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
 
 We built a tool that can automatically apply refactorings to 28\% of clones in our corpus using the ``Extract Method'' refactoring technique. The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, for instance when code outside a method is part of a clone.
 
