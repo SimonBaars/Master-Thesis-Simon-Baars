@@ -1,7 +1,10 @@
 \chapter{Experimental Setup}
 In this chapter we explain the setup of our experiments. All our experiments are quantitative experiments, measured over a corpus using CloneRefactor. In this chapter, we first explain the corpus we use. We then explain the way in which we calculate the impact of refactorings on the software maintainability.
 
-\section{The corpus}\label{chap:corpus}
+\section{Tool Validation}
+\todo{TODO}
+
+\section{The Corpus}\label{chap:corpus}
 For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus contains a set of Java projects from GitHub, selected by number of forks. The projects in this corpus were then de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
 
 For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} and the rationale behind those steps.
@@ -35,11 +38,11 @@ In this study, we use four metrics to determine maintainability (see Section~\re
 \end{itemize}
 We derived these assumptions partly from Heitlager et al~\cite{heitlager2007practical} and our own expert intuition. The validity of these metrics influences the validity of the conclusions we can draw from our data. Because of that, in our experiments we focus mainly on significant differences in maintainability to draw a conclusion.
 
-We normalize each obtained metric delta using the ``Standard score'', which is as follows:
+We normalize each obtained metric delta using the ``Standard score'', which is calculated as follows:
 \begin{equation}\label{eq:scoredev}
-N_{metric} = \frac {\delta X-\mu}{\sigma}
+N_{metric} = \frac {\Delta X-\mu}{\sigma}
 \end{equation}
-Where $\delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metrics. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores much.
+Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metrics. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores much.
 
 We then calculate the maintainability for a specific refactoring as follows:
 \begin{equation}\label{eq:scoreref}
