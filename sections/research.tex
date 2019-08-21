@@ -487,12 +487,13 @@ We conducted a short survey on (recent) clone detection tools that we could use 
 \item \textbf{Can analyze resolved symbols}: When detecting the types proposed in section~\ref{sec:rtypes}, it is important that we can analyze resolved symbols (for instance a type reference). The rationale for this is further explained in~\ref{chap:challenge}.
 \item \textbf{Extensive detection configuration}: Detecting our clone definitions, as proposed in section~\ref{sec:rtypes}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
 \end{enumerate}
-The results of our survey are displayed in Table~\ref{table:dettools}.
+The results of our survey are displayed in Table~\ref{tab:dettools}.
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{@{}lcccc@{}}
 \toprule
+\rowcolor[HTML]{FFFFFF}
 \textit{\textbf{Clone Detection Tool}} & \textit{\textbf{(1)}} & \textit{\textbf{(2)}} & \textit{\textbf{(3)}} & \textit{\textbf{(4)}} \\ \midrule
 Siamese~\cite{ragkhitwetsagul2019siamese} &  &  &  & \checkmark \\
 NiCAD~\cite{roy2008nicad, cordy2011nicad} & \checkmark & \checkmark &  &  \\
