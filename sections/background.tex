@@ -84,10 +84,10 @@ A higher type of clone means that it's harder to detect and refactor. There are 
 % TODO: Sander - Deze subsectie wil ik wel even over hebben, loopt niet helemaal lekker maar niet zo makkelijk uit te leggen
 
 \section{Refactoring methods}
-Martin Fowler recently released the second edition of his Refactoring book \cite{fowler2018refactoring}. In this book he exclaims that \textit{``if you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them''} \cite{fowler1999refactoring, fowler2018refactoring}. He describes several methods to deal with duplication, dependent on the context of the clone. In this section we describe the methods which we use in this study.
+In Martin Fowler's popular ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``if you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them''}. He describes several methods to deal with duplication, dependent on the context of the clone. In this section we describe the methods which we use in this study.
 
 \subsection{Extract Method}
-The main method for dealing with duplication in source code, as described by Martin Fowler, is to extract the duplication to a common place. This refactoring method is called ``Extract Method''. Several studies have already concluded that most duplication in source code is found in the body of methods \cite{lozano2007evaluating, white2016deep, bergman2004ethnographic}. Method extraction can move matching functionality in method bodies to a common place, namely a new method. An example of this procedure is displayed in figure \cite{fig:extractmethod}.
+Current clone refactoring research shows that the ``Extract Method'' refactoring technique can refactor most duplication problems \cite{fontana2015duplicated, tsantalis2015assessing, white2016deep}. Method extraction moves matching functionality in method bodies to a common place, namely a new method \cite{fowler2018refactoring}. An example of this procedure is displayed in figure \cite{fig:extractmethod}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}

@@ -6,10 +6,10 @@ For our experiments we use a large corpus of open source projects \cite{githubCo
 
 For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} and the rationale behind those steps.
 
-\section{Tool Validation}
+\subsection{Tool Validation}
 We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), to see whether they get correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check both the correctness of the identified clones, their context and their proposed refactoring.
 
-We also test the correctness of the resulting code after refactoring. For this, we use a GitHub project named JFreeChart. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor. 
+We also test the correctness of the resulting code after refactoring. For this, we use a GitHub project named JFreeChart. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor.
 
 \subsection{Filtering Maven projects}
 As explained in Section~\ref{chap:challenge}, CloneRefactor requires all the libraries a software project is dependent on in order to perform its clone analysis. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to limit our scope to a single build automation system. We chose Maven, as it is one of the most used build automation systems for Java projects. Maven uses a file, named \texttt{pom.xml}, to describe a projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file (which indicates that those do not use the Maven build automation system).
