@@ -209,8 +209,6 @@ Where $E_x$ refers to the equality arrays shown in Table~\ref{table:equalityarra
 So for the example given in Figure~\ref{fig:equalityarrays} we have a variability of 75\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in Section~\ref{sec:conceptualremovingredundant}).
 
 %Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
-
-
 When a found clone class does not adhere to the global thresholds as explained in the previous section, we need to determine whether it contains any valid subclones. Below, we explain a few cases of valid subclones that may exist within an invalid clone class.
 
 \begin{figure}[H]
