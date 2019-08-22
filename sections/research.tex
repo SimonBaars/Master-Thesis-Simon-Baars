@@ -467,24 +467,20 @@ The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in th
 
 Regarding the nodes found as cloned by these clone type definitions, there exists a subset relation between all types:
 
-\begin{align*}\label{eq:typerelation}
+\begin{equation}\label{eq:typerelation}
 %N_{1R} = \{n | n = a node found using the T1R set of rules\}
 %N_{2R} = \{n | n = a node found using the T2R set of rules\}
 %N_{3R} = \{n | n = a node found using the T3R set of rules\}
-\centerline{\text{$N_{T1R} \subseteq N_{T2R} \subseteq N_{T3R}}$} \\
-\text{where}~N_{T1R} &= \text{\{n | n = a node found using the T1R set of rules\}} \\
-  N_{T2R} &= \text{\{n | n = a node found using the T2R set of rules\}} \\
-	N_{T3R} &= \text{\{n | n = a node found using the T3R set of rules\}}
-\end{align*}
+N_{T1R} \subseteq N_{T2R} \subseteq N_{T3R}
+\end{equation}
 
-Comparing these clone type definitions to the ones used in literature, type 1R clones are a subset of type 1 clones. However, this subset relation does not exist for type 2R and 3R clones. This is because these definitions allow variability in multi-token method calls, which type 2 and type 3 do not allow. Because of that, the following is true for these clone types:
+Where $N_{\text{clone type}}$ is the set of cloned nodes found by the rules of the specified clone type. Comparing these clone type definitions to the ones used in literature, type 1R clones are a subset of type 1 clones. However, this subset relation does not exist for type 2R and 3R clones. This is because these definitions allow variability in multi-token method calls, which type 2 and type 3 do not allow. Because of that, the following is true for these clone types:
 
 \begin{equation}\label{eq:typerelation2}
 N_{T1R} \subseteq N_{T1} \text{, but } N_{T2R} \nsubseteq N_{T2} \text{ and } N_{T3R} \nsubseteq N_{T3}
-\text{where}~N_{T1} &= \text{\{n | n = a node found using the T1 set of rules\}} \\
-  N_{T2} &= \text{\{n | n = a node found using the T2 set of rules\}} \\
-	N_{T3} &= \text{\{n | n = a node found using the T3 set of rules\}}
 \end{equation}
+
+Where $N_{\text{clone type}}$ is the set of cloned nodes found by the rules of the specified clone type.
 
 \subsection{The challenge of detecting these clones}\label{chap:challenge}
 To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on the basis of which a fully qualified identifier can be created.
