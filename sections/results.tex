@@ -173,7 +173,7 @@ In Figure~\ref{fig:complexity} we show the average delta complexity when clones 
   \label{fig:complexity}
 \end{figure}
 
-The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
+%The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance.
@@ -183,28 +183,25 @@ Table~\ref{tab:relation_refactor} shows our data regarding how different relatio
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textit{\textbf{Relation}} & \textit{\textbf{Maintainability Score}} & \textit{\textbf{Number of Refactorings}} \\ \midrule
-\textbf{Common Hierarchy} & \textbf{0.51} & \textbf{792} \\ \midrule
-\hspace{10pt} Sibling & 0.57 & 637 \\
+\textbf{Common Hierarchy} & \textbf{0.23} & \textbf{2,202} \\ \midrule
+\hspace{10pt} Superclass & 0.42 & 229 \\
+\hspace{10pt} Sibling & 0.23 & 1,722 \\
 \rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Same Hierarchy & 0.55 & 22 \\
+\hspace{10pt} Same Hierarchy & 0.10 & 87 \\
+\hspace{10pt} First Cousin & 0.02 & 144 \\
 \rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Superclass & 0.20 & 74 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} First Cousin & -0.02 & 53 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Ancestor & -0.65 & 6 \\ \midrule
-\textbf{Common Class} & \textbf{0.01} & \textbf{2,025}\\ \midrule
-\hspace{10pt} Same Method & 0.01 & 762  \\
-\hspace{10pt} Same Class & 0.01 & 1,263 \\ \midrule
-\textbf{Unrelated} & \textbf{-0.02} & \textbf{688}\\ \midrule
-\hspace{10pt} No Direct Superclass & 0.08 & 289 \\
-\hspace{10pt} External Superclass & -0.02 & 225  \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} No Indirect Superclass & -0.04 & 30  \\
-\hspace{10pt} External Ancestor & -0.26 & 144  \\ \midrule
-\textbf{Common Interface} & \textbf{-0.11} & \textbf{283} \\ \midrule
-\hspace{10pt} Same Direct Interface & 0.02 & 160 \\
-\hspace{10pt} Same Indirect Interface & -0.31 & 123
+\hspace{10pt} Ancestor & -0.03 & 20 \\ \midrule
+\textbf{Common Interface} & \textbf{-0.02} & \textbf{1,044} \\ \midrule
+\hspace{10pt} Same Indirect Interface & -0.01 & 487 \\
+\hspace{10pt} Same Direct Interface & -0.02 & 557 \\ \midrule
+\textbf{Common Class} & \textbf{-0.02} & \textbf{7,239}\\ \midrule
+\hspace{10pt} Same Class & 0.04  & 4,874 \\
+\hspace{10pt} Same Method & -0.15 & 2,365  \\ \midrule
+\textbf{Unrelated} & \textbf{-0.15} & \textbf{2,198}\\ \midrule
+\hspace{10pt} No Direct Superclass & -0.06 & 811 \\
+\hspace{10pt} External Superclass & -0.17 & 697  \\
+\hspace{10pt} External Ancestor & -0.21 & 586  \\
+\hspace{10pt} No Indirect Superclass & -0.30 & 104  \\ \midrule
 \end{tabular}
 \caption{Influence on maintainability of refactoring clones by certain relations.}
 \label{tab:relation_refactor}
