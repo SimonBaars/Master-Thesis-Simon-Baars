@@ -69,6 +69,11 @@ This example can be represented as a tree structure, as shown in Figure~\ref{fig
   \label{fig:terminologyexample}
 \end{figure}
 
+\subsection{Clone Classes vs Clone Pairs}\label{sec:classesvspairs}
+In Table~\ref{tab:clone-terminology} we introduced the concept of clone classes. Clone classes consist of any number of clone instances. Some clone detection tools detect ``clone pairs'' instead, which consider each pair of clone instances separately. There are different reasons in literature whether clone pairs or clone classes should be considered for detection.
+
+We decided to focus on \textit{clone classes} for our study, because of their advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics~\cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: the amount of clone references increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy~\cite{fontana2012duplicated}.
+
 \section{Clone Types} \label{chap:backgroundclonetypes}
 Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
 \begin{displayquote}
