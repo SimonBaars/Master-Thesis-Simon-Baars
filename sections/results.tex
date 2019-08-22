@@ -145,7 +145,7 @@ Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting t
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
-  \caption{The effect of token volume on the delta maintainability score of the refactored system}
+  \caption{The effect of token volume on the delta maintainability score of the refactored clones}
   \label{fig:maintainabilityscore}
 \end{figure}
 
@@ -153,7 +153,7 @@ The token volume of the clone is equal to the decrease of duplicated tokens, whi
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/volume}
-  \caption{The effect of token volume on the delta volume of the refactored system}
+  \caption{The effect of token volume on the delta volume of the refactored clones}
   \label{fig:volume}
 \end{figure}
 
@@ -161,19 +161,19 @@ In Figure~\ref{fig:numberofparameters} we show the average delta number of param
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/numberofparameters}
-  \caption{The effect of token volume on the number of parameters of the refactored system}
+  \caption{The effect of token volume on the number of parameters of the refactored clones}
   \label{fig:numberofparameters}
 \end{figure}
 
-In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored.
+In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is 1, because the extracted method itself has a complexity of 1. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/complexity}
-  \caption{The effect of token volume on the complexity of the refactored system}
+  \caption{The effect of token volume on the complexity of the refactored clones}
   \label{fig:complexity}
 \end{figure}
 
-The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, for our further experiments, we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
+The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance.
