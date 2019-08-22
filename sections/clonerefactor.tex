@@ -1,5 +1,4 @@
 \chapter{CloneRefactor} \label{ch:clonerefactor}
-% We bridged a gap between clone detection and refactoring .. by designing a tool
 We bridged a gap between clone detection and refactoring by designing a tool that can detect clones by our refactoring-oriented clone types (chapter \ref{chap:clonetypes}). This tool, named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}, performs a comprehensive context analysis on the detected clones. Based on this this context, CloneRefactor can automatically refactor a subset of the detected clones by applying transformations to the source code of the analyzed software project(s).
 
 In this section we describe our approach and rationale for the design decisions regarding this tool.
@@ -41,15 +40,7 @@ When we analyze type 3 or type 3R clones we use the following additional thresho
 \end{itemize}
 
 \section{Clone Detection}\label{sec:clonedetection}
-To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On the basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously.
-
-The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}. First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. On the basis of this graph, we detect clone classes and verify them using three thresholds (in order of importance):
-\begin{itemize}
-  \item Amount of tokens.
-  \item Amount of statements.
-  \item Amount of lines.
-\end{itemize}
-If the detection was configured to detect either type 2R, 3 or 3R clones we perform some type specific transformations on the resulting set of clones.
+To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On the basis of this graph structure, clones are detection. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously. The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}.
 
 \begin{figure}[H]
   \centering
@@ -57,6 +48,17 @@ If the detection was configured to detect either type 2R, 3 or 3R clones we perf
   \caption{CloneRefactor clone detection process.}
   \label{fig:clonedetection}
 \end{figure}
+
+First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. On the basis of this graph, we detect clone classes and verify them using three thresholds (in order of importance):
+\begin{itemize}
+  \item Amount of tokens.
+  \item Amount of statements.
+  \item Amount of lines.
+\end{itemize}
+If the detection was configured to detect either type 2R, 3 or 3R clones we perform some type specific transformations on the resulting set of clones.
+
+\subsection{Clone Classes vs Clone Pairs}
+Regarding clone detection, there is variance in literature whether clone pairs or clone classes should be considered for detection. We decided to focus on clone classes, because of their advantages for refactoring. Clone pairs do not provide a general overview of all entities containing the clones, with all their related issues and characteristics~\cite{fontana2012duplicated}. Although clone classes are harder to manage, they provide all information needed to plan a suitable refactoring strategy, since this way all instances of a clone are considered. Another issue that results from grouping clones by pairs: the amount of clone references increases according to the binomial coefficient formula (two clones form a pair, three clones form three pairs, four clones form six pairs, and so on), which causes a heavy information redundancy~\cite{fontana2012duplicated}.
 
 \subsection{Generating the clone graph}\label{sec:clonegraph}
 First of all, we parse the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place (more about this in Section~\ref{sec:thresholds}).
