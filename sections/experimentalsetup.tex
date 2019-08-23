@@ -2,51 +2,64 @@
 In this chapter we explain the setup of our experiments. All our experiments are quantitative experiments, measured over a corpus using CloneRefactor. In this chapter, we first explain the corpus we use. We then explain the way in which we calculate the impact of refactorings on the software maintainability.
 
 \section{The Corpus}\label{chap:corpus}
-For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. This corpus contains a set of Java projects from GitHub, selected by number of forks. The projects in this corpus were then de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+For our experiments we use a large corpus of open source projects \cite{githubCorpus2013}. %Sander: Miss wil je hier zeggen dat het gemaakt is door Allamanis et al ofziets
+This corpus contains a set of Java projects from GitHub, selected by number of forks. The projects in this corpus were de-duplicated manually. % Sander: Wat werd er ge-de-dupliceerd? de files? de projects?
+% Sander: Kan ik de corpus ergens vinden?
+This results in a variety of Java projects that reflect the quality of average open source Java systems and are useful to perform measurements on.
+% Sander:huh wat je zegt nu eerst dat hij useful is, en daarmee meteen dat we hem hebben veranderd. waarom hebben we die controlled set nodig?
 
-For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section, we explain the steps we took to prepare the corpus\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} and the rationale behind those steps.
+For our purposes, we have further filtered this corpus to get a controlled set of projects for our experiments. In this section,
+we explain the steps we took to prepare the corpus\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} and the rationale behind those steps. 
 
 \subsection{Tool Validation}
-We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), to see whether they get correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check both the correctness of the identified clones, their context and their proposed refactoring.
+% Sander: deze eerst zin is heel plotseling, en relateerd niet meteen heel duidelijk aan de rest eromheen
+% Sander: Eigenlijk past deze hele subsectie niet echt in het corpus gedeelte
+We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), % Sander: weet je zeker dat contain goede woord is in die zin?
+to see whether they get correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check both the correctness of the identified clones, their context and their proposed refactoring.
 
 We also test the correctness of the resulting code after refactoring. For this, we use a GitHub project named JFreeChart. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor.
 
 \subsection{Filtering Maven projects}
 As explained in Section~\ref{chap:challenge}, CloneRefactor requires all the libraries a software project is dependent on in order to perform its clone analysis. As these are not included in the used corpus \cite{githubCorpus2013}, we decided to limit our scope to a single build automation system. We chose Maven, as it is one of the most used build automation systems for Java projects. Maven uses a file, named \texttt{pom.xml}, to describe a projects' dependencies. As no \texttt{pom.xml} files are included in the corpus, we cloned the latest version of each project in the corpus. We then removed each project that has no \texttt{pom.xml} file (which indicates that those do not use the Maven build automation system).
 
-Because we cloned the projects (and do not use the sources provided in the corpus), they still included generated source code. Because we do not want to analyze generated Java files, we decided to further filter the corpus to only include projects with a conventional structure. For Maven, projects are recommended to put their production code in the folder structure \texttt{src/main/java}. We omitted Maven projects that do not adhere to this convention.
+Because we cloned the projects (and do not use the sources provided in the corpus) % Sander:Het is hier niet duidelijk wat je nog met corpus bedoelt. Jouw corpus? die van allamanis?
+, they still included generated source code. Because we do not want to analyze generated Java files, we decided to further filter the corpus to only include projects with a conventional structure. For Maven, projects are recommended to put their production code in the folder structure \texttt{src/main/java}. We omitted Maven projects that do not adhere to this convention. % Sander: weten we nu zeker dat er geen generated files meer in staan?
 
 \subsection{Gathering Dependencies}
-As a next step, we collect all dependencies of the downloaded software projects. Maven uses the following command to automate this process: \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib}. This process can fail if external dependencies are no longer available. We removed such projects for which we could not obtain all dependencies.
+As a next step, we collect all dependencies of the downloaded software projects. Maven uses the following command to automate this process: \texttt{mvn dependency:copy-dependencies -DoutputDirectory=lib}. This process can % Sander: can fail of will fail?
+fail if external dependencies are no longer available. We removed such projects for which we could not obtain all dependencies.
 
 \subsection{Building an AST of all Java files}
-To verify the correctness of all Java files in the projects, we used JavaParser \cite{tomassetti2017javaparser} to create an AST of every Java file in the \texttt{src/main/java} folder of the software projects. A very small set of projects had syntactical errors, which we removed from the corpus.
+To verify the correctness of all Java files in the projects, we used JavaParser \cite{tomassetti2017javaparser} to create an AST of every Java file in the \texttt{src/main/java} folder of the software projects. A very small set of projects had syntactical errors, which we removed from the corpus. % Sander:examples of syntactical error? why did we remove those -> they crash the javaparser
 
 \subsection{Inspecting outliers}
-We ran CloneRefactor over every project in the corpus and inspected the output for each project. Some projects gave unusual high numbers of projects of a certain size, which we manually inspected. Often these projects contained generated source files. We removed these projects from the corpus.
+We ran CloneRefactor over every project in the corpus and inspected the output for each project. Some projects gave unusual high numbers of projects % Sander: clones?
+of a certain size, which we manually inspected. Often these projects contained generated source files. We removed these projects from the corpus.
 
 \subsection{Resulting corpus}
-This procedure results in 2,267 Java projects including all their dependencies. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527.
+This procedure results in 2,267 Java projects including all their dependencies. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527. % Sander:files?
 
 \section{Minimum clone size}
-In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
+In this study, we want to find out what thresholds will improve maintainability if clones by those thresholds are refactored. For example, when clones are very small, refactoring them might not improve maintainability since the detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored. % Sander: Hoe ben je hier achter gekomen?
+
 
 \section{Calculating a maintainability score}\label{sec:metricformula}
 In this study, we use four metrics to determine maintainability (see Section~\ref{sec:metrics}). For our experiments, we aggregate the deltas obtained for these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
-  \item Higher values for the metrics imply lower maintainability.
-  \item Normalizing each obtained metric delta over all deltas obtained a metric in our dataset results in equally weighted scores.
+  \item Higher values for the metrics imply lower maintainability. % Sander: Dit is niet echt assumptie toch
+  \item Normalizing each obtained metric delta over all deltas obtained a metric in our dataset results in equally weighted scores. % Sander: zin klopt niet (en snap hem ook niet)
 \end{itemize}
-We derived these assumptions partly from Heitlager et al~\cite{heitlager2007practical} and our own expert intuition. The validity of these metrics influences the validity of the conclusions we can draw from our data. Because of that, in our experiments we focus mainly on significant differences in maintainability to draw a conclusion.
+We derived these assumptions partly from Heitlager et al~\cite{heitlager2007practical} and our own expert intuition. The validity of these metrics influences the validity of the conclusions we can draw from our data. Because of that, in our experiments we focus mainly on significant differences in maintainability to draw a conclusion. % Sander: miss wil je deze laatste twee zin weghalen om jezelf niet in je voet te schieten, als je het maar kan beantwoorden tijdens je defense
 
 We normalize each obtained metric delta using the ``Standard score'', which is calculated as follows:
 \begin{equation}\label{eq:scoredev}
 N_{metric} = \frac {\Delta X-\mu}{\sigma}
 \end{equation}
-Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metrics. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores much.
+Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metric. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores much.
 
 We then calculate the maintainability for a specific refactoring as follows:
 \begin{equation}\label{eq:scoreref}
 N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \end{equation}
+% Sander: miss mooier met Maintainability = ....
