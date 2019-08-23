@@ -8,16 +8,12 @@
 In this chapter, we discuss the results of our research and experiments.
 
 \section{Clone Type Definitions}
-In this study, we proposed a set of clone type definitions for which a refactoring opportunity is known.
-% TODO: Sander - is known is beetje gek
-% TODO: Sander - zou ook uitleggen waarom we nieuwe definities nodig hadden
-We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
+In this study, we proposed a set of clone type definitions that can be automatically refactored.  We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
 
 \subsection{Type 2R clones}
 With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
 
-One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in Figure~\ref{fig:samereturn}. The only thing to watch out for is method that has side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code.
-% TODO: Sander - how would you try to solve this?
+One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in Figure~\ref{fig:samereturn}. The only thing to watch out for is methods that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code. Because of that, before applying such a refactoring it should be verified that the called method has to side effects.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
