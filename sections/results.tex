@@ -163,8 +163,7 @@ In our corpus, CloneRefactor has refactored 12,710 clone classes and measured th
 In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \subsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale.% Sander: weet niet zeker of dit logaritmische schaal heet
-The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
@@ -172,7 +171,7 @@ The trendline intersects the ``zero'' line (maintainability does not increase no
   \label{fig:maintainabilityscore}
 \end{figure}
 
-The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. Do determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly. In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies a lower maintainability.
+The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. To determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly. In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies a lower maintainability.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/volume}
@@ -199,7 +198,7 @@ In Figure~\ref{fig:complexity} we show the average delta complexity when clones 
 %The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
-Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
+Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result might not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
 
 \begin{table}[H]
 \centering
@@ -210,8 +209,10 @@ Table~\ref{tab:relationref} shows our data regarding how different relations inf
 \textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
 \hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
 \hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
+\rowcolor[HTML]{FFCCC9}
 \hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
 \hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
+\rowcolor[HTML]{FFCCC9}
 \hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
 \textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
 \hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
@@ -231,6 +232,8 @@ Table~\ref{tab:relationref} shows our data regarding how different relations inf
 \label{tab:relationref}
 \end{table}
 
+The displayed relations are ordered by their scores. Overall, the scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, we see that common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
+
 \subsection{Return Category}
 Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
 
@@ -239,9 +242,10 @@ Table~\ref{tab:return} shows how the return value of the extracted method influe
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Interface Size}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
+\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
 Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
 Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
+\rowcolor[HTML]{FFCCC9}
 Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
 Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
@@ -250,6 +254,8 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \caption{Average metric values for refactorings of clone classes with the specified return category}
 \label{tab:return}
 \end{table}
+
+The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters.
 
 \subsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters. The table containing all underlying data and separate metrics is displayed in Appendix~\ref{sec:parameterstable}.
