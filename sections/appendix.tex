@@ -2,6 +2,18 @@
 
 	\chapter{Refactoring maintainability metrics tables}
 
+	We use the following keywords as names for the columns of these tables:
+	\begin{itemize}
+		\item \textbf{Tokens}: The number of tokens in one of the clone instances of the refactored clone class.
+		\item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
+		\item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
+		\item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
+		\item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
+		\item \textbf{\#}: The number of times the specified category is refactored (and thus the number of datapoints we have for this category).
+		\item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
+	\end{itemize}
+	In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
+
 	\section{Token size}
 All \textbf{average} scores and metrics for all refactored clones with a specified amount of tokens.
 
