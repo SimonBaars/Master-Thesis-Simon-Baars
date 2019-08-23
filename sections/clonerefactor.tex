@@ -826,7 +826,7 @@ We define the following characteristics that have an impact on the refactoring o
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
 
 \subsubsection{Impact on maintainability metrics} \label{sec:metrics}
-We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
+We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system as a whole.
 
 In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
 \begin{itemize}
@@ -845,15 +845,15 @@ We can determine the change of the values of these metrics by considering the tr
 \item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the amount of parameters in the extracted method.
 \end{itemize}
 
-\subsection{Saving refactored code}
-CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
-\begin{itemize}
-  \item \textbf{Do not refactor}: CloneRefactor does not apply refactorings at all, it only reports found clones.
-  \item \textbf{Simulate}: CloneRefactor only applies the refactorings to its internal AST structure and calculates the results of applying these refactorings. It does not modify/copy the codebase on disk.
-  \item \textbf{Replace}: CloneRefactor replaces the source code with the refactored source code.
-  \item \textbf{Copy Only Changes}: CloneRefactor writes only the changed files to a new location.
-  \item \textbf{Copy All}: CloneRefactor copies the entire project to a new location and applies the refactorings there. This makes sure the original project stays unmodified, while also having a snapshot of the refactored project.
-  \item \textbf{Git Replace}: CloneRefactor creates a branch on the git VCS, or initializes a git repository if it is not available. For every clone class refactored, CloneRefactor creates a commit in the git repository.
-  \item \textbf{Git Copy}: CloneRefactor copies the entire project to a new location. CloneRefactor then performs the same procedure as for ``Git Replace'', except now at the new location so the original project remains unmodified.
-\end{itemize}
-These ``Refactoring Strategies'' can be used to get more data regarding the transformations applied by CloneRefactor. In our experiments, we only make use of the ``Simulate'' ``Refactoring Strategy''.
+%\subsection{Saving refactored code}
+%CloneRefactor features several ``Refactoring Strategies'', that indicate how and where refactored code will be saved. These are as follows:
+%\begin{itemize}
+%  \item \textbf{Do not refactor}: CloneRefactor does not apply refactorings at all, it only reports found clones.
+%  \item \textbf{Simulate}: CloneRefactor only applies the refactorings to its internal AST structure and calculates the results of applying these refactorings. It does not modify/copy the codebase on disk.
+%  \item \textbf{Replace}: CloneRefactor replaces the source code with the refactored source code.
+%  \item \textbf{Copy Only Changes}: CloneRefactor writes only the changed files to a new location.
+%  \item \textbf{Copy All}: CloneRefactor copies the entire project to a new location and applies the refactorings there. This makes sure the original project stays unmodified, while also having a snapshot of the refactored project.
+%  \item \textbf{Git Replace}: CloneRefactor creates a branch on the git VCS, or initializes a git repository if it is not available. For every clone class refactored, CloneRefactor creates a commit in the git repository.
+%  \item \textbf{Git Copy}: CloneRefactor copies the entire project to a new location. CloneRefactor then performs the same procedure as for ``Git Replace'', except now at the new location so the original project remains unmodified.
+%\end{itemize}
+%These ``Refactoring Strategies'' can be used to get more data regarding the transformations applied by CloneRefactor. In our experiments, we only make use of the ``Simulate'' ``Refactoring Strategy''.
