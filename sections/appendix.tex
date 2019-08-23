@@ -1,10 +1,8 @@
 \begin{appendices}
 
 	\chapter{Refactoring maintainability metrics tables}
-
-	We use the following keywords as names for the columns of these tables:
+	This appendix shows all averages of the considered metrics for each of the experiments shown in Section~\ref{sec:refactoringexperiments}. Each of the sections in this appendix shows a table corresponding with a table or graph of the results.	We use the following keywords as names for the columns of these tables:
 	\begin{itemize}
-		\item \textbf{Tokens}: The number of tokens in one of the clone instances of the refactored clone class.
 		\item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
 		\item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
 		\item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
@@ -15,7 +13,7 @@
 	In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 	\section{Token size}
-All \textbf{average} scores and metrics for all refactored clones with a specified amount of tokens.
+Table \ref{tab:full-tokens} shows average scores and metrics for all refactored clones with the specified amount of tokens. The \textbf{Tokens} column shows the number of tokens in one of the clone instances of the refactored clone class
 
 \begin{longtable}[c]{@{}lllllll@{}}
 \toprule
@@ -279,8 +277,11 @@ All \textbf{average} scores and metrics for all refactored clones with a specifi
 \caption{Average metric values for refactorings of clone classes with the specified tokens}
 \label{tab:full-tokens}\\
 \end{longtable}
+\newpage
 
 \section{Relation}
+Table \ref{tab:full-relation} shows average scores and metrics for all refactored clones with the specified relation. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}.
+
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -312,6 +313,7 @@ All \textbf{average} scores and metrics for all refactored clones with a specifi
 \end{table}
 
 \section{Return Category}
+Table \ref{tab:full-return} shows average scores and metrics for all refactored clones with the specified return category. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -328,8 +330,11 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \caption{Average metric values for refactorings of clone classes with the specified return category}
 \label{tab:full-return}
 \end{table}
+\newpage
 
 \section{Number of parameters}
+Table \ref{tab:full-arguments} shows average scores and metrics for all refactored clones with the specified number of parameters in the extracted method. The \textbf{Token volume} column refers to the average token volume of all refactored clones with the specified number of parameters. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class.
+
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
