@@ -145,7 +145,16 @@ Not In Class Or Interface & 70 & 0.1\% & 93 & 0.2\% \\
 \section{Refactoring} \label{sec:refactoringexperiments}
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
 In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) % Sander: Ref geeft ???
-influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. We use the following keywords as headers of the columns of our tables:
+\begin{itemize}
+  \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
+  \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
+  \item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
+  \item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
+  \item \textbf{\#}: The number of times the specified category is refactored (and thus the number of datapoints we have for this category).
+  \item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
+\end{itemize}
+In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \subsection{Clone Token Volume}
 Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale.% Sander: weet niet zeker of dit logaritmische schaal heet
@@ -184,54 +193,56 @@ In Figure~\ref{fig:complexity} we show the average delta complexity when clones 
 %The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
-Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
+Table~\ref{tab:full-relation} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}lrr@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-\textit{\textbf{Relation}} & \textit{\textbf{Maintainability Score}} & \textit{\textbf{Number of Refactorings}} \\ \midrule
-\textbf{Common Hierarchy} & \textbf{0.23} & \textbf{2,202} \\ \midrule
-\hspace{10pt} Superclass & 0.42 & 229 \\
-\hspace{10pt} Sibling & 0.23 & 1,722 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Same Hierarchy & 0.10 & 87 \\
-\hspace{10pt} First Cousin & 0.02 & 144 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Ancestor & -0.03 & 20 \\ \midrule
-\textbf{Common Interface} & \textbf{-0.02} & \textbf{1,044} \\ \midrule
-\hspace{10pt} Same Indirect Interface & -0.01 & 487 \\
-\hspace{10pt} Same Direct Interface & -0.02 & 557 \\ \midrule
-\textbf{Common Class} & \textbf{-0.02} & \textbf{7,239}\\ \midrule
-\hspace{10pt} Same Class & 0.04  & 4,874 \\
-\hspace{10pt} Same Method & -0.15 & 2,365  \\ \midrule
-\textbf{Unrelated} & \textbf{-0.15} & \textbf{2,198}\\ \midrule
-\hspace{10pt} No Direct Superclass & -0.06 & 811 \\
-\hspace{10pt} External Superclass & -0.17 & 697  \\
-\hspace{10pt} External Ancestor & -0.21 & 586  \\
-\hspace{10pt} No Indirect Superclass & -0.30 & 104  \\ \midrule
-\end{tabular}
-\caption{Influence on maintainability of refactoring clones by certain relations.}
-\label{tab:relation_refactor}
+\textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
+\textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
+\hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
+\hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
+\hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
+\hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
+\hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
+\textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
+\hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
+\hspace{10pt} Same Direct Interface & -55.79 & 0.75 & 1.24 & -0.28 & 557 & -0.02 \\ \midrule
+\textbf{Common Class} & \textbf{-52.42} & \textbf{0.87} & \textbf{1.13} & \textbf{1.47} & \textbf{7,239} & \textbf{-0.02} \\ \midrule
+\hspace{10pt} Same Class & -51.85 & 0.86 & 1.03 & 3.36 & 4,874 & 0.04 \\
+\hspace{10pt} Same Method & -53.60 & 0.90 & 1.32 & -2.44 & 2,365 & -0.15 \\ \midrule
+\textbf{Unrelated} & \textbf{-45.86} & \textbf{0.88} & \textbf{1.08} & \textbf{9.56} & \textbf{2,198} & \textbf{-0.15} \\ \midrule
+\hspace{10pt} No Direct Superclass & -52.24 & 0.84 & 1.12 & 6.04 & 811 & -0.06 \\
+\hspace{10pt} External Superclass & -47.09 & 0.87 & 1.13 & 8.77 & 697 & -0.17 \\
+\hspace{10pt} External Ancestor & -35.73 & 0.93 & 0.95 & 14.58 & 586 & -0.21 \\
+\hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
+\textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
+\end{tabular}%
+}
+\caption{Average metric values for refactorings of clone classes with the specified relations}
+\label{tab:full-relation}
 \end{table}
 
-\subsection{Return Value}
-Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system (categories are explained in Section~\ref{sec:refreturn}).
+\subsection{Return Category}
+Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}lrr@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-\textit{\textbf{Return Value}} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Maintainability}}\\\textit{\textbf{Score}}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Number of}}\\\textit{\textbf{Refactorings}}\end{tabular} \\ \midrule
-Return & 0.19 & 1,571 \\
-Declare & 0.15 & 5,177 \\
-\rowcolor[HTML]{FFCCC9}
-Assign & 0.12 & 14 \\
-Void & -0.18 & 5,921 \\
-\bottomrule
-\end{tabular}
-\caption{Maintainability scores for different methods of handling returned data from the call to the extracted method.}
-\label{tab:return}
+\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Interface Size}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
+Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
+Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
+Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
+Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
+\textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
+\end{tabular}%
+}
+\caption{Average metric values for refactorings of clone classes with the specified return category}
+\label{tab:full-return}
 \end{table}
 
 \subsection{Parameters}

@@ -1,7 +1,7 @@
 \begin{appendices}
 
 	\chapter{Refactoring maintainability metrics tables}
-	This appendix shows all averages of the considered metrics for each of the experiments shown in Section~\ref{sec:refactoringexperiments}. Each of the sections in this appendix shows a table corresponding with a table or graph of the results.	We use the following keywords as names for the columns of these tables:
+	This appendix shows the underlying data for each of the graphs shown in Section~\ref{sec:refactoringexperiments}. We use the following keywords as names for the columns of these tables:
 	\begin{itemize}
 		\item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
 		\item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
@@ -277,59 +277,7 @@ Table \ref{tab:full-tokens} shows average scores and metrics for all refactored 
 \caption{Average metric values for refactorings of clone classes with the specified tokens}
 \label{tab:full-tokens}\\
 \end{longtable}
-\newpage
 
-\section{Relation}
-Table \ref{tab:full-relation} shows average scores and metrics for all refactored clones with the specified relation.
-
-\begin{table}[H]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lrrrrrr@{}}
-\toprule
-\textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
-\textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
-\hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
-\hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
-\hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
-\hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
-\hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
-\textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
-\hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
-\hspace{10pt} Same Direct Interface & -55.79 & 0.75 & 1.24 & -0.28 & 557 & -0.02 \\ \midrule
-\textbf{Common Class} & \textbf{-52.42} & \textbf{0.87} & \textbf{1.13} & \textbf{1.47} & \textbf{7,239} & \textbf{-0.02} \\ \midrule
-\hspace{10pt} Same Class & -51.85 & 0.86 & 1.03 & 3.36 & 4,874 & 0.04 \\
-\hspace{10pt} Same Method & -53.60 & 0.90 & 1.32 & -2.44 & 2,365 & -0.15 \\ \midrule
-\textbf{Unrelated} & \textbf{-45.86} & \textbf{0.88} & \textbf{1.08} & \textbf{9.56} & \textbf{2,198} & \textbf{-0.15} \\ \midrule
-\hspace{10pt} No Direct Superclass & -52.24 & 0.84 & 1.12 & 6.04 & 811 & -0.06 \\
-\hspace{10pt} External Superclass & -47.09 & 0.87 & 1.13 & 8.77 & 697 & -0.17 \\
-\hspace{10pt} External Ancestor & -35.73 & 0.93 & 0.95 & 14.58 & 586 & -0.21 \\
-\hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
-\textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
-\end{tabular}%
-}
-\caption{Average metric values for refactorings of clone classes with the specified relations}
-\label{tab:full-relation}
-\end{table}
-
-\section{Return Category}
-Table \ref{tab:full-return} shows average scores and metrics for all refactored clones with the specified return category. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
-\begin{table}[H]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lrrrrrr@{}}
-\toprule
-\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Interface Size}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
-Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
-Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
-Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
-Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
-\textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
-\end{tabular}%
-}
-\caption{Average metric values for refactorings of clone classes with the specified return category}
-\label{tab:full-return}
-\end{table}
 \newpage
 
 \section{Number of parameters}
