@@ -151,8 +151,7 @@ Not In Class Or Interface & 70 & 0.1\% \\
 
 \section{Refactoring} \label{sec:refactoringexperiments}
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
-In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) % Sander: Ref geeft ???
-influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. We use the following keywords as headers of the columns of our tables:
+In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. We use the following keywords as headers of the columns of our tables:
 \begin{itemize}
   \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
   \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
@@ -200,7 +199,7 @@ In Figure~\ref{fig:complexity} we show the average delta complexity when clones 
 %The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
-Table~\ref{tab:full-relation} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
+Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result does not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
 
 \begin{table}[H]
 \centering
@@ -229,7 +228,7 @@ Table~\ref{tab:full-relation} shows our data regarding how different relations i
 \end{tabular}%
 }
 \caption{Average metric values for refactorings of clone classes with the specified relations}
-\label{tab:full-relation}
+\label{tab:relationref}
 \end{table}
 
 \subsection{Return Category}
@@ -249,7 +248,7 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \end{tabular}%
 }
 \caption{Average metric values for refactorings of clone classes with the specified return category}
-\label{tab:full-return}
+\label{tab:return}
 \end{table}
 
 \subsection{Parameters}

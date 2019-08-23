@@ -208,7 +208,7 @@ doC();
 \label{fig:type2variablerefactoringnotradeoff}
 \end{figure}
 
-The example in Figure~\ref{fig:type2variablerefactoringwithtradeoff} shows the same example as Figure~\ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \label{sec:variabilitythreshold}, whereas the example in Figure~\ref{fig:type2variablerefactoringnotradeoff} does not.
+The example in Figure~\ref{fig:type2variablerefactoringwithtradeoff} shows the same example as Figure~\ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \ref{sec:variabilitythreshold}, whereas the example in Figure~\ref{fig:type2variablerefactoringnotradeoff} does not.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -394,7 +394,7 @@ For type 3R, the size of the gap between two clones is bounded by a threshold. T
 
 In this formula, the ``Number of nodes in gap'' concerns the amount of non-cloned nodes that are in between both clone instances. The ``Number of nodes in clones'' is the amount of nodes that are in the clone instances surrounding the gap:
 
-\begin{equation}\label{eq:type3r}
+\begin{equation}\label{eq:type3rclones}
 \text{Number of nodes in clones}=|I_{before}| + |I_{after}|.
 \end{equation}
 
@@ -420,7 +420,7 @@ a *= 5; // |\textcolor{pgreen}{$N_{4}$}|
 
 When applying this formula with the example given in Figure~\ref{fig:gappedclones}, we get a gap size of 50\%:
 
-\begin{equation}\label{eq:type3r}
+\begin{equation}\label{eq:type3rexample}
 \text{T3R Gap Size}=\frac{|\{N_{4}\}|}{|\{N_{3}, N_{5}\}|}*100 = \frac{1}{2}*100 = 50\%
 \end{equation}
 

@@ -58,7 +58,7 @@ First of all, we use JavaParser to read a project from disk and build an AST, on
 
 
 \subsection{Generating the clone graph}\label{sec:clonegraph}
-First of all, we parse the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place (more about this in Section~\ref{sec:thresholds}).
+First of all, we parse the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place.
 
 \subsubsection{Filtering the AST}
 As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We have decided to consider declarations and statements as the smallest compared entities. The main reasoning for this is because considering smaller AST constructs, like expressions, significantly increases the complexity and CPU usage of our clone detection and refactoring efforts.
@@ -330,7 +330,7 @@ In Figure~\ref{fig:2rvariabilityhigh4} we display clone classes and their (simpl
   \centering
   \includegraphics[width=1\columnwidth]{img/T2RGraph}
   \caption{Graph representation of the code example displayed in Figure~\ref{fig:2rvariabilityhigh4}.}
-  \label{fig:clonerefactorprocess}
+  \label{fig:t2rgraphexample}
 \end{figure}
 
 In this graph, the duplicate relations (green arrows) do not necessarily denote an exact match. The duplicate relations allow for variability in the equality arrays as long as it falls under the variability threshold. However, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored as easily:
@@ -493,7 +493,7 @@ In the example of Figure~\ref{fig:3ropportunities} we see two clone classes, whi
 
 The same calculation is conducted for the other clone instances:
 
-\begin{equation}\label{eq:t3rexample}
+\begin{equation}\label{eq:t3rexample2}
 \text{gap}(C_1\text{ }I_2, C_2\text{ }I_2) = \frac{|\emptyset|}{|\{n_2, n_3\}| + |\{n_4, n_5\}|} * 100 = \frac{0}{4} = 0\%
 \end{equation}
 
@@ -814,7 +814,7 @@ If a method in Java throws an exception that is not a \texttt{RuntimeException},
 \subsection{Collecting data}
 To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. For each refactored clone class, we map the characteristics of the extracted method to the impact of the refactoring on the maintainability of the system/
 
-\subsubsection{Characteristics of the extracted method}
+\subsubsection{Characteristics of the extracted method} \label{sec:characteristics}
 We define the following characteristics that have an impact on the refactoring of the clone class:
 \begin{itemize}
 \item \textbf{Nodes}: The number of nodes that \textit{each clone instance of the clone class} spans. This concerns the size of a single clone instance before it was refactored.
