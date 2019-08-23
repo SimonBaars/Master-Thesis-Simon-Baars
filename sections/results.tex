@@ -2,10 +2,11 @@
 In this chapter, we present the results of our experiments. We perform exploratory experiments to map the differences between clone types, contexts and refactoring opportunities.
 
 \section{Clone types}\label{sec:clonetypeexperiments}
-In this section, we look into the differences between the different clone types that were introduced in Chapter \ref{chap:clonetypes}.
+In this section, we look into the differences between the clone types that were introduced in Chapter \ref{chap:clonetypes}.
 
 \subsection{Found nodes}
-In this section, we display our results regarding the differences in found nodes between clone type 1-3~\cite{roy2007survey} and type 1R-3R. Figure~\ref{fig:typeres} shows the number of cloned nodes found over the entire corpus for the different clone types (the word ``Type'' is abbreviated as ``T''). For type 2R clones, we set the variability threshold (see Section~\ref{sec:variabilitythreshold}) to 10\%, meaning that no more than 10\% of expressions may differ between cloned fragments. For type 3 and 3R clones, we allow a gap of 20\% the clones surrounding it.
+In this section, we display our results regarding the differences in found nodes between clone type % Sander:waar komt nodes ineens vandaan? ik ga uit van AST nodes maar is niet duidelijk denk ik
+1-3~\cite{roy2007survey} and type 1R-3R. Figure~\ref{fig:typeres} shows the number of cloned nodes found over the entire corpus for the different clone types (the word ``Type'' is abbreviated as ``T''). For type 2R clones, we set the variability threshold (see Section~\ref{sec:variabilitythreshold}) to 10\%, meaning that no more than 10\% of expressions may differ between fragments to be considered clones. For type 3 and 3R clones, we allow a gap of 20\% the clones surrounding it.
 
 \begin{figure}[H]
   \centering
@@ -21,9 +22,12 @@ In this section, we display our results regarding the differences in found nodes
   \label{fig:performance}
   \end{minipage}
 \end{figure}
+% Sander: korte uitleg over wat we zien in de figures hier? (geld voor alle experimenten)
 
 \subsection{Performance}
-To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which do not have many background processes severely affecting the results. The durations are of course dependent on our implementation of the clone types.
+To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which do not have many background processes severely affecting the results. % Sander: zou zin na de komma (which..results) weglaten.
+The durations are of course dependent on our implementation of the clone types.
+% Sander: deze zin voegt ook niet zoveel toe
 
 \subsection{Type 2R Variability Threshold}
 To determine the influence of the type 2R variability threshold on the amount of found nodes, we ran CloneRefactor for all variability percentages (0\% meaning no variance in expressions, 100\% meaning any variance in expressions). Figure \ref{fig:t2rgraph} shows the results.
@@ -49,6 +53,7 @@ To determine the refactoring method(s) that can be used to refactor most clones,
 
 \subsection{Relation} \label{sec:relationresults}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Section~\ref{sec:setuprelation}).
+% Sander: is dat plaatje met overzicht van relaties van clone classen weg of ergens anders? hij is hier ook wel handig
 
 \begin{table}[H]
 \centering
@@ -86,7 +91,7 @@ Constructor Level & 10,039 & 3.39\% \\
 Interface Level & 2,693 & 0.91\% \\
 Enum Level & 788 & 0.27\% \\
 \end{tabular}
-\caption{Amount of clone instances with a certain location}
+\caption{Amount of clone instances with a certain location} % Sander: miss: Amount of clone instances per location category ofzoiets
 \label{tab:location}
 \end{table}
 
@@ -115,8 +120,9 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 
 \section{Extract Method}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
-Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
-
+Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments). The third column shows our measurements when restricting our search to method bodies. % Sander: waarom willen we dat weten?
+The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
+% Sander: die laatste zin snap ik niet
 \begin{table}[H]
 \centering
 \begin{tabular}{@{}lllll@{}}
@@ -138,10 +144,12 @@ Not In Class Or Interface & 70 & 0.1\% & 93 & 0.2\% \\
 
 \section{Refactoring} \label{sec:refactoringexperiments}
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
-In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) % Sander: Ref geeft ???
+influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
 
 \subsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale.% Sander: weet niet zeker of dit logaritmische schaal heet
+The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
