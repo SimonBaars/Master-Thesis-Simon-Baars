@@ -20,6 +20,16 @@ CloneRefactor can refactor all clones that are flagged ``can be extracted''. Thi
 \subsection{Corpus}
 We used a corpus of 2,267 open source Java projects from GitHub for our experiments. This corpus consists of only Maven projects and we only take the ``production sources'' folder of these projects take into account. We inspected the results of CloneRefactor for outliers and excluded projects that have generated sources in their ``production sources'' folder. This increases the chance that we are not taking into account test sources and generated files, but it does not eliminate this chance. Because of that, there is a threat to validity in the source code in the corpus, as it potentially includes sources that do not reflect human-maintained production code.
 
+%\subsection{Java Corpus}
+%In our experiments we chose to use a GitHub based software corpus. This corpus contains a diversity of projects of many different sizes. We noticed that there is a lot of difference in the quality of these software systems: some systems had a lot of duplication and some did not have any duplication. Furthermore, it took an extensive filtering process to remove all files not suitable for application in this research (like generated files).
+
+We think that there is value in running our experiments with different corpuses. We would, for instance, be interested in the results for industrial projects instead of open source software systems. We are curious to see whether the distributions are comparable, or whether they show large differences.
+
+Furthermore, we think that there is value in running our experiments with a set of larger sized and more professionally developed open-source systems. We noticed that in our corpus there were a lot of projects that have only few commits and contributors. We think it would be valuable to, for instance, perform our experiments with a set of larger open source systems, like the systems in the Apache ecosystem.
+
+\subsection{Survey}
+To limit the scope of this research, we chose not to include human subjects in this study. However, we think that the results of this study could be strengthened by performing a survey on software engineering practisioners. We have determined a set of refactoring opportunities only based on literature input and quantitive analysis. It would be valuable to have a control group rate the refactorings performed by CloneRefactor, as an extra form of input regarding the quality of the code transformation that CloneRefactor performs.
+
 \section{Future work} \label{sec:future_work}
 This study presents a foundation for research in a largely unexplored field of studies: analyzing maintainability through automated refactoring. However, we scratched just the tip of the iceberg regarding all research opportunities in this field. In this section we describe possible extensions to this research, as well as other research opportunities in this field of studies.
 
