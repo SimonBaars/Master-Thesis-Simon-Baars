@@ -1,5 +1,5 @@
 \chapter{Results}\label{ch:results}
-In this chapter, we present the results of our experiments. We perform exploratory experiments to map the differences between clone types, contexts and refactoring opportunities.
+In this chapter, we present the results of our experiments\footnote{The underlying datasheets for all our results can be found on GitHub: \url{https://github.com/SimonBaars/Master-Thesis-Simon-Baars/tree/master/results}}. We perform exploratory experiments to map the differences between clone types, contexts and refactoring opportunities.
 
 \section{Clone types}\label{sec:clonetypeexperiments}
 In this section, we look into the differences between the clone types that were introduced in Chapter \ref{chap:clonetypes}.
@@ -163,7 +163,7 @@ In our corpus, CloneRefactor has refactored 12,710 clone classes and measured th
 In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \subsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume against the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
@@ -239,7 +239,7 @@ Table~\ref{tab:return} shows how the return value of the extracted method influe
 
 \begin{table}[H]
 \centering
-\resizebox{\textwidth}{!}{%
+%\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
 \textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
@@ -250,7 +250,7 @@ Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
 Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Average metric values for refactorings of clone classes with the specified return category}
 \label{tab:return}
 \end{table}
