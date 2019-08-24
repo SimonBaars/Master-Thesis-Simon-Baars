@@ -6,6 +6,47 @@
 
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{parcolumns}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  numbers = left,
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\definecolor{lightyellow}{HTML}{fffdcc}
+\definecolor{doublelightyellow}{HTML}{fffa9c}
+\definecolor{lightgreen}{HTML}{dcffd4}
+\definecolor{lightblue}{HTML}{e0ffff}
+\definecolor{lightred}{HTML}{ffe0e0}
+\definecolor{lightpink}{HTML}{ffe0ff}
+\definecolor{lightorange}{HTML}{ffede0}
+\definecolor{lightpurple}{HTML}{f0e0ff}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
 \setcopyright{acmcopyright}
 \copyrightyear{2019}
@@ -63,8 +104,53 @@ In their work, the main focus is to find out which clones \textbf{can} be refact
 \section{Defining refactorable clones}
 In literature, several clone type definitions have been used to argue about duplication in source code~\cite{roy2007survey}. We discuss how we can define clones such that they can be automatically refactored without side effects on the source code.
 
+\begin{figure*}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+package com.sb.game;
+
+import java.util.List;
+
+public class GameScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void addTen(int x) {
+|\highlightYellow|		x = x + 10; // Addition
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+package com.sb.fruitgame;
+
+import java.awt.List; // Different type
+
+public class LoseScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void concatTen(String x) {
+|\highlightYellow|		x = x + 10; // String concat
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Example of textually equal code fragments that differ in functionality.}
+\label{fig:type1}
+\end{figure*}
+
 \subsection{Ensuring Equality}\label{sec:t1r}
-Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens~\cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if beneficial at all.
+Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens~\cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation (Fig~\ref{fig:type1} shows an example of this). Such clones can be harder to refactor, if beneficial at all.
 
 To detect clones that can be automatically refactored, we propose to:
 \begin{itemize}
@@ -186,8 +272,6 @@ CloneRefactor uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library
   \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \texttt{RuntimeException}.
 \end{itemize}
 CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, CloneRefactor either assigns the call result, declares it or returns it accordingly.
-
-We verified the correctness of the resulting refactorings manually. We ran the tool over a large software project and verified over 1.000 applied refactorings.
 
 \subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
 We define the following characteristics of the extracted method and/or the call:
