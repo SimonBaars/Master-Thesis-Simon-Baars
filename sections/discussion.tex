@@ -1,14 +1,9 @@
-\chapter{Discussion}
-\label{ch:discussion}
-%Interpretations: what do the results mean?
-%Implications: why do the results matter?
-%Limitations: what can’t the results tell us?
-%Recommendations: what practical actions or scientific studies should follow?
+\chapter{Discussion} \label{ch:discussion}
 
 In this chapter, we discuss the results of our research and experiments.
 
 \section{Clone Type Definitions}
-In this study, we proposed a set of clone type definitions that can be automatically refactored.  We based these clone type definitions on the clone type definitions that are commonly used in literature. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
+In this study, we proposed a set of clone type definitions that can be automatically refactored. We based these clone type definitions on the clone type definitions that are commonly used in literature \cite{roy2007survey}. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section, we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
 
 \subsection{Type 2R clones}
 With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
@@ -57,8 +52,8 @@ public String getTitle(){
 \label{fig:samereturn}
 \end{figure}
 
-\section{Clone Context Analysis}
-In Section~\ref{chap:contextsetup} we introduced the categories we defined for mapping the context of clones. In this section, we discuss this together with the related experiments.
+%\section{Clone Context Analysis}
+%In Section~\ref{chap:contextsetup} we defined categories for mapping the context of clones. In this section, we discuss this together with the related experiments.
 
 \section{CloneRefactor}
 In this section we discuss our decisions for the design of our CloneRefactor tool.
@@ -70,19 +65,18 @@ For CloneRefactor we chose to design a novel method of detecting clones, rather 
   \item We perform dependency graph analysis, which requires us to resolve symbols in the source code.
   \item None of the existing clone detection methods implement all criteria required to build such a system.
 \end{itemize}
-By building a graph that maps relations between nodes in the AST, we can find clones in an efficient manner, allowing to perform a comprehensive analysis of large systems. This method has worked well for our purposes.
+By building a graph that maps relations between nodes in the AST, we can efficiently find clones, allowing to perform a comprehensive analysis of large systems. This method has worked well for our purposes.
 
-The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for industry projects our tool might require optimization.
+The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for industry projects, our tool might require optimization.
 
 \subsection{Context Analysis}
-In this study we identified categories for three properties of clones: relation, location and contents. %Mapping the location and contents was mainly to find out what the best method of refactoring is to refactor most clones.
-We chose a set of relations that indicate different refactoring opportunities. However, as our CloneRefactor tool only analyses Java source code, we we biased towards categories that are often found in Java source code. For other languages, other categories might be valuable to analyze to find suitable categories for that programming language.
+In this study, we identified categories for three properties of clones: relation, location, and contents. We chose a set of relations that indicate different refactoring opportunities. However, as our CloneRefactor tool only analyses Java source code, we are biased towards categories that are often found in Java source code. For other languages, other categories might be valuable to analyze to find suitable categories for that programming language.
 
 \subsection{Refactoring}
 In this section, we discuss our implementation decisions to refactor source code using CloneRefactor and measure its impact.
 
 \subsubsection{Refactorability} \label{sec:discussrefactorability}
-In Section~\ref{sec:refactorabilitysetup} we introduced catagories to determine the refactorability of clones through method extraction. We excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
+In Section~\ref{sec:refactorabilitysetup} we introduced categories to determine the refactorability of clones through method extraction. We excluded categories that cannot be directly refactored through method extraction. However, with a few transformations or further considerations, it might be possible to make these clones refactorable. In this section, we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
 
 \subsubsection{Partial block} \label{sec:partialblockdiscussion}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression \cite{tsantalis2017clone}. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
@@ -162,7 +156,7 @@ public boolean doAandB(){
 \end{figure}
 
 \subsubsection{Metrics}
-For this study we chose to focus on a set of four metrics to measure maintainability: method size, duplication, method parameters and cyclomatic complexity. These metrics give an indication of the impact of the refactoring, but do not give a complete overview. There are many more metrics that could be considered to measure the maintainability impact on the system. An example of such a metric is ``coupling'', which focuses on the amount of incoming calls into a method or class and what modules these calls come from. This metric is also influenced by the transformations we applied and might deliver valuable insights in the quality of the refactoring.
+For this study, we chose to focus on a set of four metrics to measure maintainability: method size, duplication, method parameters, and cyclomatic complexity. These metrics indicate the impact of the refactoring, but do not give a complete overview. There are many more metrics that could be considered to measure the maintainability impact on the system. An example of such a metric is ``coupling'', which focuses on the number of incoming calls into a method or class and what modules these calls come from. This metric is also influenced by the transformations we applied and might deliver valuable insights into the quality of the refactoring.
 
 In general, considering other metrics can result in a more reliable measure of the increase or decrease of maintainability after applying a specific refactoring.
 
@@ -170,13 +164,13 @@ In general, considering other metrics can result in a more reliable measure of t
 In this section, we discuss the results of our experiments.
 
 \subsection{Clone Types}
-In this section, we discuss the differences between clone types 1-3 and 1R-3R. We see that the difference between T1R and T1 in terms of found clones is small (11\%). This implies that most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (35\%). Upon manual inspection we found that the main reason for this is that T2R does not allow any variability in types, wheareas T2 allows any variability in types.
+In this section, we discuss the differences between clone types 1-3 and 1R-3R. We see that the difference between T1R and T1 in terms of found clones is small (11\% more nodes found as cloned for T1). This implies that most often textually equal code is also functionally equal. The difference between T2R and T2 is bigger (35\% more nodes found as cloned). Upon manual inspection, we found that the main reason for this is that T2R does not allow any variability in types, whereas T2 allows any variability in types.
 
-Regarding performance (Figure~\ref{fig:performance}, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Type 1R-3R take about 6 times longer to detect than type 1-3. The main reason for this is type resolution: finding the fully qualified identifiers of type-, variable- and method-references.
+Regarding performance (Figure~\ref{fig:performance}, there is a notable difference between the refactoring-oriented clone types and the literature clone types. Type 1R-3R take on average approximately 6 times longer to detect than type 1-3. The main reason for this is type resolution: finding the fully qualified identifiers of type-, variable-, and method-references.
 
-In Figure~\ref{fig:t2rgraph} we show the increase of cloned nodes for a higher variability between clone instances. This graph is logaritmic: as the variability increases, the increase in nodes decreases. This implies that semantical equality increases the chances that tokens are equal.
+In Figure~\ref{fig:t2rgraph} we show the increase of cloned nodes for a higher variability between clone instances. This graph is logarithmic: as the variability increases, the increase in nodes decreases. This implies that semantical equality increases the chances that tokens are equal.
 
-In Figure~\ref{fig:t3rgraph} we show the increase of cloned nodes for higher type 3R gap sizes. The line denoting the number of clone classes seems a bit exponential whereas the line denoting cloned nodes is mostly linear. This makes sense regarding the nature of the threshold. As we get into higher gap size percentages, fewer clones merge (thus the decrease in amount of clone classes merging). However, at these higher gap size percentages the gaps contains more nodes (thus the amount of cloned nodes being linear).
+In Figure~\ref{fig:t3rgraph} we show the increase of cloned nodes for higher type 3R gap sizes. The line denoting the number of clone classes seems a bit exponential whereas the line denoting cloned nodes is mostly linear. This makes sense regarding the nature of the threshold. Type 3R clones are formed by merging two gapped clone classes into a type 3R clone class. As we get into higher gap size percentages, fewer clone classes merge. However, at these higher gap size percentages, the gaps contain more nodes. Because of this, the increase of the number of cloned nodes is linear.
 
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
@@ -184,15 +178,24 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \subsection{Extract Method}
-28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
+28\% of clones can be refactored using the ``Extract Method'' refactoring technique. About 25\% of clones do not span part of a method, because of which they cannot be refactored. 23\% of the clones do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is when clones reside in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
 
 \subsection{Refactoring}
-In Fig.~\ref{fig:maintainabilityscore} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie at a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
 
-In Table~\ref{tab:relationref} we see the results regarding refactorings that are applied to clones with diverse relations. We see that most refactored clones are in a common class, over 54\%. This is significantly more than the percentage of clones in the common class relation as reported in Table~\ref{tab:relation}. Meanwhile, the number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
+\subsubsection{Token Volume}
+In Fig.~\ref{fig:maintainabilityscore} we see an increase in the \textbf{maintainability score} for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, lies at a token volume of 63 tokens. There are fewer large clones than small clones (exponential decrease), resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
 
-The maintainability scores displayed in Table~\ref{tab:relationref} show that the most favorable clones to refactor are clones with a sibling relation. The most unfavorable is to refactor clones to interfaces. However, the differences in maintainability in this table are generally small; according to our data relations have a minor impact on the maintainability of clones.
+When looking at the relation between maintainability and the \textbf{volume} metric, we see that the volume increases if the average clone volume is less than 60 tokens, but decreases above 60 tokens. When token volume increases, the \textbf{number of parameters} of the extracted method rises very slowly. Overall, on average, extracted methods have only one parameter. When the token volume of clones becomes larger than 160 tokens, we also see that there are more outliers in terms of the number of parameters. For the \textbf{complexity} we see that most clones do not have any complexity, because for most refactorings the complexity increases by one. This complexity is the added complexity of the extracted method and implies that the removed clones did not have any complexity. There is also no clear trend regarding the complexity metric against the token volume.
 
-Regarding the return type of refactored clones, we see in Table~\ref{tab:return} that this has no major impact on maintainability. A method call to the extracted method that is directly returned and no return type extracted methods are slightly more favorable than the others. We think the main reason that the ``Return'' category is on top is that when a variable is declared at the end of the cloned fragment, CloneRefactor directly returns its value and removes the declaration. This decreases the volume slightly.
+\subsubsection{Relation}
+In Table~\ref{tab:relationref} we see the results regarding refactorings that are applied to clones with the specified relation category. We see that 57\% of the refactored clones are in a common class. This is significantly more than the percentage of clones in the common class relation as reported in Table~\ref{tab:relation}. Meanwhile, the number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 17\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated become related.
 
-A higher number of parameters directly influences the corresponding metric. Because of this, we see in Fig.~\ref{fig:arguments} that more parameters negatively influence maintainability. Not only the number of parameters metric is negatively influenced, but more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
+The maintainability scores displayed in Table~\ref{tab:relationref} show that the most favorable clones to refactor are clones with a superclass relation. The most unfavorable is to refactor unrelated clones. The main reason for this difference in maintainability is that on average unrelated clones have a higher volume.
+
+The differences in maintainability of relation are, compared to the differences in maintainability of different token volumes, very small. Common hierarchy (which has the highest score) has a maintainability score of 0.23 whereas unrelated clones (which has the lowest score) have a maintainability score of -0.15. This is a very small difference, which implies that according to our data relations have a minor impact on the maintainability of clones.
+
+\subsubsection{Return Category}
+Regarding the return category of refactored clones, we see in Table~\ref{tab:return} that this has no major impact on maintainability: the differences between the maintainability scores of the categories are very small. The worst maintainable return category is when methods do not return anything (void), mainly because it is related to a higher number of parameters in the extracted method.
+
+\subsubsection{Number of Parameters}
+We see in Figure~\ref{fig:arguments} that the average extracted method that requires more than one parameter decreases maintainability. This is because a higher number of parameters does not only increase the ``number of parameters'' metric, but also the volume for the extracted method and each of the calls to it. Because of that, we see that the trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly and that the number of parameters in the extracted method has a major influence on maintainability.
