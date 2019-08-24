@@ -25,8 +25,7 @@ In this section, we display our results regarding the differences in the number 
 In Figure \ref{fig:typeres} we see that the difference between T1R and T1 is relatively small (11\% more cloned nodes found for T1). The difference between T2R and T2 is bigger (35\% more cloned nodes for T2). The number of cloned nodes of T3R and T3 are only a little bit higher than T2R and T2.
 
 \subsection{Performance}
-To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which allow for higher accuracy performance measurements as they do have limited background processes affecting the results. % Sander: zou zin na de komma (which..results) weglaten.
-%The durations are of course dependent on our implementation of the clone types.
+To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which allow for higher accuracy performance measurements as they do have limited background processes affecting the results.
 
 \subsection{Type 2R Variability Threshold}
 To determine the influence of the type 2R variability threshold on the amount of found nodes, we ran CloneRefactor for all variability percentages (0\% meaning no variance in expressions, 100\% meaning any variance in expressions). Figure \ref{fig:t2rgraph} shows the results.
@@ -37,7 +36,7 @@ To determine the influence of the type 2R variability threshold on the amount of
   \label{fig:t2rgraph}
 \end{figure}
 
-In this graph, we see that the amount of clones increases as the amount of variability allowed increases. The graph is logaritmic: as the variability increases, the increase in nodes decreases.
+In this graph, we see that the amount of clones increases as the amount of variability allowed increases. The graph is logarithmic: as the variability increases, the increase in nodes decreases.
 
 \subsection{Type 3R Gap Size Thresholds}
 To determine the influence of the type 3R gap size threshold on the amount of found nodes, we ran CloneRefactor for all gap size percentages between 0\% and 200\%. Figure \ref{fig:t3rgraph} shows the results.
@@ -125,7 +124,7 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 \label{tab:contents}
 \end{table}
 
-From these results we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
+From these results, we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \section{Extract Method}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
@@ -157,13 +156,13 @@ In our corpus, CloneRefactor has refactored 12,710 clone classes and measured th
   \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
   \item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
   \item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
-  \item \textbf{\#}: The number of times the specified category is refactored (and thus the number of datapoints we have for this category).
+  \item \textbf{\#}: The number of times the specified category is refactored (and thus the number of data points we have for this category).
   \item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
 \end{itemize}
 In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \subsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume against the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume against the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For larger token volumes we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
@@ -171,7 +170,7 @@ Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting t
   \label{fig:maintainabilityscore}
 \end{figure}
 
-The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. To determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly. In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies a lower maintainability.
+The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. To determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly. In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies lower maintainability.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/volume}
@@ -179,7 +178,7 @@ The token volume of the clone is equal to the decrease of duplicated tokens, whi
   \label{fig:volume}
 \end{figure}
 
-In Figure~\ref{fig:numberofparameters} we show the average delta number of parameters when clones with the specified token volume are refactored. This metric can only increase by the refactoring, because CloneRefactor only applies ``Extract Method'' refactorings that create a method with a certain number of parameters (according to the data needed by the extracted method).
+In Figure~\ref{fig:numberofparameters} we show the average delta number of parameters when clones with the specified token volume are refactored. This metric can only increase by the refactoring because CloneRefactor only applies ``Extract Method'' refactorings that create a method with a certain number of parameters (according to the data needed by the extracted method).
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/numberofparameters}
@@ -187,15 +186,13 @@ In Figure~\ref{fig:numberofparameters} we show the average delta number of param
   \label{fig:numberofparameters}
 \end{figure}
 
-In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is 1, because the extracted method itself has a complexity of 1. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
+In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is one because the extracted method itself has a complexity of one. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/complexity}
   \caption{The effect of token volume on the complexity of the refactored clones}
   \label{fig:complexity}
 \end{figure}
-
-%The volume of the clone is the dominating factor regarding the maintainability increase/decrease of cloned code. Because of that, in our further experiments we filter out all refactorings with a token size smaller than 18 because otherwise the small clones dominate the results and turn all results towards unmaintainable.
 
 \subsection{Relation}
 Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result might not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
@@ -255,7 +252,7 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \label{tab:return}
 \end{table}
 
-The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
+The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \subsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters. The table containing all underlying data and separate metrics is displayed in Appendix~\ref{sec:parameterstable}.
