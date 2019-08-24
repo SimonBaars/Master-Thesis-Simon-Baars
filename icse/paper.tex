@@ -185,7 +185,7 @@ The categories denote that a full declaration (method, class, etc.) often denote
 \subsection{Refactoring}
 CloneRefactor can refactor clones using the ``Extract Method'' refactoring technique. In this section, we show which clones we refactor and how we apply these transformations.
 
-\subsubsection{Extract Method}
+\subsubsection{Extract Method} \label{sec:refactorability}
 % Show my categories to show what clones can be dealt with by method extraction.
 Several influencing factors may obstruct the possibility to extract code to a new method:
 \begin{itemize}
@@ -247,7 +247,20 @@ We have validated the correctness of CloneRefactor through unit tests and empiri
 We also test the correctness of the resulting code after refactoring. For this, we use a GitHub project named JFreeChart. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor.
 
 \subsection{Minimum clone size}
-In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
+In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones are very unlikely to improve maintainability when refactored.
+
+\subsection{Thresholds}
+Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen \cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data \cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
+
+%In our experiments, we compare the maintainability scores for different thresholds. We use the \textit{standard error} to determine the correlation between the used threshold metric and the maintainability score. A low standard error shows that the threshold metric has a high influence on the maintainability score. This makes it more suitable to use as a threshold. By plotting the maintainability scores for different thresholds, we can determine which thresholds should be used to positively influence maintainability.
+
+%We define the following volume-based thresholds for clones, ordered by how often clone detection tools support such thresholds:
+%\begin{itemize}
+%\item \textbf{Number of lines}: The number of lines a single instance of the clone class spans.
+%\item \textbf{Tokens}: The number of tokens a single instance of the clone class spans.
+%\item \textbf{Number of statements}: The number of statements a single clone instance. Often closely reflects the number of lines, but is not dependent on coding style (number of newlines used by the programmer in statements).
+%\item \textbf{Token Volume}: The number of tokens in all clone instances in a clone class combined.
+%\end{itemize}
 
 \subsection{Calculating a maintainability score}\label{sec:metricformula}
 In this study, we use four metrics to determine maintainability (see Sec.~\ref{sec:metrics}). For each of these metrics, we determine their value before and after each refactored clone class, resulting in a delta metric score. For our experiments, we aggregate the deltas obtained for these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
@@ -366,9 +379,9 @@ Table~\ref{tab:location} displays the number of clone classes found for the enti
 
 From these results we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
-\subsection{Extract Method}
+\subsection{Refactorability}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
-Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique (see ). %The second column shows our measurements for the complete systems (just like the former experiments). %The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
+Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique (see Sec.~\ref{sec:refactorability}). %The second column shows our measurements for the complete systems (just like the former experiments). %The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
 
 \begin{table}[H]
 \centering
@@ -386,9 +399,11 @@ Complex Control Flow & 1,106 & 1.3\% \\
 \label{tab:refactorability}
 \end{table}
 
-\subsection{Refactoring}
+These results indicate that, given our refactorability criteria, 28\% of clones can be automatically refactored. Clones in other categories may require other refactoring techniques or further transformations to be automatically refactorable.
+
+\subsection{Thresholds}
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
-In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume}
 Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
