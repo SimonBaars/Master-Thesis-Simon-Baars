@@ -37,7 +37,7 @@ The reason for this is that when applying the ``Extract Method'' refactoring tec
 In this study, we use four metrics to determine maintainability (see Section~\ref{sec:metrics}). For each of these metrics, we collect their increase/decrease (delta) after each applied refactoring. We aggregate these delta metric values to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
-  \item Higher values for the metrics imply lower maintainability. % Sander: Dit is niet echt assumptie toch
+  \item Higher values for the metrics imply lower maintainability.
   \item Normalizing each obtained metric delta over all deltas obtained for a metric in our dataset results in equally weighted scores.
 \end{itemize}
 We derived these assumptions from supporting evidence shown by Heitlager et al~\cite{heitlager2007practical} and Alves et al.~\cite{alves2010deriving}. Using the resulting aggregated maintainability score, we can argue for each refactoring whether it increases or decreases the maintainability of the system.
