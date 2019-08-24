@@ -25,7 +25,7 @@
   numbers = left,
   stringstyle=\color{pred},
   basicstyle=\ttfamily,
-  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[il][\textcolor{pgrey}]{\$\$},
   moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
 }
 
@@ -544,7 +544,7 @@ Regarding clone locations, 74\% of clones span part of a method body (77\% if we
 28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is when clones are found in lambda functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
 
 \subsection{Refactoring}
-In Fig.~\ref{fig:maintainabilityscore} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie around 28 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
+In Fig.~\ref{fig:maintainabilityscore} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie around a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
 
 In Table~\ref{tab:relation_refactor} we see the results regarding refactorings that are applied to clones with diverse relations. We see that most refactored clones are in a common class, over 54\%. This is significantly more than the percentage of clones in the common class relation as reported in Table~\ref{tab:relation}. Meanwhile, the number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
 
