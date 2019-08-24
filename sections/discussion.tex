@@ -82,7 +82,7 @@ We chose a set of relations that indicate different refactoring opportunities. H
 In this section, we discuss our implementation decisions to refactor source code using CloneRefactor and measure its impact.
 
 \subsubsection{Refactorability} \label{sec:discussrefactorability}
-In Section~\ref{sec:refactorability} we introduced catagories to determine the refactorability of clones through method extraction. We excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
+In Section~\ref{sec:refactorabilitysetup} we introduced catagories to determine the refactorability of clones through method extraction. We excluded categories that could not not be directly refactored through method extraction. However, with a few transformations or further considerations it might be possible to make these clones refactorable. In this section we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
 
 \subsubsection{Partial block} \label{sec:partialblockdiscussion}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression \cite{tsantalis2017clone}. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.

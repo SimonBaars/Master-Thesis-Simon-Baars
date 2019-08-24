@@ -6,6 +6,47 @@
 
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{parcolumns}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  numbers = left,
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{\$\$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\definecolor{lightyellow}{HTML}{fffdcc}
+\definecolor{doublelightyellow}{HTML}{fffa9c}
+\definecolor{lightgreen}{HTML}{dcffd4}
+\definecolor{lightblue}{HTML}{e0ffff}
+\definecolor{lightred}{HTML}{ffe0e0}
+\definecolor{lightpink}{HTML}{ffe0ff}
+\definecolor{lightorange}{HTML}{ffede0}
+\definecolor{lightpurple}{HTML}{f0e0ff}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
 \setcopyright{acmcopyright}
 \copyrightyear{2019}
@@ -13,29 +54,26 @@
 \acmDOI{10.1145/1122445.1122456}
 \acmMonth{8}
 
-\acmConference[ICSE 2020]{Technical Papers}{May
-23--29}{Seoul, North Korea}
+\acmConference[ICSE 2020]{Technical Papers}{May 23--29}{Seoul, South Korea}
 
 \begin{document}
 
 \title{Improving Software Maintainability through Automated Refactoring of Code Clones}
 
-\author{Simon Baars}
-\affiliation{\institution{University of Amsterdam}}
-\email{simon.mailadres@gmail.com}
+%\author{Simon Baars}
+%\affiliation{\institution{University of Amsterdam}}
+%\email{simon.mailadres@gmail.com}
 
-\author{Ana Oprescu}
-\affiliation{\institution{University of Amsterdam}}
-\email{ana.oprescu@uva.nl}
+%\author{Ana Oprescu}
+%\affiliation{\institution{University of Amsterdam}}
+%\email{a.m.oprescu@uva.nl}
 
 \begin{abstract}
-Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such anti-patterns, the codebase should be refactored. Many tools aid in the detection process of such duplication problems, but fail to determine whether refactoring a duplicate fragment would improve the maintainability.
+Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such anti-patterns, the codebase should be refactored. Many tools aid in the detection process of such duplication problems but fail to determine whether refactoring a duplicate fragment would improve the maintainability.
 
-We address this shortcoming by first analyzing what data should be gathered from an automatically refactored system. We then propose a tool to detect clones, analyze their context and automatically refactor a subset of them. We use a set of established metrics to determine the impact of the applied refactorings on the maintainability of the system. Based on these results, one could decide which clones improve system design and thus should be refactored. We evaluate our approach over a large corpus of open source Java projects.
+We address this shortcoming by first analyzing what data should be gathered from an automatically refactored system. We then propose a tool to detect clones, analyze their context and automatically refactor a subset of them. We use a set of established metrics to determine the impact of the applied refactorings on the maintainability of the system. Based on these results, one could decide which clones would improve system design if refactored. We evaluate our approach over a large corpus of open source Java projects.
 
-We analyze the overhead of applying a refactoring in terms of four factors: the size of the clone, the relation between the code fragments in a clone, whether clone fragments create, modify or return data and the amount of external data that cloned fragments use. We find that the combined volume of similar fragments in a clone is the biggest influencing factor: the majority of duplicates with a volume 68 or more tokens improve maintainability when refactored. The amount of external data that needs to be passed to the merged location of the duplicate is the other important factor: the refactored method should not have more than 2 arguments. %The relation  %We identified a set of four factors that influence the maintainability impact of clones. The first is the size of the clone. The second is the relation between the code fragments in a clone. The third is whether the clone fragments create, modify or return data. The fourth is the amount of data that cloned fragments use. By using these four factors, we can suggest only clones that will improve maintainability when refactored and prioritize them accordingly.
-%Given these maintainability influencing factors and their effect on the source code, we measure their impact over a large corpus of open source Java projects. %This results in a set of thresholds by which clones can be found that should be refactored to improve system maintainability.
-
+We analyze the overhead of applying a refactoring in terms of four factors: the size of the clone, the relation between the code fragments in a clone, whether clone fragments create, modify or return data and the amount of external data that cloned fragments use. We find that the combined volume of similar fragments in a clone is the biggest influencing factor: the majority of duplicates with a total size of 63 or more tokens improve maintainability when refactored. The amount of external data that needs to be passed to the merged location of the duplicate is the other important factor: the majority of clones with more than requiring more than one external parameter decreases maintainability.
 \end{abstract}
 
 \keywords{code clones, refactoring, static code analysis, object-oriented programming}
@@ -43,51 +81,86 @@ We analyze the overhead of applying a refactoring in terms of four factors: the 
 \maketitle
 
 \section{Introduction}
-Duplicate fragments in source code (also named ``code clones'') are often seen as one of the most harmful types of technical debt \cite{fowler2018refactoring}. Duplicate fragments create implicit dependencies that make the code harder to maintain as the resolution of erroneous behaviour in one location may have to be applied to all the cloned code as well \cite{ostberg2014automatically}. Apart from that, code clones can contribute up to 25\% of the code size~\cite{bruntink2005use}.
+Duplicate fragments in source code (also named ``code clones'') are often seen as one of the most harmful types of technical debt~\cite{fowler2018refactoring}. Duplicate fragments create implicit dependencies that make the code harder to maintain as the resolution of erroneous behavior in one location may have to be applied to all the cloned code as well~\cite{ostberg2014automatically}. Apart from that, code clones can contribute up to 25\% of the code size~\cite{bruntink2005use}.
 
 Current code clone detection techniques base their thresholds and prioritization on a limited set of metrics. Often, clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
 
-In this study, we define a technique to detect clones such that they can be automatically refactored. We list a set of criteria that can obtruct refactoring opportunities. We evaluate the relation and location of clones to determine which refactoring techniques are best suited. We introduce a tool that automatically refactors clones by extracting new methods out of duplicated code.
+In this study, we define a technique to detect clones such that they can be automatically refactored. We list a set of criteria that can obstruct refactoring opportunities. We evaluate the relation and location of clones to determine which refactoring techniques are best suited. We introduce a tool that automatically refactors clones by extracting new methods out of duplicated code.
 
-%TODO: Hint about results. Hint about methodology.
-We evaluate our approach by comparing the maintainability of before- and after snapshots of a codebase for each duplication problem that is refactored. This gives us insight into whether clones detected by certain thresholds should be refactored to improve the maintainability of the codebase. This allows for more accurate suggestion of code clones for refactoring and can provide assistance in the refactoring process.
+We evaluate our approach by comparing the maintainability of before- and after snapshots of a codebase for each duplication problem that is refactored. We define which factors have the greatest influence on whether a clone improves maintainability when refactored. We find a set of thresholds by which clones can be detected that are more likely to improve maintainability when refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
 
 \section{Background}
-Our study lies intersection of code clone and refactoring research. %In this background section, we explain the required background knowledge for terms used throughout this study.
-We use two concepts to argue about code clones \cite{roy2007survey}:
+Our study lies at the intersection of code clone and refactoring research. We use two concepts to argue about code clones~\cite{roy2007survey}:
 \\ \textbf{Clone instance}: A single cloned fragment.
 \\ \textbf{Clone class}: A set of similar clone instances.
 
-%\subsection{Code clone definitions} Optional -> may do this if it adds something to the story
-%Quick overview of clone type definitions
+The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality in the body of a method to a new method. To reduce duplication with this technique, we extract the contents of a single clone instance to a new method and replace all clone instances in a clone class by a call to this method.
 
-%\subsection{Refactoring techniques}
-%In this section, we describe refactoring techniques that are relevant to refactoring code clones.
-The most common technique for refactoring clones is ``Extract Method'' \cite{fowler2018refactoring}, which can be applied on code inside the body of a method. This technique moves functionality in method bodies to a new method. This technique extracts the contents of a single clone instance to a new method and replace all clone instances in a clone class by a call to this method.
+\begin{figure*}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+package com.sb.game;
 
-%TODO: Maybe explain something about ASTs, declarations, types, etc.?
+import java.util.List;
+
+public class GameScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void addTen(int x) {
+|\highlightYellow|		x = x + 10; // Addition
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+package com.sb.fruitgame;
+
+import java.awt.List; // Different type
+
+public class LoseScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void concatTen(String x) {
+|\highlightYellow|		x = x + 10; // String concat
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Example of textually equal code fragments that differ in functionality.}
+\label{fig:type1}
+\end{figure*}
+
+\section{Related Work}
+The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how does variability between cloned fragments influence the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
+
+A recent study~\cite{tsantalis2017clone} looks into how lambdas can assist the clone refactoring process. The main focus is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
 
 \section{Defining refactorable clones}
-% Instead of defining clone types, I just define how we can ensure that clones can be refactored. I do not plan to differentiate between T1R, T2R, and T3R here, because I think it makes the paper confusing.
-% To be honest, I'm not even sure how relevant it is to name the literature clone types. Maybe not focus on their shortcomings, but just start from the core (source code) and define how we can get to refactorable clones.
-In literature, several clone type definitions have been used to argue about duplication in source code \cite{roy2007survey}. We discuss how we can define clones such that they can be automatically refactored without side effects on the source code.
+In literature, several clone type definitions have been used to argue about duplication in source code~\cite{roy2007survey}. We discuss how we can define clones such that they can be automatically refactored without side effects on the source code.
 
 \subsection{Ensuring Equality}\label{sec:t1r}
-% Explain type 1, why it is not always refactorable, solution
-Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens \cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation. Such clones can be harder to refactor, if beneficial at all.
+Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens~\cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation (Fig~\ref{fig:type1} shows an example of this). Such clones can be harder to refactor, if beneficial at all.
 
-To detect clones that can be automatically refactored, we propose to:
+To detect automatically refactorable clones, we propose to:
 \begin{itemize}
-  \item Compare variable references not only by their name, but also by their type.
+  \item Compare variable references not only by their name but also by their type.
   \item Compare referenced types by their fully qualified identifier (FQI). The FQI of a type reference describes the full path to where it is declared.
   \item Compare method references by their fully qualified signature (FQS). The FQS of a method reference describes the full path to where it is declared, plus the FQI of each of its parameters.
 \end{itemize}
 
-% Do we want an example here?
-
 \subsection{Allowing variability in a controlled set of expressions} \label{sec:t2r}
-%Explain type 2, why it is not always refactorable, solution
-Often, duplication fragments in source code do not match exactly \cite{kodhai2013method}. When developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into what expressions we can allow variability in, while still being refactorable.
+Often, duplication fragments in source code do not match exactly~\cite{kodhai2013method}. When developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into what expressions we can allow variability in, while still being refactorable.
 
 We define the following expressions as refactorable when varied:
 \begin{itemize}
@@ -95,23 +168,20 @@ We define the following expressions as refactorable when varied:
   \item \textbf{Variables}: Only if all varying variables in a clone class have the same type.
   \item \textbf{Method references}: Only if the return value of referenced methods match (or are not used).
 \end{itemize}
-Often when allowing such variance, trade-offs come into play \cite{krishnan2013refactoring, krishnan2014unification}. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
+Often when allowing such variance, trade-offs come into play~\cite{krishnan2013refactoring, krishnan2014unification}. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
 
 \subsection{Gapped clones} \label{sec:t3r}
-%Explain type 3, why it is not always refactorable, solution
-Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context \cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones'' \cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
+Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context~\cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones''~\cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
 \begin{itemize}
   \item We wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
-  \item We use a lambda function to pass the difference in statements from each location of the clone \cite{tsantalis2017clone}.
+  \item We use a lambda function to pass the difference in statements from each location of the clone~\cite{tsantalis2017clone}.
 \end{itemize}
-For both refactoring techniques a trade-off is at play, as these solutions increase the complexity and volume of the source code in favor of removing a clone.
+For both refactoring techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
 \section{The CloneRefactor tool}
-% NEED TO EXPLAIN WHY DO CURRENT DETECTION TOOLS NOT SUFFICE
-% The tool: Detect Clones, Map Context, Refactor.
-To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques \cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects\footnote{Control projects for assessing clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output.
+To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects\footnote{Control projects for assessing clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output.
 
-None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we decided to implement our own tool: CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
+None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we propose CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/flow}
   \caption{Simple flow diagram of CloneRefactor.}
@@ -119,7 +189,6 @@ None of the surveyed tools \cite{ragkhitwetsagul2019siamese, roy2008nicad, semur
 \end{figure}
 
 \subsection{Clone Detection}
-% Detecting refactorable clones, (clone graph?? do I want to explain my exact methods?)
 We use an AST-based method to detect clones. Clones are detected on a statement level: only full statements are considered as clones. In this process, we limit the variability between indicated expressions (see Sec.~\ref{sec:t2r}) by a threshold. This threshold is the percentage of different expressions against the total number of expressions in the source code:
 \begin{equation}\label{eq:type2r}
 \text{Variability}=\frac{\text{Different expressions}}{\text{Total expressions}}*100
@@ -132,12 +201,34 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 
 To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
 
+\begin{figure*}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+|\highlightYellow|int a = getA();
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5;
+  doC();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightYellow|int a = getA();
+|\highlightYellow|while(a<1000) {
+|\highlightYellow|  a *= 5;
+  doB(a);
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{A clone that spans a block partially.}
+\label{fig:refactorabilitypartialblock}
+\end{figure*}
+
 \subsection{Context Mapping} \label{sec:context}
 After clones are detected, we map the context of these clones. We have identified three properties of clones as their context: relation and location. We identify categories for each of these properties, to get a detailed insight into the context of clones.
 
 \subsubsection{Relation}\label{sec:relation}
-% The rationale for our categories regarding clone relations.
-Clone instances in a clone class may have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored \cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, e.g. belonging to a library) unless explicitly stated:
+Clone instances in a clone class may have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored~\cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, e.g. belonging to a library) unless explicitly stated:
 \begin{itemize}
     \item \textbf{Common Class}: All clone instances are in the same class.
     \begin{itemize}
@@ -154,23 +245,22 @@ Clone instances in a clone class may have a relation with each other through inh
     \end{itemize}
     \item \textbf{Common Interface}: All clone instances are in classes that have the same interface.
     \begin{itemize}
-        \item \textbf{Same Direct Interface}: All clone instances are in a class that have the same interface.
+        \item \textbf{Same Direct Interface}: All clone instances are in classes that have the same interface.
         \item \textbf{Same Class}: All clone instances are in an inheritance hierarchy that contains the same interface.
     \end{itemize}
     \item \textbf{Unrelated}: All clone instances are in classes that have the same interface.
     \begin{itemize}
-        \item \textbf{No Direct Superclass}: All clone instances are in classes that have the Object class as parent.
-        \item \textbf{No Indirect Superclass}: All clone instances are in a hierarchy that contains a class that has the Object class as parent.
-        \item \textbf{External Superclass}: All clone instances are in classes the same external class as parent.
-        \item \textbf{Indirect External Ancestor}: All clone instances are in a hierarchy that contains a class that has an external class as parent.
+        \item \textbf{No Direct Superclass}: All clone instances are in classes that have the Object class as their parent.
+        \item \textbf{No Indirect Superclass}: All clone instances are in a hierarchy that contains a class that has the Object class as their parent.
+        \item \textbf{External Superclass}: All clone instances are in classes the same external class as their parent.
+        \item \textbf{Indirect External Ancestor}: All clone instances are in a hierarchy that contains a class that has an external class as their parent.
     \end{itemize}
 \end{itemize}
 
-Based on these relations, CloneRefactor determines where to place the cloned code when refactored. These categories are mutually exclusive: a clone class will be flagged as the first relation in above list that it applies to. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
+Based on these relations, CloneRefactor determines where to place the cloned code when refactored. These categories are mutually exclusive: a clone class will be flagged as the first relation in the above list that it applies to. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
 
 \subsubsection{Location}\label{sec:location}
-% The rationale for our categories regarding clone locations.
-The location of a clone instance determine what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the location of clones:
+The location of a clone instance determines what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the location of clones:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor Body:} A clone that spans (a part of) the body of a method/constructor.
@@ -185,12 +275,11 @@ The categories denote that a full declaration (method, class, etc.) often denote
 \subsection{Refactoring}
 CloneRefactor can refactor clones using the ``Extract Method'' refactoring technique. In this section, we show which clones we refactor and how we apply these transformations.
 
-\subsubsection{Extract Method}
-% Show my categories to show what clones can be dealt with by method extraction.
+\subsubsection{Extract Method} \label{sec:refactorability}
 Several influencing factors may obstruct the possibility to extract code to a new method:
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
-    \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement.
+    \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement. An example of this is shown in Fig.~\ref{fig:refactorabilitypartialblock}.
     \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:location}, the ``Extract Method'' refactoring technique cannot be applied.
     \item \textbf{Returns Multiple Values}: If a clone modifies or declares multiple pieces of data that it should return.
     \item \textbf{Top-Level Non-Statement}: If one of the top-level AST nodes of the clone is not a statement. For instance, if a (part of) an anonymous class is cloned.
@@ -199,16 +288,13 @@ Several influencing factors may obstruct the possibility to extract code to a ne
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CloneRefactor only refactors the clones that \textit{Can Be Extracted}.
 
 \subsubsection{AST Transformation}
-% Explain what AST transformations I do to apply the refactorings.
-CloneRefactor uses JavaParser \cite{tomassetti2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CloneRefactor creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CloneRefactor analyzes the source code of the extracted method and populates it with the following properties:
+CloneRefactor uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CloneRefactor creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CloneRefactor analyzes the source code of the extracted method and populates it with the following properties:
 \begin{itemize}
   \item \textbf{Parameters}: For each variable used that is not accessible from the scope of the extracted method.
   \item \textbf{A return value}: If the method modifies or declares local data that is needed outside of its scope, or if the cloned fragments already returned data.
   \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \texttt{RuntimeException}.
 \end{itemize}
 CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, CloneRefactor either assigns the call result, declares it or returns it accordingly.
-
-We verified the correctness of the resulting refactorings manually. We ran the tool over a large software project and verified over 1.000 applied refactorings.
 
 \subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
 We define the following characteristics of the extracted method and/or the call:
@@ -221,40 +307,53 @@ We define the following characteristics of the extracted method and/or the call:
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
 
 \subsubsection{Impact on maintainability metrics} \label{sec:metrics}
-CloneRefactor measures the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
+CloneRefactor measures the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al.~\cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
-To determine whether the maintainability improves when refactoring a single clone, we need to measure the impact of small-grained changes. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are:
+To determine whether the maintainability improves when refactoring a single clone, we need to measure the impact of small-grained changes. Because of that, we measure only a subset of the metrics~\cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are:
 \begin{itemize}
-\item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
-\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
-\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
-\item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
+\item \textbf{Duplication}: In Heitlager et al.~\cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
+\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper~\cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
+\item \textbf{Complexity}: Heitlager et al.~\cite{heitlager2007practical} use MCCabe complexity~\cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
+\item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects~\cite{fowler2018refactoring}.
 \end{itemize}
 
 \section{Experimental setup}
 In this section, we describe the setup of our experiments.
 
 \subsection{Corpus}
-We ran all our experiments using CloneRefactor on a corpus of open source Java projects. This corpus is derived from the corpus of a study that uses machine learning to determine the suitability of Java projects on GitHub for data analysis purposes \cite{githubCorpus2013}.
+We ran all our experiments using CloneRefactor on a corpus of open source Java projects. This corpus is derived from the corpus of a study that uses machine learning to determine the suitability of Java projects on GitHub for data analysis purposes~\cite{githubCorpus2013}.
 
 CloneRefactor requires all libraries of the projects it analyses, to find the full paths of all referenced symbols in the source code (see Sec.~\ref{sec:t1r}). Because of that requirement, we decided to filter the corpus to only projects using the Maven build automation system. We created a set of scripts\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} to prepare such a corpus with all dependencies included.
 
 This procedure results in 2.267 Java projects including all their dependencies. The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is \textit{VisAD} with 502K lines.
 
 \subsection{Tool Validation}
-We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each identified relation, location and refactorability category to see whether they get correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check both the correctness of the identified clones, their context and their proposed refactoring.
+We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each identified relation, location, and refactorability category to see whether they get correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check both the correctness of the identified clones, their context, and their proposed refactoring.
 
 We also test the correctness of the resulting code after refactoring. For this, we use a GitHub project named JFreeChart. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor.
 
 \subsection{Minimum clone size}
-In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
+In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones are very unlikely to improve maintainability when refactored.
+
+\subsection{Thresholds}
+Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
+
+%In our experiments, we compare the maintainability scores for different thresholds. We use the \textit{standard error} to determine the correlation between the used threshold metric and the maintainability score. A low standard error shows that the threshold metric has a high influence on the maintainability score. This makes it more suitable to use as a threshold. By plotting the maintainability scores for different thresholds, we can determine which thresholds should be used to positively influence maintainability.
+
+%We define the following volume-based thresholds for clones, ordered by how often clone detection tools support such thresholds:
+%\begin{itemize}
+%\item \textbf{Number of lines}: The number of lines a single instance of the clone class spans.
+%\item \textbf{Tokens}: The number of tokens a single instance of the clone class spans.
+%\item \textbf{Number of statements}: The number of statements a single clone instance. Often closely reflects the number of lines, but is not dependent on coding style (number of newlines used by the programmer in statements).
+%\item \textbf{Token Volume}: The number of tokens in all clone instances in a clone class combined.
+%\end{itemize}
 
 \subsection{Calculating a maintainability score}\label{sec:metricformula}
 In this study, we use four metrics to determine maintainability (see Sec.~\ref{sec:metrics}). For each of these metrics, we determine their value before and after each refactored clone class, resulting in a delta metric score. For our experiments, we aggregate the deltas obtained for these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
   \item Higher values for the metrics imply lower maintainability.
-  \item Normalizing each obtained metric delta over all deltas obtained for a metric in our dataset results in equally weighted scores.
+  \item Normalizing each obtained metric delta over all deltas obtained for that metric in our dataset results in equally weighted scores.
 \end{itemize}
 We derived these assumptions from supporting evidence shown by Heitlager et al~\cite{heitlager2007practical} and Alves et al.~\cite{alves2010deriving}. Using the resulting aggregated maintainability score, we can argue for each refactoring whether it increases or decreases the maintainability of the system.
 
@@ -262,7 +361,7 @@ We normalize each obtained metric delta using the ``Standard score'', which is c
 \begin{equation}\label{eq:scoredev}
 N_{metric} = \frac {\Delta X-\mu}{\sigma}
 \end{equation}
-Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metric. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores negatively.
+Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metric. This method works well for normalization of our data because as we divide by the standard deviation, outliers do not influence the resulting scores negatively.
 
 We then calculate the maintainability for a specific refactoring as follows:
 \begin{equation}\label{eq:scoreref}
@@ -310,7 +409,6 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 In this section, we share the results of our experiments.
 
 \subsection{Clone context}
-% How many clones are there in certain contexts? Experiments for relation, location, and context.
 To determine the refactoring method(s) that can be used to refactor most clones, we perform statistical analysis on the context of clones (see Sec.~\ref{sec:context}).
 
 \subsubsection{Relation}
@@ -364,11 +462,10 @@ Table~\ref{tab:location} displays the number of clone classes found for the enti
 \label{tab:location}
 \end{table}
 
-From these results we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
+From these results, we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
-\subsection{Extract Method}
-%To what extent can found clones be refactored through method extraction, without requiring additional transformations.
-Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique (see ). %The second column shows our measurements for the complete systems (just like the former experiments). %The third column shows our measurements when restricting our search to method bodies. The amount that can be extracted increases because, when restricting our search to method bodies, we do not exclude declarations that can obstruct the possibility of method extraction (for instance a cloned method signature).
+\subsection{Refactorability}
+Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique (see Sec.~\ref{sec:refactorability}).
 
 \begin{table}[H]
 \centering
@@ -386,12 +483,13 @@ Complex Control Flow & 1,106 & 1.3\% \\
 \label{tab:refactorability}
 \end{table}
 
-\subsection{Refactoring}
-%I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
-In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring.
+These results indicate that, given our refactorability criteria, 28\% of clones can be automatically refactored. Clones in other categories may require other refactoring techniques or further transformations to be automatically refactorable.
+
+\subsection{Thresholds}
+In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure*}
   \includegraphics[width=1\textwidth]{img/tokenvolume}
@@ -409,7 +507,6 @@ Table~\ref{tab:return} shows how the return value of the extracted method influe
 
 \begin{table*}
 \centering
-%\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
 \textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
@@ -419,13 +516,12 @@ Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
 Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
 Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
-\end{tabular}%
-%}
+\end{tabular}
 \caption{Average metric values for refactorings of clone classes with the specified return category}
 \label{tab:return}
 \end{table*}
 
-The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
+The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \subsubsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters.
@@ -437,7 +533,7 @@ Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintain
 \end{figure}
 
 \section{Discussion}
-In this section, we discuss the results of our experiments.
+%In this section, we discuss the results of our experiments.
 
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
@@ -445,10 +541,10 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 Regarding clone locations, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \subsection{Extract Method}
-28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is clones in anonymous functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
+28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, because of which they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason for this is when clones are found in lambda functions or anonymous classes. About 15\% of clones span only part of an AST-Node.
 
 \subsection{Refactoring}
-In Fig.~\ref{fig:maintainabilityscore} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie around 28 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
+In Fig.~\ref{fig:maintainabilityscore} we see an increase in maintainability for refactoring larger clone classes. The tipping point, between a better maintainable refactoring and a worse maintainable refactoring, seems to lie around a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited statistical significance on our corpus when considering clones larger than 100 tokens.
 
 In Table~\ref{tab:relation_refactor} we see the results regarding refactorings that are applied to clones with diverse relations. We see that most refactored clones are in a common class, over 54\%. This is significantly more than the percentage of clones in the common class relation as reported in Table~\ref{tab:relation}. Meanwhile, the number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
 
@@ -456,14 +552,14 @@ The maintainability scores displayed in Table~\ref{tab:relation_refactor} show t
 
 Regarding the return type of refactored clones, we see in Table~\ref{tab:return} that this has no major impact on maintainability. A method call to the extracted method that is directly returned and no return type extracted methods are slightly more favorable than the others. We think the main reason that the ``Return'' category is on top is that when a variable is declared at the end of the cloned fragment, CloneRefactor directly returns its value and removes the declaration. This decreases the volume slightly.
 
-A higher number of parameters directly influences the corresponding metric. Because of this, we see in Fig.~\ref{fig:arguments} that more parameters negatively influence maintainability. Not only the number of parameters metric is negatively influenced, but more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
+A higher number of parameters directly influences the corresponding metric. Because of this, we see in Fig.~\ref{fig:arguments} that more parameters negatively influence maintainability. Not only the number of parameters metric is negatively influenced, but more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that the trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
 
 \section{Conclusion}
 We defined automatically refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
 
-We defined two aspects as part of the context of a clone: relation and location. Regarding relations, we found that most clones are found in the same class, over 37\%. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 7\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
+We defined two aspects as part of the context of a clone: relation and location. Regarding relations, over 37\% of clones are found in the same class. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
 
-We built a tool that can automatically apply refactorings to 28\% of clones in our corpus using the ``Extract Method'' refactoring technique. The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, for instance when code outside a method is part of a clone.
+We built a tool that can automatically apply refactorings to 28\% of the clones in our corpus using the ``Extract Method'' refactoring technique. The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, e.g., when code outside a method is part of a clone.
 
 We measured four maintainability metrics before- and after applying each refactoring to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 29 tokens per clone instance for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
 

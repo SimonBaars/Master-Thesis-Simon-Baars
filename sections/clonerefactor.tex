@@ -1,7 +1,5 @@
 \chapter{CloneRefactor} \label{ch:clonerefactor}
-We bridged a gap between clone detection and refactoring by designing a tool that can detect clones by our refactoring-oriented clone types (chapter \ref{chap:clonetypes}). This tool, named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}, performs a comprehensive context analysis on the detected clones. Based on this this context, CloneRefactor can automatically refactor a subset of the detected clones by applying transformations to the source code of the analyzed software project(s).
-
-In this section we describe our approach and rationale for the design decisions regarding this tool.
+We bridged a gap between clone detection and refactoring by designing a tool that can detect clones by our refactoring-oriented clone types (chapter \ref{chap:clonetypes}). This tool, named CloneRefactor\footnote{The source code of CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}}, performs a comprehensive context analysis on the detected clones. Based on this context, CloneRefactor can automatically refactor a subset of the detected clones by applying transformations to the source code of the analyzed software project(s). In this section, we describe our approach and rationale for the design decisions regarding this tool.
 
 \begin{figure}[H]
   \centering
@@ -10,23 +8,23 @@ In this section we describe our approach and rationale for the design decisions 
   \label{fig:clonerefactorprocess}
 \end{figure}
 
-Figure \ref{fig:clonerefactorprocess} shows the overall process used by CloneRefactor. First, we detect clones on the basis of a Java codebase, given a Java project from disk and a configuration. The clone detection process is further explained in Section~\ref{sec:clonedetection}. After all clones are found, CloneRefactor maps the context of the clones. On the basis of this context, CloneRefactor applies transformations to the source code for clones for which we have configured a refactoring.
+Figure \ref{fig:clonerefactorprocess} shows the overall process used by CloneRefactor. First, we detect clones based on a Java codebase, given a Java project from disk and a configuration. The clone detection process is further explained in Section~\ref{sec:clonedetection}. When all clones are found, CloneRefactor maps the context of the clones. Based on this context, CloneRefactor applies transformations to the source code for clones that are found to be refactorable.
 
 \section{JavaParser}
-An important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows to parse Java source files to an abstract syntax tree (AST\footnote{An AST is a tree-representation of a source code file.}). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
+An important design decision for CloneRefactor is the usage of a library named JavaParser \cite{tomassetti2017javaparser}. JavaParser is a Java library which allows parsing Java source files to an abstract syntax tree (AST\footnote{An AST is a tree representation of a source code file.}). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
 
-Integrated in JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
+Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is very useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
 
-In order to be able to trace referenced identifiers SymbolSolver requires access to not only the analyzed Java projects, but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
+To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
 
 %Because of the requirement of symbol resolution, the refactoring-oriented clone types are less suitable for large scale clone analysis.
 
 \section{Thresholds}\label{sec:clonerefactorthresholds}
 CloneRefactor operates on a set of thresholds to determine the validity of clones that are found. In general, these thresholds are:
 \begin{itemize}
-  \item \textbf{Minimum Number of Nodes}: The minimum amount of nodes that should be in each instance of cloned fragements for them to be considered a clone class.
-  \item \textbf{Minimum Number of Tokens}: The minimum amount of tokens that should be in each instance of cloned fragements for them to be considered a clone class.
-  \item \textbf{Minimum Number of Lines}: The minimum amount of lines that should be in each instance of cloned fragements for them to be considered a clone class.
+  \item \textbf{Minimum Number of Nodes}: The minimum amount of nodes that should be in each instance of cloned fragments for them to be considered a clone class.
+  \item \textbf{Minimum Number of Tokens}: The minimum amount of tokens that should be in each instance of cloned fragments for them to be considered a clone class.
+  \item \textbf{Minimum Number of Lines}: The minimum amount of lines that should be in each instance of cloned fragments for them to be considered a clone class.
 \end{itemize}
 
 When we analyze type 2R or type 3R clones we use the following additional threshold:
@@ -40,7 +38,7 @@ When we analyze type 3 or type 3R clones we use the following additional thresho
 \end{itemize}
 
 \section{Clone Detection}\label{sec:clonedetection}
-To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an unweighted graph structure. On the basis of this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied. The way in which CloneRefactor was designed does not allow for several clone types to be detected simultaneously. The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}.
+To detect clones, CloneRefactor parses the AST acquired from JavaParser to an unweighted graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied. How CloneRefactor was designed does not allow for several clone types to be detected simultaneously. The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}.
 
 \begin{figure}[H]
   \centering
@@ -49,7 +47,7 @@ To detect clones, CloneRefactor parses the AST aqcuired from JavaParser to an un
   \label{fig:clonedetection}
 \end{figure}
 
-First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. On the basis of this graph, we detect clone classes and verify them the configured thresholds. If the detection was configured to detect either type 2R, 3 or 3R clones we perform some type specific transformations on the resulting set of clones.
+First of all, we use JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. Based on this graph, we detect clone classes and verify them the configured thresholds. If the detection was configured to detect either type 2R, 3 or 3R clones we perform some type-specific transformations on the resulting set of clones.
 %\begin{itemize}
 %  \item Amount of tokens.
 %  \item Amount of statements.
@@ -81,21 +79,21 @@ We do not create a separate graph for each class file, so the statement/declarat
   \label{fig:clonegraphsimple}
 \end{figure}
 
-The relations \textit{next} and \textit{previous} in this graph are represented as an twodirectional arrow. The relations representing duplication are directed. This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in Section~\ref{sec:detectingclones}.
+The relations \textit{next} and \textit{previous} in this graph are represented as a bidirectional arrow. The relations representing duplication are directed. This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in Section~\ref{sec:detectingclones}.
 
 \subsubsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
-In the previous section we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
+In the previous section, we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
 
-CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
+CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R, and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace, and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
 
-For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit{method calls} we trace their declaration and use its fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we trace their declarations and use assemble their fully qualified identifier for comparison with other nodes. For \textit{variables} we trace their declaration and their types. If the variable type is a primitive we can directly use it for comparison. If it is a referenced type, we have to trace this type first in order to collect their fully qualified identifier for comparison.
+For \textbf{type 1R} clones, this comparison is a lot more advanced. For \textit{method calls} we trace their declaration and use its fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we trace their declarations and use assemble their fully qualified identifier for comparison with other nodes. For \textit{variables} we trace their declaration and their types. If the variable type is a primitive we can directly use it for comparison. If it is a referenced type, we have to trace this type first to collect their fully qualified identifier for comparison.
 
-\textbf{Type 2R} clones allow any variation in literals, variables and method calls at this stage in the clone detection process. However, for \textit{literals} we do resolve their type in order to verify that they are of the same type. For \textit{variables} we also only verify that their types are the same (but not their names). For \textit{method calls}, we trace their declaration but only compare the fully qualified identifier for its return type and each of its arguments' types. Apart from that, we do not compare the names of method, class, interface and enum declarations.
+\textbf{Type 2R} clones allow any variation in literals, variables, and method calls at this stage in the clone detection process. However, for \textit{literals} we do resolve their type to verify that they are of the same type. For \textit{variables} we also only verify that their types are the same (but not their names). For \textit{method calls}, we trace their declaration but only compare the fully qualified identifier for its return type and each of its arguments' types. Apart from that, we do not compare the names of method, class, interface and enum declarations.
 
 In this stage, \textbf{type 3R} clones have the same compare rules as type 2R clones.
 
 \subsubsection{Mapping graph nodes to code}
-The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements in a source code. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. Look at Figure~\ref{fig:clonegraph} for an example of how source code maps to AST nodes.
+The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements of a software project. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. Look at Figure~\ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
   \centering
@@ -104,10 +102,10 @@ The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains 
   \label{fig:clonegraph}
 \end{figure}
 
-In line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
+On line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
 
 \subsection{Detecting Clones} \label{sec:detectingclones}
-After building the clone clone graph, we use it to detect clone classes. Because nodes in the clone graph link to \textit{preceding} cloned statement, the first cloned node does not have any clone relation, as there are no clones preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in Figure~\ref{fig:clonegraph} to a clone graph as displayed in Figure~\ref{fig:clonegraph2}.
+After building the clone graph, we use it to detect clone classes. Because nodes in the clone graph link to \textit{preceding} cloned statement, the first cloned node does not have any clone relation, as no clones are preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in Figure~\ref{fig:clonegraph} to a clone graph as displayed in Figure~\ref{fig:clonegraph2}.
 
 \begin{figure}[H]
   \centering
@@ -122,7 +120,7 @@ Next, we move to the previous line (4). Here again, we collect all duplicates of
 
 We then go further to the previous node (6). In this case, this node does not have any clones. This means we check the (2 and 5, 1 and 4) clone class against the thresholds, and if it adheres, consider it a clone. Dependent on the thresholds, this example can result in a total of two clone classes.
 
-Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any exisiting clone. If this is the case (which it is for this example), we discard the clone.
+Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
 
 \todo{Explain the complexity of the algorithm: O(n)?}
 
@@ -151,7 +149,7 @@ If the newly added clone is a subset of an existing clone, we do not add it to t
 \todo{Think about an example}
 
 \subsection{Validating the type 2R variability threshold}
-In the definition of type 2R clones (see Section~\ref{sec:type2r}) we described how type 2R clones work on the basis of a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of complexity. In this section we explain how CloneRefactor detects type 2R clones on the basis of this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in Section~\ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configured variability threshold.
+In the definition of type 2R clones (see Section~\ref{sec:type2r}) we described how type 2R clones work based on a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of complexity. In this section, we explain how CloneRefactor detects type 2R clones based on this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in Section~\ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configured variability threshold.
 
 \begin{figure}[H]
   \centering
@@ -163,7 +161,7 @@ In the definition of type 2R clones (see Section~\ref{sec:type2r}) we described 
 Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. Each of the following paragraphs will explain a step from this figure.
 
 \subsubsection{Create equality array}
-To determine the difference in literals, method calls and variables, we convert the code to an equality array. This equality array converts each (group of) token(s) to a number unique to that (group of) tokens. Each literal, method call or variable becomes a positive number, whereas each other token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in Figure~\ref{fig:equalityarrays}.
+To determine the difference in literals, method calls, and variables, we convert the code to an equality array. This equality array converts each expression to a number unique to that expression. Each literal, method call or variable becomes a positive number, whereas each other expression becomes a negative number. An example of two code fragments converted to equality arrays is displayed in Figure~\ref{fig:equalityarrays}.
 
 \begin{figure}[H]
   \centering
@@ -232,7 +230,7 @@ doB(d, e, f);
 \label{fig:2rvariabilityhigh1}
 \end{figure}
 
-The first line of the cloned fragment shown in Figure~\ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragement. However, the rest of this method does not have any variability. The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
+The first line of the cloned fragment shown in Figure~\ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragment. However, the rest of this method does not have any variability. The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
 
 \begin{figure}[H]
 \begin{parcolumns}{3}
@@ -294,7 +292,7 @@ Figure \ref{fig:2rvariabilityhigh3} shows an example of a clone class where the 
 If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class except for an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
 
 \subsubsection{Convert Equality Array to Graph}
-After the global threshold check has failed, we build a clone graph on the basis of the equality arrays. The process used for building this graph is the same as the process described in \ref{sec:buildingclonegraph}.
+After the global threshold check has failed, we build a clone graph based on the equality arrays. The process used for building this graph is the same as the process described in \ref{sec:buildingclonegraph}.
 
 \begin{figure}[H]
 \begin{parcolumns}{3}
@@ -339,7 +337,7 @@ E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \
 \end{equation}
 
 \subsubsection{Detect Clones on Graph}
-Similar to the clone detection process, we detect clones on the basis of the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in Section~\ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
+Similar to the clone detection process, we detect clones based on the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in Section~\ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
 
 Looking back at the example of the previous section, it would result in the following clone class collection:
 \begin{figure}[H]
@@ -370,7 +368,7 @@ doE(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
 \label{fig:2rvariabilityhigh5}
 \end{figure}
 
-Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. The process by which these clones are found is equal to the clone detection process as described in Section~\ref{sec:detectingclones}. In this example, we see the four clones found on the graph of Figure~\ref{fig:clonerefactorprocess}. Three of these clone classes have a two clone instances, each consisting of a single nodes. The other clone class has three clone instances, each consisting of two nodes.
+Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. The process by which these clones are found is equal to the clone detection process as described in Section~\ref{sec:detectingclones}. In this example, we see the four clones found on the graph of Figure~\ref{fig:clonerefactorprocess}. Three of these clone classes have two clone instances, each consisting of a single node. The other clone class has three clone instances, each consisting of two nodes.
 
 \subsubsection{Try to Expand}
 The problem with the graph clone detection technique is that only single nodes that are within the variability threshold are considered duplicates of each other. However, single nodes that are not within this threshold could still be part of a clone class if the other cloned nodes are more towards the lower bound of the threshold.
@@ -400,7 +398,7 @@ doH(b); //{12, -2, 13, -3, -4}
 \label{fig:trytoexpand}
 \end{figure}
 
-As an example, consider the clone fragment in Figure~\ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances on the basis of the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the amount of clone instances in a clone class and the amount of nodes in any of its instances.
+As an example, consider the cloned fragments in Figure~\ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances based on the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the number of clone instances in a clone class and the number of nodes in any of its instances.
 
 In the example in Figure~\ref{fig:trytoexpand} the largest instance has a volume of:
 
@@ -458,8 +456,8 @@ r_1 > r_2 \text{ iff } BLr_1 > ELr_2 \lor (BLr_1 = ELr_2 \land BCr_1 > ECr_2)
 
 Where \textit{BL} is the begin line of a range, \textit{EL} is the end line of a range, \textit{BC} is the begin column of a range and \textit{EC} is the end column of a range.
 
-\subsubsection{Type 3R Example}
-In this section we show an example of the identification of a type 3R clone.
+\subsubsection{Type 3R Indentification Example}
+In this section, we show an example of the identification of a type 3R clone.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -524,7 +522,7 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
 \begin{enumerate}
   \item \textbf{Same Method}: All instances of the clone class are in the same method.
   \item \textbf{Same Class}: All instances of the clone class are in the same class.
-  \item \textbf{Superclass}: All instances of the clone class are in a class that is child or parent of each other.
+  \item \textbf{Superclass}: All instances of the clone class are in a class that are child or parent of each other.
   \item \textbf{Sibling Class}: All instances of the clone class have the same parent class.
     \item \textbf{Ancestor Class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{First Cousin Class}: All instances of the clone class have the same grandparent class.
@@ -542,8 +540,6 @@ We added the following categories, to gain more information about clones and red
 \item \textbf{External Ancestor}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
 \end{enumerate}
 
-Figure \ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured on clone class level: it involves all child clone instances. The location and contents of clones is measured on clone instance level. A clone's location involves the file it resides in and the range it spans (for example: line 6 col 2 - line 7 col 50). A clone instance contents consists of a list of all statements and declarations it spans.
-
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.6\columnwidth]{img/Relation}
@@ -559,9 +555,9 @@ We separate these relations into the following categories, because of their rela
   \item \textbf{Unrelated}: \textit{No Direct Superclass}, \textit{No Indirect Superclass}, \textit{External Superclass}, \textit{External Ancestor}
 \end{itemize}
 
-Every clone class only has a single relation, which is the first relation from above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in above list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
+Every clone class only has a single relation, which is the first relation from the above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in the list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
 
-To check a the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
+To determine the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
 
 \begin{equation}\label{eq:sameclass}
 \frac{x * (x + 1)}{2} * y
@@ -572,9 +568,9 @@ comparisons to determine the relation. Each of these checks will result in one o
 \subsubsection{Common Class}
 The \textit{Same method} and \textit{Same class} relations share a common refactoring opportunity. Clones of both these categories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
-Cloned nodes are flagged as \textit{Same method} if these nodes are found in the same method. We define the method as the first method declaration that is encountered when following the parent nodes in the ast for a given cloned node. Please note that a clone instance may not always be in a method, for which this predicate will fail.
+Cloned nodes are flagged as \textit{Same method} if these nodes are found in the same method. We define the method as the first method declaration that is encountered when following the parent nodes in the AST for a given cloned node. Please note that a clone instance may not always be in a method, for which this predicate will fail.
 
-Cloned nodes are flagged as \textit{Same class} if these nodes are found in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the ast for a given cloned node.
+Cloned nodes are flagged as \textit{Same class} if these nodes are found in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the AST for a given cloned node.
 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
@@ -586,14 +582,14 @@ Cloned nodes are flagged as \textit{Ancestor} if the classes in which these node
 \subsubsection{Common Interface}
 Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\#8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
 
-The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by setting a stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
+The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
 
 To check whether two cloned nodes have common interfaces, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
 
 \subsubsection{Unrelated}
-Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable when looking at refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
+Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable for refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
 
-Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors does not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
+Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors do not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
 
 Cloned nodes are flagged \textit{External Superclass} if they are in a class which has an external parent. Cloned nodes are flagged \textit{External Ancestor} if one of their ancestors has an external parent. Both of these relations obstruct the possibility of creating a superclass abstraction. In such a case, an interface abstraction could be created to make their relation explicit.
 
@@ -605,10 +601,10 @@ A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness o
   \item \textbf{Interface Level:} A clone that is (a part of) an interface.
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
-We check the location of each clone instance for each of its nodes. If any node reports a different location from the others, we choose the location that is lowest in above list. So for instance, if a clone instance has 15 nodes that denote a \textit{Method Level} location but 3 nodes are \textit{Class Level}, the clone instance becomes \textit{Class Level}.
+We check the location of each clone instance for each of its nodes. If any node reports a different location from the others, we choose the location that is lowest in the above list. So for instance, if a clone instance has 15 nodes that denote a \textit{Method Level} location but 3 nodes are \textit{Class Level}, the clone instance becomes \textit{Class Level}.
 
 \subsubsection{Method/Constructor Level Clones} \label{sec:methodlevelcr}
-Method/Constructor Level clones denote clones that span are found in either a method or contructor. A constructor is a special method that is called when an object is instantiated. Current clone refactoring studies only focus on clones at method level \cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places \cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques \cite{kodhai2013method, fontana2015duplicated}.
+Method/Constructor Level clones denote clones that are found in either a method or constructor. A constructor is a special method that is called when an object is instantiated. Current clone refactoring studies only focus on clones at method level \cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places \cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques \cite{kodhai2013method, fontana2015duplicated}.
 
 To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
 
@@ -616,7 +612,7 @@ To detect whether a given clone instance is at Method Level, we check for each n
 \forall (n \in I)\text{ } Tn = \text{MethodDeclaration} \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{MethodDeclaration}
 \end{equation}
 
-Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
+Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are all recursive parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -631,7 +627,6 @@ public class Class1 { // |\textcolor{pgreen}{$p_3$}|
 \end{javacode}}
 \colchunk[2]{
 \begin{javacode}
-\begin{javacode}
 public class Class2 { // |\textcolor{pgreen}{$p_3$}|
   public void doB() { // |\textcolor{pgreen}{$p_2$}|
     if(isB()) // |\textcolor{pgreen}{$p_1$}|
@@ -645,12 +640,12 @@ public class Class2 { // |\textcolor{pgreen}{$p_3$}|
 \end{figure}
 
 \subsubsection{Class/Interface/Enumeration Level Clones}
-Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain a fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in a inheritance hierarchy. Or, we might have to perform a refactoring on more of an architectural level, if a large set of methods is cloned.
+Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in an inheritance hierarchy. Or, we might have to perform a refactoring on more of an architectural level, if a large set of methods is cloned.
 
 We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
-Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on the basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
+Finally, we looked at what nodes individual clone instances span. We selected a set of categories based on empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor. The declaration itself is not included.
@@ -663,7 +658,7 @@ Finally, we looked at what nodes individual clone instances span. We selected a 
 These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
 
 \subsubsection{Partial Method/Constructor}
-These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has a ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
+These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has an ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
 
 \subsubsection{Several Methods}
 Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately. We detect such clones by checking that each cloned node has a parent node that is a MethodDeclaration. This is the same process as described in equation \ref{eq:samemethod}. Additionally, we check that the MethodDeclaration ancestor of the first node in the clone instance differs from the last, to be sure that the clone instance spans over at least two methods.
@@ -672,13 +667,13 @@ Several methods cloned in a single class is a strong indication of implicit depe
 This category denotes that the clone spans over only global variables, fields that are declared outside of a method. This is to indicate data redundancy: pieces of data have an implicit dependency. In such cases, these fields may have to be encapsulated in a new object. Or, the fields should be somewhere in the inheritance structure where all objects containing the clone can access them. We check for this category by validating that all nodes in the clone instance are a VariableDeclarator. Because VariableDeclarators in methods would already fall into the ``Partial Method'' category, this includes only globally defined fields.
 
 \subsubsection{Other}
-The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of above states concepts. For instance, a combination of constructors and methods is clones, or a combination of fields and methods. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
+The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
 
 \section{Automated Refactoring}
 After clone detection and context analysis, CloneRefactor applies refactorings to a subset of type 1R clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
 
 \subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
-The most used technique to refactor clones is ``Extract Method'' (creating a new method on the basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
+The most used technique to refactor clones is ``Extract Method'' (creating a new method based on the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extent this refactoring method can be used to refactor the found clones automatically.
 
 Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. These categories are party derived from the clone refactoring preconditions defined by Tsantalis et al.~\cite{tsantalis2015assessing} (see Section \ref{sec:jdeodorant}). These categories are as follows:
 \begin{itemize}
@@ -730,13 +725,13 @@ When applying an ``Abstract Method'' refactoring, we author a new method declara
 In this example, the while loop is partially cloned. This obstructs us from extracting the cloned code to a new method.
 
 \subsubsection{Is Not A Partial Method}
-The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in Section~\ref{sec:setuplocation}. Here we defined the ``Partial Method'' catagory as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is likely not to be correct technique for refactoring such clones.
+The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in Section~\ref{sec:setuplocation}. Here we defined the ``Partial Method'' category as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is likely not to be the correct technique for refactoring such clones.
 
 \subsubsection{Top-level Node Is Not A Statement}
-A method body can only consist of statements. We cannot put declarations in a method. However, there are possibilities where a clone consists of something else than a statement as top level node. The most prominent example is when a clause is cloned (see Section~\ref{sec:astbackground} for examples of such concepts). For instance, we cannot extract only the catch-clause of a try-statement to a new method. In such a case, we should either extract the complete try-statement, or only the contents of the catch clause.
+A method body can only consist of statements. We cannot put declarations in a method. However, there are possibilities where a clone consists of something else than a statement as a top-level node. Upon manual inspection, we noticed that most clones falling into this category are clones that span part of a lambda or anonymous class.
 
 \subsubsection{Overlaps}
-We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in Figure~\ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
+We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. An example refactoring of clone instances that overlap within their clone class is displayed in Figure~\ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -766,12 +761,12 @@ public void sayHello(){
 \end{figure}
 
 \subsubsection{Can be extracted}
-All clones that do not adhere to any of above-stated categories, are considered suitable for automated method extraction.
+All clones that do not adhere to any of above-stated categories are considered suitable for automated method extraction.
 
 \subsection{Applying refactorings} \label{sec:applyingrefactorings}
-All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST in order to refactor clones.
+All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST to refactor clones.
 
-First, we create a new method and give it an uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy the nodes that were removed from a single clone instance in the new method.
+First, we create a new method and give it a uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy of the nodes that were removed from a single clone instance in the new method.
 
 \subsubsection{Relation}
 For each of the identified clone relations (Section~\ref{sec:setuprelation}) we define a method of automatically refactoring clones in these categories. The relation determines the location at which we place the newly created method.
@@ -786,30 +781,30 @@ We place the extracted method in the class which all clone instances share as a 
 We place the extracted method in the interface all clone instances have in common.  We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
 
 \paragraph{Unrelated}
-If all clone instances in a clone class are in different classes that do not yet have a superclass, or their ancestors have no superclass, we create a superclass abstraction for them. This way we make the implicit dependency between both clone fragments explicit, while provisioning a common place for common functionality. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
+If all clone instances in a clone class are in different classes that do not yet have a superclass, or their ancestors have no superclass, we create a superclass abstraction for them. This way we make the implicit dependency between both clone fragments explicit while provisioning a common place for common functionality. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
 
 If the clone instances have an external superclass or ancestor, we create an interface abstraction instead to place the extracted method in. We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
 
 Because for unrelated clone instances we create new abstractions, we could change the relation of other clones. When we introduce a new superclass abstraction, other clones might turn from ``unrelated'' into ``common hierarchy''. Because of this, creating a single abstraction could favor multiple refactoring opportunities.
 
-For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study we refrain from doing this, because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
+For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study, we refrain from doing this because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
 
 \subsubsection{Populate method}
 After placing the newly abstracted method at an appropriate location, we analyze the method content to determine whether we need to add parameters, a return value or a \texttt{throws} clause to the method declaration.
 
 \paragraph{Method parameters}
-We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods we add a parameter to the extracted method. We then pass the appropriate data to each method call.
+We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods, we add a parameter to the extracted method. We then pass the appropriate data to each method call.
 
 \paragraph{Return value}\label{sec:refreturn}
-The exracted method has a return value if one of these three conditions is met:
+The extracted method has a return value if one of these three conditions is met:
 \begin{itemize}
-\item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we set the type of the returned variable as the type of the extracted method. We turn all method calls of the extracted method into return statements followed by the method call.
+\item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we change the type of the returned extracted method to the type of the returned variable. We turn all method calls of the extracted method into return statements followed by the method call.
 \item \textbf{A method parameter is re-assigned in the extracted fragment}: If a method parameter is re-assigned, we must return its changed value. We add a return statement to the end of the body of the extracted method returning the variable that was changed. We set the return type of the extracted method to the type of the variable that was assigned. We turn all method calls of the extracted method into variable assignment statements in which we assign the changed variable.
 \item \textbf{A variable is declared in the extracted fragment}: If a variable is declared in the extracted fragment, but used outside it, we return the declared variable. We add a return statement to the end of the body of the extracted method that returns the declared variable. If the variable declaration statement is the final statement in the method body, we remove the variable declaration and directly return the value it assigns to the declared variable. We set the return type of the extracted method to the type of the variable that was declared. We turn all method calls of the extracted method into variable declaration statements in which we declare the variable returned by the extracted method.
 \end{itemize}
 
 \paragraph{Thrown exception}
-If a method in Java throws an exception that is not a \texttt{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \texttt{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
+If a method in Java throws an exception that is not a \texttt{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exceptions, we check whether they are caught in the extracted method. Any exception that is not a \texttt{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
 
 \subsection{Collecting data}
 To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. For each refactored clone class, we map the characteristics of the extracted method to the impact of the refactoring on the maintainability of the system/
@@ -828,21 +823,21 @@ We hypothesize that these characteristics are the main factors influencing the i
 \subsubsection{Impact on maintainability metrics} \label{sec:metrics}
 We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system as a whole.
 
-In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
+In this case, we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
 \begin{itemize}
 \item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
-\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the amount of tokens instead.
-\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantative measure of the number of linearly independent paths through a method.
-\item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
+\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
+\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
+\item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
 \end{itemize}
 
 We can determine the change of the values of these metrics by considering the transformations that are done by the refactoring. We calculate these metrics as follows:
 
 \begin{itemize}
 \item \textbf{Duplication}: The duplication can only decrease as a result of the refactoring. We calculate the reduction of duplication as the product of the number of tokens in the body of the extracted and the number of clone instances in the clone class.
-\item \textbf{Volume}: The volume can both decrease and increase as a result of the refactoring. The reduction of volume is equal to the reduction of duplication. The volume is increased by the amount of tokens in each method call to the extracted method, plus optionally the return, assignment or declaration of the extracted method. We also add the size in tokens of the extracted method itself to the volume. If the extracted method is moved to a newly created class or interface, we use volume of that declaration instead (because it in turn contains the extracted method). The added volume minus the reduced volume results in the change in volume.
+\item \textbf{Volume}: The volume can both decrease and increase as a result of the refactoring. The reduction of the volume is equal to the reduction of duplication. The volume is increased by the number of tokens in each method call to the extracted method, plus optionally the return, assignment or declaration of the extracted method. We also add the size in tokens of the extracted method itself to the volume. If the extracted method is moved to a newly created class or interface, we use the volume of that declaration instead (because it contains the extracted method). The added volume minus the reduced volume results in the change in volume.
 \item \textbf{Complexity}: The complexity can both decrease and increase as a result of the refactoring. To calculate the reduction of complexity, we take the sum of all branching statements in all clone instances. The increase in complexity is the complexity of the extracted method (the number of branches plus one). The added volume complexity the reduced complexity results in the change in complexity.
-\item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the amount of parameters in the extracted method.
+\item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the number of parameters in the extracted method.
 \end{itemize}
 
 %\subsection{Saving refactored code}

@@ -1,20 +1,13 @@
 \chapter{Defining refactoring-oriented clone types}\label{chap:clonetypes}
 Clone type 1-3 (see Section~\ref{chap:backgroundclonetypes}) can (and should) not always be automatically refactored. In Section~\ref{sec:literaturetypeproblems} we list shortcomings of each clone type that invalidate refactoring opportunities. In Section~\ref{sec:rtypes} we propose new clone type definitions that address these shortcomings.
-%we introduced clone types as defined in literature. For each of type 1-3 clones~\cite{roy2007survey} we list our solutions to their shortcomings to increase the chance that we can refactor the clone while improving the design.
-
-%We also look into clone detection tools for their suitability to support the proposed clone type definitions. We selected a few criteria % TODO: Sander -...?
-%Most clone detection tools support these definitions of clone types. However, many of these tools use a vastly different approach. A study by Saini et al \cite{saini2018towards} outlines different clone detection tools and compares their results for each of type 1-3 clones. Even though they operate on the same type definitions, the tools used in this study yield different results. % TODO: Sander - hier mist nog conclusie van dit stukje
 
 \section{Problems with clone types for automated refactoring}\label{sec:literaturetypeproblems}
-%Clone types 1-3 (further explained in Section~\ref{chap:backgroundclonetypes}) allow reasoning about the duplication in a software system. Clones by these definitions can relatively easily and efficiently be detected. % TODO: Sander - compared to?
-%This has allowed for large scale analyses of duplication~\cite{livieri2007very}. However, these clone type definitions have shortcomings which makes the clones detected in correspondence with these definitions less valuable for (automated) refactoring purposes.
-
-In this section, we discuss the shortcomings of clone type 1-3 \cite{roy2007survey}. Because of these shortcomings, clones found by these definitions are often found to require additional judgment whether they can and should be refactored.
+In this section, we discuss the shortcomings of clone type 1-3 \cite{roy2007survey}. Because of these shortcomings, clones found by these definitions are often found to require additional judgment whether they can and should be (automatically) refactored.
 
 \subsection{Type 1 clones}\label{sec:type1}
 Type 1 clones are \textit{identical clone fragments except for variations in whitespace and comments} \cite{roy2007survey}. This allows for the detection of clones that are the result of copying and pasting existing code, along with other reasons why duplicates might get into a codebase.
 
-Type 1 clones are implemented as textual equality between code fragments (except for whitespace and comments) by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. %When aiming to automatically refactor clones, applying refactorings to type 1 clones is bound to be error prone and can result in an uncompilable project or a difference in functionality.
+Type 1 clones are implemented as textual equality between code fragments (except for whitespace and comments) by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. %When aiming to automatically refactor clones, applying refactorings to type 1 clones is bound to be error-prone and can result in an uncompilable project or a difference in functionality.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -63,9 +56,9 @@ public class LoseScene
 
 Figure~\ref{fig:type1} shows a type 1 clone with two clone classes. Defining an automatic way to refactor these clone classes is nearly impossible, as both cloned fragments describe different functional concepts. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
 
-The second cloned fragment shows how equally named variables can have different types and thus yield different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragement on the right concatenates a number to a String.
+The second cloned fragment shows how equally named variables can have different types and thus yield different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragment on the right concatenates a number to a String.
 
-This shows that not all type 1 clones can easily be automatically refactored. In section \label{chap:type1rclones} we describe an alternate approach towards detecting type 1 clones, which results in only clones that can be refactored.
+This shows that not all type 1 clones can easily be automatically refactored. In section \label{chap:type1rclones} we describe an alternative approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \subsection{Type 2 clones}\label{sec:type2}
 Type 2 clones are \textit{structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments}~\cite{roy2007survey}. This definition allows for the reasoning about code fragments that were copied and pasted, and then slightly modified. However, the definition does not adequately differentiate between slight modification and completely different fragments that just happen to have the same structure.
@@ -100,12 +93,12 @@ The example in Figure~\ref{fig:type2} shows a type 2 clone class. Both methods a
 When looking at refactoring, type 2 clones can be difficult to refactor. For instance, if we have variability in types, the code can describe operations on two completely dissimilar types. Type 2 clones do not differentiate between primitives and reference types, which further undermines the usefulness of clones detected by this definition.
 
 \subsection{Type 3 clones}\label{sec:type3}
-Type 3 clones are \textit{copied fragments with further modification (with added, removed or changed statements)}~\cite{roy2007survey}. Detection of clones by this definition can be hard, as it may be hard to detect whether a fragment was copied in the first place if it was severely changed. Because of this, most clone detection implementations of type 3 clones work on the basis of a similarity threshold~\cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold has been implemented in different ways: textual similarity (for instance using Levenshtein distance)~\cite{lavoie2011automated}, token-level similarity~\cite{sajnani2016sourcerercc} or statement-level similarity~\cite{kamalpriya2017enhancing}.
+Type 3 clones are \textit{copied fragments with further modification (with added, removed or changed statements)}~\cite{roy2007survey}. Detection of clones by this definition can be hard, as it may be hard to detect whether a fragment was copied in the first place if it was severely changed. Because of this, most clone detection implementations of type 3 clones work based on a similarity threshold~\cite{roy2008nicad,ragkhitwetsagul2019siamese,jiang2007deckard,semura2017ccfindersw}. This similarity threshold has been implemented in different ways: textual similarity (for instance using Levenshtein distance)~\cite{lavoie2011automated}, token-level similarity~\cite{sajnani2016sourcerercc} or statement-level similarity~\cite{kamalpriya2017enhancing}.
 
 Having a definition that allows for any change in code poses serious challenges on refactoring. A Levenshtein distance of one can already change the meaning of a code fragment significantly, for instance, if the name of a type differs by a character (and thus referring to different types).
 
 \section{Refactoring-oriented clone types}\label{sec:rtypes}
-To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R and 3R clones. These definitions address problems of the corresponding literature definitions. The ``R'' stands for refactoring-oriented.
+To resolve the shortcomings of clone types as outlined in the previous section, we propose alternative definitions for clone types directed at detecting clones that can and should be refactored. We have named these clones type 1R, 2R, and 3R clones. These definitions address the outlined shortcomings of the corresponding literature definitions. The ``R'' stands for refactoring-oriented.
 
 \subsection{Type 1R clones} \label{sec:type1r}
 To solve the issues identified in Section~\ref{sec:type1}, we introduce an alternative definition: cloned fragments have to be both textually \textit{and} functionally equal. Like type 1 clones, type 1R clones do not consider comments and whitespace. Therefore, type 1R clones are a subset of type 1 clones.
@@ -113,15 +106,15 @@ To solve the issues identified in Section~\ref{sec:type1}, we introduce an alter
 We check functional equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object).
 
 \subsubsection{Referenced Types}
-Many object-oriented programming languages (like Java, Python and C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list datastructures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). To be sure we compare between equal types, type 1R clones compare the FQI for all referenced types.
+Many object-oriented programming languages (like Java, Python, and C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list data structures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). These are entirely different functional concepts. To be sure we compare between equal types, type 1R clones compare the FQI for all referenced types.
 
 \subsubsection{Called methods}
-A codebase can have several methods with the same name. The implementation of these methods might differ. When we call two methods with an identical name, we can in fact call different methods. This is another reason that textually identical code fragments can differ functionally.
+A codebase can have several methods with the same name. The implementation of these methods might differ. When two code fragments call methods with an identical name or signature, they can call different methods. Because of this, textually identical code fragments can differ functionally.
 
-Because of this, for type 1R clones, we compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{com.sb.AppleCore com.sb.fruitgame.Apple.eat(com.sb.fruitgame.Tool)}.
+For type 1R clones, we compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{com.sb.AppleCore com.sb.fruitgame.Apple.eat(com.sb.fruitgame.Tool)}.
 
 \subsubsection{Variables}
-In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If, in different code fragments, we use variables with the same name but different types, the code can be functionally unequal but still textually equal. As an example, see the code in Figure~\ref{fig:type2variables}.
+In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If we use variables with the same name but different types in different code fragments, the code can be functionally unequal but still textually equal. As an example, see the code in Figure~\ref{fig:type2variables}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -142,12 +135,12 @@ public String appendFive(String x){
 \label{fig:type2variables}
 \end{figure}
 
-The body of both methods in Figure~\ref{fig:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer to a String.
+The body of both methods in Figure~\ref{fig:type2variables} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer and a String.
 
 For type 1R clones variable references should be compared by both type and name.
 
 \subsection{Type 2R clones} \label{sec:type2r}
-Type 2R clones are modelled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in Figure~\ref{fig:type2} previously).
+Type 2R clones are modeled after type 2 clones, which allow any change in identifiers, literals, types, layout, and comments. For refactoring purposes, this definition is unsuitable; if we allow any change in identifiers, literals, and types, we cannot distinguish between different variables, different types and different method calls anymore. This could render two methods that have an entirely different functionality as clones (as shown in Figure~\ref{fig:type2} previously).
 
 We tackle these problems with type 2R clones to be able to detect such clones that can and should be refactored. Type 1R clones are a subset of type 2R clones, meaning that each node found as cloned for type 1R will also be found as cloned for type 2R. Similar to type 1R, for type 2R we consider the fully qualified identifiers of type-, method- and variable-references. Additionally, type 2R clones allow variability in a controlled set of expressions and identifiers. The identifiers and expressions in which we allow variability must have one of the following properties:
 \begin{itemize}
@@ -158,7 +151,7 @@ We tackle these problems with type 2R clones to be able to detect such clones th
 Allowing variability between expressions includes a tradeoff. When many expressions vary between cloned the refactored method might require many additional arguments. Because of that, we constrain this variability by a threshold, which is explained in more detail in Section~\ref{sec:variabilitythreshold}.%to limit the negative effect on system design of variability in these expressions after refactoring.
 
 \subsubsection{Allow any variability in some identifiers}
-When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. This section explains several patterns of variability that we can allow between cloned fragements without changing the method by which the fragments can be refactored.
+When refactored, some identifiers have no detrimental effect on the design if they vary between cloned instances. This section explains several patterns of variability that we can allow between cloned fragments without changing the method by which the fragments can be refactored.
 
 \paragraph{Declaration names}
 The names of declarations describe the implementation of their body. Examples of declarations are:
@@ -181,7 +174,7 @@ Cloned code fragments using variables with different names can be refactored wit
   \item The cloned variables are used at the same places in cloned fragments.
 \end{itemize}
 
-Figure \ref{fig:type2variablerefactoringnotradeoff} shows an example where different variables do not create a tradeoff. Both clone instances in this example use different variables, but in the same places and with the same type. Because these variables are locally defined, the extraced method requires an extra argument for the variable anyways. If the second clone instances would be completely equal, so also use the same variable, the refactoring would be very similar (it would only differ by a single character).
+Figure \ref{fig:type2variablerefactoringnotradeoff} shows an example where different variables do not create a tradeoff. Both clone instances in this example use different variables, but in the same places and with the same type. Because these variables are locally defined, the extracted method requires an extra argument for the variable anyways. If the second clone instances would be completely equal, so also use the same variable, the refactoring would be very similar (it would only differ by a single character).
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -208,7 +201,7 @@ doC();
 \label{fig:type2variablerefactoringnotradeoff}
 \end{figure}
 
-The example in Figure~\ref{fig:type2variablerefactoringwithtradeoff} shows the same example as Figure~\ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \ref{sec:variabilitythreshold}, whereas the example in Figure~\ref{fig:type2variablerefactoringnotradeoff} does not.
+The example in Figure~\ref{fig:type2variablerefactoringwithtradeoff} shows the same example as Figure~\ref{fig:type2variablerefactoringnotradeoff}, however this time there is a tradeoff. The same variables are used, but they are not used in the same places in cloned fragments. In one fragment we use only one variable, in the other, we use both. Because of that, we require an extra argument. Because of this, this variability falls under the threshold described in section \ref{sec:variabilitythreshold}, whereas the example in Figure~\ref{fig:type2variablerefactoringnotradeoff} does not.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -247,7 +240,7 @@ For type 2R clones we define a threshold for variability in literals, variables 
 In this formula, \textit{number of different expressions} refers to the number of literals, variables and method calls that differ from other clone instances in a clone class. We divide this by the total number of literals, variables and method calls in the clone instance. Based on this threshold, we decide whether a clone should be considered for refactoring. A concrete example of applying this formula to calculate a threshold is given in \ref{sec:t2rcheckglobalthres}.
 
 \paragraph{Literal and variable variability}\label{sec:t2rliteralandvariable}
-We allow only variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will have a negative effect on the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
+Type 2R allows variability in the value of literals and variables, but not in their types. This is because a difference in literal/variable type may have a big impact on the refactorability of the cloned fragment. When we refactor different literals/variables that have both the same type, in case of an ``Extract Method'' refactoring, we have to create a parameter for this literal and pass the corresponding literal/variable from cloned locations. However, if two literals have different types, this might not be possible (or will harm the design of the system). This is because a lot of variability in literals will result in more parameters required in the extracted method, which is detrimental for the design of the system.
 
 Consider the example in Figure~\ref{fig:type2literal}. In this example, the two methods have two literals that differ between them. We can perform an ``Extract method'' refactoring on these to get the result that is displayed on the right. In this process, we create a method parameter for the corresponding literal.
 
@@ -291,11 +284,11 @@ void doThis(String letters){
 \end{figure}
 
 \paragraph{Method call variability}
-Most modern programming languages (like Java, Python and C\#) allow to pass method references as a parameter to a method. This helps reducing duplication, as it is possible to refactor two code fragments which differ only by a method call. However, a method call does often not consist of a single token (like variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method.
+Most modern programming languages (like Java, Python, and C\#) allow passing method references as a parameter to a method. This helps reducing duplication, as it is possible to refactor two code fragments which differ only by a method call. However, a method call does often not consist of a single token (like variables and literals). For instance, a method call \texttt{System.out.println()} consists of several segments: a type reference to the \texttt{System} type, a reference to the static \texttt{out} field and a call of the \texttt{println()} method.
 
 Type 2R clones allow called methods to vary as long as they have the same argument types and return type. As with type 1R clones, these types are compared using their fully qualified identifiers. An example of this is shown in Figure~\ref{fig:type2method}. In this example, we have two methods (\texttt{System.out.println} and \texttt{myFancyPrint}). We use the ``Extract Method'' refactoring method to extract a new method and use a parameter to pass the used method.
 
-The method call variability property of type 2R clones implies that type 2R clones are not a subset of type 2 clones. Because methods calls can have a different structure, type 2R clones can be structurally slightly different. The example as shown in Figure~\ref{fig:type2method} can be a type 2R clone (dependent on the thresholds used), but is not a type 2 clone.
+The method call variability property of type 2R clones implies that type 2R clones are not a subset of type 2 clones. Because methods calls can have a different structure, type 2R clones can be structurally slightly different. The example as shown in Figure~\ref{fig:type2method} can be a type 2R clone (dependent on the thresholds used) but is not a type 2 clone.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -392,7 +385,7 @@ For type 3R, the size of the gap between two clones is bounded by a threshold. T
 \text{T3R Gap Size}=\frac{\text{Number of nodes in gap}}{\text{Number of nodes in clones}}*100
 \end{equation}
 
-In this formula, the ``Number of nodes in gap'' concerns the amount of non-cloned nodes that are in between both clone instances. The ``Number of nodes in clones'' is the amount of nodes that are in the clone instances surrounding the gap:
+In this formula, the ``Number of nodes in gap'' concerns the amount of non-cloned nodes that are in between both clone instances. The ``Number of nodes in clones'' is the number of nodes that are in the clone instances surrounding the gap:
 
 \begin{equation}\label{eq:type3rclones}
 \text{Number of nodes in clones}=|I_{before}| + |I_{after}|.
@@ -427,7 +420,7 @@ When applying this formula with the example given in Figure~\ref{fig:gappedclone
 Where \textit{\{...\}} is the notation for sets and \textit{|A|} is the cardinality of set A.
 
 \subsubsection{The gap may not span a partial block} \label{sec:t3rpartialblock}
-Apart from this threshold, the gap in between clones may not span over different blocks. Figure~\ref{fig:type3invalid} illustrates this. We cannot refactor both statements into a single conditional block. We could however use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
+Apart from this threshold, the gap in between clones may not span over different blocks. Figure~\ref{fig:type3invalid} illustrates this. We cannot refactor both statements into a single conditional block. We could use two conditional blocks, but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for type 3R clones.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -457,7 +450,7 @@ doD(a); // part of gap
 The reason for this is that it is not possible to wrap a partially spanned block in a single conditional statement. We could, however, use multiple conditional blocks (one for each block spanned), but due to the detrimental effect on the design of the code (as each conditional block adds a certain complexity), we decided not to allow this for T3R clones.
 
 \subsection{Clone types summarized}
-The given clone definitions (types 1R, 2R and 3R) are refactoring-oriented in the sense that they were designed after the literature type definitions but with a concrete refactoring opportunity in mind. Summarized, these types can be explained as follows:
+The given clone definitions (types 1R, 2R, and 3R) are refactoring-oriented in the sense that they were designed after the literature type definitions but with a concrete refactoring opportunity in mind. Summarized, these types can be explained as follows:
 
 \begin{itemize}
 \item \textbf{Type 1R:} Allows no difference between cloned fragments (both functionally and textually), making it possible to refactor both fragments to a method call that contains the code of both locations. \\
@@ -483,16 +476,15 @@ N_{T1R} \subseteq N_{T1} \text{, but } N_{T2R} \nsubseteq N_{T2} \text{ and } N_
 Where $N_{\text{clone type}}$ is the set of cloned nodes found by the rules of the specified clone type.
 
 \subsection{The challenge of detecting these clones}\label{chap:challenge}
-To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, on the basis of which a fully qualified identifier can be created.
+To detect each type of clone, we need to parse the fully qualified identifier of all types, method calls, and variables. This comes with serious challenges, regarding both performance and implementation. Also, to be able to parse all fully qualified identifiers, and trace the declarations of variables, we might need to follow cross-file references. The referenced types/variables/methods might even not be part of the project, but rather of an external library or the standard libraries of the programming language. All these factors need to be considered for the referenced entity to be found, based on which a fully qualified identifier can be created.
 
-\section{Suitability of existing Clone Detection Tools for detecting these clones}
-\label{ch:tool-overview}
+\section{Suitability of existing Clone Detection Tools for detecting these clones} \label{ch:tool-overview}
 We conduct a short survey on (recent) clone detection tools that we can use to analyze refactorable clones. We choose a set of tools from three modern clone detection tool surveys \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. We choose only tools that are open source, to be able to extend the tool to be able to detect refactoring-oriented clone detection types. Furthermore, the tool must be able to analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
     \item \textbf{Finds clones in any context}: Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
-\item \textbf{Finds clone classes in control projects\footnote{Control projects for assessing clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}}}: We assembled a number of control projects to assess the validity of clone detection tools.
+\item \textbf{Finds clone classes in control projects}: We assembled several control projects\footnote{Control projects for assessing clone detection tools: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to assess the validity of clone detection tools.
 \item \textbf{Analyzes resolved symbols}: When detecting the types proposed in section~\ref{sec:rtypes}, it is important that we can analyze resolved symbols (for instance a type reference). The rationale for this is further explained in~\ref{chap:challenge}.
-\item \textbf{Extensive detection configuration}: Detecting our clone definitions, as proposed in section~\ref{sec:rtypes}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
+\item \textbf{Extensive detection configuration}: Detecting our clone definitions, as proposed in section~\ref{sec:rtypes}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, for us to configure our clone type definitions in the tool.
 \end{enumerate}
 The results of our survey are displayed in Table~\ref{tab:dettools}.
 
@@ -516,4 +508,4 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark &  & \ch
 \label{tab:dettools}
 \end{table}
 
-None of the state-of-the-art tools we identified implement all our criteria. Because of that, we implement our own clone detection tool: CloneRefactor.
+None of the state-of-the-art tools we identified implement all our criteria. Because of that, we propose CloneRefactor (see Chapter~\ref{ch:clonerefactor}).
