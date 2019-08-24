@@ -277,7 +277,7 @@ In this section, we share the results of our experiments.
 To determine the refactoring method(s) that can be used to refactor most clones, we perform statistical analysis on the context of clones (see Sec.~\ref{sec:context}).
 
 \subsubsection{Relation}
-Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Sec.~\ref{sec:relation}).
+Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for the identified relations between clone instances (see Sec.~\ref{sec:relation}).
 
 \begin{table}[H]
 \centering
@@ -402,20 +402,25 @@ The displayed relations are ordered by their scores. Overall, the scores do not 
 \subsubsection{Return Value}
 Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system.
 
-\begin{table}[H]
+\begin{table*}
 \centering
-\begin{tabular}{@{}lll@{}}
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-\textit{\textbf{Return Value}} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Maintainability}}\\\textit{\textbf{Score}}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textit{\textbf{Number of}}\\\textit{\textbf{Refactorings}}\end{tabular} \\ \midrule
-Return & 0.20 & 421 \\
-Void & 0.19 & 2052 \\
-Declare & 0.03 & 1318 \\
+\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
+Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
+Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
 \rowcolor[HTML]{FFCCC9}
-Assign & -1.29 & 3 \\ \bottomrule
-\end{tabular}
-\caption{Maintainability scores for different return values}
+Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
+Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
+\textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
+\end{tabular}%
+%}
+\caption{Average metric values for refactorings of clone classes with the specified return category}
 \label{tab:return}
-\end{table}
+\end{table*}
+
+The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \subsubsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters.
