@@ -555,9 +555,9 @@ We separate these relations into the following categories, because of their rela
   \item \textbf{Unrelated}: \textit{No Direct Superclass}, \textit{No Indirect Superclass}, \textit{External Superclass}, \textit{External Ancestor}
 \end{itemize}
 
-Every clone class only has a single relation, which is the first relation from the above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in above list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
+Every clone class only has a single relation, which is the first relation from the above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in the list they will get the ``Superclass'' relation. This is because the items earlier in the list denote a more favorable refactoring.
 
-To check a the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
+To determine the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. So for a clone class with x clone instances and each clone instance has y nodes, we perform:
 
 \begin{equation}\label{eq:sameclass}
 \frac{x * (x + 1)}{2} * y
@@ -568,9 +568,9 @@ comparisons to determine the relation. Each of these checks will result in one o
 \subsubsection{Common Class}
 The \textit{Same method} and \textit{Same class} relations share a common refactoring opportunity. Clones of both these categories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
-Cloned nodes are flagged as \textit{Same method} if these nodes are found in the same method. We define the method as the first method declaration that is encountered when following the parent nodes in the ast for a given cloned node. Please note that a clone instance may not always be in a method, for which this predicate will fail.
+Cloned nodes are flagged as \textit{Same method} if these nodes are found in the same method. We define the method as the first method declaration that is encountered when following the parent nodes in the AST for a given cloned node. Please note that a clone instance may not always be in a method, for which this predicate will fail.
 
-Cloned nodes are flagged as \textit{Same class} if these nodes are found in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the ast for a given cloned node.
+Cloned nodes are flagged as \textit{Same class} if these nodes are found in the same class. We define the class as the first class declaration that is encountered when following the parent nodes in the AST for a given cloned node.
 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much.
@@ -582,14 +582,14 @@ Cloned nodes are flagged as \textit{Ancestor} if the classes in which these node
 \subsubsection{Common Interface}
 Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\#8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
 
-The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by setting a stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
+The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
 
 To check whether two cloned nodes have common interfaces, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
 
 \subsubsection{Unrelated}
-Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable when looking at refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
+Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable for refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
 
-Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors does not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
+Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors do not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
 
 Cloned nodes are flagged \textit{External Superclass} if they are in a class which has an external parent. Cloned nodes are flagged \textit{External Ancestor} if one of their ancestors has an external parent. Both of these relations obstruct the possibility of creating a superclass abstraction. In such a case, an interface abstraction could be created to make their relation explicit.
 
@@ -601,10 +601,10 @@ A paper by Lozano et al. \cite{lozano2007evaluating} discusses the harmfulness o
   \item \textbf{Interface Level:} A clone that is (a part of) an interface.
   \item \textbf{Enumeration Level:} A clone that is (a part of) an enumeration.
 \end{enumerate}
-We check the location of each clone instance for each of its nodes. If any node reports a different location from the others, we choose the location that is lowest in above list. So for instance, if a clone instance has 15 nodes that denote a \textit{Method Level} location but 3 nodes are \textit{Class Level}, the clone instance becomes \textit{Class Level}.
+We check the location of each clone instance for each of its nodes. If any node reports a different location from the others, we choose the location that is lowest in the above list. So for instance, if a clone instance has 15 nodes that denote a \textit{Method Level} location but 3 nodes are \textit{Class Level}, the clone instance becomes \textit{Class Level}.
 
 \subsubsection{Method/Constructor Level Clones} \label{sec:methodlevelcr}
-Method/Constructor Level clones denote clones that span are found in either a method or contructor. A constructor is a special method that is called when an object is instantiated. Current clone refactoring studies only focus on clones at method level \cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places \cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques \cite{kodhai2013method, fontana2015duplicated}.
+Method/Constructor Level clones denote clones that are found in either a method or constructor. A constructor is a special method that is called when an object is instantiated. Current clone refactoring studies only focus on clones at method level \cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places \cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques \cite{kodhai2013method, fontana2015duplicated}.
 
 To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
 
@@ -612,7 +612,7 @@ To detect whether a given clone instance is at Method Level, we check for each n
 \forall (n \in I)\text{ } Tn = \text{MethodDeclaration} \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{MethodDeclaration}
 \end{equation}
 
-Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are recursively all the parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
+Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are all recursive parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -640,12 +640,12 @@ public class Class2 { // |\textcolor{pgreen}{$p_3$}|
 \end{figure}
 
 \subsubsection{Class/Interface/Enumeration Level Clones}
-Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain a fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in a inheritance hierarchy. Or, we might have to perform a refactoring on more of an architectural level, if a large set of methods is cloned.
+Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in an inheritance hierarchy. Or, we might have to perform a refactoring on more of an architectural level, if a large set of methods is cloned.
 
 We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
-Finally, we looked at what nodes individual clone instances span. We selected a set of catagories on the basis of empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
+Finally, we looked at what nodes individual clone instances span. We selected a set of categories based on empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor. The declaration itself is not included.
@@ -658,7 +658,7 @@ Finally, we looked at what nodes individual clone instances span. We selected a 
 These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
 
 \subsubsection{Partial Method/Constructor}
-These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has a ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
+These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. We detect such clones by checking that each node in the clone instance has an ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
 
 \subsubsection{Several Methods}
 Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately. We detect such clones by checking that each cloned node has a parent node that is a MethodDeclaration. This is the same process as described in equation \ref{eq:samemethod}. Additionally, we check that the MethodDeclaration ancestor of the first node in the clone instance differs from the last, to be sure that the clone instance spans over at least two methods.
@@ -667,13 +667,13 @@ Several methods cloned in a single class is a strong indication of implicit depe
 This category denotes that the clone spans over only global variables, fields that are declared outside of a method. This is to indicate data redundancy: pieces of data have an implicit dependency. In such cases, these fields may have to be encapsulated in a new object. Or, the fields should be somewhere in the inheritance structure where all objects containing the clone can access them. We check for this category by validating that all nodes in the clone instance are a VariableDeclarator. Because VariableDeclarators in methods would already fall into the ``Partial Method'' category, this includes only globally defined fields.
 
 \subsubsection{Other}
-The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of above states concepts. For instance, a combination of constructors and methods is clones, or a combination of fields and methods. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
+The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated, especially when aiming to automate this process.
 
 \section{Automated Refactoring}
 After clone detection and context analysis, CloneRefactor applies refactorings to a subset of type 1R clones. This section describes what clone classes are included in the refactoring and the refactoring methods CloneRefactor supports.
 
 \subsection{Method extraction opportunities}\label{sec:refactorabilitysetup}
-The most used technique to refactor clones is ``Extract Method'' (creating a new method on the basis of the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extend this refactoring method can be used to refactor the found clones automatically.
+The most used technique to refactor clones is ``Extract Method'' (creating a new method based on the contents of clones). However, method extraction cannot be applied in all cases. In some instances, more conditions may apply to be able to conduct a refactoring, if beneficial at all. CloneRefactor maps to what extent this refactoring method can be used to refactor the found clones automatically.
 
 Because of this, we defined a set of categories of things that can obstruct a refactoring opportunity using the ``Extract Method'' technique. These categories are party derived from the clone refactoring preconditions defined by Tsantalis et al.~\cite{tsantalis2015assessing} (see Section \ref{sec:jdeodorant}). These categories are as follows:
 \begin{itemize}
@@ -725,13 +725,13 @@ When applying an ``Abstract Method'' refactoring, we author a new method declara
 In this example, the while loop is partially cloned. This obstructs us from extracting the cloned code to a new method.
 
 \subsubsection{Is Not A Partial Method}
-The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in Section~\ref{sec:setuplocation}. Here we defined the ``Partial Method'' catagory as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is likely not to be correct technique for refactoring such clones.
+The ``Extract Method'' refactoring can only refactor code in the body of a method. We mapped the contents of clones in Section~\ref{sec:setuplocation}. Here we defined the ``Partial Method'' category as \textit{a clone that spans (a part of) the body of a method. The declaration itself is not included.} If the clone does not fall within this category, ``Extract Method'' is likely not to be the correct technique for refactoring such clones.
 
 \subsubsection{Top-level Node Is Not A Statement}
-A method body can only consist of statements. We cannot put declarations in a method. However, there are possibilities where a clone consists of something else than a statement as top level node. The most prominent example is when a clause is cloned (see Section~\ref{sec:astbackground} for examples of such concepts). For instance, we cannot extract only the catch-clause of a try-statement to a new method. In such a case, we should either extract the complete try-statement, or only the contents of the catch clause.
+A method body can only consist of statements. We cannot put declarations in a method. However, there are possibilities where a clone consists of something else than a statement as a top-level node. Upon manual inspection, we noticed that most clones falling into this category are clones that span part of a lambda or anonymous class.
 
 \subsubsection{Overlaps}
-We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. We consider analyzing such refactoring methods future work. An example refactoring of clone instances that overlap within their clone class is displayed in Figure~\ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
+We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. An example refactoring of clone instances that overlap within their clone class is displayed in Figure~\ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -761,12 +761,12 @@ public void sayHello(){
 \end{figure}
 
 \subsubsection{Can be extracted}
-All clones that do not adhere to any of above-stated categories, are considered suitable for automated method extraction.
+All clones that do not adhere to any of above-stated categories are considered suitable for automated method extraction.
 
 \subsection{Applying refactorings} \label{sec:applyingrefactorings}
-All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST in order to refactor clones.
+All clones that are marked as ``Can be Extracted'' will then be refactored. The refactoring techniques that we use depend on the relation and contents of the clone. In this section, we explain the transformations we apply to the program AST to refactor clones.
 
-First, we create a new method and give it an uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy the nodes that were removed from a single clone instance in the new method.
+First, we create a new method and give it a uniquely generated name. We replace all nodes from the clone instances of the clone to method calls of the newly created method. We place a copy of the nodes that were removed from a single clone instance in the new method.
 
 \subsubsection{Relation}
 For each of the identified clone relations (Section~\ref{sec:setuprelation}) we define a method of automatically refactoring clones in these categories. The relation determines the location at which we place the newly created method.
@@ -781,30 +781,30 @@ We place the extracted method in the class which all clone instances share as a 
 We place the extracted method in the interface all clone instances have in common.  We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
 
 \paragraph{Unrelated}
-If all clone instances in a clone class are in different classes that do not yet have a superclass, or their ancestors have no superclass, we create a superclass abstraction for them. This way we make the implicit dependency between both clone fragments explicit, while provisioning a common place for common functionality. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
+If all clone instances in a clone class are in different classes that do not yet have a superclass, or their ancestors have no superclass, we create a superclass abstraction for them. This way we make the implicit dependency between both clone fragments explicit while provisioning a common place for common functionality. We give the method a \texttt{protected} visibility, which indicates that the method can only be used within its hierarchy.
 
 If the clone instances have an external superclass or ancestor, we create an interface abstraction instead to place the extracted method in. We give the method a \texttt{public} visibility (because interfaces do not allow for \texttt{protected} visibility) and turn it into a default implementation using the \texttt{default} keyword.
 
 Because for unrelated clone instances we create new abstractions, we could change the relation of other clones. When we introduce a new superclass abstraction, other clones might turn from ``unrelated'' into ``common hierarchy''. Because of this, creating a single abstraction could favor multiple refactoring opportunities.
 
-For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study we refrain from doing this, because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
+For unrelated clones, we always create a new abstraction instead of introducing a ``utility class''. Most current code clone refactoring support tools use utility classes to refactor unrelated code clones \cite{mazinanian2016jdeodorant, yoshida2005refactoring, gode2010clone}. For this study, we refrain from doing this because the introduction of many static methods can make a codebase hard to comprehend \cite{xing2003pseudo}. Additionally, we can use the created abstractions for further refactorings.
 
 \subsubsection{Populate method}
 After placing the newly abstracted method at an appropriate location, we analyze the method content to determine whether we need to add parameters, a return value or a \texttt{throws} clause to the method declaration.
 
 \paragraph{Method parameters}
-We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods we add a parameter to the extracted method. We then pass the appropriate data to each method call.
+We determine which variables and methods that are used in the method body are not accessible anymore at the location where the extracted method is placed. For each of these variables and called methods, we add a parameter to the extracted method. We then pass the appropriate data to each method call.
 
 \paragraph{Return value}\label{sec:refreturn}
-The exracted method has a return value if one of these three conditions is met:
+The extracted method has a return value if one of these three conditions is met:
 \begin{itemize}
-\item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we set the type of the returned variable as the type of the extracted method. We turn all method calls of the extracted method into return statements followed by the method call.
+\item \textbf{There is a return statement in the extracted fragment}: If the extracted code fragment ends in a return statement, we change the type of the returned extracted method to the type of the returned variable. We turn all method calls of the extracted method into return statements followed by the method call.
 \item \textbf{A method parameter is re-assigned in the extracted fragment}: If a method parameter is re-assigned, we must return its changed value. We add a return statement to the end of the body of the extracted method returning the variable that was changed. We set the return type of the extracted method to the type of the variable that was assigned. We turn all method calls of the extracted method into variable assignment statements in which we assign the changed variable.
 \item \textbf{A variable is declared in the extracted fragment}: If a variable is declared in the extracted fragment, but used outside it, we return the declared variable. We add a return statement to the end of the body of the extracted method that returns the declared variable. If the variable declaration statement is the final statement in the method body, we remove the variable declaration and directly return the value it assigns to the declared variable. We set the return type of the extracted method to the type of the variable that was declared. We turn all method calls of the extracted method into variable declaration statements in which we declare the variable returned by the extracted method.
 \end{itemize}
 
 \paragraph{Thrown exception}
-If a method in Java throws an exception that is not a \texttt{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exception, we check whether they are caught in the extracted method. Any exception that is that is not a \texttt{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
+If a method in Java throws an exception that is not a \texttt{RuntimeException}, it must be denoted in the method declaration. Because of this, we analyze the extracted method for \texttt{throw} statements, which denote an exception being thrown. We also analyze all called methods to find out whether they throw exceptions. For each of these exceptions, we check whether they are caught in the extracted method. Any exception that is not a \texttt{RuntimeException} and that is not being caught is added to the thrown exceptions of the extracted method.
 
 \subsection{Collecting data}
 To find out whether clones should be refactored (RQ3) we collect data about the applied refactorings. We use this data to find out whether a specific refactoring succeeds in improving the maintainability of the system. For each refactored clone class, we map the characteristics of the extracted method to the impact of the refactoring on the maintainability of the system/
@@ -823,21 +823,21 @@ We hypothesize that these characteristics are the main factors influencing the i
 \subsubsection{Impact on maintainability metrics} \label{sec:metrics}
 We measure the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al. \cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system as a whole.
 
-In this case we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
+In this case, we are dealing with single refactorings and we want to measure the maintainability impact of such a small change. Because of that, we measure only a subset of the metrics \cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are
 \begin{itemize}
 \item \textbf{Duplication}: In Heitlager et al. \cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
-\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the amount of tokens instead.
-\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantative measure of the number of linearly independent paths through a method.
-\item \textbf{Method Interface Size}: The amount of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
+\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper \cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
+\item \textbf{Complexity}: Heitlager et al. use MCCabe complexity \cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
+\item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects \cite{fowler2018refactoring}.
 \end{itemize}
 
 We can determine the change of the values of these metrics by considering the transformations that are done by the refactoring. We calculate these metrics as follows:
 
 \begin{itemize}
 \item \textbf{Duplication}: The duplication can only decrease as a result of the refactoring. We calculate the reduction of duplication as the product of the number of tokens in the body of the extracted and the number of clone instances in the clone class.
-\item \textbf{Volume}: The volume can both decrease and increase as a result of the refactoring. The reduction of volume is equal to the reduction of duplication. The volume is increased by the amount of tokens in each method call to the extracted method, plus optionally the return, assignment or declaration of the extracted method. We also add the size in tokens of the extracted method itself to the volume. If the extracted method is moved to a newly created class or interface, we use volume of that declaration instead (because it in turn contains the extracted method). The added volume minus the reduced volume results in the change in volume.
+\item \textbf{Volume}: The volume can both decrease and increase as a result of the refactoring. The reduction of the volume is equal to the reduction of duplication. The volume is increased by the number of tokens in each method call to the extracted method, plus optionally the return, assignment or declaration of the extracted method. We also add the size in tokens of the extracted method itself to the volume. If the extracted method is moved to a newly created class or interface, we use the volume of that declaration instead (because it contains the extracted method). The added volume minus the reduced volume results in the change in volume.
 \item \textbf{Complexity}: The complexity can both decrease and increase as a result of the refactoring. To calculate the reduction of complexity, we take the sum of all branching statements in all clone instances. The increase in complexity is the complexity of the extracted method (the number of branches plus one). The added volume complexity the reduced complexity results in the change in complexity.
-\item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the amount of parameters in the extracted method.
+\item \textbf{Method Interface Size}: The duplication can only increase as a result of the refactoring. The method interface size increases by the number of parameters in the extracted method.
 \end{itemize}
 
 %\subsection{Saving refactored code}
