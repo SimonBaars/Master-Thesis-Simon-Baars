@@ -269,6 +269,43 @@ We then calculate the maintainability for a specific refactoring as follows:
 N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \end{equation}
 
+
+%% RESULTS TABLES (MOVED UP SO LATEX PLACES THEM IN THE RIGHT PLACE)
+
+\begin{table*}
+\centering
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+\textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
+\textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
+\hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
+\hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
+\hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
+\rowcolor[HTML]{FFCCC9}
+\hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
+\textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
+\hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
+\hspace{10pt} Same Direct Interface & -55.79 & 0.75 & 1.24 & -0.28 & 557 & -0.02 \\ \midrule
+\textbf{Common Class} & \textbf{-52.42} & \textbf{0.87} & \textbf{1.13} & \textbf{1.47} & \textbf{7,239} & \textbf{-0.02} \\ \midrule
+\hspace{10pt} Same Class & -51.85 & 0.86 & 1.03 & 3.36 & 4,874 & 0.04 \\
+\hspace{10pt} Same Method & -53.60 & 0.90 & 1.32 & -2.44 & 2,365 & -0.15 \\ \midrule
+\textbf{Unrelated} & \textbf{-45.86} & \textbf{0.88} & \textbf{1.08} & \textbf{9.56} & \textbf{2,198} & \textbf{-0.15} \\ \midrule
+\hspace{10pt} No Direct Superclass & -52.24 & 0.84 & 1.12 & 6.04 & 811 & -0.06 \\
+\hspace{10pt} External Superclass & -47.09 & 0.87 & 1.13 & 8.77 & 697 & -0.17 \\
+\hspace{10pt} External Ancestor & -35.73 & 0.93 & 0.95 & 14.58 & 586 & -0.21 \\
+\hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
+\textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
+\end{tabular}%
+%}
+\caption{Influence on maintainability of refactoring clones with the specified relation categories.}
+\label{tab:relation_refactor}
+\end{table*}
+
+%% END TABLES
+
 \section{Results}
 In this section, we share the results of our experiments.
 
@@ -364,38 +401,6 @@ Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting t
 
 \subsubsection{Relation}
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
-
-\begin{table*}[htb]
-\centering
-%\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lrrrrrr@{}}
-\toprule
-\textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
-\textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
-\hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
-\hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
-\hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
-\rowcolor[HTML]{FFCCC9}
-\hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
-\textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
-\hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
-\hspace{10pt} Same Direct Interface & -55.79 & 0.75 & 1.24 & -0.28 & 557 & -0.02 \\ \midrule
-\textbf{Common Class} & \textbf{-52.42} & \textbf{0.87} & \textbf{1.13} & \textbf{1.47} & \textbf{7,239} & \textbf{-0.02} \\ \midrule
-\hspace{10pt} Same Class & -51.85 & 0.86 & 1.03 & 3.36 & 4,874 & 0.04 \\
-\hspace{10pt} Same Method & -53.60 & 0.90 & 1.32 & -2.44 & 2,365 & -0.15 \\ \midrule
-\textbf{Unrelated} & \textbf{-45.86} & \textbf{0.88} & \textbf{1.08} & \textbf{9.56} & \textbf{2,198} & \textbf{-0.15} \\ \midrule
-\hspace{10pt} No Direct Superclass & -52.24 & 0.84 & 1.12 & 6.04 & 811 & -0.06 \\
-\hspace{10pt} External Superclass & -47.09 & 0.87 & 1.13 & 8.77 & 697 & -0.17 \\
-\hspace{10pt} External Ancestor & -35.73 & 0.93 & 0.95 & 14.58 & 586 & -0.21 \\
-\hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
-\textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
-\end{tabular}%
-%}
-\caption{Influence on maintainability of refactoring clones with the specified relation categories.}
-\label{tab:relation_refactor}
-\end{table*}
 
 The displayed relations are ordered by their scores. Overall, the scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, we see that common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
 
