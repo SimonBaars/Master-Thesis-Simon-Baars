@@ -163,7 +163,7 @@ In our corpus, CloneRefactor has refactored 12,710 clone classes and measured th
 In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \subsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. As the amount of data points decreases, the datapoints gain less statistical significance, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
+Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For higher token volume numbers we have less refactorings that refactor such clones, because of which we represent the x-axis as a logaritmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
@@ -255,7 +255,7 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \label{tab:return}
 \end{table}
 
-The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters.
+The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returns, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \subsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters. The table containing all underlying data and separate metrics is displayed in Appendix~\ref{sec:parameterstable}.
