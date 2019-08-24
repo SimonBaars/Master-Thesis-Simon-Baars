@@ -250,19 +250,19 @@ We also test the correctness of the resulting code after refactoring. For this, 
 In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, when clones are very small, they may never be able to improve maintainability. The detrimental effect of the added volume of the newly created method exceeds the positive effect of removing duplication. Because of that, we perform all our experiments with a minimum clone size of 10 tokens, because smaller clones cannot improve maintainability when refactored.
 
 \subsection{Calculating a maintainability score}\label{sec:metricformula}
-In this study, we use four metrics to determine maintainability (see Sec.~\ref{sec:metrics}). For our experiments, we aggregate the deltas obtained for these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
+In this study, we use four metrics to determine maintainability (see Sec.~\ref{sec:metrics}). For each of these metrics, we determine their value before and after each refactored clone class, resulting in a delta metric score. For our experiments, we aggregate the deltas obtained for these metrics to draw a conclusion about the maintainability increase or decrease after applying a refactoring. We base our aggregation on the following assumptions:
 \begin{itemize}
   \item All metrics are equal in terms of weight towards system maintenance effort.
   \item Higher values for the metrics imply lower maintainability.
-  \item Normalizing each obtained metric delta over all deltas obtained a metric in our dataset results in equally weighted scores.
+  \item Normalizing each obtained metric delta over all deltas obtained for a metric in our dataset results in equally weighted scores.
 \end{itemize}
-We derived these assumptions partly from Heitlager et al~\cite{heitlager2007practical} and our own expert intuition. The validity of these metrics influences the validity of the conclusions we can draw from our data. Because of that, in our experiments we focus mainly on significant differences in maintainability to draw a conclusion.
+We derived these assumptions from supporting evidence shown by Heitlager et al~\cite{heitlager2007practical} and Alves et al.~\cite{alves2010deriving}. Using the resulting aggregated maintainability score, we can argue for each refactoring whether it increases or decreases the maintainability of the system.
 
-We normalize each obtained metric delta using the ``Standard score'', which is as follows:
+We normalize each obtained metric delta using the ``Standard score'', which is calculated as follows:
 \begin{equation}\label{eq:scoredev}
 N_{metric} = \frac {\Delta X-\mu}{\sigma}
 \end{equation}
-Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metrics. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores much.
+Where $\Delta X$ is a metric delta, $\mu$ is the mean of all deltas for this metric and $\sigma$ is the standard deviation of all deltas for this metric. This method works well for normalization of our data, because as we divide by the standard deviation, outliers do not influence the resulting scores negatively.
 
 We then calculate the maintainability for a specific refactoring as follows:
 \begin{equation}\label{eq:scoreref}
@@ -301,6 +301,8 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \caption{Number of clone classes per clone relation}
 \label{tab:relation}
 \end{table}
+
+Our results show that most clones (37\%) are in a common class. 24\% of clones are in a common hierarchy. Another 24\% of clones are unrelated. 15\% of clones are in an interface.
 
 \subsubsection{Location}
 Table~\ref{tab:location} displays the number of clone classes found for the entire corpus for different locations (see Sec.~\ref{sec:location}).
