@@ -722,7 +722,7 @@ A method body can only consist of statements. However, there are possibilities w
 \subsubsection{Overlaps}
 We do not consider clone classes for refactoring that overlap in the clone class itself. That is because such clones may require other techniques to refactor them. An example refactoring of clone instances that overlap within their clone class is displayed in Figure~\ref{fig:overlaprefactoring}. In this example one clone instance is found between line \ref{line:overlaprefactoring1} and \ref{line:overlaprefactoring4} and the other between \ref{line:overlaprefactoring2} and \ref{line:overlaprefactoring5}. To refactor such clones, other techniques may be required, like introducing a new for-loop to reduce the duplication.
 
-\begin{figure}[H]
+\begin{figure}[]
 \begin{parcolumns}{2}
 \colchunk[1]{
 \begin{javacode}

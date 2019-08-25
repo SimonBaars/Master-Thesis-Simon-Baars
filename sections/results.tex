@@ -83,7 +83,8 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 Our results show that most clones (37\%) are in a common class. 24\% of clones are in a common hierarchy. Another 24\% of clones are unrelated. 15\% of clones are in an interface.
 
 \subsection{Location}
-Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different location categories (see Section~\ref{sec:setuplocation}).
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different location categories (see Section~\ref{sec:setuplocation}). We can see from these results that nearly 80\% of clones are found at method level. 17\% of clones are found at class level, meaning they exceed the boundaries of a single method (or do not span methods at all). Constructors account for approximately 3\% of clones. In interfaces, only 1\% of clones is found.
+
 \begin{table}[H]
 \centering
 \begin{tabular}{@{}lrr@{}}
@@ -98,8 +99,6 @@ Enum Level & 788 & 0.27\% \\
 \caption{Amount of clone instances with a per location category.}
 \label{tab:location}
 \end{table}
-
-We can see from these results that most clones are found at method level.
 
 \subsection{Contents}
 Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different content categories (see Section~\ref{sec:setupcontents}).
