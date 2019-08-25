@@ -1,18 +1,7 @@
 \begin{appendices}
 
 	\chapter{Number of Parameters Table}\label{sec:parameterstable}
-	This appendix shows the underlying data for each of the graphs shown in Section~\ref{sec:refactoringexperiments}. We use the following keywords as names for the columns of these tables:
-	\begin{itemize}
-		\item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
-		\item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
-		\item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
-		\item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
-		\item \textbf{\#}: The number of times the specified category is refactored (and thus the number of data points we have for this category).
-		\item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
-	\end{itemize}
-	In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
-
-Table \ref{tab:full-arguments} shows average scores and metrics for all refactored clones with the specified number of parameters in the extracted method. The \textbf{Token volume} column refers to the average token volume of all refactored clones with the specified number of parameters. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class.
+Table \ref{tab:full-arguments} shows average scores and metrics for all refactored clones with the specified number of parameters in the extracted method. The \textbf{Token volume} column refers to the average token volume of all refactored clones with the specified number of parameters. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. Further explanation of the columns used in this table can be found in Section~\ref{sec:resultsrelation}
 
 \begin{table}[H]
 \centering

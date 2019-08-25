@@ -188,7 +188,7 @@ In Figure~\ref{fig:numberofparameters} we show the average delta number of param
 
 In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is 1 because the extracted method itself has a complexity of 1. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
 
-\subsection{Relation}
+\subsection{Relation} \label{sec:resultsrelation}
 Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result is less likely to have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%. We use the following keywords as headers of the columns of our tables:
 \begin{itemize}
   \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
