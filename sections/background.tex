@@ -3,35 +3,37 @@
 In this chapter we define some basic terminology that is used throughout this thesis.
 
 \section{Code clone terminology}\label{sec:terminology}
-Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use}, Roy et al. \cite{roy2007survey} and Jiang et al. \cite{jiang2007deckard}. A summary of these concepts can be found in Table~\ref{tab:clone-terminology}. The terms displayed in this table show how tokens in code map to clones.
+Many studies present different definitions for code clone concepts. For this study, we mainly use the definitions from Bruntink et al. \cite{bruntink2005use} and Jiang et al. \cite{jiang2007deckard}. A summary of these concepts can be found in Table~\ref{tab:clone-terminology}. The terms displayed in this table show how tokens in code map to clones. When detecting clones of a software system, we end up with a clone class collection. Each clone class denotes a set of duplicate fragments. We call these duplicate fragments clone instances. Each clone instance spans a number of statements/declarations. We refer to these statements and declarations as ``nodes''. Each node consists of a set of tokens.
 
 \begin{table}[H]
 \centering
-\resizebox{\textwidth}{!}{%
+%\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lllll@{}}
 \toprule
 \rowcolor[HTML]{FFFFFF}
-\textbf{Symbol} & \textbf{Meaning} & \textbf{Definition} & \textbf{Description} & \textbf{Properties} \\ \midrule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Definition} & \textbf{Description} \\ \midrule
 \rowcolor[HTML]{EFEFEF}
-T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Category (C):} Identifier, Keyword,\\Literal, Separator, Operator,\\ Comment or Whitespace.\end{tabular} \\
+T & Token & - & \begin{tabular}[c]{@{}l@{}}Tokens are the basic lexical\\ building blocks of source code. \\ For this study, this is the smallest\\ relevant entity of a program.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration node\\in the AST of a codebase.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Range (R):} Begin line/column and end\\line/column of this node.\end{tabular} \\
+N & Node \cite{jiang2007deckard} & Set of tokens. & \begin{tabular}[c]{@{}l@{}}A statement or declaration node\\in the AST of a codebase.\end{tabular}  \\
 \rowcolor[HTML]{EFEFEF}
-I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use, roy2007survey}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{File (F):} The file in which this\\clone instance is found.\end{tabular} \\
+I & \begin{tabular}[c]{@{}l@{}}Clone\\ instance \cite{bruntink2005use}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of cloned\\nodes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A code fragment that appears in\\ multiple locations.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
-C & Clone class \cite{bruntink2005use, roy2007survey}& \begin{tabular}[c]{@{}l@{}}Set of clone\\instances.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations. Each of these\\code fragments is called a\\``clone instance''.\end{tabular} & - \\
+C & Clone class \cite{bruntink2005use}& \begin{tabular}[c]{@{}l@{}}Set of clone\\instances.\end{tabular} & \begin{tabular}[c]{@{}l@{}}A set of similar code fragments in\\ different locations. Each of these\\code fragments is called a\\``clone instance''.\end{tabular} \\
 \rowcolor[HTML]{EFEFEF}
-S & \begin{tabular}[c]{@{}l@{}}Clone class\\ collection \cite{bruntink2005use}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\classes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}All clone classes that have been\\found for a certain software\\project.\end{tabular} & - \\
+S & \begin{tabular}[c]{@{}l@{}}Clone class\\ collection \cite{bruntink2005use}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Set of clone\\classes.\end{tabular} & \begin{tabular}[c]{@{}l@{}}All clone classes that have been\\found for a certain software\\project.\end{tabular} \\
 \rowcolor[HTML]{FFFFFF}
 %R & Range & A part of a source code file. &  & \begin{tabular}[c]{@{}l@{}}\textbf{Begin line/column:} The line and column at \\ which the range starts.\\ \textbf{End line/column:} The line and column at\\ which the range end.\end{tabular} \\
  \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Clone related terminology and how it maps to the source code.}
 \label{tab:clone-terminology}
 \end{table}
 
 As an example, consider the code fragments in Figure~\ref{fig:cloneclasses}. In this example, two clone classes are displayed. One of the clone classes consists of two clone instances and has three nodes per instance. The other clone instance has three clone instances and consists of two nodes per instance.
+
+This example can be represented as a tree structure, as shown in Figure~\ref{fig:terminologyexample}. This example uses the terminology introduced in Table~\ref{tab:clone-terminology}, together with some properties of clone instances and nodes. Each clone instance has a \textbf{range}, which denotes the line and column at which a code fragment starts and ends. Each clone instance is found in a certain \textbf{file}.
 
 \begin{figure}[H]
 \begin{parcolumns}{3}
@@ -57,15 +59,13 @@ As an example, consider the code fragments in Figure~\ref{fig:cloneclasses}. In 
 doD();
 \end{javacode}}
 \end{parcolumns}
-\caption{Two clone classes: One clone class with three clone instances and one with two clone instances.}
+\caption{Example of two clone classes.}
 \label{fig:cloneclasses}
 \end{figure}
 
-This example can be represented as a tree structure, as shown in Figure~\ref{fig:terminologyexample}.
-
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/TerminologyExample}
-  \caption{Representation of Figure~\ref{fig:cloneclasses} using the terminology introduced in Table~\ref{tab:clone-terminology}}
+  \caption{Tree representation of Figure~\ref{fig:cloneclasses} using the terminology of Table~\ref{tab:clone-terminology}}
   \label{fig:terminologyexample}
 \end{figure}
 
@@ -89,7 +89,7 @@ A higher type of clone means that it's harder to detect and refactor. There are 
 % TODO: Sander - Deze subsectie wil ik wel even over hebben, loopt niet helemaal lekker maar niet zo makkelijk uit te leggen
 
 \section{Refactoring techniques}
-In Martin Fowler's popular ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``if you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them''}. He describes several techniques to deal with duplication, dependent on the context of the clone. In this section we describe the methods that we use in this study.
+In Martin Fowler's popular ``Refactoring'' book \cite{fowler2018refactoring}, he exclaims that \textit{``if you see the same code structure in more than one place, you can be sure that your program will be better if you find a way to unify them''}. He describes several techniques to deal with duplication, dependent on the context of the clone. In this section we describe the techniques that we use in this study.
 
 \subsection{Extract Method}
 Current clone refactoring research shows that the ``Extract Method'' refactoring technique can refactor most duplication problems \cite{fontana2015duplicated, tsantalis2015assessing, white2016deep}. ``Extract Method'' moves matching functionality in method bodies to a common place, namely a new method \cite{fowler2018refactoring}. An example of this procedure is displayed in figure \ref{fig:extractmethod}.
@@ -130,7 +130,7 @@ public void doAandB(){
 In the example of the previous section, both duplicated parts are in the same method. However, a study by Fontana et al. \cite{fontana2015duplicated} shows that this is most often not the case. Based on the relation between clone instances, the extracted method must be moved to be accessible by all locations of the clone instances. This can require different techniques.
 
 \subsubsection{Pull up method}
-A refactoring technique to move a method up in its inheritance structure is called ``Pull up method'' \cite{fowler2018refactoring}. This way, if cloned methods are related in any way through inheritance, they can be called by both classes by placing the method in a class they both have in common. This way its possible to refactor both fully cloned methods (by just pulling up the method) and partially cloned methods (by first performing method extraction and then pulling up the refactored method). Anexample of this refactoring method is shown in Figure~\ref{fig:pullupmethod}.
+A refactoring technique to move a method up in its inheritance structure is called ``Pull up method'' \cite{fowler2018refactoring}. This way, if cloned methods are related in any way through inheritance, they can be called by both classes by placing the method in a class they both have in common. This way its possible to refactor both fully cloned methods (by just pulling up the method) and partially cloned methods (by first performing method extraction and then pulling up the refactored method). An example of this refactoring technique is shown in Figure~\ref{fig:pullupmethod}.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -219,7 +219,7 @@ class Car extends Vehicle{
 \end{figure}
 
 \subsubsection{Providing default implementations for common functionality}
-In Java, C\#, Python and possibly other object-oriented languages, the programmer can create interfaces of which a class can implement any number. Such interfaces can (in Java, C\# and Python) provide default implementations for common functionality \cite{mohnen2002interfaces}. This gives an opportunity to make the relation between classes explicit and reduce duplication. It can be used in instances where creating a new parent class for duplicated classes is undesirable. An example of this is shown in Figure~\ref{fig:createinterfaceabstraction}, in which two unrelated types (Human and Radio) share a common property (making sound).
+In Java, C\#, Python, and possibly other object-oriented languages, the programmer can create interfaces of which a class can implement any number. Such interfaces can (in Java, C\# and Python) provide default implementations for common functionality \cite{mohnen2002interfaces}. This gives an opportunity to make the relation between classes explicit and reduce duplication. It can be used in instances where creating a new parent class for duplicated classes is undesirable. An example of this is shown in Figure~\ref{fig:createinterfaceabstraction}, in which two unrelated types (Human and Radio) share a common property (making sound).
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -280,7 +280,7 @@ In this study we differentiate between \textit{internal} and \textit{external} c
 Regarding refactoring, a software system can often not change the source code of its dependencies. This can sometimes be a burden, when an external dependency does not use proper abstractions that are required by a software system. In this study we take external classes into consideration when choosing a refactoring technique, to be sure not to modify them.
 
 \subsection{Maven}
-For this study we perform a shallow analysis on external dependencies, in order to derive more context for internally used concepts. As these external dependencies are most often not included in a software systems' source code, we must first use the projects' build automation system to gather the dependencies. To limit the scope of this process, we decided to focus on only the \textit{Maven}\footnote{Apache Maven is a build automation system mainly used for Java: \url{https://maven.apache.org/}} build automation system.
+For this study we perform an analysis on external dependencies, to derive more context for internally used concepts. As these external dependencies are most often not included in a software systems' source code, we must first use the projects' build automation system to gather the dependencies. To limit the scope of this process, we decided to focus on only the \textit{Maven}\footnote{Apache Maven is a build automation system mainly used for Java: \url{https://maven.apache.org/}} build automation system.
 
 Maven is a build automation tool, mainly used with the Java programming language. Maven has a simple ecosystem to configure and fetch the binaries and source code of all software projects a given codebase is dependent on. Maven can also be used to run tests for the systems and to package the project as an executable file.
 
