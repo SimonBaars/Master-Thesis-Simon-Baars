@@ -519,7 +519,8 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
 We added the following categories, to gain more information about clones and reduce the number of unrelated clones:
 
 \begin{enumerate}
-\item \textbf{Same Interface}: All instances of the clone class are in a class or interface that have a common interface anywhere in their inheritance hierarchy.
+\item \textbf{Same Direct Interface}: All instances of the clone class are in a class or interface implement the same interface.
+\item \textbf{Same Indirect Interface}: All instances of the clone class are in a class or interface that have a common interface anywhere in their inheritance hierarchy.
 \item \textbf{No Direct Superclass}: All instances of the clone class are in a class that does not have any superclass.
 \item \textbf{No Indirect Superclass}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
 \item \textbf{External Ancestor}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
@@ -536,7 +537,7 @@ We separate these relations into the following categories, because of their rela
 \begin{itemize}
   \item \textbf{Common Class}: \textit{Same Method}, \textit{Same Class}
   \item \textbf{Common Hierarchy}: \textit{Superclass}, \textit{Sibling Class}, \textit{Ancestor Class}, \textit{First Cousin}, \textit{Same Hierarchy}
-  \item \textbf{Common Interface}: \textit{Same Interface}
+  \item \textbf{Common Interface}: \textit{Same Direct Interface}, \textit{Same Indirect Interface}
   \item \textbf{Unrelated}: \textit{No Direct Superclass}, \textit{No Indirect Superclass}, \textit{External Superclass}, \textit{External Ancestor}
 \end{itemize}
 
@@ -565,11 +566,11 @@ Cloned nodes are flagged as \textit{Superclass} if the classes in which these no
 Cloned nodes are flagged as \textit{Ancestor} if the classes in which these nodes are found are recursively the parent of an antecedent. Cloned nodes are flagged as \textit{Same Hierarchy} if the classes in which these nodes are found are all in the same inheritance hierarchy and not linked by any external classes.
 
 \subsubsection{Common Interface}
-Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\#8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
+Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\# 8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
 
 The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
 
-To check whether two cloned nodes have common interfaces, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
+To check whether two cloned nodes have a \textit{Same Direct Interface} relation, we check that the classes to which these nodes belong both implement the same interface type. To check whether two cloned nodes have a \textit{Same Indirect Interface} relation, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
 
 \subsubsection{Unrelated}
 Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable for refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
