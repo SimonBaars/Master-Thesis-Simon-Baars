@@ -1,13 +1,11 @@
 \chapter{Defining refactoring-oriented clone types}\label{chap:clonetypes}
-Clone type 1-3 (see Section~\ref{chap:backgroundclonetypes}) can (and should) not always be automatically refactored. In Section~\ref{sec:literaturetypeproblems} we list shortcomings of each clone type that invalidate refactoring opportunities. In Section~\ref{sec:rtypes} we propose new clone type definitions that address these shortcomings.
+Clone type 1-3 (see Section~\ref{chap:backgroundclonetypes}) cannot always be automatically refactored. In Section~\ref{sec:literaturetypeproblems} we list shortcomings of each clone type that invalidate automated refactoring opportunities. In Section~\ref{sec:rtypes} we propose new clone type definitions that address these shortcomings.
 
 \section{Problems with clone types for automated refactoring}\label{sec:literaturetypeproblems}
 In this section, we discuss the shortcomings of clone type 1-3 \cite{roy2007survey}. Because of these shortcomings, clones found by these definitions are often found to require additional judgment whether they can and should be (automatically) refactored.
 
 \subsection{Type 1 clones}\label{sec:type1}
 Type 1 clones are \textit{identical clone fragments except for variations in whitespace and comments} \cite{roy2007survey}. This allows for the detection of clones that are the result of copying and pasting existing code, along with other reasons why duplicates might get into a codebase.
-
-Type 1 clones are implemented as textual equality between code fragments (except for whitespace and comments) by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone. %When aiming to automatically refactor clones, applying refactorings to type 1 clones is bound to be error-prone and can result in an uncompilable project or a difference in functionality.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -53,6 +51,8 @@ public class LoseScene
 \caption{Example of a type 1 clone that is functionally different.}
 \label{fig:type1}
 \end{figure}
+
+Type 1 clones are implemented as textual equality between code fragments (except for whitespace and comments) by most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating}. Although textually equal, method calls can still refer to different methods, type declarations can still refer to different types and variables can be of a different type. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
 
 Figure~\ref{fig:type1} shows a type 1 clone with two clone classes. Defining an automatic way to refactor these clone classes is nearly impossible, as both cloned fragments describe different functional concepts. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
 
