@@ -126,7 +126,7 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 
 From these results, we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
-\section{Extract Method}
+\section{Refactorability}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
 Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments).
 \begin{table}[H]
@@ -148,9 +148,11 @@ Not In Class Or Interface & 70 & 0.1\% \\
 \label{tab:refactorability}
 \end{table}
 
-\section{Refactoring} \label{sec:refactoringexperiments}
+\section{Thresholds} \label{sec:refactoringexperiments}
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
-In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. We use the following keywords as headers of the columns of our tables:
+In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
+
+We use the following keywords as headers of the columns of our tables:
 \begin{itemize}
   \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
   \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
