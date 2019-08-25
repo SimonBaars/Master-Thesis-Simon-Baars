@@ -1,12 +1,8 @@
 \chapter{Related work} \label{ch:related_work}
-In this chapter we present the work related to this study.
+In this chapter, we present studies in the field of code clone refactoring. The sections are ordered chronologically, because many of these studies use findings of preceding studies.
 
-\section{Code clone refactoring suggestion tools}
-We are novel in the introduction of a fully automated refactoring tool. However, several tools have already been proposed for refactoring suggestion. In this section we discuss these tools. The tools are ordered on basis of the year in which they were proposed.
-
-\subsection{SUPREMO}
-A thesis by Golomingi~\cite{koni2001scenario} is the first to explore mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring}. Mapping these to relations between clones, this results in Table \ref{tab:relationrefactoring}.
-% Sander: deze zin loop niet, bedoel je niet: "Mapping these to relations between clones results in Table \ref{tab:relationrefactoring}."
+\section{SUPREMO}
+A thesis by Golomingi~\cite{koni2001scenario} is the first to explore mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring}. Mapping these to relations between clones results in Table \ref{tab:relationrefactoring}.
 
 \begin{table}[H]
 \centering
@@ -28,15 +24,12 @@ Extract Superclass   &            & \checkmark                                  
 \label{tab:relationrefactoring}
 \end{table}
 
-The author then proposes a tool named ``SUPREMO''. This tool determines the relations between clone instances, computes the impact % Sander: impact on what?
-of the clones and proposes refactorings. Their tool features visualizations to show how clones are related in the inheritance structure. This tool is written for the Smalltalk programming language. % Sander: Drie keep achter elkaar this/their tool, niet per se fout maar leest ook niet heel lekker, kijk maar of je tijd hebt ;)
-The authors verify their approach by presenting several cases in which their tool analyses source code and outputs a refactoring suggestion.
-% Sander: Ik mis beetje hoe dit zich verhoudt tot jouw werk, is ook wel bij andere research beetje ding, zou miss even kijken of je overal 1 of 2 zinnen bij kan zetten over hoe het zich verhoudt tot jouw werk, al is het opzich niet echt erg dus andere dingen gaan miss voor
+The author then proposes a tool named ``SUPREMO''. This tool determines the relations between clone instances, computes the impact of the clones on system design and proposes refactorings. It also features visualizations to show how clones are related in the inheritance structure. SUPREMO is written for the Smalltalk programming language. The authors verify their approach by presenting several cases in which their tool analyses source code and outputs a refactoring suggestion. In our work, we use these same relations and refactoring techniques.
 
-\subsection{Aries}
-A study by Higo et al.~\cite{higo2004aries, higo2008metric} looks into to what extent clones can be refactored. They show code examples and to what extent they can be cloned. For instance, they look into what parts of a clone can be extracted to a new method. They define that partially cloned blocks obstruct method extraction. They propose to make the clone smaller to find a part of the clone that can be refactored. This is similar to our ``partial block'' category of Section~\ref{sec:refactorabilitysetup} and our discussion in Section~\ref{sec:partialblockdiscussion}.
+\section{Aries}
+A study by Higo et al.~\cite{higo2004aries, higo2008metric} looks into to what extent clones can be refactored. The authors look into what parts of a clone can be extracted to a new method. They define that partially cloned blocks obstruct method extraction. They propose to make the clone smaller to find a part of the clone that can be refactored. This is similar to our ``partial block'' category of Section~\ref{sec:refactorabilitysetup} and our discussion in Section~\ref{sec:partialblockdiscussion}.
 
-Higo et al. also look into the amount of variability that can be allowed between clone fragments. Figure~\ref{fig:higomerge} shows an example of merging two code fragments from this study. In this figure, the clone spans a part of a different block so it cannot be refactored. However, they propose to omit both ``else if'' lines from the merged fragment so that it can be refactored (in our study we would have flagged these clones as ``partial block'' and thus unsuitable for refactoring). They also allow variability in literals and variables and replace them with method parameters.
+Higo et al. also look into the amount of variability that can be allowed between clone fragments. Figure~\ref{fig:higomerge} shows an example of merging two code fragments from this study. In this figure, the clone spans a part of a different block so it cannot be refactored. They propose to omit both ``else if'' lines from the merged fragment so that it can be refactored (in our study we would have flagged these clones as ``partial block'' and thus unsuitable for refactoring). They also allow variability in literals and variables and replace them with method parameters.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/higo}
@@ -44,33 +37,40 @@ Higo et al. also look into the amount of variability that can be allowed between
   \label{fig:higomerge}
 \end{figure}
 
-Higo et al. propose a tool named Aries~\cite{higo2004aries, higo2008metric} that focuses on the detection of refactorable clones. They focus entirely on whether a clone \textbf{can} be refactored and not whether it \textbf{should} be refactored. This tool only proposes refactoring opportunities and does not provide help in the process of applying the refactoring. % Sander:.. which our work does.. is denk ik nice toevoeging
+Higo et al. propose a tool named Aries~\cite{higo2004aries, higo2008metric} that focuses on the detection of refactorable clones. They focus entirely on whether a clone \textbf{can} be refactored and not whether it \textbf{should} be refactored. This tool only proposes refactoring opportunities and does not provide help in the process of applying the refactoring, which our work does.
 
-\subsection{Duplicated Code Refactoring Advisor (DCRA)}
-Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analysis of clone relations together with clone types. Table \ref{tab:dcra-relation} displays the result of this analysis. We added percentages and ordering to this table for easier comparison with the results of our studies (see \ref{sec:relationresults}).
+\section{Duplicated Code Refactoring Advisor (DCRA)}
+Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types 1 and 3 \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analyses of clone relations together with clone types. Table \ref{tab:dcra-relation} displays the result of this analysis. We added percentages and ordering to this table for easier comparison with the results of our work (see \ref{sec:relationresults}). We also added the percentages of our work to this table.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}lllll@{}}
+\begin{tabular}{@{}lrrrrr@{}}
 \toprule
-                         & Type 1 & Percentage & Type 3 & Percentage \\ \midrule
-Same Class               & 5,645  & 32.1\%     & 51,308 & 28.7\%     \\
-Same External Superclass & 4,384  & 25.0\%     & 66,391 & 37.1\%     \\
-Unrelated Class          & 2,758  & 15.7\%     & 35,035 & 19.6\%     \\
-Sibling Class            & 2,721  & 15.5\%     & 13,868 & 7.8\%      \\
-Common Hierarchy Class   & 970    & 5.5\%      & 3,152  & 1.8\%      \\
-Same Method              & 569    & 3.2\%      & 4,901  & 2.7\%      \\
-First Cousin Class       & 416    & 2.4\%      & 2,980  & 1.7\%      \\
-Superclass               & 91     & 0.5\%      & 981    & 0.5\%      \\
-Ancestor Class           & 13     & 0.1\%      & 281    & 0.2\%      \\ \bottomrule
+                         & Type 1 & Percentage & Type 3 & Percentage & Type 1R (Our Work) \\ \midrule
+Same Class               & 5,645  & 32.1\%     & 51,308 & 28.7\% & 26.8\%    \\
+Same External Superclass & 4,384  & 25.0\%     & 66,391 & 37.1\% & 20.6\%   \\
+Unrelated Class          & 2,758  & 15.7\%     & 35,035 & 19.6\% & 18.4\%    \\
+Sibling Class            & 2,721  & 15.5\%     & 13,868 & 7.8\%  & 18.2\%    \\
+Common Hierarchy Class   & 970    & 5.5\%      & 3,152  & 1.8\%  & 0.8\%    \\
+Same Method              & 569    & 3.2\%      & 4,901  & 2.7\%  & 10.5\%    \\
+First Cousin Class       & 416    & 2.4\%      & 2,980  & 1.7\%  & 1.4\%    \\
+Superclass               & 91     & 0.5\%      & 981    & 0.5\%  & 3.1\%    \\
+Ancestor Class           & 13     & 0.1\%      & 281    & 0.2\%  & 0.2\%    \\ \bottomrule
 \end{tabular}
 \caption{Clone relation analysis by Fontana et al. \cite{fontana2012duplicated} for type 1 and 3 clones measured over the Qualitas Corpus \cite{tempero2010qualitas}.}
 \label{tab:dcra-relation}
 \end{table}
 
+Some of our results differ quite a lot from their results. We think this is mostly accounted due to two differences in their setup:
+\begin{itemize}
+\item The used clone type definitions differ (type 1 vs type 1R).
+\item Fontana et al. use a corpus consisting of large higher-quality open-source software systems \cite{tempero2010qualitas} where we use a more varied corpus \cite{githubCorpus2013}.
+\item Fontana et al. use clone pairs while we use clone classes.
+\end{itemize}
+
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} propose DCRA, a tool to suggest refactorings for the clones found by the NiCAD tool \cite{roy2008nicad, cordy2011nicad}. DCRA suggests refactorings to clones found in Java projects based on the mapping between relation and refactoring techniques shown in Table~\ref{tab:relationrefactoring}.
 
-\subsection{JDeodorant} \label{sec:jdeodorant}
+\section{JDeodorant} \label{sec:jdeodorant}
 The most used clone refactoring tool is JDeodorant \cite{mazinanian2016jdeodorant}. This tool is based on a set of studies, that look into several aspects of the clone refactoring process. The first of these studies is ``Refactoring Clones: An Optimization Problem'' by Krishnan et al.~\cite{krishnan2013refactoring}. The authors describe clones that are refactored by extracting their functionality to a single method. They also describe that variability between identifiers and literals have to become parameters in the extracted method. They identify the optimization problem where the variability between cloned fragments should be limited, to avoid limiting the reusability of methods because of too many method parameters. They propose an algorithm that calculates the variance between code fragments on basis of the difference in AST nodes.
 
 In the second study, ``Unification and Refactoring of Clones'' by Krishnan et al.~\cite{krishnan2014unification}, the authors address the problem of the modifications made to copied fragments and their impact on the refactoring process. They identify a list of expressions in which they have found variability, which is displayed in Table~\ref{tab:krishnanvariability}. The authors map the variability in this table to refactoring opportunities. They list a set of four preconditions for the refactoring process:
@@ -114,33 +114,28 @@ A study by Tsantalis et al.~\cite{tsantalis2015assessing} looks into the refacto
   %\item The mapped branching statements (break, continue) should be accompanied with the corresponding mapped loop statements
 \end{enumerate}
 In our study, we simplify precondition 5 by not allowing variability in types, because of which we satisfy this precondition. We address precondition 6 by allowing modified statements as return values (and turning the calls to the extracted method into variable assignments). If more than 1 variable is assigned or other return values would be present, we flag the cloned fragments as ``not refactorable''. We address precondition 7 by using lambda expressions, which do allow void type methods to be used as parameters. We address precondition 8 by analyzing all branches in the code. If all branches return, the fragment can still be refactored even though there is a conditional return statement.
-% Sander:Als je tijd hebt, miss even overzicht in tabel van elke preconditie en hoe je die aanpakt zou het overzichtelijker maken
+
 After all these studies that determine what preconditions apply to be able to refactor modified clones, the authors propose a tool named JDeodorant that helps in the process of refactoring such clones~\cite{mazinanian2016jdeodorant}. This tool takes the output of many popular clone detection tools \cite{kamiya2002ccfinder, deissenboeck2010flexible, jiang2007deckard, cordy2011nicad} and proposes refactoring opportunities. The tool is integrated in the Eclipse IDE, making it easier to directly apply the refactoring. The tool is based on previously discussed preconditions and does not allow refactorings if the preconditions are not met.
 
 A study by Tsantalis et al.~\cite{tsantalis2017clone} looks into how lambda expressions can be used to help in the process of refactoring clones. They do this in order to mitigate some of the earlier established preconditions. Working with lambda's makes it possible to refactor statement gaps and expression differences. They find that lambda expressions are very suitable to refactor clones with variability. The authors do not discuss the impact of such refactorings on system maintainability costs, their main focus is to positively influence the refactorability of clone classes.
 
-\subsection{Refactoring Technique for Large Groups of Software Clones}
+\section{Refactoring Technique for Large Groups of Software Clones}
 A thesis by AlWaqfi~\cite{alwaqfi2017refactoring} propose a method for assessing refactorability of clone classes , whereas the previous tools only focus on clone pairs. The author surveys a set of clone detection tools \cite{kamiya2002ccfinder, baxter1999clonedr, jiang2007deckard, cordy2011nicad} and uses a publicly available dataset \cite{tsantalis2015assessing} to measure the amount of clones found by these tools. The resulting data shows that significant portions of source code of the measured systems are cloned. The data also shows that there are large differences between different tools in the amount of clones found. The author also measures of how many clone instances clone classes consist. According to these experiments, about 68\% of clone classes consist of 2 clone instances, 13\% have 3 clone instances, 7\% have 4 clone instances and about 12\% is even larger.
 
 The authors perform a lot of statistical comparisons between clone detection tools. The part most relevant to our study is their measurements regarding refactorability. They find that about 29-54\% of clones are refactorable in the set of projects they inspect (Table 6.13 of \cite{alwaqfi2017refactoring}). To determine whether a clone is refactorable, the author uses the set of eight preconditions proposed by Tsantalis et al.~\cite{tsantalis2015assessing}.
 
-\subsection{Pattern‐based clone Refactoring Inspection (PRI)}
+\section{Pattern‐based clone Refactoring Inspection (PRI)}
 A study by Chen et al.~\cite{chen2018clone} addresses the problem that developers cannot easily determine which clones can be refactored or how they should be maintained scattered throughout a large code base in evolving systems. They propose PRI, a technique for managing refactorings for clones with a Sibling relation. PRI is a plugin for the Eclipse IDE that shows which refactoring techniques can be used to refactor clones. Because it is integrated in the Eclipse IDE, the refactorings can be executed largely automatically, as this IDE has a large set of tools for performing such transformations.
 
 Another feature of the PRI tool is to find incompletely refactored clones. To do this, PRI traces clones through revisions of a software project. When a clone class is incompletely refactored, PRI informs the user that there are clone instances for which an extracted method has already been created.
 
-\section{Clone refactoring}
-In this section, we shortly introduce recent studies about refactoring code clones.
-% Sander: Waar ging de vorige sectie dan over?
-\subsection{Impact of Clone Refactoring on External Quality Attributes}
+\section{Impact of Clone Refactoring on External Quality Attributes}
 A study by Vashisht et al.~\cite{vashisht2018impact} determines the impact of clone refactoring on several quality attributes. They calculate the metrics of the system before refactoring, detect clones using CCFinder \cite{kamiya2002ccfinder}, use JDeodorant to refactor a subset of the detected clones \cite{mazinanian2016jdeodorant} and measure the metrics again after refactoring to assess the impact of the refactoring process on quality attributes. They conclude that some metrics affect some quality attributes positively and some negatively.
 
 In this study, the authors only compare before and after snapshots of refactoring the entire system. This makes it hard to determine why some metrics are negatively influenced.
 
-\subsection{Clone Recommendation System for Extract Method Refactoring}
+\section{Clone Recommendation System for Extract Method Refactoring}
 Yoshida et al.~\cite{yoshida2019proactive} propose a plugin for the Eclipse IDE that recommends clone refactoring candidates on basis of keystroke tracking. Whenever the user performs the ``Extract Method'' refactoring, the proposed system scans the project for clones that can now use the extracted method. It then shows the developer all places that should be refactored aswell now that a new method has been created. The approach was validated by requesting human participants to apply refactorings to open source systems. On average, it took participants 1,043 seconds to refactor 2.75 clones. They indicate that this is 35\% faster than when working with a popular clone detection tool (GemX).
 
-\subsection{Effect of clone refactoring on the size of unit test cases}
-Badri et al.~\cite{badri2019measuring} measure the impact on clone refactoring on metrics that affect the testability of software. The metrics they measure are size, cyclomatic complexity and coupling. To collect this data, they used two systems that have been clone refactored. % Sander: ik weet niet of 'clone refactored' een bestaand werkwoord is;) miss is; that had their clones refactored ofzo
-They conclude that there is a strong and positive % Sander: is strong, positive niet beter?
-correlation between clone refactoring and the reduction of the size of unit test cases. They also show that code quality attributes that are related to testability are significantly improved.
+\section{Effect of clone refactoring on the size of unit test cases}
+Badri et al.~\cite{badri2019measuring} measure the impact on clone refactoring on metrics that affect the testability of software. The metrics they measure are size, cyclomatic complexity and coupling. To collect this data, they used two systems that have been de-duplicated manually. They conclude that there is a strong, positive correlation between clone refactoring and the reduction of the size of unit test cases. They also show that code quality attributes that are related to testability are significantly improved.
