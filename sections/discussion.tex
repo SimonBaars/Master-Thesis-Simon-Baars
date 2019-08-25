@@ -1,12 +1,10 @@
 \chapter{Discussion} \label{ch:discussion}
-
 In this chapter, we discuss the results of our research and experiments.
 
-\section{Clone Type Definitions}
-In this study, we proposed a set of clone type definitions that can be automatically refactored. We based these clone type definitions on the clone type definitions that are commonly used in literature \cite{roy2007survey}. The design of these clone type definitions entails some decisions that have a large impact on the clones we considered for refactoring in this study. In this section, we discuss our clone type definitions as proposed in Section~\ref{sec:rtypes}.
+\section{Type 2R Clones}
+In this study, we propose a set of clone type definitions that can be automatically refactored. In this section, we discuss our type 2R definition as proposed in Section~\ref{sec:type2r}.
 
-\subsection{Type 2R clones}
-With type 2R clones we allow variability in some identifiers and literals such that the code can and should still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think however that type 2R could still use a lot of improvement to find more duplication patterns that can be refactored.
+With type 2R clones we allow variability in some expressions such that the code can still be refactored. For type 2R clones we chose a set of expressions in which we allow variability and proposed a recommended refactoring strategy. We think that type 2R could be improved to find more duplication patterns that can be refactored.
 
 One method we think can be used to find more refactoring opportunities is to allow variability in expressions that have/return the same type. If expressions have/return the same type, they can be extracted to a parameter and the corresponding expression can be passed as a parameter. An example of this is displayed in Figure~\ref{fig:samereturn}. The only thing to watch out for is methods that have side effects. Because methods may be executed in another point during execution, this might affect the functionality of the code. Because of that, before applying such a refactoring it should be verified that the called method has to side effects.
 
@@ -55,30 +53,30 @@ public String getTitle(){
 %\section{Clone Context Analysis}
 %In Section~\ref{chap:contextsetup} we defined categories for mapping the context of clones. In this section, we discuss this together with the related experiments.
 
-\section{CloneRefactor}
-In this section we discuss our decisions for the design of our CloneRefactor tool.
+%\section{CloneRefactor}
+%In this section we discuss decisions made in the design of our CloneRefactor tool.
 
-\subsection{Clone Detection}
-For CloneRefactor we chose to design a novel method of detecting clones, rather than using an existing clone detection technique or tool. Our rationale is as follows:
-\begin{itemize}
-  \item We perform comprehensive analysis on the source code which requires us to use an AST-based clone detection method.
-  \item We perform dependency graph analysis, which requires us to resolve symbols in the source code.
-  \item None of the existing clone detection methods implement all criteria required to build such a system.
-\end{itemize}
-By building a graph that maps relations between nodes in the AST, we can efficiently find clones, allowing to perform a comprehensive analysis of large systems. This method has worked well for our purposes.
+%\subsection{Clone Detection}
+%For CloneRefactor we chose to design a novel method of detecting clones, rather than using an existing clone detection technique or tool. Our rationale is as follows:
+%\begin{itemize}
+%  \item We perform comprehensive analysis on the source code which requires us to use an AST-based clone detection method.
+%  \item We perform dependency graph analysis, which requires us to resolve symbols in the source code.
+%  \item None of the existing clone detection methods implement all criteria required to build such a system.
+%\end{itemize}
+%By building a graph that maps relations between nodes in the AST, we can efficiently find clones, allowing to perform a comprehensive analysis of large systems. This method has worked well for our purposes.
 
-The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for industry projects, our tool might require optimization.
+%The main limitation we encountered is the memory required to build the clone graph. As we load the entire graph into memory before starting the clone detection procedure, this can cause issues on systems with low available memory. For a system consisting of 1.000.000 nodes, the clone graph requires about 4GB of RAM. For our corpus, there were no larger systems, so this was not a big issue. However, for larger systems, our tool might require optimization.
 
-\subsection{Context Analysis}
-In this study, we identified categories for three properties of clones: relation, location, and contents. We chose a set of relations that indicate different refactoring opportunities. However, as our CloneRefactor tool only analyses Java source code, we are biased towards categories that are often found in Java source code. For other languages, other categories might be valuable to analyze to find suitable categories for that programming language.
+%\subsection{Context Analysis}
+%In this study, we identified categories for three properties of clones: relation, location, and contents. We chose a set of relations that indicate different refactoring opportunities. However, as our CloneRefactor tool only analyses Java source code, we are biased towards categories that are often found in Java source code. For other languages, other categories might be valuable to analyze to find suitable categories for that programming language.
 
-\subsection{Refactoring}
+\section{Automated Refactoring}
 In this section, we discuss our implementation decisions to refactor source code using CloneRefactor and measure its impact.
 
-\subsubsection{Refactorability} \label{sec:discussrefactorability}
+\subsection{Refactorability} \label{sec:discussrefactorability}
 In Section~\ref{sec:refactorabilitysetup} we introduced categories to determine the refactorability of clones through method extraction. We excluded categories that cannot be directly refactored through method extraction. However, with a few transformations or further considerations, it might be possible to make these clones refactorable. In this section, we will highlight a few of these categories which we believe to be refactorable through method extraction with more effort.
 
-\subsubsection{Partial block} \label{sec:partialblockdiscussion}
+\subsection{Partial block} \label{sec:partialblockdiscussion}
 We did not consider clones for refactoring that span a part of a block. Although it is indeed not possible to refactor such clones, there are possibilities to make such clones refactorable. For instance, if the programming language supports lambda expressions, we can move the difference of statements in the block in a lambda expression \cite{tsantalis2017clone}. Figure \ref{fig:partialblockrefactoring} shows an example of such a refactoring opportunity.
 
 \begin{figure}[H]
@@ -114,7 +112,7 @@ public void doFiveTimes(Runnable runnable){
 \label{fig:partialblockrefactoring}
 \end{figure}
 
-\subsubsection{Complex control flow}
+\subsection{Complex control flow}
 Break, continue and return statements can obstruct the possibility of performing method extraction. However, with some extra transformations, method extraction will still be possible in such cases. Figure \ref{fig:complexcontrolflowrefactoring} shows such a transformation. We can wrap the newly extracted method in a conditional to indicate whether the ``control flow modifying statement'' should be executed. In other cases, other methods might apply to refactor such clones.
 
 \begin{figure}[H]
@@ -155,7 +153,7 @@ public boolean doAandB(){
 \label{fig:complexcontrolflowrefactoring}
 \end{figure}
 
-\subsubsection{Metrics}
+\subsection{Metrics}
 For this study, we chose to focus on a set of four metrics to measure maintainability: method size, duplication, method parameters, and cyclomatic complexity. These metrics indicate the impact of the refactoring, but do not give a complete overview. There are many more metrics that could be considered to measure the maintainability impact on the system. An example of such a metric is ``coupling'', which focuses on the number of incoming calls into a method or class and what modules these calls come from. This metric is also influenced by the transformations we applied and might deliver valuable insights into the quality of the refactoring.
 
 In general, considering other metrics can result in a more reliable measure of the increase or decrease of maintainability after applying a specific refactoring.
