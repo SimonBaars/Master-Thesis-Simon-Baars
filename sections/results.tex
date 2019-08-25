@@ -5,7 +5,7 @@ In this chapter, we present the results of our experiments\footnote{The underlyi
 In this section, we look into the differences between the clone types that were introduced in Chapter \ref{chap:clonetypes}.
 
 \subsection{Found nodes}
-In this section, we display our results regarding the differences in the number of cloned nodes (see Section~\ref{sec:terminology} for our terminology) between clone type 1-3~\cite{roy2007survey} and type 1R-3R. Figure~\ref{fig:typeres} shows the number of cloned nodes found over the entire corpus for the different clone types (the word ``Type'' is abbreviated as ``T''). For type 2R clones, we set the variability threshold (see Section~\ref{sec:variabilitythreshold}) to 10\%, meaning that no more than 10\% of expressions may differ between fragments to be considered clones. For type 3 and 3R clones, we allow a gap size of 20\% the clones surrounding it (see Section~\ref{sec:t3rthreshold}).
+In this section, we display our results regarding the differences in the number of cloned nodes (see Section~\ref{sec:terminology} for our terminology) between clone type 1-3~\cite{roy2007survey} and type 1R-3R. Figure~\ref{fig:typeres} shows the number of cloned nodes found over the entire corpus for the different clone types (the word ``Type'' is abbreviated as ``T''). For type 2R clones, we set the variability threshold (see Section~\ref{sec:variabilitythreshold}) to 10\%, meaning that no more than 10\% of expressions may differ between fragments to be considered clones. For type 3 and 3R clones, we allow a gap size of 20\% (see Section~\ref{sec:t3rthreshold}).
 
 \begin{figure}[H]
   \centering
@@ -25,10 +25,10 @@ In this section, we display our results regarding the differences in the number 
 In Figure \ref{fig:typeres} we see that the difference between T1R and T1 is relatively small (11\% more cloned nodes found for T1). The difference between T2R and T2 is bigger (35\% more cloned nodes for T2). The number of cloned nodes of T3R and T3 are only a little bit higher than T2R and T2.
 
 \subsection{Performance}
-To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which allow for higher accuracy performance measurements as they do have limited background processes affecting the results.
+To map the viability of refactoring-oriented clone types for large scale clone detection, we measured the duration of finding clones by the different clone types. Figure~\ref{fig:performance} shows the duration of detecting all clones in the corpus using CloneRefactor for different clone types. This figure shows the average duration of running CloneRefactor 10 times for a certain clone type. We ran these performance tests on the compute nodes of the DAS4 supercomputer \cite{bal2016medium}, which allow for higher accuracy performance measurements as they have limited background processes affecting the results.
 
 \subsection{Type 2R Variability Threshold}
-To determine the influence of the type 2R variability threshold on the amount of found nodes, we ran CloneRefactor for all variability percentages (0\% meaning no variance in expressions, 100\% meaning any variance in expressions). Figure \ref{fig:t2rgraph} shows the results.
+To determine the influence of the type 2R variability threshold on the amount of cloned nodes, we ran CloneRefactor for all variability percentages (0\% meaning no variance in expressions, 100\% meaning any variance in expressions). Figure \ref{fig:t2rgraph} shows the results.
 
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/T2R}
@@ -36,7 +36,7 @@ To determine the influence of the type 2R variability threshold on the amount of
   \label{fig:t2rgraph}
 \end{figure}
 
-In this graph, we see that the amount of clones increases as the amount of variability allowed increases. The graph is logarithmic: as the variability increases, the increase in nodes decreases.
+In this graph, we see that the amount of clones increases when we allow more variability between cloned fragments. The graph is logarithmic: as the variability increases, the increase in nodes decreases.
 
 \subsection{Type 3R Gap Size Thresholds}
 To determine the influence of the type 3R gap size threshold on the amount of found nodes, we ran CloneRefactor for all gap size percentages between 0\% and 200\%. Figure \ref{fig:t3rgraph} shows the results.
@@ -47,7 +47,7 @@ To determine the influence of the type 3R gap size threshold on the amount of fo
   \label{fig:t3rgraph}
 \end{figure}
 
-In this graph, we see a decrease in clone classes and an increase in cloned nodes when we increase the type 3R gap size threshold. We measure this threshold for a gap size of 0-200\%. In the graph, we see that both lines are rather linearly with minor jumps at certain thresholds. The jumps are at 33\%, 50\%, 100\%, 150\% and 200\%. The jump at 50\% is the largest. This makes sense regarding the nature of the threshold. At 50\%, all clone instances of 2 nodes with a gap of one node will merge into type 3R clones.
+In this graph, we see a decrease in clone classes and an increase in cloned nodes when we increase the type 3R gap size threshold. In the graph, we see that both lines are mostly linear with minor jumps at certain percentages. The jumps are at 33\%, 50\%, 100\%, 150\% and 200\%. The jump at 50\% is the largest. This makes sense regarding the nature of the threshold. At 50\%, all clone instances of 2 nodes with a gap of one node will merge into type 3R clones.
 
 \section{Clone context}
 % How many clones are there in certain contexts? Experiments for relation, location, and context.
@@ -83,7 +83,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 Our results show that most clones (37\%) are in a common class. 24\% of clones are in a common hierarchy. Another 24\% of clones are unrelated. 15\% of clones are in an interface.
 
 \subsection{Location}
-Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different locations (see Section~\ref{sec:setuplocation}).
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different location categories (see Section~\ref{sec:setuplocation}).
 \begin{table}[H]
 \centering
 \begin{tabular}{@{}lrr@{}}
@@ -102,7 +102,7 @@ Enum Level & 788 & 0.27\% \\
 We can see from these results that most clones are found at method level.
 
 \subsection{Contents}
-Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different contents (see Section~\ref{sec:setupcontents}).
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different content categories (see Section~\ref{sec:setupcontents}).
 
 \begin{table}[H]
 \centering
@@ -111,14 +111,14 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 \textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
 \multirow{2}{*}{Partial} & Partial Method & 219,540 & 74.05\% & \multirow{2}{*}{229,521}& \multirow{2}{*}{77.42\%} \\ \cmidrule(lr){2-4}
  & Partial Constructor & 9,981 & 3.37\% & & \\ \midrule
-\multirow{5}{*}{Full} & Full Method & 12,990 & 4.38\% & \multirow{5}{*}{13,173}& \multirow{5}{*}{4,44\%} \\ \cmidrule(lr){2-4}
- & Full Interface & 64 & 0.02\% & & \\ \cmidrule(lr){2-4}
- & Full Constructor & 58 & 0.02\% & & \\ \cmidrule(lr){2-4}
- & Full Class & 37 & 0.01\% & & \\ \cmidrule(lr){2-4}
- & Full Enum & 24 & 0.01\% & & \\ \midrule
 \multirow{3}{*}{Other} & Several Methods & 22,749 & 7.67\% & \multirow{3}{*}{53,773} & \multirow{3}{*}{18.14\%} \\ \cmidrule(lr){2-4}
  & Only Fields & 17,700 & 5.97\% & & \\ \cmidrule(lr){2-4}
- & Other & 13,324 & 4.49\% & & \\ \bottomrule
+ & Other & 13,324 & 4.49\% & & \\ \midrule
+ \multirow{5}{*}{Full} & Full Method & 12,990 & 4.38\% & \multirow{5}{*}{13,173}& \multirow{5}{*}{4,44\%} \\ \cmidrule(lr){2-4}
+  & Full Interface & 64 & 0.02\% & & \\ \cmidrule(lr){2-4}
+  & Full Constructor & 58 & 0.02\% & & \\ \cmidrule(lr){2-4}
+  & Full Class & 37 & 0.01\% & & \\ \cmidrule(lr){2-4}
+  & Full Enum & 24 & 0.01\% & & \\ \bottomrule
 \end{tabular}
 \caption{Number of clone instances for clone contents categories}
 \label{tab:contents}
@@ -128,8 +128,9 @@ From these results, we see that 74\% of clones span part of a method body (77\% 
 
 \section{Refactorability}
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
-Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. The second column shows our measurements for the complete systems (just like the former experiments).
-\begin{table}[H]
+Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. From these results we see that approximately 28\% of clones in our corpus can be automatically refactored. The main reason clones cannot be automatically refactored is because they are not flagged as ``Partial Method'' in Table~\ref{tab:contents}. Another reason is that top level AST-nodes are not a statement.
+
+\begin{table}[]
 \centering
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -166,15 +167,17 @@ In this context, the \textit{delta} denotes the change in this metric between th
 \subsection{Clone Token Volume}
 Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume against the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For larger token volumes we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
-\begin{figure}[H]
+\begin{figure}[]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
   \caption{The effect of token volume on the delta maintainability score of the refactored clones}
   \label{fig:maintainabilityscore}
 \end{figure}
 
-The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. To determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly. In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies lower maintainability.
+The token volume of the clone is equal to the decrease of duplicated tokens, which is part of the maintainability score. Because of that, what we see in Figure~\ref{fig:maintainabilityscore} could largely be caused by this metric. To determine the effect of clone token volume on each metric, we also plot graphs in which each metric is considered singularly.
 
-\begin{figure}[H]
+In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies lower maintainability.
+
+\begin{figure}[]
   \includegraphics[width=1\textwidth]{img/volume}
   \caption{The effect of token volume on the delta volume of the refactored clones}
   \label{fig:volume}
@@ -182,7 +185,7 @@ The token volume of the clone is equal to the decrease of duplicated tokens, whi
 
 In Figure~\ref{fig:numberofparameters} we show the average delta number of parameters when clones with the specified token volume are refactored. This metric can only increase by the refactoring because CloneRefactor only applies ``Extract Method'' refactorings that create a method with a certain number of parameters (according to the data needed by the extracted method).
 
-\begin{figure}[H]
+\begin{figure}[]
   \includegraphics[width=1\textwidth]{img/numberofparameters}
   \caption{The effect of token volume on the number of parameters of the refactored clones}
   \label{fig:numberofparameters}
