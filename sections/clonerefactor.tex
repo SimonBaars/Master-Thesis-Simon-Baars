@@ -101,7 +101,7 @@ The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains 
 On line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
 
 \subsection{Detecting Clones} \label{sec:detectingclones}
-After building the clone graph, we use it to detect clone classes. Because nodes in the clone graph link to \textit{preceding} cloned statement, the first cloned node does not have any clone relation, as no clones are preceding it (only following it). Because of this, we start our clone detection process at the final location encountered while building the graph. For this node, we collect all nodes it is cloned with. Even though the final node only links to the preceding node it is cloned with, we can collect all clones. This is because the preceding clone also has a preceding clone (if applicable) and we can follow this trail to collect all clones of a single node. As an example, we convert the code example shown in Figure~\ref{fig:clonegraph} to a clone graph as displayed in Figure~\ref{fig:clonegraph2}.
+After building the clone graph, we use it to detect clone classes. We start our clone detection process at the final location encountered while building the graph. As an example, we convert the code example shown in Figure~\ref{fig:clonegraph} to a clone graph as displayed in Figure~\ref{fig:clonegraph2}.
 
 \begin{figure}[H]
   \centering
@@ -110,15 +110,13 @@ After building the clone graph, we use it to detect clone classes. Because nodes
   \label{fig:clonegraph2}
 \end{figure}
 
-Using the example shown in Figure~\ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on the basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This final node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a single statement clone class of three clone instances (1, 2 and 3).
+Using the example shown in Figure~\ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on the basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a clone class of three clone instances each with a single node (1, 2 and 3).
 
-Next, we move to the previous line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
+Next, we move to the \textit{previous} line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
 
-We then go further to the previous node (6). In this case, this node does not have any clones. This means we check the (2 and 5, 1 and 4) clone class against the thresholds, and if it adheres, consider it a clone. Dependent on the thresholds, this example can result in a total of two clone classes.
+We then go further to the previous node (6). In this case, this node does not have any clones. This means we check the (2 and 5, 1 and 4) clone class against the thresholds, and, if it adheres, consider it a clone. Dependent on the thresholds, this example can result in a total of two clone classes.
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
-
-\todo{Explain the complexity of the algorithm: O(n)?}
 
 \subsubsection{Removing redundant clone classes}\label{sec:conceptualremovingredundant}
 The clone detection method used by CloneRefactor can, for various reasons, result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of another clone. We define the subset relation between clones as follows:
@@ -133,19 +131,18 @@ Where \textit{C} refers to a clone class (a set of clone instances), \textit{i} 
 S_{after} = S_{before} \setminus \{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S_{before}\}
 \end{equation}
 
-Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point and \textit{$C_{new}$} is the clone class that was just found. \textit{$S_{after}$} is the clone class collection after
+Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point, \textit{$C_{new}$} is the clone class that was just found and \textit{$S_{after}$} is the clone class collection after removing all subsets of the added clone.
 
 We should not add the new clone to our list of clones if its a subset of an existing clone. Because of that, we check for each clone added whether there exists a clone class of which the found clone class is a subset:
 
 \begin{equation}\label{eq:removeexisting}
-\{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S_{after} = S \cup C_{new}
+\{C_{new} \subseteq C_{existing}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S_{after} = S \cup C_{new}
 \end{equation}
 
-If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
-\todo{Think about an example}
+Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point, \textit{$C_{new}$} is the clone class that was just found and \textit{$S_{after}$} is the clone class collection after optionally adding the newly found clone. If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
 
 \subsection{Validating the type 2R variability threshold}
-In the definition of type 2R clones (see Section~\ref{sec:type2r}) we described how type 2R clones work based on a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of complexity. In this section, we explain how CloneRefactor detects type 2R clones based on this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in Section~\ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configured variability threshold.
+In the definition of type 2R clones (see Section~\ref{sec:type2r}), we described how type 2R clones work based on a variability threshold. This threshold is checked by CloneRefactor to assess the validity of found clone classes. Implementing such a threshold involves some important design decisions and has a lot of complexity. In this section, we explain how CloneRefactor detects type 2R clones based on this variability threshold. This process is done as a postprocessing step after clone detection. The type 2R clone detection process is described in more detail in Section~\ref{sec:comparingstuff}. In short, this process detects clones allowing for any variability between expressions. This postprocessing step then determines which (parts of) these clones are valid by the configured variability threshold.
 
 \begin{figure}[H]
   \centering
@@ -157,7 +154,7 @@ In the definition of type 2R clones (see Section~\ref{sec:type2r}) we described 
 Figure \ref{fig:clonerefactort2rflow} shows the steps that CloneRefactor performs to find clones conforming with the type 2R variability threshold. Each of the following paragraphs will explain a step from this figure.
 
 \subsubsection{Create equality array}
-To determine the difference in literals, method calls, and variables, we convert the code to an equality array. This equality array converts each expression to a number unique to that expression. Each literal, method call or variable becomes a positive number, whereas each other expression becomes a negative number. An example of two code fragments converted to equality arrays is displayed in Figure~\ref{fig:equalityarrays}.
+To determine the difference in literals, method calls, and variables, we convert the code to an equality array. This equality array converts each expression to a number unique to that expression. Each literal, method call or variable becomes a positive number, whereas each other expression/token becomes a negative number. An example of two code fragments converted to equality arrays is displayed in Figure~\ref{fig:equalityarrays}. The equality array for each of the lines in this example is shown in Table~\ref{table:equalityarrays}.
 
 \begin{figure}[H]
   \centering
@@ -166,12 +163,8 @@ To determine the difference in literals, method calls, and variables, we convert
   \label{fig:equalityarrays}
 \end{figure}
 
-The equality array for each of the lines in this example is shown in Table~\ref{table:equalityarrays}.
-
 \begin{table}[H]
 \begin{center}
- \caption{The equality arrays in our example Figure~\ref{fig:equalityarrays}.} \label{table:equalityarrays}
- \medskip
 \begin{tabular}{|l|l|l|}
 \hline
 Node (n) & Equality Array (E) \\ \hline
@@ -180,15 +173,15 @@ Node (n) & Equality Array (E) \\ \hline
 3        & {[}1, -2, 4, -5, -6{]} \\ \hline
 4        & {[}8, -2, 9, -5, -6{]} \\ \hline
 \end{tabular}
+\caption{The equality arrays in our example Figure~\ref{fig:equalityarrays}.} \label{table:equalityarrays}
 \end{center}
 \end{table}
 
 In the example of Figure~\ref{fig:equalityarrays} the fragment on the left (consisting of $n_1$ and $n_2$) and the fragment on the right (consisting of $n_3$ and $n_4$) are two clone instances of a clone class. Table \ref{table:equalityarrays} shows their corresponding equality arrays.
 
 \subsubsection{Checking global thresholds} \label{sec:t2rcheckglobalthres}
-Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in Table~\ref{table:equalityarrays} as follows:
+Using the equality arrays explained in the previous section, we can determine the variability threshold of any clone class. We calculate the variability of the example given in Table~\ref{table:equalityarrays} as follows (equality arrays are represented as total order sets):
 
-\todo{This is not correct set theory. Sets have duplicates and have an order.}
 \begin{equation}\label{eq:variabilityclonerefactor}
 \text{T2R Variability} = \frac{|\{x>0 \land y>0 \land x \neq y \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}{|\{x>0 \land y>0 \Rightarrow (x,y) \text{ }|\text{ }x \in E_1 \cup E_2, y \in E_3 \cup E_4\}|}*100
 \end{equation}
@@ -199,11 +192,7 @@ Where $E_x$ refers to the equality arrays shown in Table~\ref{table:equalityarra
 \frac{|\{(3,4), (1,8), (7,9)\}|}{|\{(1,1), (3,4), (1,8), (7,9)\}|}*100 = \frac{3}{4}*100 = 75\%
 \end{equation}
 
-\todo{Usage of the word adheres is questionable here...}
-So for the example given in Figure~\ref{fig:equalityarrays} we have a variability of 75\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone adheres to this threshold, it will stay in the set of found clones. However, if it does not adhere to the thresholds, a problem arises. Because a clone does not adhere to the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in Section~\ref{sec:conceptualremovingredundant}).
-
-%Two nodes are considered clones of each other if the size of their equality array is equal and all negative numbers in the equality array are equal.
-When a found clone class does not adhere to the global thresholds as explained in the previous section, we need to determine whether it contains any valid subclones. Below, we explain a few cases of valid subclones that may exist within an invalid clone class.
+So for the example given in Figure~\ref{fig:equalityarrays} we have a variability of 75\%. In CloneRefactor, the maximum variability percentage is a threshold that is entered in a configuration file. If a clone satisfies this threshold, it will stay in the set of found clones. However, if it does not, a problem arises. Because a clone does not satisfy the thresholds, it does not yet mean it has to be discarded. This is because an invalid clone class can still contain valid clones that are a subset of the invalid clone (our definition of subsets of clones is given in Section~\ref{sec:conceptualremovingredundant}). To detect these, CloneRefactor determines whether it contains any valid subclones. Below, we explain a few cases of valid subclones that may exist within an invalid clone class.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -226,7 +215,7 @@ doB(d, e, f);
 \label{fig:2rvariabilityhigh1}
 \end{figure}
 
-The first line of the cloned fragment shown in Figure~\ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragment. However, the rest of this method does not have any variability. The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
+The first line of the cloned fragment shown in Figure~\ref{fig:2rvariabilityhigh1} has a high variability with its cloned fragment. However, the rest of this method does not have any variability. %The global thresholds could indicate a too high variability and thus render this clone invalid. However, in this case, it might still have a valid subclone.
 
 \begin{figure}[H]
 \begin{parcolumns}{3}
@@ -285,7 +274,7 @@ doE();
 
 Figure \ref{fig:2rvariabilityhigh3} shows an example of a clone class where the valid sequence inside the clone does not align.
 
-If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class except for an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
+If the check for global thresholds fails, we have to seek for valid clones within the clone class. In a single invalid clone class can be zero to many subclones. This requires an extensive search for such clones. This problem is very related to the problem of clone detection, except now it is within the boundaries of a single clone class instead of an entire codebase. Because of that, just like the clone detection process, we build a clone graph and detect clones on it. This process is explained over the following sections.
 
 \subsubsection{Convert Equality Array to Graph}
 After the global threshold check has failed, we build a clone graph based on the equality arrays. The process used for building this graph is the same as the process described in \ref{sec:buildingclonegraph}.
@@ -318,8 +307,6 @@ doE(); //{6, -2}
 \label{fig:2rvariabilityhigh4}
 \end{figure}
 
-In Figure~\ref{fig:2rvariabilityhigh4} we display clone classes and their (simplified) equality arrays. We can convert this to a graph, using a similar process as the graph creation process used for clone detection. In this case, duplicate relations represent nodes of which their equality arrays are within the variability threshold. In Figure~\ref{fig:2rvariabilityhigh4} all relations are between equal equality arrays, but this does not always have to be the case. Large equality arrays, denoting statements that consist of many tokens, may have some variability and still be considered duplicates in this graph.
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=1\columnwidth]{img/T2RGraph}
@@ -327,13 +314,15 @@ In Figure~\ref{fig:2rvariabilityhigh4} we display clone classes and their (simpl
   \label{fig:t2rgraphexample}
 \end{figure}
 
-In this graph, the duplicate relations (green arrows) do not necessarily denote an exact match. The duplicate relations allow for variability in the equality arrays as long as it falls under the variability threshold. However, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored as easily:
-\begin{equation}\label{eq:t2rcloneequality}
-E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1, y \in E_2)\text{ }x<0 \lor y<0 \Rightarrow x=y
-\end{equation}
+In Figure~\ref{fig:2rvariabilityhigh4} we display clone classes and their (simplified) equality arrays. We can convert this to a graph, using a similar process as the graph creation process used for clone detection. In this case, duplicate relations represent nodes of which their equality arrays are within the variability threshold. %In Figure~\ref{fig:2rvariabilityhigh4} all relations are between equal equality arrays, but this does not always have to be the case. Large equality arrays, denoting statements that consist of many tokens, may have some variability and still be considered duplicates in this graph.
+
+%In this graph, the duplicate relations (green arrows) do not necessarily denote an exact match. The duplicate relations allow for variability in the equality arrays as long as it falls under the variability threshold. However, negative numbers in the equality array may never vary. This is because negative numbers are the tokens/expressions that we do not allow variability in because they cannot be refactored as easily:
+%\begin{equation}\label{eq:t2rcloneequality}
+%E_1\text{ can only be cloned with }E_2\text{ iff }|E_1|=|E_2| \land \forall (x \in E_1, y \in E_2)\text{ }x<0 \lor y<0 \Rightarrow x=y
+%\end{equation}
 
 \subsubsection{Detect Clones on Graph}
-Similar to the clone detection process, we detect clones based on the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in Section~\ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones and thus make clones that would currently invalid by the thresholds valid.
+Similar to the clone detection process, we detect clones based on the graph described in the previous section. The only difference is that, in this step, we do not remove clones that do not meet the thresholds (as explained in Section~\ref{sec:clonerefactorthresholds}). This is because the next step, explained in the next section, could potentially expand the found clones.
 
 Looking back at the example of the previous section, it would result in the following clone class collection:
 \begin{figure}[H]
@@ -367,7 +356,7 @@ doE(); // |\textcolor{pgreen}{$C_2$ $I_1$}|
 Where \textit{C} denotes the clone class and \textit{I} denotes the clone instance. The process by which these clones are found is equal to the clone detection process as described in Section~\ref{sec:detectingclones}. In this example, we see the four clones found on the graph of Figure~\ref{fig:clonerefactorprocess}. Three of these clone classes have two clone instances, each consisting of a single node. The other clone class has three clone instances, each consisting of two nodes.
 
 \subsubsection{Try to Expand}
-The problem with the graph clone detection technique is that only single nodes that are within the variability threshold are considered duplicates of each other. However, single nodes that are not within this threshold could still be part of a clone class if the other cloned nodes are more towards the lower bound of the threshold.
+The problem with the graph clone detection technique is that only single nodes that are within the variability threshold of each other are considered duplicates of each other. However, nodes that are not within this threshold could still be part of a clone class if the other cloned nodes are more towards the lower bound of the threshold.
 
 \begin{figure}[H]
 \begin{parcolumns}{2}
@@ -394,15 +383,15 @@ doH(b); //{12, -2, 13, -3, -4}
 \label{fig:trytoexpand}
 \end{figure}
 
-As an example, consider the cloned fragments in Figure~\ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances based on the clones found in the previous step. We start with the largest clone class, measured in clone volume. We measure clone volume as the product of the number of clone instances in a clone class and the number of nodes in any of its instances.
+As an example, consider the cloned fragments in Figure~\ref{fig:trytoexpand}. In this example, we have 2 clone classes. In the ``Try To Expand'' step, we will check whether we can create a clone class with larger clone instances based on the clones found in the previous step. We start with the largest clone class, measured in clone volume. We define \textit{clone volume} as the combined volume of all clone instances in a clone class.
 
-In the example in Figure~\ref{fig:trytoexpand} the largest instance has a volume of:
+%In the example in Figure~\ref{fig:trytoexpand} the largest instance has a volume of:
 
-\begin{equation}\label{eq:clonevolume}
-3 \text{ nodes} * 2 \text{ clone instances} = 6
-\end{equation}
+%\begin{equation}\label{eq:clonevolume}
+%3 \text{ nodes} * 2 \text{ clone instances} = 6
+%\end{equation}
 
-Starting from this clone, we will try to expand it. We will include the previous node in the clone class and verify its variability threshold (node $N_2$). In this case, using the formulas shown in Section~\ref{sec:t2rcheckglobalthres}, we can check whether this clone class would be valid by the variability threshold:
+Starting from this clone, we will try to expand it. We refer to the nodes in Figure~\ref{fig:trytoexpand} as $N_x$ where \textit{x} is the line number. We will include the previous node in the clone class and verify its variability threshold (node $N_2$). In this case, using the formulas shown in Section~\ref{sec:t2rcheckglobalthres}, we can check whether this clone class would be valid by the variability threshold:
 
 \begin{equation}\label{eq:variabilitycombined1}
 \frac{|\{(5,6)\}|}{|\{(5,6),(7,7),(8,8),(9,9),(10,10)\}|}*100 = \frac{1}{5}*100 = 20\%
@@ -435,7 +424,7 @@ Where \textit{S} is the set of all found clone classes. $\text{isType3R}(C_1, C_
 \text{isType3R}(C_1, C_2) = \forall (i_1 \in C_1)\text{ } \exists (i_2 \in C_2)\text{ } Fi_1 = Fi_2 \land gap(i_1, i_2) < gap\_threshold
 \end{equation}
 
-Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. $\text{gap}(I_1, I_2)$ is the function that calculates the gap between two clone instances. This gap is calculated by dividing the amount of statements in the gap by the amount of statements that both clone instances span together:
+Where \textit{F} is the file in which the clone instance is located. \textit{gap\_threshold} is the defined threshold percentage of the maximum gap size between two clone instances. $\text{gap}(i_1, i_2)$ is the function that calculates the gap between two clone instances. This gap is calculated by dividing the amount of statements in the gap by the amount of nodes that both clone instances span together:
 
 \begin{equation}\label{eq:t3rgap}
 \text{gap}(i_1, i_2) = \frac{|\{(Rn>Ri_1 \land Rn<Ri_2) \lor (Rn>Ri_2 \land Rn<Ri_1)\text{ }|\text{ } n \in nodes(Fi_1)\}|}{|i_1| + |i_2|} * 100
@@ -509,7 +498,7 @@ We define categories for each of these aspects and enable CloneRefactor to deter
   \label{fig:clonecontext}
 \end{figure}
 
-Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is measured for each clone class. The location and contents of clones are measured for each clone instance.
+Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is determined for each clone class. The location and contents of clones are determined for each clone instance.
 
 \subsection{Relation}\label{sec:setuprelation}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
