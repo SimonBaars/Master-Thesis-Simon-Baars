@@ -153,21 +153,10 @@ Not In Class Or Interface & 70 & 0.1\% \\
 %I think the ultimate goal with this thesis is to do experiments with different clone thresholds. Which thresholds give clones that we should refactor? For this, we will measure the maintainability of the refactored source code over different thresholds. These thresholds range from minimum clone size, variability, and gap size.
 In our corpus, CloneRefactor has refactored 12,710 clone classes and measured the change in indicated metrics (see Section~\ref{sec:metrics}). Using the presented formulas (see Section~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Section~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
-We use the following keywords as headers of the columns of our tables:
-\begin{itemize}
-  \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
-  \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
-  \item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
-  \item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
-  \item \textbf{\#}: The number of times the specified category is refactored (and thus the number of data points we have for this category).
-  \item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
-\end{itemize}
-In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
-
 \subsection{Clone Token Volume}
 Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume against the maintainability increase/decrease. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. The maintainability score, as shown in Figure \ref{fig:maintainabilityscore}, is the average delta maintainability score of all clone classes with the specified token volume that are refactored. For larger token volumes we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
-\begin{figure}[]
+\begin{figure}[H]
   \includegraphics[width=1\textwidth]{img/maintainabilityscore}
   \caption{The effect of token volume on the delta maintainability score of the refactored clones}
   \label{fig:maintainabilityscore}
@@ -191,16 +180,25 @@ In Figure~\ref{fig:numberofparameters} we show the average delta number of param
   \label{fig:numberofparameters}
 \end{figure}
 
-In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is one because the extracted method itself has a complexity of one. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
-
-\begin{figure}[H]
+\begin{figure}[]
   \includegraphics[width=1\textwidth]{img/complexity}
   \caption{The effect of token volume on the complexity of the refactored clones}
   \label{fig:complexity}
 \end{figure}
 
+In Figure~\ref{fig:complexity} we show the average delta complexity when clones with the specified token volume are refactored. We did not add a trendline, as there does not seem to be a clear trend. The maximum delta complexity is 1 because the extracted method itself has a complexity of 1. For each branching point in the cloned fragment, the complexity of the system will decrease when such a clone is refactored.
+
 \subsection{Relation}
-Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result might not have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%.
+Table~\ref{tab:relationref} shows our data regarding how different relations influence maintainability. We mark rows based on less than 100 refactorings red, as their result is less likely to have statistical significance. The \textbf{Relation} column refers to the relations introduced in Section~\ref{sec:setuprelation}. Relations are mutually exclusive so all percentages add up to 100\%. We use the following keywords as headers of the columns of our tables:
+\begin{itemize}
+  \item \textbf{Complexity}: The average delta complexity for all refactored clone classes in the specified category.
+  \item \textbf{Parameters}: The average delta number of parameters for all refactored clone classes in the specified category.
+  \item \textbf{Volume}: The average delta number of tokens for all refactored clone classes in the specified category.
+  \item \textbf{Duplication}: The average delta number of duplicate tokens for all refactored clone classes in the specified category.
+  \item \textbf{\#}: The number of times the specified category is refactored (and thus the number of data points we have for this category).
+  \item \textbf{Score}: The average delta maintainability score (see Section~\ref{sec:metricformula} for the formula by which this score is calculated) for all refactored clone classes in the specified category.
+\end{itemize}
+In this context, the \textit{delta} denotes the change in this metric between the before- and after-refactoring snapshot of the system, for each separate clone class that was refactored.
 
 \begin{table}[H]
 \centering
@@ -237,7 +235,7 @@ Table~\ref{tab:relationref} shows our data regarding how different relations inf
 The displayed relations are ordered by their scores. Overall, the scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, we see that common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
 
 \subsection{Return Category}
-Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
+Table~\ref{tab:return} shows how the return category of the extracted method influences the maintainability of the resulting system. The \textbf{Return Category} column refers to the categories introduced in Section~\ref{sec:refreturn}.
 
 \begin{table}[H]
 \centering
