@@ -8,9 +8,10 @@ public class GameScene extends Scene
 		apple.setStatus(this);
 	}
 
-	public void addTen(int x) {
+	public int addTen(int x) {
 		x = x + 10;
 		notifyChanged(x);
 		return x;
 	}
 }
+

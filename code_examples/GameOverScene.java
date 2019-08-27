@@ -8,9 +8,10 @@ public class LoseScene extends Scene
 		apple.setStatus(this);
 	}
 
-	public void concatTen(String x) {
+	public String concatTen(String x) {
 		x = x + 10;
 		notifyChanged(x);
 		return x;
 	}
 }
+
