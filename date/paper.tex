@@ -175,16 +175,6 @@ CloneRefactor uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library
 \end{itemize}
 CloneRefactor then removes all cloned code and replaces it with a method call to the newly created method. In case of a return value, CloneRefactor either assigns the call result, declares it or returns it accordingly.
 
-\subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
-We define the following characteristics of the extracted method and/or the call:
-\begin{itemize}
-\item \textbf{Tokens}: The number of tokens in the body of the method.
-\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined.
-\item \textbf{Returns}: Whether the method calls return, declare, assign or doesn't use any data from the extracted method.
-\item \textbf{Parameters}: The number of parameters the extracted method has.
-\end{itemize}
-We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
-
 \subsubsection{Impact on maintainability metrics} \label{sec:metrics}
 CloneRefactor measures the impact on maintainability metrics of the refactored source code for each clone class that is refactored. These metrics are derived from Heitlager et al.~\cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
@@ -342,7 +332,7 @@ Complex Control Flow & 1,106 & 1.3\% \\
 These results indicate that, given our refactorability criteria, 28\% of clones can be automatically refactored. Clones in other categories may require other refactoring techniques or further transformations to be automatically refactorable.
 
 \subsection{Thresholds}
-In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
+In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume}
 Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
