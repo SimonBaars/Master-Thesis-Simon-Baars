@@ -20,7 +20,7 @@ Duplication in source code is often seen as one of the most harmful types of tec
 
 We address this shortcoming by first analyzing what data should be gathered from an automatically refactored system. We then propose a tool to detect clones, analyze their context and automatically refactor a subset of them. We use a set of established metrics to determine the impact of the applied refactorings on the maintainability of the system. Based on these results, one could decide which clones would improve system design if refactored. We evaluate our approach over a large corpus of open source Java projects.
 
-We analyze the overhead of applying a refactoring in terms of four factors: the size of the clone, the relation between the code fragments in a clone, whether clone fragments create, modify or return data and the amount of external data that cloned fragments use. We find that the combined volume of similar fragments in a clone is the biggest influencing factor: the majority of duplicates with a total size of 63 or more tokens improve maintainability when refactored. The amount of external data that needs to be passed to the merged location of the duplicate is the other important factor: the majority of clones with more than requiring more than one external parameter decreases maintainability.
+We analyze the overhead of applying a refactoring in terms of four factors: the size of the clone, the relation between the code fragments in a clone, whether clone fragments create, modify or returns data and the amount of external data that cloned fragments use. We find that the combined volume of similar fragments in a clone is the biggest influencing factor: the majority of duplicates with a total size of 63 or more tokens improve maintainability when refactored. The amount of external data that needs to be passed to the merged location of the duplicate is the other important factor: the majority of clones with more than requiring more than one external parameter decreases maintainability.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -180,7 +180,7 @@ We define the following characteristics of the extracted method and/or the call:
 \begin{itemize}
 \item \textbf{Tokens}: The number of tokens in the body of the method.
 \item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined.
-\item \textbf{Returns}: Whether the method calls return, declare, assign or don't use any data from the extracted method.
+\item \textbf{Returns}: Whether the method calls return, declare, assign or doesn't use any data from the extracted method.
 \item \textbf{Parameters}: The number of parameters the extracted method has.
 \end{itemize}
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone.
@@ -380,27 +380,6 @@ Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting t
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
 
 The displayed relations are ordered by their scores. Overall, the scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, we see that common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
-
-\subsubsection{Return Value}
-Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system.
-
-\begin{table*}
-\centering
-\begin{tabular}{@{}lrrrrrr@{}}
-\toprule
-\textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
-Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
-Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
-\rowcolor[HTML]{FFCCC9}
-Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
-Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
-\textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
-\end{tabular}
-\caption{Average metric values for refactorings of clone classes with the specified return category}
-\label{tab:return}
-\end{table*}
-
-The displayed return categories are ordered by their scores. Overall, the scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. The main reason that no return value ends up lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \subsubsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters.
