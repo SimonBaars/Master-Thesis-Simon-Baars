@@ -43,51 +43,6 @@ Our study lies at the intersection of code clone and refactoring research. We us
 
 The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality in the body of a method to a new method. To reduce duplication with this technique, we extract the contents of a single clone instance to a new method and replace all clone instances in a clone class by a call to this method.
 
-\begin{figure*}
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-package com.sb.game;
-
-import java.util.List;
-
-public class GameScene
-{
-|\highlightYellow|	public void addToList(List l) {
-|\highlightYellow|		l.add(getClass().getName());
-|\highlightYellow|	}
-
-	public void addTen(int x) {
-|\highlightYellow|		x = x + 10; // Addition
-|\highlightYellow|		Notifier.notifyChanged(x);
-|\highlightYellow|		return x;
-	}
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-package com.sb.fruitgame;
-
-import java.awt.List; // Different type
-
-public class LoseScene
-{
-|\highlightYellow|	public void addToList(List l) {
-|\highlightYellow|		l.add(getClass().getName());
-|\highlightYellow|	}
-
-	public void concatTen(String x) {
-|\highlightYellow|		x = x + 10; // String concat
-|\highlightYellow|		Notifier.notifyChanged(x);
-|\highlightYellow|		return x;
-	}
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Example of textually equal code fragments that differ in functionality.}
-\label{fig:type1}
-\end{figure*}
-
 \section{Related Work}
 The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how does variability between cloned fragments influence the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
 
@@ -147,29 +102,6 @@ After all clones have been detected, CloneRefactor determines whether clone clas
 \end{equation}
 
 To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
-
-\begin{figure*}
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-|\highlightYellow|int a = getA();
-|\highlightYellow|while(a<1000) {
-|\highlightYellow|  a *= 5;
-  doC();
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-|\highlightYellow|int a = getA();
-|\highlightYellow|while(a<1000) {
-|\highlightYellow|  a *= 5;
-  doB(a);
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{A clone that spans a block partially.}
-\label{fig:refactorabilitypartialblock}
-\end{figure*}
 
 \subsection{Context Mapping} \label{sec:context}
 After clones are detected, we map the context of these clones. We have identified three properties of clones as their context: relation and location. We identify categories for each of these properties, to get a detailed insight into the context of clones.
@@ -510,17 +442,6 @@ We built a tool that can automatically apply refactorings to 28\% of the clones 
 
 We measured four maintainability metrics before- and after applying each refactoring to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 29 tokens per clone instance for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
 
-\begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
-\end{thebibliography}
-\vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+\bibliography{references}
 
 \end{document}
