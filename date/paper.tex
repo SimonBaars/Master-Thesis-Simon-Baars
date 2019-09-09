@@ -335,13 +335,7 @@ These results indicate that, given our refactorability criteria, 28\% of clones 
 In our corpus, CloneRefactor has refactored 12.710 clone classes and measured the change in indicated metrics (see Sec.~\ref{sec:metrics}). Using the presented formulas (see Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method influence the maintainability of the resulting codebase after refactoring. In this section, we explore the data received by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume}
-Figure \ref{fig:maintainabilityscore} shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
-
-\begin{figure*}
-  \includegraphics[width=1\textwidth]{img/tokenvolume}
-  \caption{A graph that shows how the size in tokens of the refactored clone affects maintainability.}
-  \label{fig:maintainabilityscore}
-\end{figure*}
+TODO shows the obtained results when plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, because of which we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 \subsubsection{Relation}
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red, as their result does not have statistical significance.
