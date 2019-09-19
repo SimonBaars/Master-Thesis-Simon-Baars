@@ -10,7 +10,7 @@
 \floatname{eqfloat}{Equation}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
-\title{Towards Automated Refactoring of Code Clones in Object-Oriented Programming Languages\\- Work in Progress -}
+\title{Towards Automated Refactoring of Code Clones in Object-Oriented Programming Languages}
 
 \author{
 Simon Baars \\ University of Amsterdam\\
@@ -18,7 +18,7 @@ Simon Baars \\ University of Amsterdam\\
 \and
 Ana Oprescu \\ University of Amsterdam\\
                 Amsterdam, Netherlands \\
-                AM.Oprescu@uva.nl
+                A.M.Oprescu@uva.nl
 }
 
 \institution{}
@@ -414,16 +414,16 @@ From Table~\ref{table:refactorability}, we can see that 41\% of the clones can d
 We noticed that, when doing measurements on a corpus of this size, the thresholds that we use for the clone detection have a big impact on the results. There does not seem to be one golden set of thresholds, some thresholds work in some situations but fail in others. We have chosen thresholds that, according to our experiments and assessments, seemed optimal. However, by using these, we might have some ``noise'' in our results of clones that should not be considered for refactoring.
 
 \section{Conclusion and next steps}\label{chap:conclusion}
-In the research we have conducted so far we have made three novel contributions:
+In this research we made three novel contributions:
 \begin{itemize}
     \item We proposed a method with which we can detect clones that can/should be refactored.
     \item We mapped the context of clones in a large corpus of open source systems.
-    \item We mapped the opportunities to perform method extraction on clones this corpus.
+    \item We mapped the opportunities to perform the ``Extract Method'' refactoring technique on clones this corpus.
 \end{itemize}
 
 We have looked into existing definitions for different types of clones~\cite{roy2007survey} and proposed solutions for problems that these types have with regards to automated refactoring. We propose that fully qualified identifiers (FQIs) of method call signatures and type references should be considered instead of their plain text representation, to ensure refactorability. Furthermore, we propose that one should define a threshold for variability in variables, literals, and method calls, in order to limit the number of parameters that the refactored method will have.
 
-The research that we have conducted so far analyzes the context of different kinds of clones and prioritizes their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We have found that a little more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. About a third of the clone classes all of its instances are in the same class.
+We analyzed the context of different kinds of clones and prioritized their refactoring. Firstly, we looked at the inheritance relation of clone instances in a clone class. We found that a little more than a third of all clone classes are flagged unrelated, which means that they have at least one instance that has no relation through inheritance with the other instances. For about a third of the clone classes all of their instances are in the same class.
 
 Secondly, we looked at the location of clone instances. Most clone instances (79 percent) are found at method level. Because of that, we concluded that our main refactoring focus should be aimed at method level clones. A common method to refactor such clones is by extracting a new method on basis of the contents of the clone. However, method extraction cannot be applied in all cases. According to our experiments, about 40 percent of the clones can be refactored by extracting them to a new method.
 
