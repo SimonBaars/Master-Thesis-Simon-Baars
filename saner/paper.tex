@@ -1,12 +1,17 @@
 \documentclass[10pt,conference]{IEEEtran}
 
-\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[table]{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
 
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{parcolumns}
+
+\usepackage{todo}
+\usepackage{amsmath}
 
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
@@ -53,6 +58,8 @@
 \title{Improving Software Maintainability through Automated Refactoring of Code Clones}
 
 \maketitle
+\thispagestyle{plain} % This is for page numbers, remove before submit
+\pagestyle{plain}
 
 %\author{Simon Baars}
 %\affiliation{\institution{University of Amsterdam}}
@@ -311,9 +318,10 @@ CloneRefactor measures the impact on maintainability metrics of the refactored s
 To determine whether the maintainability improves when refactoring a single clone, we need to measure the impact of small-grained changes. Because of that, we measure only a subset of the metrics~\cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we decided to focus on are all metrics that are measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are:
 \begin{itemize}
 \item \textbf{Duplication}: In Heitlager et al.~\cite{heitlager2007practical} this metric is measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
-\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper~\cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
-\item \textbf{Complexity}: Heitlager et al.~\cite{heitlager2007practical} use MCCabe complexity~\cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
+%\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper~\cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
+\item \textbf{Method Complexity}: Heitlager et al.~\cite{heitlager2007practical} use MCCabe complexity~\cite{mccabe1976complexity} to calculate their complexity metric. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.
 \item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects~\cite{fowler2018refactoring}.
+\item \textbf{Method size}: The longer a method is, the harder it becomes to comprehend and maintain \cite{heitlager2007practical}. The ``extract method'' refactoring technique is often used to split up long methods \cite{charalampidou2018structural}. When refactoring duplicated code fragments in the body of a method, this could improve maintainability of the methods from which the duplication was removed because of their reduced size.
 \end{itemize}
 
 \section{Experimental setup}
