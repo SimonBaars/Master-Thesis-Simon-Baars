@@ -159,9 +159,9 @@ Most modern clone detection tools detect duplication by comparing the code textu
 
 To detect automatically refactorable clones, we propose to:
 \begin{itemize}
-  \item Compare variable references not only by their name but also by their type.
-  \item Compare referenced types by their fully qualified identifier (FQI). The FQI of a type reference describes the full path to where it is declared.
-  \item Compare method references by their fully qualified signature (FQS). The FQS of a method reference describes the full path to where it is declared, plus the FQI of each of its parameters.
+  \item Compare types by their fully qualified identifier (FQI). The FQI of a type reference describes the full path to where it is declared.
+  \item Compare variable references not only by their name but also by their type (FQI).
+  \item Compare method references by their fully qualified signature (FQS). The FQS of a method reference describes the full path to where it is declared, plus the FQI of the type of each of its parameters.
 \end{itemize}
 
 \subsection{Allowing variability in a controlled set of expressions} \label{sec:t2r}
