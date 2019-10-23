@@ -93,7 +93,7 @@ To reduce duplication of a codebase, there are several refactoring techniques th
 
 In this study, we analyze which preconditions apply to determine whether a clone can be automatically refactored. We list criteria that influence the maintainability of clones when refactored. We evaluate the context of clones to determine which refactoring techniques are best suited. We define the context of clones as the inheritance relation between clone instances in a clone class and the location of clone instances in the codebase. We showcase the proposed technique as a tool that automatically refactors clones by extracting new methods out of duplicated code.
 
-We measure several maintainability metrics before and after refactoring to determine the impact on system maintainability of applying the refactoring. These metrics are volume, method parameters, duplication and complexity. Using this setup, we gain empirical data about the maintainability improvement of clones on a large set of data in a controlled environment. We use this data to define which characteristics of clones have the biggest influence of system maintainability when such a clone is refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
+We measure several maintainability metrics before and after refactoring to determine the impact on system maintainability of applying the refactoring. These metrics are volume, method parameters, duplication and complexity. Using this setup, we gain empirical data about the maintainability improvement of clones on a large set of data in a controlled environment. Because the refactoring is done automatically, we also consider micro-clones, which are shown to be important for refactoring consideration \cite{mondai2018micro}. We use this data to define which characteristics of clones have the biggest influence of system maintainability when such a clone is refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
 
 Over a corpus of 2.267 Java project our tool refactored 12.710 clone classes. We found that the main influencing factor on maintainability when refactored is token volume. We define token volume as the combined number of tokens in all clone instances in a clone class. When refactoring clones with a very small token volume, we found that the maintainability decreases when such clones are refactored. The average clone with a clone volume of 65 or larger improves maintainability when refactored. The other factor with a major influence on maintainability is the number of parameters that are required for the extracted method. We found that if a clone requires more than 2 parameters in the extracted method, it is more likely to decrease maintainability.
 
@@ -200,25 +200,25 @@ To detect automatically refactorable clones, we propose to:
 \end{itemize}
 
 \subsection{Allowing variability in a controlled set of expressions} \label{sec:t2r}
-Often, duplication fragments in source code do not match exactly~\cite{kodhai2013method}. When developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into what expressions we can allow variability in, while still being refactorable.
+Often, duplication fragments in source code do not match exactly~\cite{kodhai2013method}. When developers duplicate fragments of code, they modify the duplicated block to fit its new location and purpose. To detect duplicate fragments with minor variance, we look into what expressions we can allow variability in, while still being automatically refactorable.
 
-We define the following expressions as refactorable when varied:
+We define the following expressions as automatically refactorable when varied:
 \begin{itemize}
   \item \textbf{Literals}: Only if all varying literals in a clone class have the same type.
   \item \textbf{Variables}: Only if all varying variables in a clone class have the same type.
   \item \textbf{Method references}: Only if the return value of referenced methods match (or are not used).
 \end{itemize}
-Often when allowing such variance, trade-offs come into play~\cite{krishnan2013refactoring, krishnan2014unification}. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code.
+Often when allowing such variance, trade-offs come into play~\cite{krishnan2013refactoring, krishnan2014unification}. For instance, variance in literals may require the introduction of a parameter to an extracted method if the ``Extract Method'' refactoring method is used, increasing the required effort to comprehend the code \cite{heitlager2007practical}.
 
 \subsection{Gapped clones} \label{sec:t3r}
-Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context~\cite{roy2007survey}. When dealing with such a situation, there are several opportunities to refactor so-called ``gapped clones''~\cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones:
+Sometimes, when fragments are duplicated, a statement is inserted or changed severely for the code to fit its new context~\cite{roy2007survey}. When dealing with such situations, there are several opportunities to refactor so-called ``gapped clones''~\cite{ueda2002detection, zhao2018automatic}. ``Gapped clones'' are two clone instances separated by a ``gap'' of non-cloned statement(s). We define the following methods to refactor such clones, based on research by Tsantalis et al~\cite{tsantalis2015assessing}:
 \begin{itemize}
-  \item We wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
-  \item We use a lambda function to pass the difference in statements from each location of the clone~\cite{tsantalis2017clone}.
+  \item Wrap the difference in statements in a conditionally executed block, one path for each different (group of) statement(s).
+  \item Use a lambda function to pass the difference in statements from each location of the clone~\cite{tsantalis2017clone}.
 \end{itemize}
-For both refactoring techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
+For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
-\section{The CloneRefactor tool}\label{sec:clonerefactor}
+\section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
 To detect such clones that can be refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect refactorable clones, either through configuration or postprocessing of their output.
 
 None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we propose CloneRefactor. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
