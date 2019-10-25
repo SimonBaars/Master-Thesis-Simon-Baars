@@ -12,6 +12,8 @@
 
 \usepackage{todonotes}
 \usepackage{amsmath}
+\usepackage{amssymb}
+
 
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
@@ -318,7 +320,7 @@ Clone instances in a clone class may have a relation with each other through inh
 \begin{itemize}
     \item \textbf{Common Class}: All clone instances are in the same class.
     \begin{itemize}
-        \item[$\square$] \textbf{Same Method}: All clone instances are in the same method.
+        \item \textbf{Same Method}: All clone instances are in the same method.
         \item \textbf{Same Class}: All clone instances are in the same class.
     \end{itemize}
     \item \textbf{Common Hierarchy}: All clone instances are in the same inheritance hierarchy.
@@ -343,10 +345,10 @@ Clone instances in a clone class may have a relation with each other through inh
     \end{itemize}
 \end{itemize}
 
-Based on these relations, CR determines where to place the cloned code when refactored. These categories are mutually exclusive: a clone class will be flagged as the first relation in the above list that it applies to. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor). The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place: either a utility class, a new superclass abstraction or an interface.
+Based on these relations, CR determines where to place the cloned fragment when extracted to a new method. These categories are mutually exclusive: a clone class is flagged as the first relation in the above list that it applies to. The code of clones that have a \textit{Common Class} relation can be refactored by placing the cloned code in this same class~\cite{fowler2018refactoring}. The code of clones with a \textit{Common Hierarchy} relation can be placed in the intersecting class in the hierarchy (the class all clone instances have in common as an ancestor)~\cite{fowler2018refactoring}. The code of clones with a \textit{Common Interface} relation can be placed in the intersecting interface~\cite{mohnen2002interfaces}, but in the process has to become part of the classes' public contract. The code of clones that are \textit{Unrelated} can be placed in a newly created place. The state-of-the-art uses a utility class~\cite{mazinanian2016jdeodorant}, whereas CR creates a new superclass or interface abstraction. % TODO: Elaborate on the superclass abstraction and interface (this is my contribution) --> in refactoring section
 
 \subsubsection{Location}\label{sec:location}
-The location of a clone instance helps determine what refactoring techniques can be applied to refactor such clones. We define the following categories by which we analyze the location of clones:
+The location of a clone instance helps determine what refactoring techniques can be applied to it. We define the following categories of clones based on their location:
 \begin{enumerate}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor Body:} A clone that spans (a part of) the body of a method/constructor.
@@ -354,6 +356,7 @@ The location of a clone instance helps determine what refactoring techniques can
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
+%TODO: Link to table IV to explain how this table created our scoping for this research, and we only refactor partial method.
 
 \subsubsection{Full method/constructor/class/interface/enumeration}
 The categories denote that a full declaration (method, class, etc.) often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. Clones in the ``Partial Method/Constructor'' category can often be refactored using the ``Extract Method'' refactoring technique. Clones consisting of \textit{Several Methods} give a strong indication that cloned classes are missing some form of abstraction, or their abstraction is used inadequately. Clones consisting of \textit{Only Fields} often indicate data redundancy: different classes use the same data.
@@ -624,6 +627,8 @@ Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintain
 
 \section{Discussion} \label{sec:discussion}
 %In this section, we discuss the results of our experiments.
+
+% TODO: Explain about the coupling metric. Discussion: it is not too relevant to the results because most refactorings are SAME CLASS which do not impact on the coupling metric. (maybe more about architectural refactorings because COUPLING, BALANCE, COHESION?)
 
 \subsection{Clone Context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
