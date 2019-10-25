@@ -97,19 +97,23 @@ We measure several maintainability metrics before and after refactoring to deter
 
 Over a corpus of 2.267 Java project our tool refactored 12.710 clone classes. We found that the main influencing factor on maintainability when refactored is token volume. We define token volume as the combined number of tokens in all clone instances in a clone class. When refactoring clones with a very small token volume, we found that the maintainability decreases when such clones are refactored. The average clone with a clone volume of 65 or larger improves maintainability when refactored. The other factor with a major influence on maintainability is the number of parameters that are required for the extracted method. We found that if a clone requires more than 2 parameters in the extracted method, it is more likely to decrease maintainability.
 
-This paper is organized as follows. In Sec.~\ref{sec:background} we introduce important terminilogy in the field of clone refactoring. In Sec.~\ref{sec:relatedwork} we introduce the state-of-the-art in automated clone refactoring research. In Sec.~\ref{sec:research} we propose a definition for clones such that they can and should be automatically refactored. In Sec.~\ref{sec:clonerefactor} we introduce our clone refactoring tool. In Sec.~\ref{sec:experimentalsetup} we explain the setup of our experiments, of which the results are shown in Sec.~\ref{sec:results} and discussed in Sec.~\ref{sec:discussion}.
+This paper is organized as follows. In Sec.~\ref{sec:background} we revisit key clone refactoring background. Sec.~\ref{sec:relatedwork} discusses state-of-the-art in automated clone refactoring research. In Sec.~\ref{sec:research} we propose a definition for clones such that they could and should be automatically refactored. In Sec.~\ref{sec:clonerefactor} we introduce our clone refactoring tool. In Sec.~\ref{sec:experimentalsetup} we explain the setup of our experiments, of which the results are shown in Sec.~\ref{sec:results} and discussed in Sec.~\ref{sec:discussion}.
 %We evaluate our approach by comparing the maintainability of before- and after snapshots of a codebase for each duplication problem that is refactored. We define which factors have the greatest influence on whether a clone improves maintainability when refactored. We find a set of thresholds by which clones can be detected that are more likely to improve maintainability when refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
 
 \section{Background}\label{sec:background}
-Our study lies at the intersection of code clone and refactoring research. We use two concepts to argue about code clones~\cite{roy2007survey}:
+In this section, we describe relevant code clone and clone refactoring research.
+
+\subsection{Code clones}
+We use two concepts to argue about code clones~\cite{roy2007survey}:
 \\ \textbf{Clone instance}: A single cloned fragment.
 \\ \textbf{Clone class}: A set of similar clone instances.
 
-\subsection{Clone Types}
-Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed. These clone types are described in Roy et al \cite{roy2007survey}:
+%\subsection{Clone Types}
+Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed%. These clone types are described in Roy et al 
+~\cite{roy2007survey}:\\
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
-\textbf{Type II:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout, and comments.\\
-\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.
+\textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
+\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
 \subsection{Clone Refactoring}
@@ -175,19 +179,22 @@ public class LoseScene
 \end{figure*}
 
 \section{Related Work}\label{sec:relatedwork}
+We outline relevant research to clone refactoring. A significant aspect is the context of clones.
+
 \subsection{Clone context analysis}
-A study by Golomingi~\cite{koni2001scenario} explores mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring} and analyzes what refactoring methods can be used to refactor clones with what inheritance relations. The identified clone relations are: Ancestor, Common Hierarchy, First Cousin, Same Method, Sibling, Single Class, Superclass and Unrelated.
+Golomingi~\cite{koni2001scenario} explores mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring} and analyzes what refactoring methods can be used to refactor clones with what inheritance relations. The identified clone relations are: Ancestor, Common Hierarchy, First Cousin, Same Method, Sibling, Single Class, Superclass and Unrelated. We extend this list with several more fine-grained relations, suitable for automatic refactoring (see Sec.~\ref{sec:relation}). 
 
 Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types 1 and 3 \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analyses of clone relations together with clone types. We repeat this research with a vastly different setup: we use the clone definition from Sec.~\ref{sec:research} and the relation categories outlined in Sec.~\ref{sec:relation}.
 
 \subsection{Clone refactoring}
-In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
+Krishnan et al.~\cite{krishnan2013refactoring} approach clone refactoring as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
 %The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
 
 %A recent study~\cite{tsantalis2017clone} looks into how lambdas can assist the clone refactoring process.
 
 \section{Defining refactorable clones}\label{sec:research}
-In literature, several clone type definitions have been used to argue about duplication in source code~\cite{roy2007survey}. We discuss how we can define clones such that they can be automatically refactored while avoiding changing the functional behavior and other negative side effects on the source code such as decreasing the maintainability of the code.
+%In literature, several clone type definitions have been used to argue about duplication in source code~\cite{roy2007survey}.
+We discuss how we can define clones such that they can be automatically refactored while avoiding changing the functional behavior and other negative side effects on the source code, such as decreasing the maintainability of the code.
 
 \subsection{Ensuring equality}\label{sec:t1r}
 Most modern clone detection tools detect duplication by comparing the code textually together with the omission of certain tokens~\cite{roy2009comparison, svajlenko2014evaluating}. Clones detected by such means may not always be suitable for refactoring, because textual comparison fails to take into account the context of certain symbols in the code. Information that gets lost in textual comparison is the referenced declaration for type, variable and method references. Equally named type, variable and method references may refer to different declarations with a different implementation (Fig~\ref{fig:type1} shows an example of this). Such clones can be harder to refactor, if beneficial at all.
@@ -221,11 +228,11 @@ For both of these techniques, a trade-off is at play. This is because these solu
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
 To detect clones that can be automatically refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect automatically refactorable clones, either through configuration or postprocessing of their output.
 
-None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we propose CR\footnote{Name anonymized for the blind review, camera-ready paper will include a link to the GitHub repo of the tool.}. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
+None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable with our findings about refactorable clones, because of which we propose CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/flow}
-  \caption{Simple flow diagram of CR.}
+  \caption{Abstract flow diagram of CR.}
   \label{fig:clonerefactorflow}
 \end{figure}
 
