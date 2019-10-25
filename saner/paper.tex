@@ -266,7 +266,7 @@ To verify the correctness of all detected clones, we ran the tool over a large p
 \end{figure*}
 
 \subsection{Context mapping} \label{sec:context}
-After clones are detected, we map the context of these clones. We have identified three properties of clones as their context: relation and location. We identify categories for each of these properties, to get a detailed insight into the context of clones.
+After clones are detected, we map the context of these clones. We have identified two properties of clones as their context: relation and location. We identify categories for each of these properties, to get a detailed insight into the context of clones.
 
 \subsubsection{Relation}\label{sec:relation}
 Clone instances in a clone class may have a relation with each other through inheritance. This relation has a big impact on how the clone should be refactored~\cite{fontana2015duplicated}. We define the following categories to map the relation between clone instances in a clone class. These categories do not map external classes (classes outside the project, e.g. belonging to a library) unless explicitly stated:
