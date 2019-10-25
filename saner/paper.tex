@@ -356,16 +356,13 @@ The location of a clone instance helps determine what refactoring techniques can
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
 \end{enumerate}
-%TODO: Link to table IV to explain how this table created our scoping for this research, and we only refactor partial method.
-
-\subsubsection{Full method/constructor/class/interface/enumeration}
-The categories denote that a full declaration (method, class, etc.) often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. Clones in the ``Partial Method/Constructor'' category can often be refactored using the ``Extract Method'' refactoring technique. Clones consisting of \textit{Several Methods} give a strong indication that cloned classes are missing some form of abstraction, or their abstraction is used inadequately. Clones consisting of \textit{Only Fields} often indicate data redundancy: different classes use the same data.
+The categories denote that a full declaration (method, class, etc.) often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. Clones in the ``Partial Method/Constructor'' category can often be refactored using the ``Extract Method'' refactoring technique~\cite{mazinanian2016jdeodorant}. Clones consisting of \textit{Several Methods} give a strong indication that cloned classes are missing some form of abstraction, or their abstraction is used inadequately. Clones consisting of \textit{Only Fields} often indicate data redundancy: different classes use the same data.
 
 \subsection{Refactoring}\label{sec:refactoring}
-CR can refactor clones using the ``Extract Method'' refactoring technique. In this section, we show which clones we refactor and how we apply these transformations.
+Table~\ref{tab:location} shows that most clones are found in method bodies. Therefore, we focus on refactoring such clones which entails using the ``Extract Method'' refactoring technique. We show which clones CR refactors and how it applies these transformations.
 
-\subsubsection{Extract Method} \label{sec:refactorability}
-Several influencing factors may obstruct the possibility to extract code to a new method:
+\subsubsection{Refactorability} \label{sec:refactorability}
+Several factors may obstruct the possibility to extract code to a new method~\cite{tsantalis2015assessing}:
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
     \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement. An example of this is shown in Fig.~\ref{fig:refactorabilitypartialblock}.
@@ -376,8 +373,8 @@ Several influencing factors may obstruct the possibility to extract code to a ne
 \end{itemize}
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CR only refactors the clones that \textit{Can Be Extracted}.
 
-\subsubsection{AST Transformation}
-CR uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CR creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CR analyzes the source code of the extracted method and populates it with the following properties:
+\subsubsection{AST Transformation} % TODO: Big todo --> Find literature, introduce proper reasoning why I need to do this.
+rtCR uses JavaParser~\cite{smith20e17javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CR creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CR analyzes the source code of the extracted method and populates it with the following properties:
 \begin{itemize}
   \item \textbf{Parameters}: For each variable used that is not accessible from the scope of the extracted method.
   \item \textbf{A return value}: If the method modifies or declares local data that is needed outside of its scope, or if the cloned fragments already returned data.
