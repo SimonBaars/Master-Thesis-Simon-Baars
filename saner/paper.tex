@@ -389,14 +389,13 @@ CR then removes all cloned code and replaces it with a call to the newly created
 After applying the refactorings, CR measures the impact of the refactoring on maintainability metrics. We first state the metrics that we measure and then define the characteristics of the applied refactoring that influence the metrics.
 
 \subsubsection{Maintainability metrics} \label{sec:metrics}
-\todo[inline]{rephrase this text for clarity: this paper -- which paper? }
-CR measures the impact on maintainability metrics of refactoring source code for each clone class that is refactored. These metrics are derived \todo{how did you change them?} from Heitlager et al.~\cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
+CR measures the impact on maintainability metrics of refactoring source code for each clone class that is refactored. These metrics are from Heitlager et al.~\cite{heitlager2007practical}. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
 To determine whether the maintainability improves when refactoring a given clone, we need to measure the impact of fine-grained changes. Therefore, we measure only a subset of the metrics~\cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we choose to focus on are all measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are:
 \begin{itemize}
 \item \textbf{Duplication}: Originally~\cite{heitlager2007practical} measured by taking the amount of duplicated lines. We decided to use the amount of duplicated tokens part of a clone class instead, to have a stronger reflection of the impact of the refactoring by measuring a more fine-grained system property.
 %\item \textbf{Volume}: The more code a system has, the more code has to be maintained. The paper~\cite{heitlager2007practical} measures volume as lines of code. As with duplication, we use the number of tokens instead.
-\item \textbf{Method Complexity}:  Originally ~\cite{heitlager2007practical} computed using MCCabe complexity~\cite{mccabe1976complexity}. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.\todo{why is the original way ok for us?}
+\item \textbf{Method Complexity}:  Originally ~\cite{heitlager2007practical} computed using MCCabe complexity~\cite{mccabe1976complexity}. The MCCabe complexity is a quantitative measure of the number of linearly independent paths through a method.%\todo{why is the original way ok for us?}
 \item \textbf{Method Interface Size}: The number of parameters that a method has. If a method has many parameters, the code may become harder to understand and it is an indication that data is not encapsulated adequately in objects~\cite{fowler2018refactoring}.
 \item \textbf{Method size}: The longer a method is, the harder it becomes to comprehend and maintain \cite{heitlager2007practical}. The ``extract method'' refactoring technique is often used to split up long methods \cite{charalampidou2018structural}. When refactoring duplicated code fragments in the body of a method, this could improve maintainability of the refactored (reduced size).
 \end{itemize}
@@ -414,28 +413,34 @@ We hypothesize that these characteristics are the main factors influencing the i
 
 
 \section{Experimental setup} \label{sec:experimentalsetup}
-\todo{This doesn't say anything: explain how the section is organized}
 %In this section, we describe the setup of our experiments.
-Our goal is analysing whether automatic refactoring of code clones leads to an improved maintainability. We first validate our automatic refactoring tool, CR. Next, we run our tool on a reference corpus and measure the change in the maintainability score.
+We describe how we evaluated CR and the corpus on which we ran CR. We then describe the configuration of our experiments. Finally, we describe how we calculated our results.
+%Our goal is analysing whether automatic refactoring of code clones leads to an improved maintainability. We first validate our automatic refactoring tool, CR. Next, we run our tool on a reference corpus and measure the change in the maintainability score.
 
 \subsection{Tool Evaluation}
 We assess the correctness of CR through unit tests and empirical validation. First, we create a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each relation, location, and refactorability category. 
 %to see whether they get correctly identified. 
-Next, we run the tool over the corpus and manually verify samples \todo{how many? why not all?} of the acquired results. This way, we check both the correctness of the identified clones, their context, and their proposed refactoring.
+Next, we run the tool over the corpus and manually verify samples of the acquired results. We verified at least 5 clones of each relation, location and refactoring. This way, we check both the correctness of the identified clones, their context, and their proposed refactoring.
 
 We also test the correctness of the refactored code using the JFreeChart project~\cite{gilbert2002jfreechart}. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CR.
 
 \subsection{Corpus}
-Our corpus, consisting of open source Java projects, is derived from the corpus of a study that uses machine learning to determine the suitability of GitHub Java projects for data analysis purposes~\cite{githubCorpus2013}.
-\todo[inline]{why did you choose this corpus?}
+Our corpus, consisting of open source Java projects, is derived from the corpus of a study that uses machine learning to determine the suitability of GitHub Java projects for data analysis purposes~\cite{githubCorpus2013}. We chose this corpus because it has a variety of projects of different size and quality, which accurately reflects the target group for the results of our research.
 
 CR requires all libraries of the analyzed projects
 %it analyses, to find the full paths of all referenced symbols in the source code 
 (see Sec.~\ref{sec:t1r}). Therefore, we decided to filter the corpus to contain only projects using the Maven build automation system. The filtering scripts are publicly availble \footnotesize{The camera-ready version would include the GitHub repo url}.
 %We created a set of scripts to prepare such a corpus with all dependencies included.
 
-This procedure results in 2.267 Java projects including all their dependencies \todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}. The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is \textit{VisAD} with 502K lines.
-\todo[inline]{figure with the distribution of project sizes?}
+This procedure results in 2.267 Java projects including all their dependencies%\todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}
+. The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is \textit{VisAD} with 502K lines. The distribution of project sizes is displayed in Fig.~\ref{fig:dist}.
+
+\begin{figure}[H]
+  \includegraphics[width=1\columnwidth]{img/dist2}
+  \caption{Distribution of project sizes in corpus on a logaritmic scale.}
+  \label{fig:dist}
+\end{figure}
+
 
 \subsection{Minimum clone size}
 % In this study, we want to find out what thresholds to use to improve maintainability if clones by those thresholds are refactored. However, 
