@@ -94,12 +94,12 @@ Duplicate fragments in source code (also named ``code clones'') are often seen a
 %Clone detection tools often use thresholds to determine which clones should be considered. Most clone detection tools use the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, statements \cite{higo2013revisiting, kamalpriya2017enhancing} and/or tokens \cite{ragkhitwetsagul2019siamese, jiang2007deckard} as thresholds to determine whether clones should be considered. We outline the shortcomings of these thresholds to find clones such that the maintainability of the source code is improved when refactored, and propose new thresholds to control this characteristic.
 % Current clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
 To reduce duplication of a codebase, there are several refactoring techniques that can be applied. The most used refactoring technique to deal with code clones is ``Extract Method'' \cite{fowler2018refactoring}. This technique entails that the duplicated code is moved to a new method, which is then called from all locations where the duplicated code was used. To be able to execute such a refactoring, several preconditions apply \cite{tsantalis2015assessing}.
-\todo[inline]{still missing link on how current solutions do not help improving maintainability - our message from monday night is not crystal clear yet}
+%\todo[inline]{still missing link on how current solutions do not help improving maintainability - our message from monday night is not crystal clear yet}
 In this study, we analyze which preconditions apply to determine whether a clone could and should be automatically refactored. We list criteria that influence the maintainability of clones when refactored. We evaluate the context of clones to determine which refactoring techniques are best suited. We define the context of clones as the inheritance relation between clone instances in a clone class and the location of clone instances in the codebase. We showcase the proposed technique as a tool that automatically refactors clones by extracting new methods out of duplicated code.
 
 We measure several maintainability metrics before and after refactoring to determine the impact on system maintainability of applying the refactoring. These metrics are volume, method parameters, duplication and complexity. Using this setup, we gain empirical data about the maintainability improvement of clones on a large set of data in a controlled environment. Because the refactoring is done automatically, we also consider micro-clones, which are shown to be important for refactoring consideration \cite{mondai2018micro}. We use this data to define which characteristics of clones have the biggest influence of system maintainability when such a clone is refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
 
-Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored. \todo{Check whether this really fits here}
+Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.% \todo{Check whether this really fits here}
 
 Over a corpus of 2.267 Java project our tool refactored 12.710 clone classes. We found that the main influencing factor on maintainability when refactored is token volume. We define token volume as the combined number of tokens in all clone instances in a clone class. When refactoring clones with a very small token volume, we found that the maintainability decreases when such clones are refactored. The average clone with a clone volume of 65 or larger improves maintainability when refactored. The other factor with a major influence on maintainability is the number of parameters that are required for the extracted method. We found that if a clone requires more than 2 parameters in the extracted method, it is more likely to decrease maintainability.
 
@@ -376,7 +376,7 @@ Several factors may obstruct the possibility to extract code to a new method~\ci
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CR only refactors the clones that \textit{Can Be Extracted}.
 
 \subsubsection{AST Transformation}
-\todo{Big todo --> Find literature, introduce proper reasoning why I need to do this.}
+%\todo{Big todo --> Find literature, introduce proper reasoning why I need to do this.}
 CR uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CR creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CR analyzes the source code of the extracted method and populates it with the following properties:
 \begin{itemize}
   \item \textbf{Parameters}: For each variable used that is not accessible from the scope of the extracted method.
@@ -496,10 +496,10 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
 \hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
 \hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
-\rowcolor[HTML]{FFCCC9}
+\rowcolor[HTML]{D0D0D0}
 \hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
 \hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
-\rowcolor[HTML]{FFCCC9}
+\rowcolor[HTML]{D0D0D0}
 \hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
 \textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
 \hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
@@ -602,12 +602,13 @@ Complex Control Flow & 1,106 & 1.3\% \\
 The results show that, given our refactorability criteria, 28\% of clones can be automatically refactored. Clones in other categories may require other refactoring techniques or further transformations to be automatically refactorable.
 
 \subsection{Thresholds}
-CR has refactored 12.710 clone classes and measured the change in the selected metrics (Sec.~\ref{sec:metrics}). \todo{use the formulas labels to refer here} Using the presented formulas (Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. We explore the data obtained by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
+CR has refactored 12.710 clone classes and measured the change in the selected metrics (Sec.~\ref{sec:metrics}). %\todo{use the formulas labels to refer here.
+Using the presented formulas (Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. We explore the data obtained by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume} \label{sec:clonetokenvolume}
 Figure \ref{fig:maintainabilityscore} shows the results by plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, therefore we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
-\todo{Redo plot, explain axes units}
+%\todo{Redo plot, explain axes units}
 \begin{figure*}
   \includegraphics[width=1\textwidth]{img/tokenvolume}
   \caption{A graph that shows how the size in tokens of the refactored clone affects maintainability.}
@@ -615,10 +616,13 @@ Figure \ref{fig:maintainabilityscore} shows the results by plotting the clone vo
 \end{figure*}
 
 \subsubsection{Relation}
-Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We have marked rows based on less than 100 refactorings red\todo{not color-agnostic, if printed bw might be a problem --> just make it grey }, as their result does not have statistical significance. Relations are ordered by their scores. \todo{this sentence about relation impact seems more suitable for discussion}Scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
+Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We mark rows grey if they are based on less than 100 refactorings, as their result does not have statistical significance. Relations are ordered by their scores. %\todo{this sentence about relation impact seems more suitable for discussion}
+Scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
 
 \subsubsection{Return Value}
-Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The return categories are ordered by their scores. \todo{this sentence about relation impact seems more suitable for discussion}Scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. \todo{this sentence about relation impact seems more suitable for discussion}The main reason that no return value is lowest, is that it is linked to a higher number of parameters required for the extracted method.
+Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The return categories are ordered by their scores. %\todo{this sentence about relation impact seems more suitable for discussion}
+Scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. %\todo{this sentence about relation impact seems more suitable for discussion}
+The main reason that no return value is lowest, is that it is linked to a higher number of parameters required for the extracted method.
 
 \begin{table*}
 \centering
@@ -627,7 +631,7 @@ Table~\ref{tab:return} shows how the return value of the extracted method influe
 \textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
 Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
 Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
-\rowcolor[HTML]{FFCCC9}
+\rowcolor[HTML]{D0D0D0}
 Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
 Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
@@ -641,7 +645,7 @@ Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \subsubsection{Parameters}
 Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintainability of the refactored code. On the primary x-axis, the maintainability is displayed. The secondary x-axis shows the number of refactorings. The y-axis shows the number of parameters.
 
-\todo{Redo plot, explain axes units}
+%\todo{Redo plot, explain axes units}
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/arguments}
   \caption{Influence of number of method parameters on system maintainability.}
@@ -651,31 +655,34 @@ Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintain
 \section{Discussion} \label{sec:discussion}
 %In this section, we discuss the results of our experiments.
 
-\todo{Explain about the coupling metric. Discussion: it is not too relevant to the results because most refactorings are SAME CLASS which do not impact on the coupling metric. (maybe more about architectural refactorings because COUPLING, BALANCE, COHESION?)}
+%\todo{Explain about the coupling metric. Discussion: it is not too relevant to the results because most refactorings are SAME CLASS which do not impact on the coupling metric. (maybe more about architectural refactorings because COUPLING, BALANCE, COHESION?)}
 
 \subsection{Clone Context}
-Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for \todo{automated?} refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface \todo{which ...}.
+Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for automatic refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface. %\todo{which ...}.
 
 Regarding clone locations, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \subsection{Extract Method}
-28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, therefore they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason is clones in lambda functions or in anonymous classes. About 15\% of clones span only part of an AST-Node \todo{and?}.
+28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, therefore they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason is clones in lambda functions or in anonymous classes. About 15\% of clones span only part of an AST-Node.% \todo{and?}.
 
 \subsection{Refactoring}
-Fig.~\ref{fig:maintainabilityscore} shows an increase in maintainability for refactoring larger clone classes. The tipping point, between a better and a worse maintainable refactoring, seems to lie around a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited \todo{how limited? give the p-value} statistical significance on our corpus when considering clones larger than 100 tokens.
+Fig.~\ref{fig:maintainabilityscore} shows an increase in maintainability for refactoring larger clone classes. The tipping point, between a better and a worse maintainable refactoring, seems to lie around a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited %\todo{how limited? give the p-value} 
+statistical significance on our corpus when considering clones larger than 100 tokens.
 
 Table~\ref{tab:relation_refactor} shows the results regarding refactorings that are applied to clones with diverse relations. More than 54\% of the refactored clones are in a common class. This is significantly more than the percentage of clones in the common class relation reported in Table~\ref{tab:relation}. The number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
 
-The maintainability scores in Table~\ref{tab:relation_refactor} show that the most favorable clones to refactor are clones with a Sibling relation. The most unfavorable is refactoring clones to interfaces. However, the differences in maintainability in this table are generally small \todo{and?}; according to our data relations have only a minor impact on the maintainability of clones.
+The maintainability scores in Table~\ref{tab:relation_refactor} show that the most favorable clones to refactor are clones with a Sibling relation. The most unfavorable is refactoring clones to interfaces. However, the differences in maintainability in this table are generally small %\todo{and?}
+; according to our data relations have only a minor impact on the maintainability of clones.
 
 Regarding the return type of refactored clones, Table~\ref{tab:return} shows that this has no major impact on maintainability. A method call to the extracted method that is directly returned and no return type extracted methods are slightly more favorable than the others. We think the main reason that the ``Return'' category is on top is that when a variable is declared at the end of the cloned fragment, CR directly returns its value and removes the declaration. This decreases the volume slightly.
 
 % A higher number of parameters directly influences the corresponding metric. 
-Fig.~\ref{fig:arguments} shows that more parameters negatively influence maintainability. Not only the \todo{wasn't this a characteristic? this paragraph is somewhat confusing} number of parameters metric is negatively influenced, but more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that the trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
+Fig.~\ref{fig:arguments} shows that more parameters negatively influence maintainability. Not only the %\todo{wasn't this a characteristic? this paragraph is somewhat confusing}
+number of parameters metric is negatively influenced, but more method parameters also increase volume for the extracted method and each of the calls to it. Because of that, we see that the trend of the graph in Fig.~\ref{fig:arguments} decreases relatively rapidly.
 
-\todo[inline]{one paragraph with a general remark on this discussion, summarizing our findings}
+%\todo[inline]{one paragraph with a general remark on this discussion, summarizing our findings}
 \section{Conclusion} \label{sec:conclusion}
-\todo[inline]{one paragraph summarizing the context of our research}
+%\todo[inline]{one paragraph summarizing the context of our research}
 We defined automatically refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
 
 We defined two aspects as part of the context of a clone: relation and location. Regarding relations, over 37\% of clones are found in the same class. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
@@ -685,7 +692,8 @@ We built a tool that can automatically apply refactorings to 28\% of the clones 
 
 We measured the change in four maintainability metrics
 %before- and after applying each refactoring 
-to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 29 \todo{wasn't this 63?} tokens per clone instance for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 63  %\todo{wasn't this 63?}
+tokens for all clone instances combined for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
 
 \bibliographystyle{plain}
 \bibliography{references}
