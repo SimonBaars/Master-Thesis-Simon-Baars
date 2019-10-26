@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{Improving Software Maintainability through Automated Refactoring of Code Clones}
+\title{Improving Software Maintainability through automatic refactoring of Code Clones}
 \author{}
 \maketitle
 \thispagestyle{plain} % This is for page numbers, remove before submit
@@ -384,17 +384,10 @@ CR uses JavaParser~\cite{smith20e17javaparser}: an AST-parsing library that allo
 \end{itemize}
 CR then removes all cloned code and replaces it with a call to the newly created method. In case of a return value, CR either assigns the call result, declares it or returns it accordingly.
 
-\subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
-We define the following characteristics of the extracted method and/or the call: \todo{why these?}
-\begin{itemize}
-\item \textbf{Tokens}: The number of tokens in the body of the method.
-\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined.
-\item \textbf{Returns}: Whether the method calls return, declare, assign or don't use any data from the extracted method.
-\item \textbf{Parameters}: The number of parameters the extracted method has.
-\end{itemize}
-We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone. \todo{why?}
+\subsection{Maintainability Metrics}
+After applying the refactorings, CR measures the impact of the refactoring on maintainability metrics. We first state the metrics that we measure and then define the characteristics of the applied refactoring that influence the metrics.
 
-\subsubsection{Impact on maintainability metrics} \label{sec:metrics}
+\subsubsection{Maintainability metrics} \label{sec:metrics}
 \todo[inline]{rephrase this text for clarity: this paper -- which paper? }
 CR measures the impact on maintainability metrics of refactoring source code for each clone class that is refactored. These metrics are derived \todo{how did you change them?} from Heitlager et al.~\cite{heitlager2007practical}. This paper defines a set of metrics to measure the maintainability of a system. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
@@ -407,10 +400,22 @@ To determine whether the maintainability improves when refactoring a given clone
 \item \textbf{Method size}: The longer a method is, the harder it becomes to comprehend and maintain \cite{heitlager2007practical}. The ``extract method'' refactoring technique is often used to split up long methods \cite{charalampidou2018structural}. When refactoring duplicated code fragments in the body of a method, this could improve maintainability of the refactored (reduced size).
 \end{itemize}
 
+\subsubsection{Characteristics of the extracted method}\label{sec:characteristics}
+To assess the impact of an applied refactoring, we selected the four characteristics that have the highest impact on the resulting maintainability scores:
+\begin{itemize}
+\item \textbf{Size (in tokens)}: The number of tokens in the body of the method. A larger number of tokens means that more duplicate code can be removed, and thus has a positive impact on maintainability.
+\item \textbf{Relation}: The relation category (Sec.~\ref{sec:relation}) by which this methods' location was determined. Some relations are less favorable for maintainability than others.
+\item \textbf{Returns}: Whether the method calls return, declare, assign or don't use any data from the extracted method. This affects maintainability because the data must be returned from the extracted method, and assigned at each method call. This increases the volume of the refactoring.
+\item \textbf{Parameters}: The number of parameters the extracted method has. If the extracted method uses data that is not available where it is located, the data must be passed using method parameters. If a method has many parameters, it becomes less reusable and harder to comprehend, thus harder to maintain \cite{heitlager2007practical}. Additionally, this increases the volume, because each call to the extracted method must pass all required data.
+\end{itemize}
+We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone. This is because there are no further transformations that are applied that influence the maintainability metrics.
+
+
+
 \section{Experimental setup} \label{sec:experimentalsetup}
 \todo{This doesn't say anything: explain how the section is organized}
 %In this section, we describe the setup of our experiments.
-Our goal is analysing whether automated refactoring of code clones leads to an improved maintainability. We first validate our automated refactoring tool, CR. Next, we run our tool on a reference corpus and measure the change in the maintainability score.
+Our goal is analysing whether automatic refactoring of code clones leads to an improved maintainability. We first validate our automatic refactoring tool, CR. Next, we run our tool on a reference corpus and measure the change in the maintainability score.
 
 \subsection{Tool Evaluation}
 We assess the correctness of CR through unit tests and empirical validation. First, we create a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each relation, location, and refactorability category. 
