@@ -14,9 +14,13 @@
 \IEEEauthorblockA{\textit{University of Amsterdam}\\
 Amsterdam, the Netherlands \\
 simon.mailadres@gmail.com}
+}
 %\affiliation{University of Amsterdam}
 
 \maketitle
+
+\thispagestyle{plain}
+\pagestyle{plain}
 
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Detecting such problems can provide valuable insight into the quality of systems and help to improve the source code. To correctly identify cloned code, contextual information should be considered, such as the type of variables and called methods.
@@ -48,7 +52,7 @@ To be able to trace referenced identifiers, SymbolSolver requires access to not 
 
 \section{Conclusion}
 
-%\bibliographystyle{plain}
+\bibliographystyle{plain}
 \bibliography{references}
 
 \end{document}
