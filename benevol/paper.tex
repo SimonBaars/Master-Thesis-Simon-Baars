@@ -164,14 +164,118 @@ The second cloned fragment shows how equally named variables can have different 
 This shows that not all textually equal clones can easily be refactored.
 
 \section{CloneRefactor}
-We develop a tool named CloneRefactor\footnote{CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}} that detects clones that can (relatively) easily be refactored. This tool uses JavaParser~\cite{tomassetti2017javaparser} to
+We develop a tool named CloneRefactor\footnote{CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}} that detects clones that can (relatively) easily be refactored. This tool uses JavaParser~\cite{tomassetti2017javaparser} to build an AST and to find contextual information (e.g. resolve symbols). We then propose a novel clone detection technique to detect clones using JavaParser.
 
 \section{JavaParser}
-An important design decision for CloneRefactor is the usage of a library named JavaParser~\cite{tomassetti2017javaparser}. JavaParser is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
+JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. The ultimate goal is to use this to be able to apply automated refactorings.
 
-Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
+Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
 
 To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
+
+\section{Clone Detection}\label{sec:clonedetection}
+To detect clones, CloneRefactor parses the AST acquired from JavaParser to a graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied. How CloneRefactor was designed does not allow for several clone types to be detected simultaneously. The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CloneDetection}
+  \caption{CloneRefactor clone detection process.}
+  \label{fig:clonedetection}
+\end{figure}
+
+First of all, CloneRefactor uses JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. Based on this graph, CloneRefactor detects clone classes and verifies them using the configured thresholds. If the detection was configured to detect either type 2R, 3, or 3R clones, CloneRefactor perform some type-specific transformations on the resulting set of clones.
+%\begin{itemize}
+%  \item Amount of tokens.
+%  \item Amount of statements.
+%  \item Amount of lines.
+%\end{itemize}
+
+
+\subsection{Generating the clone graph}\label{sec:clonegraph}
+First of all, CloneRefactor parses the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place.
+
+\subsubsection{Filtering the AST}
+As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We exclude package declarations and import statements from this graph. These are omitted by most clone detection tools, as package declarations and import statements are most often generated by the IDE.
+
+\subsubsection{Building the clone graph}\label{sec:buildingclonegraph}
+Building the clone graph consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
+\begin{itemize}
+  \item The declaration/statement preceding it.
+  \item The declaration/statement following it.
+  \item The last \textbf{preceding} declaration/statement with which it is cloned.
+\end{itemize}
+We do not create a separate graph for each class file, so the statement/declaration preceding or following could be in a different file. While mapping these relations, we maintain a hashed map containing the last occurrence of each unique statement. This map is used to efficiently find out whether a statement is cloned with another. An example of such a graph is displayed in Figure~\ref{fig:clonegraphsimple}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CodeGraph2}
+  \caption{Abstract example of a part of a possible clone graph as built by CloneRefactor.}
+  \label{fig:clonegraphsimple}
+\end{figure}
+
+The relations \textit{next} and \textit{previous} in this graph are represented as a bidirectional arrow. The relations representing duplication are directed. %This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in Section~\ref{sec:detectingclones}.
+
+\subsubsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
+In the previous section, we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
+
+CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R, and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace, and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
+
+For \textbf{type 1R} clones this comparison is more advanced. For \textit{method calls} we determine their fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we use their fully qualified identifier (FQI) for comparison with other nodes. For \textit{variables} we compare their fully qualified type in addition to their name.
+
+\textbf{Type 2R} clones allow any variation in literals, variables, and method calls at this stage in the clone detection process. We compare \textit{variables} by the FQI of their types but not their names. For \textit{method calls}, we compare the FQI of their return type and the type of each of their parameters. Apart from that, we do not compare the names of type declarations. \textbf{Type 3R} clones have the same compare rules as type 2R clones.
+
+\subsubsection{Mapping graph nodes to code}
+The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements of a software project. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. Look at Figure~\ref{fig:clonegraph} for an example of how source code maps to AST nodes.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CloneGraphCode}
+  \caption{CloneRefactor extracts statements and declarations from source code.}
+  \label{fig:clonegraph}
+\end{figure}
+
+On line 24-25 of the code fragment, we see a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
+
+\subsection{Detecting Clones} \label{sec:detectingclones}
+After building the clone graph, we use it to detect clone classes. We start our clone detection process at the final location encountered while building the graph. As an example, we convert the code example shown in Figure~\ref{fig:clonegraph} to a clone graph as displayed in Figure~\ref{fig:clonegraph2}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\columnwidth]{img/CodeGraphExample}
+  \caption{Example of a clone graph built by CloneRefactor.}
+  \label{fig:clonegraph2}
+\end{figure}
+
+Using the example shown in Figure~\ref{fig:clonegraph} and \ref{fig:clonegraph2} we can explain how we detect clones on the basis of this graph. Suppose we are finding clones for two files and the final node of the second file is a variable declarator. This node is represented in the example figure by the purple box (1). We then follow all ``duplicate'' relations until we have found all clones of this node (2 and 3). We now have a clone class of three clone instances each with a single node (1, 2 and 3).
+
+Next, we move to the \textit{previous} line (4). Here again, we collect all duplicates of this node (4 and 5). For each of these duplicates, we check whether the node following it is already in the clone class we collected in the previous iteration. In this case, (2) follows (5) and (1) follows (4). This means that node (3) does not form a `chain' with other cloned statements. Because of this, the clone class of (1, 2 and 3) comes to an end. It will be checked against the thresholds, and if adhering to the thresholds, considered a clone.
+
+We then go further to the previous node (6). In this case, this node does not have any clones. This means we check the (2 and 5, 1 and 4) clone class against the thresholds, and, if it adheres, consider it a clone. Dependent on the thresholds, this example can result in a total of two clone classes.
+
+Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
+
+\subsubsection{Removing redundant clone classes}\label{sec:conceptualremovingredundant}
+The clone detection method used by CloneRefactor can, for various reasons, result in redundant clone classes. After the insertion of each newly detected clone, we check whether it is redundant and/or any of the existent clones has become redundant by adding this clone. A clone is redundant if it is a subset of another clone. We define the subset relation between clones as follows:
+
+\begin{equation}\label{eq:subset}
+C_1 \subseteq C_2 := \forall (i_1 \in C_1) \text{ } \exists (i_2 \in C_2) \text{ } F i_1 = F i_2 \wedge R i_1 \subseteq R i_2
+\end{equation} % Right symbol for definition
+
+Where \textit{C} refers to a clone class (a set of clone instances), \textit{i} refers to a clone instance, \textit{F} is the file in which a clone instance is located and \textit{R} is the range of tokens that a clone instance spans. For each clone found, we remove all existing clones that are a subset of the found clone:
+
+\begin{equation}\label{eq:removeall}
+S_{after} = S_{before} \setminus \{C_{existing} \subseteq C_{new}\text{ }|\text{ }C_{existing} \in S_{before}\}
+\end{equation}
+
+Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point, \textit{$C_{new}$} is the clone class that was just found and \textit{$S_{after}$} is the clone class collection after removing all subsets of the added clone.
+
+We should not add the new clone to our list of clones if its a subset of an existing clone. Because of that, we check for each clone added whether there exists a clone class of which the found clone class is a subset:
+
+\begin{equation}\label{eq:removeexisting}
+\{C_{new} \subseteq C_{existing}\text{ }|\text{ }C_{existing} \in S\} = \emptyset \Rightarrow S_{after} = S \cup C_{new}
+\end{equation}
+
+Where \textit{$S_{before}$} is the clone class collection containing all clones that are found up in until this point, \textit{$C_{new}$} is the clone class that was just found and \textit{$S_{after}$} is the clone class collection after optionally adding the newly found clone. If the newly added clone is a subset of an existing clone, we do not add it to the set of clone classes. This way we avoid redundant clone classes being detected by CloneRefactor.
 
 \section{Conclusion}
 
