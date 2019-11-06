@@ -1,4 +1,4 @@
-\documentclass[sigconf,authordraft]{article}
+\documentclass[conference]{IEEEtran}
 
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -10,8 +10,13 @@
 \begin{document}
 
 \title{Statement-level AST-based Clone Detection in Java using Resolved Symbols}
-\author{Simon Baars, Ana Oprescu}
+\author{\IEEEauthorblockN{1\textsuperscript{st} Simon Baars}
+\IEEEauthorblockA{\textit{University of Amsterdam}\\
+Amsterdam, the Netherlands \\
+simon.mailadres@gmail.com}
 %\affiliation{University of Amsterdam}
+
+\maketitle
 
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Detecting such problems can provide valuable insight into the quality of systems and help to improve the source code. To correctly identify cloned code, contextual information should be considered, such as the type of variables and called methods.
@@ -21,7 +26,9 @@ Comparing code fragments including their contextual information introduces an op
 We propose a method to efficiently detect clones taking into account contextual information. To do this, we propose a tool that uses an AST-parsing library named JavaParser to detect clones a retrieve contextual information. Our method first parses the AST retrieved from JavaParser into a graph structure, which is then used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
 \end{abstract}
 
-\maketitle
+\begin{IEEEkeywords}
+clone detection, context, java, parsing, static code analysis
+\end{IEEEkeywords}
 
 \section{Introduction}
 %Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
@@ -41,7 +48,7 @@ To be able to trace referenced identifiers, SymbolSolver requires access to not 
 
 \section{Conclusion}
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
 \bibliography{references}
 
 \end{document}
