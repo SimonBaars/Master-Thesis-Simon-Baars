@@ -29,9 +29,20 @@ We propose a method to efficiently detect clones taking into account contextual 
 \maketitle
 
 \section{Introduction}
-Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
+%Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
+Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of such a duplicated fragment may require other occurrences to be changed as well~\cite{ostberg2014automatically}. Also, duplicated code has been shown to add up to 25\% of total system volume~\cite{bruntink2005use}, which entails more code to be maintained.
+
+A lot of tools have been proposed to detect such duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, but do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
+
+We describe a method to detect clones while taking into account such contextual information. Our experiments show us that 
 
 
+\section{JavaParser}
+An important design decision for CloneRefactor is the usage of a library named JavaParser~\cite{tomassetti2017javaparser}. JavaParser is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
+
+Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). This is useful for the detection of our refactoring-oriented clone types, as they make use of the fully qualified identifiers of symbols.
+
+To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
 
 \section{Conclusion}
 
