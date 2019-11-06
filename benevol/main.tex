@@ -1,0 +1,46 @@
+\documentclass[twocolumn,showpacs,%
+  nofootinbib,aps,superscriptaddress,%
+  eqsecnum,prd,notitlepage,showkeys,10pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{dcolumn}
+\usepackage{hyperref}
+\usepackage{float}
+
+\begin{document}
+
+\title{Statement-level AST-based Clone Detection in Java using Resolved Symbols}
+\author{Simon Baars, Ana Oprescu}
+%\affiliation{University of Amsterdam}
+
+\maketitle
+
+
+\begin{abstract}
+Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Detecting such problems can provide valuable insight into the quality of systems and help to improve the source code. To correctly identify cloned code, contextual information should be considered, such as the type of variables and called methods.
+
+Comparing code fragments including their contextual information introduces an optimization problem, as contextual information may be hard to retrieve. It can be ambiguous where contextual information resides and tracking it down may require to follow cross-file references. For large codebases, this can require a lot of time due to the sheer number of referenced symbols.
+
+We propose a method to efficiently detect clones taking into account contextual information. To do this, we propose a tool that uses an AST-parsing library named JavaParser to detect clones a retrieve contextual information. Our method first parses the AST retrieved from JavaParser into a graph structure, which is then used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
+\end{abstract}
+
+\maketitle
+
+\input{introduction}
+
+\input{case}
+
+\input{approaches}
+
+\input{comparison}
+
+\input{analysis}
+
+\input{conclusion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
