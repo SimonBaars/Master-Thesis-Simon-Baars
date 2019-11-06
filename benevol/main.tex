@@ -13,7 +13,7 @@
 
 \title{Statement-level AST-based Clone Detection in Java using Resolved Symbols}
 \author{Simon Baars, Ana Oprescu}
-%\affiliation{University of Amsterdam}
+\affiliation{University of Amsterdam}
 
 \maketitle
 
@@ -28,17 +28,12 @@ We propose a method to efficiently detect clones taking into account contextual 
 
 \maketitle
 
-\input{introduction}
+\section{Introduction}
+Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
 
-\input{case}
 
-\input{approaches}
 
-\input{comparison}
-
-\input{analysis}
-
-\input{conclusion}
+\section{Conclusion}
 
 \bibliographystyle{plain}
 \bibliography{references}
