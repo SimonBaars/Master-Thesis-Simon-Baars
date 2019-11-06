@@ -79,9 +79,9 @@ simon.mailadres@gmail.com}
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Detecting such problems can provide valuable insight into the quality of systems and help to improve the source code. To correctly identify cloned code, contextual information should be considered, such as the type of variables and called methods.
 
-Comparing code fragments including their contextual information introduces an optimization problem, as contextual information may be hard to retrieve. It can be ambiguous where contextual information resides and tracking it down may require to follow cross-file references. For large codebases, this can require a lot of time due to the sheer number of referenced symbols.
+Comparing code fragments including their contextual information introduces an optimization problem, as this information may be hard to retrieve. It can be ambiguous where contextual information resides and tracking it down may require to follow cross-file references. For large codebases, it could become time-consuming due to the sheer number of referenced symbols.
 
-We propose a method to efficiently detect clones taking into account contextual information. To do this, we propose a tool that uses an AST-parsing library named JavaParser to detect clones a retrieve contextual information. Our method first parses the AST retrieved from JavaParser into a graph structure, which is then used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
+We propose a method to efficiently detect clones taking into account contextual information. We introduce a tool that uses an AST-parsing library named JavaParser to detect clones and retrieve contextual information. Our method parses the Abstract Syntax Tree retrieved from JavaParser into a graph structure, which is used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -90,13 +90,14 @@ clone detection, context, java, parsing, static code analysis
 
 \section{Introduction}
 %Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
-Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of such a duplicated fragment may require other occurrences to be changed as well~\cite{ostberg2014automatically}. Also, duplicated code has been shown to add up to 25\% of total system volume~\cite{bruntink2005use}, which entails more code to be maintained.
+Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of a duplicated fragment may require other occurrences to be changed as well~\cite{ostberg2014automatically}. Also, duplicated code has been shown to add up to 25\% of total system volume~\cite{bruntink2005use}, which entails more code to be maintained.
 
 A lot of tools have been proposed to detect such duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, but do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
 
 We describe a method to detect clones while taking into account such contextual information and propose a tool to detect clones taking into account this contextual information. Run this tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
 
 \section{Background}
+\subsection{Code clones}
 We use two concepts to argue about code clones~\cite{roy2007survey}:
 \\ \textbf{Clone instance}: A single cloned fragment.
 \\ \textbf{Clone class}: A set of similar clone instances.
@@ -108,6 +109,11 @@ Duplication in code is found in many different forms. Most often duplicated code
 \textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
+
+\section{JavaParser}
+JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
+
+To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
 
 \section{Motivating example} \label{sec:type1}
 \begin{figure*}
@@ -186,17 +192,9 @@ In typed programming languages, each variable declaration should declare a name 
 
 The body of both methods in Figure~\ref{fig:type1} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer and a String. Because of this, we compare cloned variable references by both their name and the FQI of their type.
 
-\section{CloneRefactor}
+\section{Clone Detection}\label{sec:clonedetection}
 We develop a tool named CloneRefactor\footnote{CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}} that detects clones that can (relatively) easily be refactored. This tool uses JavaParser~\cite{tomassetti2017javaparser} to build an AST and to find contextual information (e.g. resolve symbols). We then propose a novel clone detection technique to detect clones using JavaParser.
 
-\section{JavaParser}
-JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. The ultimate goal is to use this to be able to apply automated refactorings.
-
-Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
-
-To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
-
-\section{Clone Detection}\label{sec:clonedetection}
 To detect clones, CloneRefactor parses the AST acquired from JavaParser to a graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied.
 
 First of all, CloneRefactor uses JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements. Based on this graph, CloneRefactor detects clone classes and verifies them using the configured thresholds. This process is explained in further detail over the following sections.
@@ -258,7 +256,7 @@ We then go further to the previous node (6). In this case, this node does not ha
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
 
 \section{Results}
-To compare the difference in detected clones when contextual information is considered, we 
+To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2.
 
 \section{Conclusion}
 
