@@ -151,17 +151,20 @@ public class LoseScene
 }
 \end{javacode}}
 \end{parcolumns}
-\caption{Example of a type 1 clone that is functionally different.}
+\caption{Example of a clone that, although textually equal, is contextually different.}
 \label{fig:type1}
 \end{figure*}
 
-Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect type 1 clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
+Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
 
-Figure~\ref{fig:type1} shows a type 1 clone with two clone classes. Defining an automatic way to refactor these clone classes is nearly impossible, as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
+Figure~\ref{fig:type1} shows two clone classes. Merging these clone classes is very hard (and likely not desirable), as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
 
 The second cloned fragment shows how equally named variables can have different types and thus perform different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragment on the right concatenates a number to a String.
 
-This shows that not all type 1 clones can easily be automatically refactored. In section \label{chap:type1rclones} we describe an alternative approach towards detecting type 1 clones, which results in only clones that can be refactored.
+This shows that not all textually equal clones can easily be refactored.
+
+\section{CloneRefactor}
+We develop a tool named CloneRefactor\footnote{CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}} that detects clones that can (relatively) easily be refactored. This tool uses JavaParser~\cite{tomassetti2017javaparser} to
 
 \section{JavaParser}
 An important design decision for CloneRefactor is the usage of a library named JavaParser~\cite{tomassetti2017javaparser}. JavaParser is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
