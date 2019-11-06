@@ -19,6 +19,11 @@
 \usepackage{float}
 \usepackage{parcolumns}
 
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
 \usepackage{listings}
 \lstset{language=Java,
   showspaces=false,
@@ -36,11 +41,6 @@
 }
 
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
-
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \definecolor{lightyellow}{HTML}{fffdcc}
 \definecolor{doublelightyellow}{HTML}{fffa9c}
@@ -109,7 +109,7 @@ Duplication in code is found in many different forms. Most often duplicated code
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
-\section{Motivating example}
+\section{Motivating example} \label{sec:type1}
 \begin{figure*}
 \begin{parcolumns}{2}
 \colchunk[1]{
@@ -155,13 +155,29 @@ public class LoseScene
 \label{fig:type1}
 \end{figure*}
 
-Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
+Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect type 1 clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
 
 Figure~\ref{fig:type1} shows two clone classes. Merging these clone classes is very hard (and likely not desirable), as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
 
 The second cloned fragment shows how equally named variables can have different types and thus perform different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragment on the right concatenates a number to a String.
 
 This shows that not all textually equal clones can easily be refactored.
+
+\section{Contextual information}
+To solve the issues identified in Section~\ref{sec:type1}, we expand clone detection by taking into account contextual information: cloned fragments have to be both textually \textit{and} contextually equal. We check contextual equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object).
+
+\subsection{Referenced Types}
+Many object-oriented programming languages (like Java, Python, and C\#) require the programmer to import a type (or the class in which it is declared) before it can be used. Based on what is imported, the meaning of the name of a type can differ. For instance, if we import \texttt{java.util.List}, we get the interface which is implemented by all list data structures in Java. However, importing \texttt{java.awt.List}, we get a listbox GUI component for the Java Abstract Window Toolkit (AWT). These are entirely different functional concepts. To be sure we compare between equal types, we compare the FQI for all referenced types.
+
+\subsubsection{Called methods}
+A codebase can have several methods with the same name. The implementation of these methods might differ. When two code fragments call methods with an identical name or signature, they can still call different methods. Because of this, textually identical code fragments can differ functionally.
+
+We compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{com.sb.AppleCore com.sb.fruitgame.Apple.eat(com.sb.fruitgame.Tool)}.
+
+\subsubsection{Variables}
+In typed programming languages, each variable declaration should declare a name and a type. When we reference a variable, we only use its name. If we use variables with the same name but different types in different code fragments, the code can be functionally unequal but still textually equal.
+
+The body of both methods in Figure~\ref{fig:type1} is equal. However, their functionality is not. The first method adds two numbers together and the other concatenates an integer and a String. Because of this, we compare cloned variable references by both their name and the FQI of their type.
 
 \section{CloneRefactor}
 We develop a tool named CloneRefactor\footnote{CloneRefactor is available on GitHub: \url{https://github.com/SimonBaars/CloneRefactor}} that detects clones that can (relatively) easily be refactored. This tool uses JavaParser~\cite{tomassetti2017javaparser} to build an AST and to find contextual information (e.g. resolve symbols). We then propose a novel clone detection technique to detect clones using JavaParser.
@@ -174,16 +190,9 @@ Integrated into JavaParser is a library named SymbolSolver. This library allows 
 To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
 
 \section{Clone Detection}\label{sec:clonedetection}
-To detect clones, CloneRefactor parses the AST acquired from JavaParser to a graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied. How CloneRefactor was designed does not allow for several clone types to be detected simultaneously. The overall process regarding clone detection is displayed in Figure~\ref{fig:clonedetection}.
+To detect clones, CloneRefactor parses the AST acquired from JavaParser to a graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\columnwidth]{img/CloneDetection}
-  \caption{CloneRefactor clone detection process.}
-  \label{fig:clonedetection}
-\end{figure}
-
-First of all, CloneRefactor uses JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements, further explained in Section~\ref{sec:clonegraph}. Based on this graph, CloneRefactor detects clone classes and verifies them using the configured thresholds. If the detection was configured to detect either type 2R, 3, or 3R clones, CloneRefactor perform some type-specific transformations on the resulting set of clones.
+First of all, CloneRefactor uses JavaParser to read a project from disk and build an AST, one class file at a time. Each AST is then converted to a directed graph that maps relations between statements. Based on this graph, CloneRefactor detects clone classes and verifies them using the configured thresholds. This process is explained in further detail over the following sections.
 %\begin{itemize}
 %  \item Amount of tokens.
 %  \item Amount of statements.
@@ -192,39 +201,33 @@ First of all, CloneRefactor uses JavaParser to read a project from disk and buil
 
 
 \subsection{Generating the clone graph}\label{sec:clonegraph}
-First of all, CloneRefactor parses the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place.
+CloneRefactor parses the AST obtained from JavaParser into a directed graph structure. We have chosen to base our clone detection around statements as the smallest unit of comparison. This means that a single statement cloned with another single statement is the smallest clone we can find. The rationale for this lies in both simplicity and performance efficiency. This means we won't be able to find when a single expression matches another expression, or even a single token matching another token. This is in most cases not a problem, as expressions are often small and do not span the minimal size to be considered a clone in the first place.
 
-\subsubsection{Filtering the AST}
+\subsection{Filtering the AST}
 As a first step towards building the clone graph, we preprocess the AST to decide which AST nodes should become part of the clone graph. We exclude package declarations and import statements from this graph. These are omitted by most clone detection tools, as package declarations and import statements are most often generated by the IDE.
 
-\subsubsection{Building the clone graph}\label{sec:buildingclonegraph}
+\subsection{Building the clone graph}\label{sec:buildingclonegraph}
 Building the clone graph consists of walking the AST in-order for each declaration and statement. For each declaration/statement found, we map the following relations:
 \begin{itemize}
   \item The declaration/statement preceding it.
   \item The declaration/statement following it.
   \item The last \textbf{preceding} declaration/statement with which it is cloned.
 \end{itemize}
-We do not create a separate graph for each class file, so the statement/declaration preceding or following could be in a different file. While mapping these relations, we maintain a hashed map containing the last occurrence of each unique statement. This map is used to efficiently find out whether a statement is cloned with another. An example of such a graph is displayed in Figure~\ref{fig:clonegraphsimple}.
+We do not create a separate graph for each class file, so the statement/declaration preceding or following could be in a different file. While mapping these relations, we maintain a hashed map containing the last occurrence of each unique statement. This map is used to efficiently find out whether a statement is cloned with another. %An example of such a graph is displayed in Figure~\ref{fig:clonegraphsimple}.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\columnwidth]{img/CodeGraph2}
-  \caption{Abstract example of a part of a possible clone graph as built by CloneRefactor.}
-  \label{fig:clonegraphsimple}
-\end{figure}
+% \begin{figure*}
+%   \centering
+%   \includegraphics[width=1\textwidth]{img/CodeGraph2}
+%   \caption{Abstract example of a part of a possible clone graph as built by CloneRefactor.}
+%   \label{fig:clonegraphsimple}
+% \end{figure*}
 
 The relations \textit{next} and \textit{previous} in this graph are represented as a bidirectional arrow. The relations representing duplication are directed. %This is a restriction we've chosen as it creates an important constraint for the clone detection process. This process is explained in Section~\ref{sec:detectingclones}.
 
-\subsubsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
-In the previous section, we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether two nodes in this graph are duplicates of each other is dependent on the clone type. In this section, we will describe for each type how we compare statements and declarations to assess whether they are clones of each other.
+\subsection{Comparing Statements/Declarations} \label{sec:comparingstuff}
+In the previous section, we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether this duplicate relation exists between two nodes is determined by taking into account the contextual information. For \textit{method calls} we determine their fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we use their fully qualified identifier (FQI) for comparison with other nodes. For \textit{variables} we compare their fully qualified type in addition to their name.
 
-CloneRefactor detects six different types of clones: T1, T2, T3, T1R, T2R, and T3R. These types are further explained in chapter \ref{chap:clonetypes}. For \textbf{type 1} clones, CloneRefactor filters the tokens of a node to exclude its comments, whitespace, and end of line (EOL) characters and then compares these tokens. For \textbf{type 2} clones, the tokens are further filtered to omit all identifiers and literals. \textbf{Type 3} clones do the same duplication comparison as type 2 clones.
-
-For \textbf{type 1R} clones this comparison is more advanced. For \textit{method calls} we determine their fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we use their fully qualified identifier (FQI) for comparison with other nodes. For \textit{variables} we compare their fully qualified type in addition to their name.
-
-\textbf{Type 2R} clones allow any variation in literals, variables, and method calls at this stage in the clone detection process. We compare \textit{variables} by the FQI of their types but not their names. For \textit{method calls}, we compare the FQI of their return type and the type of each of their parameters. Apart from that, we do not compare the names of type declarations. \textbf{Type 3R} clones have the same compare rules as type 2R clones.
-
-\subsubsection{Mapping graph nodes to code}
+\subsection{Mapping graph nodes to code}
 The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements of a software project. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. Look at Figure~\ref{fig:clonegraph} for an example of how source code maps to AST nodes.
 
 \begin{figure}[H]
