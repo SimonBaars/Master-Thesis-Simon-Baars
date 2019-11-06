@@ -4,8 +4,62 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{dcolumn}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[table]{xcolor}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{parcolumns}
+
+\usepackage{todonotes}
+
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{parcolumns}
+
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  numbers = left,
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+%  moredelim=[il][\textcolor{pgrey}]{$$}
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\definecolor{lightyellow}{HTML}{fffdcc}
+\definecolor{doublelightyellow}{HTML}{fffa9c}
+\definecolor{lightgreen}{HTML}{dcffd4}
+\definecolor{lightblue}{HTML}{e0ffff}
+\definecolor{lightred}{HTML}{ffe0e0}
+\definecolor{lightpink}{HTML}{ffe0ff}
+\definecolor{lightorange}{HTML}{ffede0}
+\definecolor{lightpurple}{HTML}{f0e0ff}
+\newcommand{\highlightYellow}{\makebox[0pt][l]{\color{lightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightGreen}{\makebox[0pt][l]{\color{lightgreen}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightBlue}{\makebox[0pt][l]{\color{lightblue}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightRed}{\makebox[0pt][l]{\color{lightred}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPink}{\makebox[0pt][l]{\color{lightpink}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightOrange}{\makebox[0pt][l]{\color{lightorange}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
+\newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
+
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
 \begin{document}
 
@@ -40,8 +94,74 @@ Duplicate code fragments are often considered as symptoms of bad design~\cite{fo
 
 A lot of tools have been proposed to detect such duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, but do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
 
-We describe a method to detect clones while taking into account such contextual information. Our experiments show us that
+We describe a method to detect clones while taking into account such contextual information and propose a tool to detect clones taking into account this contextual information. Run this tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
 
+\section{Background}
+We use two concepts to argue about code clones~\cite{roy2007survey}:
+\\ \textbf{Clone instance}: A single cloned fragment.
+\\ \textbf{Clone class}: A set of similar clone instances.
+
+%\subsection{Clone Types}
+Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed%. These clone types are described in Roy et al
+~\cite{roy2007survey}:\\
+\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
+\textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
+\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
+A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
+
+\section{Motivating example}
+\begin{figure*}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+package com.sb.game;
+
+import java.util.List;
+
+public class GameScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void addTen(int x) {
+|\highlightYellow|		x = x + 10; // add number
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+package com.sb.fruitgame;
+
+import java.awt.List;
+
+public class LoseScene
+{
+|\highlightYellow|	public void addToList(List l) {
+|\highlightYellow|		l.add(getClass().getName());
+|\highlightYellow|	}
+
+	public void concatTen(String x) {
+|\highlightYellow|		x = x + 10; // concat string
+|\highlightYellow|		Notifier.notifyChanged(x);
+|\highlightYellow|		return x;
+	}
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Example of a type 1 clone that is functionally different.}
+\label{fig:type1}
+\end{figure*}
+
+Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect type 1 clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make type 1 clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
+
+Figure~\ref{fig:type1} shows a type 1 clone with two clone classes. Defining an automatic way to refactor these clone classes is nearly impossible, as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
+
+The second cloned fragment shows how equally named variables can have different types and thus perform different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragment on the right concatenates a number to a String.
+
+This shows that not all type 1 clones can easily be automatically refactored. In section \label{chap:type1rclones} we describe an alternative approach towards detecting type 1 clones, which results in only clones that can be refactored.
 
 \section{JavaParser}
 An important design decision for CloneRefactor is the usage of a library named JavaParser~\cite{tomassetti2017javaparser}. JavaParser is a Java library which allows parsing Java source files to an abstract syntax tree (AST). JavaParser allows to modify this AST and write the result back to Java source code. This allows us to apply refactorings to the detected problems in the source code.
