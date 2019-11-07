@@ -83,7 +83,7 @@ Comparing code fragments including their contextual information introduces an op
 
 We propose a method to efficiently detect clones taking into account contextual information. We introduce a tool that uses an AST-parsing library named JavaParser to detect clones and retrieve contextual information. Our method parses the Abstract Syntax Tree retrieved from JavaParser into a graph structure, which is used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
 
-We find that, when taking into account contextual information in our clone detection, we find 11\% fewer clones. Manually inspecting the difference, we find that they are less relevant for refactoring.
+We find that, when taking into account contextual information in our clone detection, 11\% fewer clones are found. Manually inspecting a sample of the difference, we find that they are less relevant for refactoring.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -92,11 +92,11 @@ clone detection, context, java, parsing, static code analysis
 
 \section{Introduction}
 %Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
-Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of a duplicated fragment may require changes in other occurrences ~\cite{ostberg2014automatically}. Also, duplicated code was shown to account for 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
+Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increasing maintenance efforts or causing bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code was shown to account for up to 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
 
 Several tools have been proposed to detect duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, however do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
 
-We describe a method to detect clones while taking into account the contextual information and introduce a tool to detect clones taking into account this contextual information. We run the tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
+We describe a method to detect clones while taking into account the contextual information and introduce a tool to detect clones taking into account such contextual information. We run the tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
 
 \begin{figure*}
 \begin{parcolumns}{2}
