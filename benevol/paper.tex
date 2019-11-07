@@ -82,6 +82,8 @@ Duplication in source code is often seen as one of the most harmful types of tec
 Comparing code fragments including their contextual information introduces an optimization problem, as this information may be hard to retrieve. It can be ambiguous where contextual information resides and tracking it down may require to follow cross-file references. For large codebases, it could become time-consuming due to the sheer number of referenced symbols.
 
 We propose a method to efficiently detect clones taking into account contextual information. We introduce a tool that uses an AST-parsing library named JavaParser to detect clones and retrieve contextual information. Our method parses the Abstract Syntax Tree retrieved from JavaParser into a graph structure, which is used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
+
+We find that, when taking into account contextual information in our clone detection, we find 11\% fewer clones. Manually inspecting the difference, we find that they are less relevant for refactoring.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -90,32 +92,12 @@ clone detection, context, java, parsing, static code analysis
 
 \section{Introduction}
 %Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
-Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of a duplicated fragment may require changes in other occurrences ~\cite{ostberg2014automatically}. Also, duplicated code was shown to add up to 25\% of total system volume~\cite{bruntink2005use}, which entails more code to be maintained.
+Duplicate code fragments are often considered as symptoms of bad design~\cite{fowler2018refactoring}. They create implicit dependencies, thus increasing maintenance efforts or causing bugs in evolving software. Changing one occurrence of a duplicated fragment may require changes in other occurrences ~\cite{ostberg2014automatically}. Also, duplicated code was shown to account for 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
 
-A lot of tools have been proposed to detect such duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, but do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
+Several tools have been proposed to detect duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, however do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
 
-We describe a method to detect clones while taking into account such contextual information and propose a tool to detect clones taking into account this contextual information. Run this tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
+We describe a method to detect clones while taking into account the contextual information and introduce a tool to detect clones taking into account this contextual information. We run the tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
 
-\section{Background}
-\subsection{Code clones}
-We use two concepts to argue about code clones~\cite{roy2007survey}:
-\\ \textbf{Clone instance}: A single cloned fragment.
-\\ \textbf{Clone class}: A set of similar clone instances.
-
-%\subsection{Clone Types}
-Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed%. These clone types are described in Roy et al
-~\cite{roy2007survey}:\\
-\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
-\textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
-\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
-A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
-
-\section{JavaParser}
-JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
-
-To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
-
-\section{Motivating example} \label{sec:type1}
 \begin{figure*}
 \begin{parcolumns}{2}
 \colchunk[1]{
@@ -161,13 +143,35 @@ public class LoseScene
 \label{fig:type1}
 \end{figure*}
 
+\section{Background}
+We first explain relevant code clone terminology and definitions. Next, we describe the JavaParser tool, used to retrieve contextual information of source code.
+
+\subsection{Code clones}
+We use two concepts to argue about code clones~\cite{roy2007survey}:
+\\ \textbf{Clone instance}: A single cloned fragment.
+\\ \textbf{Clone class}: A set of similar clone instances.
+
+%\subsection{Clone Types}
+Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed%. These clone types are described in Roy et al
+~\cite{roy2007survey}:\\
+\textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
+\textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
+\textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
+A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
+
+\subsection{JavaParser}
+JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
+
+To be able to trace referenced identifiers, SymbolSolver requires access to not only the analyzed Java project but also all its dependencies. This requires us to include all dependencies with the project. Along with this, SymbolSolver solves symbols in the JRE System Library (the standard libraries coming with every installation of Java) using the active Java Virtual Machine (JVM). %This has a big impact on performance efficiency. This is visible in our results, as displayed in Section~\ref{sec:clonetypeexperiments}.
+
+\section{Motivating example} \label{sec:type1}
 Most clone detection tools~\cite{kamiya2002ccfinder, semura2017ccfindersw, roy2008nicad, svajlenko2016bigcloneeval, svajlenko2014evaluating} detect type 1 clones by textually comparing code fragments (except for whitespace and comments). Although textually equal, method, type and variable references can still refer to different declarations. In such cases, refactoring opportunities could be invalidated. This can make clones less suitable for refactoring purposes, as they require additional judgment regarding the refactorability of such a clone.
 
-Figure~\ref{fig:type1} shows two clone classes. Merging these clone classes is very hard (and likely not desirable), as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, but apart from that their implementation is completely different.
+Figure~\ref{fig:type1} shows two clone classes. Merging these clone classes is very hard (and likely not desirable), as both cloned fragments describe different functional behavior. The first cloned fragment is a method that adds something to a \texttt{List}. However, the \texttt{List} objects to which something is added are different. Looking at the \texttt{import} statement above the class, one fragment uses the \texttt{java.util.List} and the other uses the \texttt{java.awt.List}. Both happen to have an \texttt{add} method, however their implementation is completely different.
 
 The second cloned fragment shows how equally named variables can have different types and thus perform different functional concepts. The cloned fragment on the left adds a specific amount to an integer. The cloned fragment on the right concatenates a number to a String.
 
-This shows that not all textually equal clones can easily be refactored.
+This shows that not all textually equal clones can be easily refactored.
 
 \section{Contextual information}
 To solve the issues identified in Section~\ref{sec:type1}, we expand clone detection by taking into account contextual information: cloned fragments have to be both textually \textit{and} contextually equal. We check contextual equality of two fragments by validating the equality of the fully qualified identifier (FQI) for referenced types, methods and variables. If an identifier is fully qualified, it means we specify the full location of its declaration (e.g. \texttt{com.sb.fruit.Apple} for an \texttt{Apple} object).
@@ -178,7 +182,10 @@ Many object-oriented programming languages (like Java, Python, and C\#) require 
 \subsubsection{Called methods}
 A codebase can have several methods with the same name. The implementation of these methods might differ. When two code fragments call methods with an identical name or signature, they can still call different methods. Because of this, textually identical code fragments can differ functionally.
 
-We compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become \texttt{com.sb.AppleCore com.sb.fruitgame.Apple.eat(com.sb.fruitgame.Tool)}.
+We compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become 
+%\footnotesize{
+\texttt{com.sb.Apple.eat(com.sb.Tool)}.
+%}.
 
 \begin{figure*}
   \centering
@@ -255,10 +262,23 @@ We then go further to the previous node (6). In this case, this node does not ha
 
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
 
-\section{Results}
-To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2.
+\section{Experiments and Results}
+To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2,267 Java projects including their dependencies \cite{baars2019towards}. 
+
+We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We found that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used. 
+
+We also look into the difference in performance when taking into account contextual information. Detecting the clones in all 2,267 projects took 20.83 minutes when considering contextual information. When contextual information was not considered, it took 1.58 minutes.  
 
 \section{Conclusion}
+We propose a method to detect clones taking into account contextual information of source code. Contextual information is important because different functional concepts may turn up as clones because they are textually identical.
+
+We define three aspects of source code as the contextual information:
+\begin{itemize}
+    \item The type of variable references.
+    \item The location of method references.
+    \item The location of type references.
+\end{itemize}
+When these references have the same name but point to different locations, clones may not be easily refactorable. Our results show that most such clones are not relevant for refactoring. This accounts for about 11\% of clones. This comes however with a performance trade-off: detecting clones with contextual information took 13 times longer than when not taking contextual information into account (1.6min vs 20.8min).
 
 \bibliographystyle{plain}
 \bibliography{references}
