@@ -265,20 +265,14 @@ Eventually, following only the ``previous node'' relations, we can get from (6) 
 \section{Experiments and Results}
 To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2,267 Java projects including their dependencies \cite{baars2019towards}. 
 
-We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We found that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used. 
+We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We find that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used. 
 
 We also look into the difference in performance when taking into account contextual information. Detecting the clones in all 2,267 projects took 20.83 minutes when considering contextual information. When contextual information was not considered, it took 1.58 minutes.  
 
 \section{Conclusion}
 We propose a method to detect clones taking into account contextual information of source code. Contextual information is important because different functional concepts may turn up as clones because they are textually identical.
 
-We define three aspects of source code as the contextual information:
-\begin{itemize}
-    \item The type of variable references.
-    \item The location of method references.
-    \item The location of type references.
-\end{itemize}
-When these references have the same name but point to different locations, clones may not be easily refactorable. Our results show that most such clones are not relevant for refactoring. This accounts for about 11\% of clones. This comes however with a performance trade-off: detecting clones with contextual information took 13 times longer than when not taking contextual information into account (1.6min vs 20.8min).
+We define three aspects of source code as the contextual information:  a) the type of variable references; b) the location of method references; and c) the location of type references. When these references have the same name but point to different locations, clones may not be easily refactorable. Our results show that most such clones are not relevant for refactoring. This accounts for about 11\% of clones. This comes however with a performance trade-off: detecting clones with contextual information took 13 times longer than when not taking contextual information into account (1.6min vs 20.8min).
 
 \bibliographystyle{plain}
 \bibliography{references}
