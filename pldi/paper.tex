@@ -142,7 +142,7 @@ Duplication in source code is generally considered an undesirable pattern, becau
 
 We propose a DSL for clone detection, that allows for the specification of clone definitions. Using this DSL, code clone definitions can be easily expressed, whilst not having to worry about the actual clone detection algorithm and its optimization. Our DSL allows to exclude expressions, statements and declarations from clone matching. Our DSL supports line-based and AST-based clone detection approaches. The DSL can also take into account context information of expressions.
 
-We use the DSL to express type 1, 2 and 3 clone definitions. We then use these definitions to validate the DSL over a corpus of open-source Java projects. We compare these results with established clone detection tools. We find that our DSL matches the output of the control tools, while allowing for a much wider spectrum of configurations. 
+We use the DSL to express type 1, 2 and 3 clone definitions. We then use these definitions to validate the DSL over a corpus of open-source Java projects. We compare these results with established clone detection tools. We find that our DSL matches the output of the control tools, while allowing for a much wider spectrum of configurations.
 \end{abstract}
 
 
@@ -181,8 +181,21 @@ We use the DSL to express type 1, 2 and 3 clone definitions. We then use these d
 
 
 \section{Introduction}
-An abundant number of clone detection tools have been proposed in the literature due to the many applications and benefits of clone detection.
+Code clones argue about the duplicate code present in the source code of software systems. An abundant number of clone detection tools and techniques have been proposed in the literature due to the many applications and benefits of clone detection \cite{svajlenko2019mutation}. Clones are most often the result of code reuse by copying and pasting existing code, among other reasons \cite{roy2007survey}. Clones are often seen as harmful \cite{roy2007survey, ostberg2014automatically, juergens2009code}, but can also have positive effects on system maintainability \cite{roy2007survey, kapser2006cloning, aversano2007clones}.
 
+Clone detection is applied in various domains. This includes (automated) refactoring, education (plagiarism detection) \cite{wahler2004clone}, (legacy code) modernization \cite{meng2013refactoring} and maintainability analysis \cite{heitlager2007practical}. For these varying purposes, many clone detection tools have been proposed: a 2013 survey by Rattan et al. \cite{rattan2013software} surveyed more than 70 clone detection tools. Comparisons show large differences in recall and precisions of these tools \cite{svajlenko2014evaluating}.
+
+To allow easy experimentation with code clone defitions and methods, we propose a DSL to configure clone detection.
+
+\section{Language Design}
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+\subsection{Threats to validity}
 
 % %% Acknowledgments
 % \begin{acks}                            %% acks environment is optional
@@ -207,9 +220,9 @@ An abundant number of clone detection tools have been proposed in the literature
 
 
 %% Appendix
-\appendix
-\section{Appendix}
-
-Text of appendix \ldots
+% \appendix
+% \section{Appendix}
+%
+% Text of appendix \ldots
 
 \end{document}
