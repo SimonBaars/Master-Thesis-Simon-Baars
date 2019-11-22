@@ -66,6 +66,33 @@
 \usepackage{float}
 
 \usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{parcolumns}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  numbers = left,
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{\$\$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\definecolor{lightgrey}{HTML}{ebebe0}
+\newcommand{\highlightGrey}{\makebox[0pt][l]{\color{lightgrey}\rule[-4pt]{1\linewidth}{14pt}}}
+
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
 \begin{document}
 
@@ -259,7 +286,33 @@ These are logical lines of code, where each statement and some declarations are 
 The main advantage of LLoC over LoC is that it is less dependent on coding style. If two statements are equal, independent of how they are distributed over physical lines, they will be considered clones. Some also argue that LLoC gives a more accurate indication of volume \cite{nguyen2007sloc}.
 
 \subsubsection{Subtree}
-A third approach to compare blocks of code is to compare subtrees of the AST of the source code.
+A third approach to compare blocks of code is to compare subtrees of the AST of the source code. The advantage of this is that the result may be more useful for refactoring, as clones that are found are often easier to refactor. The disadvantage is that some clones may not be found. An example of this is shown in Fig.~\ref{fig:subtreecomparison}.
+
+\begin{figure*}
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+|\highlightGrey|for(int i = 0; i<apples.length; i++){
+|\highlightGrey|  Apple thisApple = apple[i];
+|\highlightGrey|  if(thisApple.isEdible()){
+|\highlightGrey|    thisApple.eat();
+    Logger.log("Apple eaten");
+  }
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+|\highlightGrey|for(int i = 0; i<apples.length; i++){
+|\highlightGrey|  Apple thisApple = apple[i];
+|\highlightGrey|  if(thisApple.isEdible()){
+|\highlightGrey|    thisApple.eat();
+  }
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Example of clone that may not be detected when comparing subtrees.}
+\label{fig:subtreecomparison}
+\end{figure*}
 
 \subsection{Search Root}
 
