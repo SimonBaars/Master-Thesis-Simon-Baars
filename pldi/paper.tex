@@ -268,16 +268,18 @@ A third approach to compare blocks of code is to compare subtrees of the AST of 
 \subsection{Compare Rules}
 
 \section{Example scripts}
-Hello :)
+To experiment with the CDD language, we convert current clone type definitions to CDD code. The only required keywords in the CDD language are \textbf{Project}, \textbf{Size} and \textbf{Match}. For the minimum size of type 1 clones many studies use \textit{6 lines} \cite{heitlager2007practical, bruntink2004evaluation, sajnani2016sourcerercc}. We choose to compare \textbf{LoC}, but the other options would also be valid (the definition of type 1 clones is ambiguous in this aspect). We exclude package and import declarations, as clones found in those declarations are often not useful \cite{koschke2012large}. The CDD code for this is as follows:
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 \noindent type1.cdd\par
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 \noindent\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/path/to/java/project"} \par
 \noindent\textbf{\textcolor[HTML]{7F0055}{Size}} \textcolor[HTML]{7D7D7D}{6} \textbf{\textcolor[HTML]{7F0055}{lines}}  \par
-\noindent\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{SLOC}}  \par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{LoC}}  \par
 \noindent\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration \\
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+
+For type 2, we allow variance in identifiers and literals. For this, we can use the \textbf{DoNotCompare} keyword: all subnodes of these nodes are not compared between lines when comparing lines to determine whether they are similar. The CDD code for type 2 is as follows:
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 \noindent type2.cdd\par
@@ -288,6 +290,8 @@ Hello :)
 \noindent\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration\par
 \noindent\textbf{\textcolor[HTML]{7F0055}{DoNotCompare}} SimpleName, LiteralExpr\par
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+
+For type 3, we allow statements to differ. To implement this, we specify a percentage of variance that we allow statements to differ (in this case 10\%). This results in the following code:
 
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 \noindent type3.cdd\par
