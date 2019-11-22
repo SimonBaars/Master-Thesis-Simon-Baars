@@ -62,6 +62,11 @@
 
 \usepackage{todonotes}
 
+\usepackage{xcolor}
+\usepackage{float}
+
+\usepackage{graphicx}
+
 \begin{document}
 
 %% Title information
@@ -187,7 +192,41 @@ Clone detection is applied in various domains. This includes (automated) refacto
 
 To allow easy experimentation with code clone defitions and methods, we propose a DSL to configure clone detection.
 
+\section{Background}
+We describe code clone definitions and techniques that are commonly used in code clone detection.
+
+\subsection{Clone type definitions}
+Most modern clone detection tools detect clones by the following clone type definitions \cite{svajlenko2014evaluating}:
+\textbf{Type 1:} Code fragments that are syntactically identical, except for differences in white space, layout and comments.
+\textbf{Type 2:} Code fragments that are syntactically identical, except for differences in identifier names, literal values, white space, layout and comments.
+\textbf{Type 3:} Code fragments that are syntactically similar with differences at the statement level. The fragments may differ by the addition, removal or modification of statements.
+
+\subsection{Clone detection techniques}
+
+
+\section{Clone Detection Techniques Survey}
+As an initial step towards creating a clone detection DSL, we surveyed clone detection techniques and tools to extract common functionalities.
+
 \section{Language Design}
+We propose Clone Detection DSL (CDD)\footnote{Link to the GitHub repository is omitted to adhere to the double-blind review rules. Link to full source code of the DSL will be included in the camera-ready version.}, a DSL that allows to build a clone detection script to analyze Java systems.
+
+\subsection{Clone Size}
+An important feature of many clone detection tools, to be able to find clones that have a high relevance, is to be able to configure what characteristics clones should have for them to be considered. Some clone detection tools use a threshold that specifies the minimum number of lines \cite{juergens2009clonedetective, ducasse1999language, cordy2011nicad, uddin2013simcad}. Other clone detection tools specify the minimum number of tokens \cite{kamiya2002ccfinder, toomey2012ctcompare, jiang2007deckard}. Some AST-based clone detectors use the minimum number of statements \cite{higo2009enhancing}.
+
+Based on such thresholds, clones that are too small are filtered. How these thresholds are configured has a big impact on the results and their relevance \cite{roy2007survey}. Our DSL allows for any combination of metric values to configure the minimum size of a clone. For this, we introduce the \textbf{Size} keyword. This is an example of how the \textbf{Size} keyword can be configured:
+\\
+\textbf{\textcolor[HTML]{7F0055}{Size}} (\textcolor[HTML]{7D7D7D}{4} \textbf{\textcolor[HTML]{7F0055}{lines}} $\&$  \textcolor[HTML]{7D7D7D}{50} \textbf{\textcolor[HTML]{7F0055}{tokens}}) $ \vert $  (\textcolor[HTML]{7D7D7D}{6} \textbf{\textcolor[HTML]{7F0055}{lines}} $\&$  \textcolor[HTML]{7D7D7D}{40} \textbf{\textcolor[HTML]{7F0055}{tokens}})
+\\
+
+
+\subsection{Match Granularity}
+
+
+\subsection{Exclusions}
+
+\subsection{Compare Rules}
+
+\section{Example scripts}
 
 \section{Results}
 
@@ -224,5 +263,6 @@ To allow easy experimentation with code clone defitions and methods, we propose 
 % \section{Appendix}
 %
 % Text of appendix \ldots
+\bibliography{references}
 
 \end{document}
