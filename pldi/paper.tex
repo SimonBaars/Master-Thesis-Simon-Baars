@@ -245,17 +245,49 @@ This allows for easy experiments of combinations of metrics to determine whether
 
 \subsection{Match Granularity}
 The \textbf{Match} keyword describes on what granularity clones will be matched. CDD can find clones that span physical lines of code, logical lines of code and in subtrees of the AST of a program.% certain physical CDD supports three granularities:
-\begin{itemize}
-  \item \textbf{PLOC}: These are physical lines of code, excluding whitespace and comments. Comparison is done between the tokens found on the lines. The smallest clone that can be found using this approach is a single line clone.
-  \item \textbf{LLOC}: These are logical lines of code, where each statement and some declarations are counted as a logical line of code \cite{nguyen2007sloc}. We compare these logical lines of code to find duplicates. The smallest clone that can be found using this approach is are clones that span a single logical line.
-  \item \textbf{Subtree}: This method compares subtrees in the AST of the program.
-\end{itemize}
+
+\subsubsection{Physical Lines of Code (LoC)}
+Physical lines of code are the lines of code as displayed in the editor of a program, excluding whitespace and comments. Code lines are compared by comparing tokens on one line with another. The main advantage of LOC is that, if statements are relatively equally distributed over lines, each line
+
+The main disadvantage of LOC is that its granularity depends on the coding style used by the programmer of the source code. A programmer that adheres to a maximum line length might break up statements more often than those who do not \cite{nguyen2007sloc}. Because of that, using LOC might give different results based on the design of the code.
+
+Another disadvantage is that changing the style of the code between fragments might result in duplicate code not being considered a clone. For instance, if in one fragment a statement is on a single line and in another the same statement is distributed over two lines, it will not be detected as a clone.
+
+\subsubsection{Logical Lines of Code (LLoC)}
+These are logical lines of code, where each statement and some declarations are counted as a logical line of code. In the study ``A SLOC Counting Standard'' \cite{nguyen2007sloc}, Nguyen et al. discuss which declarations and statements should be considered as a logical line of code.
+
+The main advantage of LLoC over LoC is that it is less dependent on coding style. If two statements are equal, independent of how they are distributed over physical lines, they will be considered clones. Some also argue that LLoC gives a more accurate indication of volume \cite{nguyen2007sloc}.
+
+\subsubsection{Subtree}
+A third approach to compare blocks of code is to compare subtrees of the AST of the source code.
+
+\subsection{Search Root}
 
 \subsection{Exclusions}
 
 \subsection{Compare Rules}
 
 \section{Example scripts}
+Hello :)
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+\noindent type1.cdd\par
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+\noindent\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/path/to/java/project"} \par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Size}} \textcolor[HTML]{7D7D7D}{6} \textbf{\textcolor[HTML]{7F0055}{lines}}  \par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{SLOC}}  \par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration \\
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+\noindent type2.cdd\par
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
+\noindent\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/Users/sbaars/Documents/Kim/jhotdraw"}\par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Size}} \textcolor[HTML]{7D7D7D}{6 \textbf{lines}}\par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{SLOC}}\par
+\noindent\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration\par
+\noindent\textbf{\textcolor[HTML]{7F0055}{DoNotCompare}} SimpleName, LiteralExpr\par
+\noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 
 \section{Results}
 
