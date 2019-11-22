@@ -71,7 +71,7 @@
 
 %% Title information
 \title%[Short Title]
-{A Code Clone Detection DSL for Java}         %% [Short Title] is optional;
+{CDD: A Code Clone Detection DSL for Java}         %% [Short Title] is optional;
                                         %% when present, will be used in
                                         %% header instead of Full Title.
 %\titlenote{with title note}             %% \titlenote is optional;
@@ -216,8 +216,8 @@ Different clone detection techniques have been proposed in literature \cite{shen
 \\ \textbf{Semantic (Graph)}: A graph-based clone detection technique uses a graph to represent the data and control flow of a program.
 \\ \textbf{Semantic (Hybrid)}: Hybrid approaches use a combination of before-mentioned techniques to speed up detection of clones and find clones with a variety of characteristics.
 
-\section{Clone Detection Techniques Survey}
-As an initial step towards creating a clone detection DSL, we survey clone detection techniques and tools to extract common functionalities. \todo{Write this section}
+%\section{Clone Detection Techniques Survey} TODO
+%As an initial step towards creating a clone detection DSL, we survey clone detection techniques and tools to extract common functionalities. \todo{Write this section}
 
 \section{Language Design}
 We propose the Clone Detection DSL (CDD)\footnote{Link to the GitHub repository is omitted to adhere to the double-blind review rules. Link to full source code of the DSL would be included in the camera-ready version.}, a DSL that allows to build a clone detection script to analyze Java systems.
@@ -244,7 +244,12 @@ Normally, these keywords denote the value of the metric of each clone instance. 
 This allows for easy experiments of combinations of metrics to determine whether a clone should be considered.
 
 \subsection{Match Granularity}
-
+The \textbf{Match} keyword describes on what granularity clones will be matched. CDD can find clones that span physical lines of code, logical lines of code and in subtrees of the AST of a program.% certain physical CDD supports three granularities:
+\begin{itemize}
+  \item \textbf{PLOC}: These are physical lines of code, excluding whitespace and comments. Comparison is done between the tokens found on the lines. The smallest clone that can be found using this approach is a single line clone.
+  \item \textbf{LLOC}: These are logical lines of code, where each statement and some declarations are counted as a logical line of code \cite{nguyen2007sloc}. We compare these logical lines of code to find duplicates. The smallest clone that can be found using this approach is are clones that span a single logical line.
+  \item \textbf{Subtree}: This method compares subtrees in the AST of the program.
+\end{itemize}
 
 \subsection{Exclusions}
 
