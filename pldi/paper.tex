@@ -220,7 +220,7 @@ Different clone detection techniques have been proposed in literature \cite{shen
 As an initial step towards creating a clone detection DSL, we survey clone detection techniques and tools to extract common functionalities. \todo{Write this section}
 
 \section{Language Design}
-We propose Clone Detection DSL (CDD)\footnote{Link to the GitHub repository is omitted to adhere to the double-blind review rules. Link to full source code of the DSL will be included in the camera-ready version.}, a DSL that allows to build a clone detection script to analyze Java systems.
+We propose the Clone Detection DSL (CDD)\footnote{Link to the GitHub repository is omitted to adhere to the double-blind review rules. Link to full source code of the DSL would be included in the camera-ready version.}, a DSL that allows to build a clone detection script to analyze Java systems.
 
 \subsection{Clone Size}
 An important feature of many clone detection tools, to be able to find clones that have a high relevance, is to be able to configure what characteristics clones should have for them to be considered. Some clone detection tools use a threshold that specifies the minimum number of lines \cite{juergens2009clonedetective, ducasse1999language, cordy2011nicad, uddin2013simcad}. Other clone detection tools specify the minimum number of tokens \cite{kamiya2002ccfinder, toomey2012ctcompare, jiang2007deckard}. Some AST-based clone detectors use the minimum number of statements \cite{higo2009enhancing}.
@@ -233,9 +233,15 @@ Based on such thresholds, clones that are too small are filtered. How these thre
 
 In this example, we seek clones that either have many tokens but fewer lines, or many lines but fewer tokens. We allow the following keywords to be used in the condition of the \textbf{Size} threshold:
 \begin{itemize}
-  \item \textit{lines}: Number of lines found in each clone instance
+  \item \textit{lines}: Number of lines in clone instance
+  \item \textit{tokens}: Number of tokens in clone instance
+  \item \textit{statements}: Number of statements in clone instance
+  \item \textit{declarations}: Number of declarations in clone instance
+  \item \textit{complexity}: The cyclomatic complexity \cite{mccabe1976complexity} found in a clone instance.
 \end{itemize}
+Normally, these keywords denote the value of the metric of each clone instance. However, when prepended by \textit{``class\_''}, they denote the value of the metric for all clone instances in a clone class combined. This means that \textit{lines} specifies the minimum number of lines in each clone instance, and \textit{class\_lines} specifies the minimum number of lines in all clone instances of a clone class combined.
 
+This allows for easy experiments of combinations of metrics to determine whether a clone should be considered.
 
 \subsection{Match Granularity}
 
