@@ -370,7 +370,62 @@ For type 3, we allow statements to differ. To implement this, we specify a perce
 \noindent\textbf{\textcolor[HTML]{7F0055}{Compare}} $\ast$  \textbf{\textcolor[HTML]{7F0055}{Subnodes}} Statement \textcolor[HTML]{7D7D7D}{10$\%$}  \textcolor[HTML]{3F7F5F}{/$\ast$  We allow 10$\%$  variance in Statements $\ast$ /}\par
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 
-\section{Results}
+\section{Improving Existing Clone Types with CDD}
+Bla bla refactoring oriented clone types bla bla
+
+\vspace{\baselineskip}
+type1r.cdd\par
+
+\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/Users/sbaars/Documents/Kim/jhotdraw"}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Size}} (\textcolor[HTML]{7D7D7D}{6 \textbf{nodes} $\&$  20 \textbf{tokens}) $ \vert $  (5 \textbf{nodes} $\&$  25 \textbf{tokens}) $ \vert $  (4 \textbf{nodes} $\&$  30 \textbf{tokens}) $ \vert $  (3 \textbf{nodes} $\&$  35 \textbf{tokens}) $ \vert $  (2 \textbf{nodes} $\&$  40 \textbf{tokens}) $ \vert $  (1 \textbf{nodes} $\&$  50 \textbf{tokens})}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{LLOC}}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} ReferenceType, LiteralExpr, MethodCallExpr \textbf{\textcolor[HTML]{7F0055}{FQI}}\par
+
+
+\vspace{\baselineskip}
+type2r.cdd\par
+
+\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/Users/sbaars/Documents/Kim/jhotdraw"}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Size}} (\textcolor[HTML]{7D7D7D}{6 \textbf{nodes} $\&$  20 \textbf{tokens}) $ \vert $  (5 \textbf{nodes} $\&$  25 \textbf{tokens}) $ \vert $  (4 \textbf{nodes} $\&$  30 \textbf{tokens}) $ \vert $  (3 \textbf{nodes} $\&$  35 \textbf{tokens}) $ \vert $  (2 \textbf{nodes} $\&$  40 \textbf{tokens}) $ \vert $  (1 \textbf{nodes} $\&$  50 \textbf{tokens})}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{LLOC}}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} ReferenceType \textcolor[HTML]{3F7F5F}{/$\ast$  Reference Types $\ast$ /, LiteralExpr /$\ast$  Literals $\ast$ /, MethodCallExpr /$\ast$  Method Calls $\ast$ / \textbf{FQI}}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} LiteralExpr \textcolor[HTML]{3F7F5F}{/$\ast$  Literals $\ast$ / \textbf{StringMatch} 10$\%$ }\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} NameExpr \textcolor[HTML]{3F7F5F}{/$\ast$  Variables $\ast$ /, MethodCallExpr /$\ast$  Method Calls $\ast$ / \textbf{CompleteMatch} 10$\%$ }\par
+
+
+
+\vspace{\baselineskip}
+type3r.cdd\par
+
+\textbf{\textcolor[HTML]{7F0055}{Project}} \textcolor[HTML]{2A00FF}{"/Users/sbaars/Documents/Kim/jhotdraw"}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Size}} (\textcolor[HTML]{7D7D7D}{6 \textbf{nodes} $\&$  20 \textbf{tokens}) $ \vert $  (5 \textbf{nodes} $\&$  25 \textbf{tokens}) $ \vert $  (4 \textbf{nodes} $\&$  30 \textbf{tokens}) $ \vert $  (3 \textbf{nodes} $\&$  35 \textbf{tokens}) $ \vert $  (2 \textbf{nodes} $\&$  40 \textbf{tokens}) $ \vert $  (1 \textbf{nodes} $\&$  50 \textbf{tokens})}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Match}} \textbf{\textcolor[HTML]{7F0055}{LLOC}}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Exclude}} PackageDeclaration, ImportDeclaration\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} ReferenceType \textcolor[HTML]{3F7F5F}{/$\ast$  Reference Types $\ast$ /, LiteralExpr /$\ast$  Literals $\ast$ /, MethodCallExpr /$\ast$  Method Calls $\ast$ / \textbf{FQI}}\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} LiteralExpr \textcolor[HTML]{3F7F5F}{/$\ast$  Literals $\ast$ / \textbf{StringMatch} 10$\%$ }\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} NameExpr \textcolor[HTML]{3F7F5F}{/$\ast$  Variables $\ast$ /, MethodCallExpr /$\ast$  Method Calls $\ast$ / \textbf{CompleteMatch} 10$\%$ }\par
+
+\textbf{\textcolor[HTML]{7F0055}{Compare}} $\ast$  \textbf{\textcolor[HTML]{7F0055}{Subnodes}} Statement \textcolor[HTML]{7D7D7D}{10$\%$  /$\ast$  We allow 10$\%$  variance in Statements $\ast$ /}\par
+
+%\section{Results}
 
 \section{Discussion}
 
