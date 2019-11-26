@@ -236,7 +236,7 @@ Most modern clone detection tools detect clones by the following clone type defi
 
 \subsection{Clone detection techniques}
 Different clone detection techniques have been proposed in literature \cite{sheneamer2016survey}:
-\textbf{Textual}: Code lines are textually compared. Advantages are that textual approaches are often simpler, easier to implement and are independent of language. Disadvantages are that it is harder to exclude certain constructs from matching.
+\\ \textbf{Textual}: Code lines are textually compared. Advantages are that textual approaches are often simpler, easier to implement and are independent of language. Disadvantages are that it is harder to exclude certain constructs from matching.
 \\ \textbf{Lexical (Token)}: Lexical approaches first tokenize the source code, so certain groups of tokens can be excluded from matching \cite{svajlenko2014evaluating}. The disadvantage is that tokens must be specified for each language.
 \\ \textbf{Syntactic (Tree)}: AST-based approaches first parse the source code into an AST. This allows for subtree based comparison and mapping context of clones \cite{fontana2015duplicated}.
 \\ \textbf{Syntactic (Metric)}: In metric-based clone detection techniques, a number of metrics are computed for each fragment of code to find similar fragments by comparing metric vectors instead of comparing code or ASTs directly.
@@ -371,7 +371,7 @@ For type 3, we allow statements to differ. To implement this, we specify a perce
 \noindent\makebox[\linewidth]{\rule{\linewidth}{0.4pt}}
 
 \section{Improving Existing Clone Types with CDD}
-Bla bla refactoring oriented clone types bla bla
+Bla bla refactoring oriented clone types bla bla HOI
 
 \vspace{\baselineskip}
 type1r.cdd\par
