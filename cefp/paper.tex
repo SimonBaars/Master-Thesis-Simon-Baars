@@ -20,7 +20,7 @@
 
 \begin{document}
 %
-\title{Mining Software Repositories for Contextual Information of Code Clones}
+\title{Determining Most-Suitable Refactoring Techniques for Refactoring Code Clones}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -50,6 +50,8 @@ The abstract should briefly summarize the contents of the paper in
 %
 \section{Introduction}
 
+
+\section{Background}
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
@@ -324,7 +326,9 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \section{Conclusion}
+To determine which refactoring techniques are most suitable to refactor most clones, we analyzed their context. We measured the \textbf{relation} through inheritance of clone instances in a clone class. In our corpus, we found that 37\% of clones are found in the same class. 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. We also looked at the \textbf{location} of clones: 78\% of clones are found at method-level of which 77\% is found in the body of a method or constructor.
 
+From this, we conclude that the ``Extract Method'' refactoring technique is most suitable to refactor most clones.
 
 %\bibliographystyle{splncs04}
 \printbibliography
