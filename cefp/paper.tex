@@ -6,6 +6,7 @@
 %
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{hyperref}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -218,6 +219,26 @@ This category denotes that the clone spans over only global variables/fields tha
 
 \subsubsection{Other}
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated to refactor, especially when aiming to automate this process.
+
+\section{Experimental Setup}
+All our experiments are quantitative experiments, measured over a corpus using CloneRefactor. In this chapter, we first explain the corpus we use. We then explain how we calculate the impact of refactorings on the software maintainability.
+
+\subsection{The Corpus}\label{chap:corpus}
+For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}\footnote{The corpus can be downloaded at: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/}}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are useful to perform measurements on.
+
+Because CloneRefactor requires all dependencies for the projects it analyses, we created a set of scripts\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} to filter the corpus for all projects for which we can obtain all dependencies using Maven.
+
+\subsection{Resulting corpus}
+This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the following file in our GitHub repository: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts/blob/master/filtered_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files.
+
+\subsection{Tool Validation}
+We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones, their context, and their proposed refactoring.
+
+We also test the correctness of the resulting code after refactoring. For this, we use a project named JFreeChart\footnote{JFreeChart is available on GitHub: \url{https://github.com/jfree/jfreechart}}. JFreeChart has high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor. We run CloneRefactor manually over the JFreeChart project, run its test cases and check the correctness of the proposed refactorings.
+
+\section{Results}
+
+\section{Conclusion}
 
 
 \bibliographystyle{splncs04}
