@@ -182,7 +182,7 @@ Many object-oriented programming languages (like Java, Python, and C\#) require 
 \subsubsection{Called methods}
 A codebase can have several methods with the same name. The implementation of these methods might differ. When two code fragments call methods with an identical name or signature, they can still call different methods. Because of this, textually identical code fragments can differ functionally.
 
-We compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become 
+We compare the fully qualified method signature for all method references. A fully qualified method signature consists of the fully qualified name of the method, the fully qualified type of the method plus the fully qualified type of each of its arguments. For instance, an \texttt{eat} method could become
 %\footnotesize{
 \texttt{com.sb.Apple.eat(com.sb.Tool)}.
 %}.
@@ -204,7 +204,7 @@ We develop a tool named CloneRefactor\footnote{CloneRefactor is available on Git
 
 %To detect clones, CloneRefactor parses the AST acquired from JavaParser to a graph structure. Based on this graph structure, clones are detected. Dependent on the type of clones being detected, transformations may be applied.
 
-CloneRefactor uses JavaParser to read a project from disk and build an AST. %, one class file at a time. 
+CloneRefactor uses JavaParser to read a project from disk and build an AST. %, one class file at a time.
 Each AST is then converted to a directed graph that maps relations between statements. Based on this graph, CloneRefactor detects clone classes and verifies them using the configured thresholds. This process is explained in further detail over the following sections.
 %\begin{itemize}
 %  \item Amount of tokens.
@@ -248,7 +248,7 @@ The relations \textit{next} and \textit{previous} in this graph are represented 
 In the previous section, we described a ``duplicate'' relation between nodes in the clone graph built by CloneRefactor. Whether this duplicate relation exists between two nodes is determined by taking into account the contextual information. For \textit{method calls} we determine their fully qualified method signature for comparison with other nodes. For all \textit{referenced types} we use their fully qualified identifier (FQI) for comparison with other nodes. For \textit{variables} we compare their fully qualified type in addition to their name.
 
 \subsection{Mapping graph nodes to code}
-The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements of a software project. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node. 
+The clone graph, as explained in Section~\ref{sec:buildingclonegraph}, contains all declarations and statements of a software project. However, declarations and statements may themselves have child declarations and statements. To avoid redundant duplication checks, we exclude the body of each node.
 
 Figure~\ref{fig:clonegraph} shows an example of how source code maps to AST nodes. On line 24-25 of the code fragment is a \texttt{MethodDeclaration}. The node corresponding with this MethodDeclaration denotes all tokens found on these two lines, line 24 and 25. Although the statements following this method declaration (those that are part of its body) officially belong to the method declaration, they are not included in its graph node. Because of that, in this example, the \texttt{MethodDeclaration} on line 24-25 will be considered a clone of the \texttt{MethodDeclaration} on line 205 even though their bodies might differ. Even the range (the line and column that this node spans) does not include its child statements and declarations.
 
@@ -264,9 +264,9 @@ We then go further to the previous node (6). In this case, this node does not ha
 Eventually, following only the ``previous node'' relations, we can get from (6) to (2). When we are at that point, we will find only one cloned node for (2), namely (3). However, after we check this clone against the thresholds, we check whether it is a subset of any existing clone. If this is the case (which it is for this example), we discard the clone.
 
 \section{Experiments and Results}
-To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2,267 Java projects including their dependencies \cite{baars2019towards}. 
+To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2,267 Java projects including their dependencies \cite{baars2019towards}.
 
-We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We find that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used. 
+We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We find that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used.
 
 We also look into the difference in performance when taking into account contextual information. Detecting the clones in all 2,267 projects took 20.83 minutes when considering contextual information. When contextual information was not considered, it took 1.58 minutes. This is mainly because contextual information may be hard to retrieve, because the location of the contextual information may not be explicit. To find contextual information it may also be required to follow cross-file references. %The location of contextual information may also be implicit, which may require to seek through several files.
 
