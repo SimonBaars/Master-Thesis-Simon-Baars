@@ -7,6 +7,10 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage[style=ieee,citestyle=numeric-comp,dashed=false]{biblatex}
+\usepackage{booktabs}
+\usepackage{multirow}
+\addbibresource{refs.bib}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -58,7 +62,7 @@ We define categories for each of these aspects and enable CloneRefactor to deter
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=1\columnwidth]{img/context}
+    \includegraphics[width=0.8\columnwidth]{img/context}
     \caption{Abstract representation of clone classes and clone instances.}
   \label{fig:clonecontext}
 \end{figure}
@@ -93,7 +97,7 @@ We added the following categories, to gain more information about clones and red
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.7\columnwidth]{img/Relation}
+    \includegraphics[width=0.6\columnwidth]{img/Relation}
       \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
   \label{fig:clonerelation}
 \end{figure}
@@ -235,16 +239,94 @@ Because CloneRefactor requires all dependencies for the projects it analyses, we
 This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the following file in our GitHub repository: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts/blob/master/filtered_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files.
 
 \subsection{Tool Validation}
-We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones, their context, and their proposed refactoring.
+We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones, their context, and their proposed refactoring.
 
 We also test the correctness of the resulting code after refactoring. For this, we use a project named JFreeChart\footnote{JFreeChart is available on GitHub: \url{https://github.com/jfree/jfreechart}}. JFreeChart has high test coverage and working tests, which allows us to test the correctness of the program after running CloneRefactor. We run CloneRefactor manually over the JFreeChart project, run its test cases and check the correctness of the proposed refactorings.
 
 \section{Results}
+To determine the refactoring method(s) that can be used to refactor most clones, we perform statistical analysis on the context of clones (see Section~\ref{chap:contextsetup}).
+
+\subsection{Relation} \label{sec:relationresults}
+Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Section~\ref{sec:setuprelation}).
+% Sander: is dat plaatje met overzicht van relaties van clone classen weg of ergens anders? hij is hier ook wel handig
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
+\multirow{2}{*}{Common Class} & Same Class & 22,893 & 26.8\% & \multirow{2}{*}{31,848} & \multirow{2}{*}{37.2\%} \\ \cmidrule(lr){2-4}
+ & Same Method & 8,955 & 10.5\% & & \\ \midrule
+\multirow{5}{*}{Common Hierarchy} & Sibling & 15,588 & 18.2\% & \multirow{5}{*}{20,342}& \multirow{5}{*}{23.8\%} \\ \cmidrule(lr){2-4}
+ & Superclass & 2,616 & 3.1\% & & \\ \cmidrule(lr){2-4}
+ & First Cousin & 1,219 & 1.4\% & & \\ \cmidrule(lr){2-4}
+ & Common Hierarchy & 720 & 0.8\% & & \\ \cmidrule(lr){2-4}
+ & Ancestor & 199 & 0.2\% & & \\ \midrule
+\multirow{4}{*}{Unrelated} & No Direct Superclass & 10,677 & 12.5\% & \multirow{4}{*}{20,314}& \multirow{4}{*}{23.7\%} \\ \cmidrule(lr){2-4}
+ & External Superclass & 4,525 & 5.3\% & & \\ \cmidrule(lr){2-4}
+ & External Ancestor & 3,347 & 3.9\% & & \\ \cmidrule(lr){2-4}
+ & No Indirect Superclass & 1,765 & 2.1\% & & \\ \midrule
+\multirow{2}{*}{Common Interface} & Same Direct Interface & 7,522 & 8.8\% & \multirow{2}{*}{13,074} & \multirow{2}{*}{15.3\%} \\ \cmidrule(lr){2-4}
+ & Same Indirect Interface & 5,552 & 6.5\% & & \\ \bottomrule
+\end{tabular}
+\caption{Number of clone classes per clone relation.}
+\label{tab:relation}
+\end{table}
+
+Our results show that most clones (37\%) are in a common class. 24\% of clones are in a common hierarchy. Another 24\% of clones are unrelated. 15\% of clones are in an interface.
+
+\subsection{Location}
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different location categories (see Section~\ref{sec:setuplocation}). We can see from these results that nearly 80\% of clones are found at method level. 17\% of clones are found at class level, meaning they exceed the boundaries of a single method (or do not span methods at all). Constructors account for approximatelyTop- 3\% of clones. In interfaces, only 1\% of clones is found.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{Clone instances}} & \textit{\textbf{\%}} \\ \midrule
+Method Level & 232,545 & 78.43\% \\
+Class Level & 50,402 & 17.00\% \\
+Constructor Level & 10,039 & 3.39\% \\
+Interface Level & 2,693 & 0.91\% \\
+Enum Level & 788 & 0.27\% \\
+\end{tabular}
+\caption{Amount of clone instances with a per location category.}
+\label{tab:location}
+\end{table}
+
+\subsection{Contents}
+Table~\ref{tab:contents} displays the number of clone classes found for the entire corpus for different content categories (see Section~\ref{sec:setupcontents}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
+\multirow{2}{*}{Partial} & Method Body & 219,540 & 74.05\% & \multirow{2}{*}{229,521}& \multirow{2}{*}{77.42\%} \\ \cmidrule(lr){2-4}
+ & Constructor Body & 9,981 & 3.37\% & & \\ \midrule
+\multirow{3}{*}{Other} & Several Methods & 22,749 & 7.67\% & \multirow{3}{*}{53,773} & \multirow{3}{*}{18.14\%} \\ \cmidrule(lr){2-4}
+ & Only Fields & 17,700 & 5.97\% & & \\ \cmidrule(lr){2-4}
+ & Other & 13,324 & 4.49\% & & \\ \midrule
+ \multirow{5}{*}{Full} & Full Method & 12,990 & 4.38\% & \multirow{5}{*}{13,173}& \multirow{5}{*}{4,44\%} \\ \cmidrule(lr){2-4}
+  & Full Interface & 64 & 0.02\% & & \\ \cmidrule(lr){2-4}
+  & Full Constructor & 58 & 0.02\% & & \\ \cmidrule(lr){2-4}
+  & Full Class & 37 & 0.01\% & & \\ \cmidrule(lr){2-4}
+  & Full Enum & 24 & 0.01\% & & \\ \bottomrule
+\end{tabular}
+\caption{Number of clone instances for clone contents categories}
+\label{tab:contents}
+\end{table}
+
+From these results, we see that 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods. 6\% of clones span only global variables. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
+
+\section{Discussion}
+Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface.
+
+Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \section{Conclusion}
 
 
-\bibliographystyle{splncs04}
-\bibliography{references}
+%\bibliographystyle{splncs04}
+\printbibliography
 
 \end{document}
