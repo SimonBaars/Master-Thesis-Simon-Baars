@@ -20,7 +20,7 @@
 
 \begin{document}
 %
-\title{Determining Most-Suitable Refactoring Techniques for Refactoring Code Clones}
+\title{Finding the Most Suitable Code Clone Refactoring Techniques by Mapping Clone Context}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -40,8 +40,11 @@ Ana Oprescu\inst{1,3}\orcidID{0000-0001-6376-0750}}
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-The abstract should briefly summarize the contents of the paper in
-15--250 words.
+One of the most important purposes of code clone analyses is as input for refactoring. Which refactoring technique to use depends on where a clone is found and what the relation between clone instances in a clone class is. We define three influencing factors on how a clone should be refactored: Relation, Location and Contents. The Relation describes the inheritance relation among the clone instances in a clone class. The Location describes where a clone instance is found in the source code. The Contents describe what a clone instance spans.
+
+We find that most clones (77\%) are in the body of methods or constructors and thus the ``Extract Method'' refactoring technique applies. What further techniques are requires for the refactoring depends on the relation among the clone instances of a clone. We define four relations that require different further refactoring techniques: Common Class, Common Hierarchy, Common Interface, Unrelated. For each of these, we define subcategories to facilitate further understanding in what relations clones are found in the codebase.
+
+% What further techniques apply when refactoring a clone using the ``Extract Method'' technique depends on the relation among its clone instances. If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances.
 
 \keywords{Code Clones \and MSR \and Clone Relation \and Inheritance \and Object-Oriented Programming.}
 \end{abstract}
@@ -49,9 +52,26 @@ The abstract should briefly summarize the contents of the paper in
 %
 %
 \section{Introduction}
+Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increasing maintenance efforts or causing bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code was shown to account for up to 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
 
+Several refactoring techniques can be used to reduce duplication in source code. Which refactoring technique to apply depends on where a clone is located and what the relation is between similar code fragments \cite{koni2001scenario}. Subsequent studies have performed statistical measurements on how many clones fall into these location and relation categories \cite{fontana2012duplicated, fontana2015duplicated}.
+
+We extend the state-of-the-art \cite{fontana2015duplicated} by defining location, relation and contents categories for clones to determine how they should be refactored. The extra categories we propose help to propose a refactoring opportunity that can automatically be applied, rather than merely suggesting the technique that has to be used \cite{fontana2015duplicated}.
+
+We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. Clones were found in very diverse relations, which indicates that in
 
 \section{Background}
+We use two definitions to argue about code clones~\cite{roy2007survey}:
+\\ \textbf{Clone instance}: A single cloned fragment.
+\\ \textbf{Clone class}: A set of similar clone instances.
+
+To argue about the similarity relation between clone instances in a clone class, several clone type definitions have been proposed~\cite{roy2007survey}:
+\\\\
+\textbf{Type 1:} Identical code fragments except for variations in whitespace (may also be variations in layout) and comments.\\
+\textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
+\textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.\\
+
+A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}).
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
@@ -230,7 +250,7 @@ This category denotes that the clone spans over only global variables/fields tha
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated to refactor, especially when aiming to automate this process.
 
 \section{Experimental Setup}
-All our experiments are quantitative experiments, measured over a corpus using CloneRefactor. In this chapter, we first explain the corpus we use. We then explain how we calculate the impact of refactorings on the software maintainability.
+To find out in which location, relation and contents category most clones are found, we performed statistical measurements on a large corpus of diverse open-source projects. We use the tool CloneRefactor\footnote{CloneRefactor is a code clone detection and refactoring tool: \url{https://github.com/SimonBaars/CloneRefactor}} which automatically determines these context aspects of code clones. In this section, we first explain the corpus we use. We then explain how we calculate the impact of refactorings on the software maintainability.
 
 \subsection{The Corpus}\label{chap:corpus}
 For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}\footnote{The corpus can be downloaded at: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/}}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are useful to perform measurements on.
