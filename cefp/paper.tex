@@ -61,7 +61,7 @@ We extend the state-of-the-art \cite{fontana2015duplicated} by defining location
 %We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. Clones were found in very diverse relations, which indicates that in
 We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring a clone using the ``Extract Method'' technique depends on the relation among its clone instances.
 
-If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstaction or create an utility class to put the common functionality.
+If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstraction or create a utility class to put the common functionality.
 
 \section{Background}
 We use two definitions to argue about code clones~\cite{roy2007survey}:
@@ -349,6 +349,14 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
 \section{Conclusion}
+We defined categories to argue about the contextual information of code clones. These categories are:
+\begin{itemize}
+  \item \textbf{Clone Relation}: The relation between clone instances among each other in a clone class.
+  \item \textbf{Clone Location}: The location of clone instances in the codebase.
+  \item \textbf{Clone Contents}: The contents of clone instances in the codebase.
+\end{itemize}
+For each category we propose subcategories, 
+
 To determine which refactoring techniques are most suitable to refactor most clones, we analyzed their context. We measured the \textbf{relation} through inheritance of clone instances in a clone class. In our corpus, we found that 37\% of clones are found in the same class. 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. We also looked at the \textbf{location} of clones: 78\% of clones are found at method-level of which 77\% is found in the body of a method or constructor.
 
 From this, we conclude that the ``Extract Method'' refactoring technique is most suitable to refactor most clones.
