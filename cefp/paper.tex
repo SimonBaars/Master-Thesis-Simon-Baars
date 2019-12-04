@@ -355,11 +355,11 @@ We defined categories to argue about the contextual information of code clones. 
   \item \textbf{Clone Location}: The location of clone instances in the codebase.
   \item \textbf{Clone Contents}: The contents of clone instances in the codebase.
 \end{itemize}
-For each category we propose subcategories, 
+For each category we propose subcategories to get more insight into the number of transformations required for the refactoring and their impact on the maintainability of the software. We measure the distribution of clones over these categories on a corpus of 2,267 open-source systems to determine in which contexts most clones are found.
 
-To determine which refactoring techniques are most suitable to refactor most clones, we analyzed their context. We measured the \textbf{relation} through inheritance of clone instances in a clone class. In our corpus, we found that 37\% of clones are found in the same class. 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. We also looked at the \textbf{location} of clones: 78\% of clones are found at method-level of which 77\% is found in the body of a method or constructor.
+We looked at the \textbf{location} of clones: 78\% of clones are found at method-level of which 77\% is found in the body of a method or constructor. From this, we conclude that the ``Extract Method'' refactoring technique is most suitable to refactor most clones.
 
-From this, we conclude that the ``Extract Method'' refactoring technique is most suitable to refactor most clones.
+We also looked at the \textbf{relation} of clones. We found that 37\% of clones are found in the same class. 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. This implies that most clone refactorings require more transformations than only method extraction to ensure that the extracted method is accessible by all clone instances.
 
 %\bibliographystyle{splncs04}
 \printbibliography
