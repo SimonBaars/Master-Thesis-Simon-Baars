@@ -78,13 +78,15 @@ To argue about the similarity relation between clone instances in a clone class,
 A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}).
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
-We define the following aspects of the clone as its context:
+The context of a clone determines how it should be refactored~\cite{fowler2018refactoring}. Based on current literature \cite{fontana2012duplicated, fontana2015duplicated}, we define the following aspects of a clone as its context:
 \begin{enumerate}
   \item \textbf{Relation:} The relation of clone instances in a clone class among each other through inheritance.
   \item \textbf{Location:} Where a clone instance occurs in the code.
   \item \textbf{Contents:} The statements/declarations of a clone instance.
 \end{enumerate}
-We define categories for each of these aspects and enable CloneRefactor to determine the categories of clones.
+
+This is shown schematically in Figure~\ref{fig:clonecontext}.
+%We define categories for each of these aspects and determine the categories of clones.
 
 \begin{figure}[H]
   \centering
@@ -93,12 +95,12 @@ We define categories for each of these aspects and enable CloneRefactor to deter
   \label{fig:clonecontext}
 \end{figure}
 
-Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is determined for each clone class. The location and contents of clones are determined for each clone instance.
+%Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is determined for each clone class. The location and contents of clones are determined for each clone instance.
 
 \subsection{Relation}\label{sec:setuprelation}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
-Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation of clone instances to each other. To do this, they first define several categories for the relation between clone instances in object-oriented languages. These categories are as follows:
+Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation between clone instances in a clone class. To do this, they first define several categories to argue about such relations. These categories are as follows:
 \begin{enumerate}
   \item \textbf{Same Method}: All instances of the clone class are in the same method.
   \item \textbf{Same Class}: All instances of the clone class are in the same class.
@@ -111,7 +113,7 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
 \item \textbf{Unrelated class}: There is at least one instance in the clone class that is not in the same hierarchy.
 \end{enumerate}
 
-We added the following categories, to gain more information about clones and reduce the number of unrelated clones:
+We added the following categories, to gain more information about clones and be able to suggest a more fine-grained refactoring opportunity:
 
 \begin{enumerate}
 \item \textbf{Same Direct Interface}: All instances of the clone class are in a class or interface implement the same interface.
@@ -124,7 +126,7 @@ We added the following categories, to gain more information about clones and red
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.6\columnwidth]{img/Relation}
-      \caption{Abstract figure displaying relations of clone classes. Arrows represent superclass relations.}
+      \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
   \label{fig:clonerelation}
 \end{figure}
 
@@ -138,7 +140,7 @@ We separate these relations into the following categories, because of their rela
 
 Every clone class only has a single relation, which is the first relation from the above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in the above list they will get the ``Superclass'' relation. This is because the items earlier in the above list denote a more favorable refactoring.
 
-When CloneRefactor applies automated refactorings, it uses this inheritance relation to see where it must place the refactored code. We explain this for each relation category over the following sections.
+%When CloneRefactor applies automated refactorings, it uses this inheritance relation to see where it must place the refactored code. We explain this for each relation category over the following sections.
 
 %To determine the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. %So for a clone class with x clone instances and each clone instance has y nodes, we perform:
 
@@ -172,7 +174,7 @@ The greatest downside on system design of putting functionality in interfaces is
 \subsubsection{Unrelated}
 Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable for refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
 
-Cloned classes with a \textit{No Direct Superclass} relation mark the opportunity for creating a superclass abstraction and placing the extracted method there. For clone classes with a \textit{No Indirect Superclass} relation, CloneRefactor creates such an abstraction for the ancestor that does not have a parent. Clone classes with a \textit{External Superclass} or \textit{External Ancestor} relation obstruct the possibility of creating a superclass abstraction. In such a case, CloneRefactor creates an interface abstraction to make their relation explicit.
+Cloned classes with a \textit{No Direct Superclass} relation mark the opportunity for creating a superclass abstraction and placing the extracted method there. For clone classes with a \textit{No Indirect Superclass} relation, it is possible to create such an abstraction for the ancestor that does not have a parent. Clone classes with a \textit{External Superclass} or \textit{External Ancestor} relation obstruct the possibility of creating a superclass abstraction. In such a case, it is possible to create an interface abstraction to make their relation explicit.
 
 %Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors do not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
 
