@@ -55,19 +55,19 @@ The closer classes are related, the more favorable refactoring clones by such re
 \section{Introduction}
 Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increasing maintenance efforts or causing bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code was shown to account for up to 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
 
-Several refactoring techniques can be used to reduce duplication in source code. Which refactoring technique to apply depends on where a clone is located and what the relation is between similar code fragments \cite{koni2001scenario}. Subsequent studies have performed statistical measurements on how many clones fall into these location and relation categories \cite{fontana2012duplicated, fontana2015duplicated}.
+Several refactoring techniques can be used to reduce duplication in source code~\cite{fowler2018refactoring}. Which refactoring technique to apply depends on where a clone is located and what the relation is between similar code fragments \cite{koni2001scenario}. Subsequent studies have performed statistical measurements on how many clones fall into these location and relation categories \cite{fontana2012duplicated, fontana2015duplicated}.
 
 We extend the state-of-the-art \cite{fontana2015duplicated} by defining location, relation and contents categories for clones to determine how they should be refactored. The extra categories we propose help to propose a refactoring opportunity that can automatically be applied, rather than merely suggesting the technique that has to be used \cite{fontana2015duplicated}.
 
 %We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. Clones were found in very diverse relations, which indicates that in
-We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring a clone using the ``Extract Method'' technique depends on the relation among its clone instances.
+We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that a significant portion of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring such a clone depends on the relation among its clone instances.
 
 If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstraction or create a utility class to put the common functionality.
 
 \section{Background}
 We use two definitions to argue about code clones~\cite{roy2007survey}:
-\\ \textbf{Clone instance}: A single cloned fragment.
-\\ \textbf{Clone class}: A set of similar clone instances.
+\\ \textbf{Clone instance}: A single code fragment of which a similar/identical copy exists elsewhere in the codebase.
+\\ \textbf{Clone class}: A set of similar/identical clone instances.
 
 To argue about the similarity relation between clone instances in a clone class, several clone type definitions have been proposed~\cite{roy2007survey}:
 \\\\
@@ -78,9 +78,9 @@ To argue about the similarity relation between clone instances in a clone class,
 A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}).
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
-To be able to refactor code clones, CloneRefactor first maps the context of code clones. We define the following aspects of the clone as its context:
+We define the following aspects of the clone as its context:
 \begin{enumerate}
-  \item \textbf{Relation:} The relation of clone instances among each other through inheritance.
+  \item \textbf{Relation:} The relation of clone instances in a clone class among each other through inheritance.
   \item \textbf{Location:} Where a clone instance occurs in the code.
   \item \textbf{Contents:} The statements/declarations of a clone instance.
 \end{enumerate}
