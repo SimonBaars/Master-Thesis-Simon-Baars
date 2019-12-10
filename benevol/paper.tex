@@ -1,4 +1,4 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -61,6 +61,16 @@
 
 \lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,#1}}{}
 
+% \makeatletter
+% \def\ps@IEEEtitlepagestyle{%
+%   \def\@oddfoot{\mycopyrightnotice}%
+%   \def\@evenfoot{}%
+% }
+% \def\mycopyrightnotice{%
+%   {\hfill \footnotesize 978-1-4673-9563-2/15/\$31.00 \copyright 2015 IEEE\hfill}
+% }
+% \makeatother
+
 \begin{document}
 
 \title{Statement-level AST-based Clone Detection in Java using Resolved Symbols}
@@ -73,12 +83,26 @@ simon.j.baars@gmail.com}
 
 %\copyright{Copyright 2019 for this paper by its authors. Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
 
-\IEEEoverridecommandlockouts
-\IEEEpubid{\makebox[\columnwidth]{978-1-5386-5541-2/18/\$31.00~\copyright2018 IEEE \hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}
+% \IEEEoverridecommandlockouts
+% \IEEEpubid{\makebox[\columnwidth]{978-1-5386-5541-2/18/\$31.00~\copyright2018 IEEE \hfill} \hspace{\columnsep}\makebox[\columnwidth]{ bla bla}}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
 
 \maketitle
 
-\IEEEpubidadjcol
+
+
+% \IEEEpubid{\begin{minipage}{\textwidth}\ \\[12pt] \centering
+%   1551-3203 \copyright 2015 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.\\
+%   See http://www.ieee.org/publications standards/publications/rights/index.html for more information.
+% \end{minipage}} 
+
+% \IEEEpubidadjcol
 
 \thispagestyle{plain}
 \pagestyle{plain}
@@ -90,7 +114,7 @@ Comparing code fragments including their contextual information introduces an op
 
 We propose a method to efficiently detect clones taking into account contextual information. We introduce a tool that uses an AST-parsing library named JavaParser to detect clones and retrieve contextual information. Our method parses the Abstract Syntax Tree retrieved from JavaParser into a graph structure, which is used to find clones. This graph maps the following relations for each statement in the codebase: the next statement, the previous statement, and the previous cloned statement.
 
-We find that, when taking into account contextual information in our clone detection, 11\% fewer clones are found. Manually inspecting a sample of the difference, we find that they are less relevant for refactoring.
+We find that, when taking into account contextual information in our clone detection, 11\% fewer clones are found. Manually inspecting a sample of the difference, we find that they are less relevant for refactoring.\blfootnote{Copyright 2019 for this paper by its authors. Use permitted under Creative Commons License Attribution 4.0 International (CC BY 4.0).}
 \end{abstract}
 
 \begin{IEEEkeywords}
