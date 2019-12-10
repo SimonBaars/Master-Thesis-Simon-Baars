@@ -67,7 +67,7 @@
 \author{\IEEEauthorblockN{1\textsuperscript{st} Simon Baars}
 \IEEEauthorblockA{\textit{University of Amsterdam}\\
 Amsterdam, the Netherlands \\
-simon.mailadres@gmail.com}
+simon.j.baars@gmail.com}
 }
 %\affiliation{University of Amsterdam}
 
@@ -92,11 +92,11 @@ clone detection, context, java, parsing, static code analysis
 
 \section{Introduction}
 %Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quartile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
-Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increasing maintenance efforts or causing bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code was shown to account for up to 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
+Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increase maintenance efforts or cause bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code often significantly increases total system volume~\cite{svajlenko2019mutation}, entailing more code to be maintained.
 
-Several tools have been proposed to detect duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, however do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
+Several tools have been proposed to detect duplication issues \cite{roy2009comparison, svajlenko2014evaluating, sheneamer2016survey}. These tools can find matching fragments of code, however they do not take into account contextual information of code. An example of such contextual information is the name of used variables: many different methods with the same name can exist in a codebase. This can obstruct refactoring opportunities.
 
-We describe a method to detect clones while taking into account the contextual information and introduce a tool to detect clones taking into account such contextual information. We run the tool over a corpus of 2,267 Java projects. We find that taking into account contextual information results in 11\% less clones than found when not taking this information into account. Manually inspecting a sample the difference, we find that all clones with different contextual information in our sample are less relevant for refactoring.
+We describe a method to detect clones while taking into account the contextual information and introduce a tool to detect clones taking into account such contextual information. Next, we collect and discuss statistical information regarding the difference in output when contextual information is considered and when it is not.
 
 \begin{figure*}
 \begin{parcolumns}{2}
@@ -157,7 +157,7 @@ Duplication in code is found in many different forms. Most often duplicated code
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
 \textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
-Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}. In this study, we mainly focus expanding type 1 clone detection to take into account contextual information.
+Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}. To limit the scope of this study, we mainly focus on expanding type 1 clone detection to take into account contextual information.
 
 \subsection{JavaParser}
 JavaParser~\cite{tomassetti2017javaparser} is a Java library which allows parsing Java source files to an abstract syntax tree (AST). Integrated into JavaParser is a library named SymbolSolver. This library allows for the resolution of symbols using JavaParser. For instance, we can use it to trace references (methods, variables, types, etc) to their declarations (these referenced identifiers are also called ``symbols''). Using this, we can find the required contextual information.
@@ -266,7 +266,7 @@ Eventually, following only the ``previous node'' relations, we can get from (6) 
 \section{Experiments and Results}
 To compare the difference in detected clones when contextual information is considered, we compared the number of clones found when considering contextual information with when it is not considered. For this, we use a corpus of 2,267 Java projects including their dependencies \cite{baars2019towards}.
 
-We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a sample of 50 clones that are not found when considering contextual information. We find that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our judgement, refactoring would not improve the code design. Often, different methods were called or variables of different types were used.
+We find that 167,913 clones are found when contextual information is not considered, whereas 149,569 clones are found when it is considered. We manually analyse a random sample of 50 clones that are not found when considering contextual information. We find that these clones are indeed hard to refactor because they describe different functional operations and can thus not be extracted to a new method. Also, most often they were not relevant because, based on our expert intuition, refactoring would not improve the code design. Often, different methods were called or variables of different types were used.
 
 We also look into the difference in performance when taking into account contextual information. Detecting the clones in all 2,267 projects took 20.83 minutes when considering contextual information. When contextual information was not considered, it took 1.58 minutes. This is mainly because contextual information may be hard to retrieve, because the location of the contextual information may not be explicit. To find contextual information it may also be required to follow cross-file references. %The location of contextual information may also be implicit, which may require to seek through several files.
 
