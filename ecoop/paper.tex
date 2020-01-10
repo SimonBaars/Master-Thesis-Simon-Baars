@@ -50,7 +50,8 @@
 \newcommand{\highlightPurple}{\makebox[0pt][l]{\color{lightpurple}\rule[-4pt]{1\linewidth}{14pt}}}
 \newcommand{\highlightDarkyellow}{\makebox[0pt][l]{\color{doublelightyellow}\rule[-4pt]{1\linewidth}{14pt}}}
 
-\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small}}{}
+\lstnewenvironment{javacode}[1][]{\lstset{language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small,basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{white}}}{}
 
 \title{Improving Software Maintainability through Automated Refactoring of Code Clones}
 
@@ -81,7 +82,7 @@
 \ccsdesc[300]{Software and its engineering~Object oriented development}
 
 \author{}
-\authorrunning{}
+\authorrunning{Siimon :)}
 
 \begin{document}
 
@@ -156,7 +157,7 @@ Clones detected by current detection techniques \cite{kamiya2002ccfinder, deisse
   \item The mapped statements within the clone fragments should not contain any conditional return statements.
 \end{enumerate}
 
-\begin{adjustwidth}{-0.8in}{-0.8in}% adjust the L and R margins by 1 inch
+\begin{adjustwidth}{-0.5in}{-0.5in}% adjust the L and R margins by 1 inch
 \begin{minipage}{\linewidth}
 \begin{parcolumns}{2}
 \colchunk[1]{
@@ -203,13 +204,6 @@ public class LoseScene
 %\end{figure*}
 \end{minipage}
 \end{adjustwidth}
-
-\begin{lstlisting}[language=Java,escapechar=|,tabsize=2, breaklines=true, xleftmargin=.25in, keywordstyle=\color{pblue},basicstyle=\small]
-for i:=maxint to 0 do 
-begin 
-    j:=square(root(i));
-end;
-\end{lstlisting}
 
 \section{Related Work}\label{sec:relatedwork}
 We outline relevant research to clone refactoring. A significant aspect is the context of clones.
@@ -270,7 +264,6 @@ To investigate the impact of the definitions introduced in Sec.~\ref{sec:researc
 
 \begin{table}[H]
  \begin{center}
-  \caption{Our survey on clone detection tools.} \label{table:dettools}
   \medskip
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -285,6 +278,7 @@ BigCloneEval~\cite{svajlenko2016bigcloneeval}  & \checkmark  & \checkmark   &   
 Deckard~\cite{jiang2007deckard} & \checkmark   &             & \checkmark            &             \\ \hline
 Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     & \checkmark  & \checkmark   \\ \hline
 \end{tabular}
+\caption{Our survey on clone detection tools.} \label{table:dettools}
 \end{center}
 \end{table}
 
@@ -368,9 +362,9 @@ Clone instances in a clone class may have a relation with each other through inh
     \item \textbf{Unrelated}: All clone instances are in classes that have the same interface.
     \begin{itemize}
         \item \textbf{No Direct Superclass}: All clone instances are in classes that have the Object class as their parent.
-        \item \textbf{No Indirect Superclass}: All clone instances are in a hierarchy that contains a class that has the Object class as their parent.
-        \item \textbf{External Superclass}: All clone instances are in classes the same external class as their parent.
-        \item \textbf{Indirect External Ancestor}: All clone instances are in a hierarchy that contains a class that has an external class as their parent.
+        \item \textbf{No Indirect Superclass}: All clone instances have a non-external ancestor that extends the Object class as their parent.
+        \item \textbf{External Superclass}: All clone instances are in classes that have the same external class as their parent.
+        \item \textbf{Indirect External Ancestor}: If the clone does not adhere to all above-mentioned categories, it has an indirect external ancestor.
     \end{itemize}
 \end{itemize}
 
@@ -408,7 +402,7 @@ CR uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allow
 \begin{itemize}
   \item \textbf{Parameters}: For each variable used that is not accessible from the scope of the extracted method.
   \item \textbf{A return value}: If the method modifies or declares local data that is needed outside of its scope, or if the cloned fragments already returned data.
-  \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \texttt{RuntimeException}.
+  \item \textbf{Thrown exception}: If the method throws an uncaught exception that is not a \\ \texttt{RuntimeException}.
 \end{itemize}
 CR then removes all cloned code and replaces it with a call to the newly created method. In case of a return value, CR either assigns the call result, declares it or returns it accordingly.
 
@@ -456,7 +450,7 @@ Our corpus, consisting of open source Java projects, is derived from the corpus 
 
 CR requires all libraries of the analyzed projects
 %it analyses, to find the full paths of all referenced symbols in the source code 
-(see Sec.~\ref{sec:t1r}). Therefore, we decided to filter the corpus to contain only projects using the Maven build automation system. The filtering scripts are publicly availble \footnotesize{The camera-ready version would include the GitHub repo url}.
+(see Sec.~\ref{sec:t1r}). Therefore, we decided to filter the corpus to contain only projects using the Maven build automation system. %The filtering scripts are publicly availble \footnotesize{The camera-ready version would include the GitHub repo url}.
 %We created a set of scripts to prepare such a corpus with all dependencies included.
 
 This procedure results in 2.267 Java projects including all their dependencies%\todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}
@@ -630,8 +624,7 @@ The results show that, given our refactorability criteria, 28\% of clones can be
 
 \subsection{Thresholds}
 CR has refactored 12.710 clone classes and measured the change in the selected metrics (Sec.~\ref{sec:metrics}). %\todo{use the formulas labels to refer here.
-Using the formulas in Eq.~\ref{eq:scoredev} and~\ref{eq:scoreref}
-(Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. We explore the data obtained by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
+Using the formulas in Eq.~\ref{eq:scoredev} and~\ref{eq:scoreref} (Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. We explore the data obtained by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
 \subsubsection{Clone Token Volume} \label{sec:clonetokenvolume}
 Figure \ref{fig:maintainabilityscore} shows the results by plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, therefore we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
