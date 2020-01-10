@@ -12,6 +12,11 @@
 
 \usepackage{courier}
 
+\usepackage{etoolbox}
+\AtBeginEnvironment{quote}{\singlespacing\footnotesize\ttfamily}
+
+\bibliographystyle{plainurl}
+
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
 \definecolor{pred}{rgb}{0.9,0,0}
@@ -81,20 +86,15 @@
 \ccsdesc[500]{Software and its engineering~Software evolution}
 \ccsdesc[300]{Software and its engineering~Object oriented development}
 
-\author{}
-\authorrunning{Siimon :)}
+%\author{Anonymous Author}
+%\authorrunning{Anonymous Author}
+\author{Anonymous Author(s)}{-}{-}{-}{-}
+
+\authorrunning{Anonymous Author(s)}
+
+\Copyright{Anonymous Author(s)}
 
 \begin{document}
-
-
-
-%\author{Simon Baars}
-%\affiliation{\institution{University of Amsterdam}}
-%\email{simon.mailadres@gmail.com}
-
-%\author{Ana Oprescu}
-%\affiliation{\institution{University of Amsterdam}}
-%\email{a.m.oprescu@uva.nl}
 
 \begin{abstract}
 Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. To remove such anti-patterns, the codebase should be refactored. Many tools aid in the detection process of such duplication problems but do not determine whether refactoring an identified clone would improve the maintainability. Moreover, manual code clone refactoring is often tedious and could benefit from an automated tool.
@@ -215,6 +215,8 @@ Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the r
 
 \subsection{Clone refactoring}
 Krishnan et al.~\cite{krishnan2013refactoring} approach clone refactoring as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
+
+For refactoring clones, we took naming the extracted method outside of the scope of the study. To have this not influence the results, the metrics that determine the maintainability of an applied refactoring do not measure the quality of the name of the extracted method. 
 %The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
 
 %A recent study~\cite{tsantalis2017clone} looks into how lambdas can assist the clone refactoring process.
@@ -292,7 +294,7 @@ Apart from these criteria, we found that the output of these clone detection too
 None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
 
 \begin{figure}[H]
-  \includegraphics[width=1\columnwidth]{img/flow}
+  \includegraphics[width=0.7\columnwidth]{img/flow}
   \caption{Abstract flow diagram of CR.}
   \label{fig:clonerefactorflow}
 \end{figure}
@@ -431,7 +433,51 @@ To assess the impact of an applied refactoring, we selected the four characteris
 \end{itemize}
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone. This is because there are no further transformations that are applied that influence the maintainability metrics.
 
+\subsection{Refactoring evaluation}
+To evaluate the refactorings applied by CR and their impact, we expanded CR to create a git-commit for each applied transformation. We then use the ``Github Desktop''\footnote{GitHub Desktop is a git client: \url{https://desktop.github.com/}} to visualize each change made by CR (see Fig.~\ref{fig:cr_refactoring}). We then checked samples of the applied refactorings and the calculated metrics.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{img/cr.png}
+    \caption{Automatically applied refactoring by CR shown in the GitHub Desktop client. CR automatically authors a git commit for each applied transformation and specifies the impact of the change in the commit message.}
+    \label{fig:cr_refactoring}
+\end{figure}
+
+The full commit message for the refactoring example displayed in Fig.~\ref{fig:cr_refactoring} is as follows:
+\begin{quote}
+CloneRefactor refactored a clone class with 2 clone instances. For the common code we created a new method and named this method “cloneRefactor0". These clone instances have a Same Method relation with each other. The newly created method has been placed in ISODateTimeFormat. Each duplicated fragment has been replaced with a call to this method.
+\\ \\
+== System Quality Metrics == \\
+Total Cyclomatic Complexity increased by 1 from 6,994 to 6,995.\\
+Total Unit Interface Size increased by 1 from 3,715 to 3,716.\\
+Total Unit Line Size increased by 1 from 23,024 to 23,025.\\
+Total Unit Token Size decreased by 2 from 153,190 to 153,188.\\
+Total Nodes decreased by 1 from 18,866 to 18,865.\\
+\\
+Duplicated Nodes decreased by 6 from 502 to 496.\\
+Duplicated Tokens decreased by 42 from 5,064 to 5,022.\\
+Duplicated Lines decreased by 6 from 504 to 498.\\
+\\
+== Risk Profiles ==\\
+Unit Complexity\\
+Created a new method with a low risk Unit Complexity of 1.\\
+Removing duplicate blocks changed 1 method.\\
+The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 8 to 8 Unit Complexity. This did not influence the risk category of this method, it is still low risk.\\
+\\
+Line Volume\\
+Created a new method with a low risk Line Volume of 5.\\
+Removing duplicate blocks changed 1 method.\\
+The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 47 to 39 Line Volume. This did not influence the risk category of this method, it is still high risk.\\
+\\
+Token Volume\\
+Created a new method with a low risk Token Volume of 30.\\
+Removing duplicate blocks changed 1 method.\\
+The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 303 to 271 Token Volume. This increased the risk category of this method from high to moderate.\\
+\\
+The new method has a low risk Unit Interface Size of 1.\\
+\\
+Duplication went from 2.66\% to 2.63\%. This did not influence the risk category of the duplication in this codebase, it is still low risk.
+\end{quote}
 
 \section{Experimental setup} \label{sec:experimentalsetup}
 %In this section, we describe the setup of our experiments.
@@ -444,6 +490,8 @@ We assess the correctness of CR through unit tests and empirical validation. Fir
 Next, we run the tool over the corpus and manually verify samples of the acquired results. We verified at least 5 clones of each relation, location and refactoring. This way, we check both the correctness of the identified clones, their context, and their proposed refactoring.
 
 We also test the correctness of the refactored code using the JFreeChart project~\cite{gilbert2002jfreechart}. JFreeChart has a high test coverage and working tests, which allows us to test the correctness of the program after running CR.
+
+
 
 \subsection{Corpus}
 Our corpus, consisting of open source Java projects, is derived from the corpus of a study that uses machine learning to determine the suitability of GitHub Java projects for data analysis purposes~\cite{githubCorpus2013}. We chose this corpus because it has a variety of projects of different size and quality, which accurately reflects the target group for the results of our research.
@@ -579,7 +627,7 @@ Our results show that most clones (37\%) are in a common class. 24\% of clones a
 \subsubsection{Location}
 Table~\ref{tab:location} shows the number of clone classes found for the entire corpus for different locations (see Sec.~\ref{sec:location}).
 
-\begin{table}[H]
+\begin{table}
 \centering
 \begin{tabular}{@{}llrr@{}}
 \toprule
@@ -715,6 +763,9 @@ We measured the change in four maintainability metrics
 %before- and after applying each refactoring 
 to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 63  %\todo{wasn't this 63?}
 tokens for all clone instances combined for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data: when a clone is refactored to a method that requires more than 2 parameters it is more likely to decrease maintainability than to increase it. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+
+\subsection{Future Work}
+
 
 \bibliographystyle{plain}
 \bibliography{references}
