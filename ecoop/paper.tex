@@ -409,7 +409,7 @@ CR then removes all cloned code and replaces it with a call to the newly created
 \subsection{Maintainability Metrics}
 After applying the refactorings, CR measures the impact of the refactoring on maintainability metrics. We first state the metrics that we measure and then define the characteristics of the applied refactoring that influence the metrics.
 
-\subsubsection{Maintainability metrics} \label{sec:metrics}
+\subsubsection{Selected metrics} \label{sec:metrics}
 CR measures the impact on maintainability metrics of refactoring source code for each clone class that is refactored. These metrics are from Heitlager et al.~\cite{heitlager2007practical}. For each of these metrics, risk profiles are proposed to determine the maintainability impact on the system of a whole.
 
 To determine whether the maintainability improves when refactoring a given clone, we need to measure the impact of fine-grained changes. Therefore, we measure only a subset of the metrics~\cite{heitlager2007practical} and focus on the absolute metric changes (instead of the risk profiles). The subset of metrics we choose to focus on are all measured on method level (as the other metrics show a lesser impact on the maintainability for these small changes). These metrics are:
