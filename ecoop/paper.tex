@@ -1,6 +1,6 @@
 \documentclass[a4paper,UKenglish,cleveref, autoref, thm-restate,authorcolumns]{lipics-v2019}
 
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
 
@@ -9,11 +9,9 @@
 \usepackage{parcolumns}
 
 \usepackage{chngpage}
-
 \usepackage{courier}
-
 \usepackage{etoolbox}
-\AtBeginEnvironment{quote}{\singlespacing\footnotesize\ttfamily}
+\AtBeginEnvironment{quote}{\footnotesize\ttfamily}
 
 \bibliographystyle{plainurl}
 
@@ -188,6 +186,7 @@ Clones detected by current detection techniques \cite{kamiya2002ccfinder, deisse
   \item The mapped statements within the clone fragments should not contain any conditional return statements.
 \end{enumerate}
 
+\begin{figure*}
 \begin{adjustwidth}{-0.5in}{-0.5in}% adjust the L and R margins by 1 inch
 \begin{minipage}{\linewidth}
 \begin{parcolumns}{2}
@@ -230,11 +229,11 @@ public class LoseScene
 }
 \end{javacode}}
 \end{parcolumns}
-%\caption{Example of textually equal code fragments that differ in functionality.}
-%\label{fig:type1}
-%\end{figure*}
 \end{minipage}
 \end{adjustwidth}
+\caption{Example of textually equal code fragments that differ in functionality.}
+\label{fig:type1}
+\end{figure*}
 
 \section{Related Work}\label{sec:relatedwork}
 We outline relevant research to clone refactoring. A significant aspect is the context of clones.
@@ -476,7 +475,7 @@ To evaluate the refactorings applied by CR and their impact, we expanded CR to c
 
 The full commit message for the refactoring example displayed in Fig.~\ref{fig:cr_refactoring} is as follows:
 \begin{quote}
-CloneRefactor refactored a clone class with 2 clone instances. For the common code we created a new method and named this method “cloneRefactor0". These clone instances have a Same Method relation with each other. The newly created method has been placed in ISODateTimeFormat. Each duplicated fragment has been replaced with a call to this method.
+CR refactored a clone class with 2 clone instances. For the common code we created a new method and named this method “refactoredClone0". These clone instances have a Same Method relation with each other. The newly created method has been placed in ISODateTimeFormat. Each duplicated fragment has been replaced with a call to this method.
 \\ \\
 == System Quality Metrics == \\
 Total Cyclomatic Complexity increased by 1 from 6,994 to 6,995.\\
@@ -794,6 +793,11 @@ We measured the change in four maintainability metrics
 %before- and after applying each refactoring 
 to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 63  %\todo{wasn't this 63?}
 tokens for all clone instances combined for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data: when a clone is refactored to a method that requires more than 2 parameters it is more likely to decrease maintainability than to increase it. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+
+\subsection{Threats to Validity}
+To limit the scope of this research, we chose not to include human subjects in this study. However, we think that the results of this study could be strengthened by performing a survey on software engineering practitioners. We have determined maintainability scores only based on literature input and statistical analysis. It would be valuable to have a control group rate the refactorings performed by CR, as an extra form of input regarding the quality of the code transformations that CR performs.
+
+In Section~\ref{sec:metricformula} we proposed an aggregation to measure a maintainability score on small-grained changes. The assumptions stated in this section influence the validity of the maintainability scores shown in our results. We noticed that the maintainability scores displayed in Table~\ref{tab:relation_refactor} and Table~\ref{tab:return} were mostly influenced by the differences in the ``number of parameters'' metric. This is because, for the scores, we normalized the metrics over all values obtained by these metrics. As our data regarding ``number of parameters'' has a very low standard deviation, small changes in this metric will influence the maintainability score a lot.
 
 \subsection{Future Work}
 In this study, we limited our scope by taking the naming of generated declarations outside of the scope. When using our work for refactoring assistance, these names will have to be manually provided. Recent studies aim at solving this problem by generating a name that matches the body of a declaration \cite{allamanis2015suggesting, alon2018code2seq}. We will investigate the possibility to combine such approaches with CR, to make it more usable in the refactoring process.
