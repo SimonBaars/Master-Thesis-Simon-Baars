@@ -167,11 +167,44 @@ Duplication in code is found in many different forms. Most often duplicated code
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
 \textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
+
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
 \subsection{Clone Refactoring}
 \subsubsection{Refactoring techniques}
-The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality from the body of a method to a new method. To reduce duplication with this technique, the contents of a single clone instance are extracted to a new method and all further locations of the clone are replaced by a call to the new method.
+The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality from the body of a method to a new method. To reduce duplication with this technique, the contents of a single clone instance are extracted to a new method and all further locations of the clone are replaced by a call to the new method. An example of this is shown in Fig.~\ref{fig:extractmethod}.
+
+\begin{figure}[H]
+\begin{parcolumns}{2}
+\colchunk[1]{
+\begin{javacode}
+// Original
+public void doStuff(){
+|\highlightYellow|  doA();
+|\highlightYellow|  doB();
+  doC();
+|\highlightYellow|  doA();
+|\highlightYellow|  doB();
+}
+\end{javacode}}
+\colchunk[2]{
+\begin{javacode}
+// Refactored
+public void doStuff(){
+|\highlightYellow|  doAandB();
+  doC();
+|\highlightYellow|  doAandB();
+}
+
+public void doAandB(){
+  doA();
+  doB();
+}
+\end{javacode}}
+\end{parcolumns}
+\caption{Refactoring a clone class through method extraction.}
+\label{fig:extractmethod}
+\end{figure}
 
 \subsubsection{Preconditions}
 Clones detected by current detection techniques \cite{kamiya2002ccfinder, deissenboeck2010flexible, jiang2007deckard, cordy2011nicad} are subject to a set of preconditions to determine whether they can be refactored \cite{tsantalis2015assessing}:
@@ -185,6 +218,22 @@ Clones detected by current detection techniques \cite{kamiya2002ccfinder, deisse
   \item The parameterization of method calls belonging to differences between the mapped statements is possible only if they do not return a void type.
   \item The mapped statements within the clone fragments should not contain any conditional return statements.
 \end{enumerate}
+
+\section{Related Work}\label{sec:relatedwork}
+We outline relevant research to clone refactoring. A significant aspect is the context of clones.
+
+\subsection{Clone context analysis}\label{sec:rw:contextanalysis}
+Golomingi~\cite{koni2001scenario} explores mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring} and analyzes what refactoring methods can be used to refactor clones with what inheritance relations. The identified clone relations are: Ancestor, Common Hierarchy, First Cousin, Same Method, Sibling, Single Class, Superclass and Unrelated. We extend this list with several more fine-grained relations, suitable for automatic refactoring (see Sec.~\ref{sec:relation}).
+
+Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types 1 and 3 \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analyses of clone relations together with clone types. We repeat this research with a vastly different setup: we use the clone definition from Sec.~\ref{sec:research} and the relation categories outlined in Sec.~\ref{sec:relation}.
+
+\subsection{Clone refactoring}
+Krishnan et al.~\cite{krishnan2013refactoring} approach clone refactoring as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
+
+For refactoring clones, we took naming the extracted method outside of the scope of the study. To have this not influence the results, the metrics that determine the maintainability of an applied refactoring do not measure the quality of the name of the extracted method. 
+%The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
+
+%A recent study~\cite{tsantalis2017clone} looks into how lambdas can assist the clone refactoring process.
 
 \begin{figure*}
 \begin{adjustwidth}{-0.5in}{-0.5in}% adjust the L and R margins by 1 inch
@@ -235,22 +284,6 @@ public class LoseScene
 \label{fig:type1}
 \end{figure*}
 
-\section{Related Work}\label{sec:relatedwork}
-We outline relevant research to clone refactoring. A significant aspect is the context of clones.
-
-\subsection{Clone context analysis}\label{sec:rw:contextanalysis}
-Golomingi~\cite{koni2001scenario} explores mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler \cite{fowler1999refactoring} and analyzes what refactoring methods can be used to refactor clones with what inheritance relations. The identified clone relations are: Ancestor, Common Hierarchy, First Cousin, Same Method, Sibling, Single Class, Superclass and Unrelated. We extend this list with several more fine-grained relations, suitable for automatic refactoring (see Sec.~\ref{sec:relation}).
-
-Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types 1 and 3 \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analyses of clone relations together with clone types. We repeat this research with a vastly different setup: we use the clone definition from Sec.~\ref{sec:research} and the relation categories outlined in Sec.~\ref{sec:relation}.
-
-\subsection{Clone refactoring}
-Krishnan et al.~\cite{krishnan2013refactoring} approach clone refactoring as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
-
-For refactoring clones, we took naming the extracted method outside of the scope of the study. To have this not influence the results, the metrics that determine the maintainability of an applied refactoring do not measure the quality of the name of the extracted method. 
-%The state-of-the-art in code clone refactoring is the work by Mazinanian et al.~\cite{mazinanian2016jdeodorant}. The authors propose a tool named JDeodorant that can automatically refactor a subset of duplication problems. This tool is based on several studies that look into different aspects of code clone refactoring. In a study by Krishnan et al.~\cite{krishnan2013refactoring} clone refactoring is approached as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. Another study by Krishnan et al.~\cite{krishnan2014unification} proposes a list of preconditions for clones to determine their refactorability. This list is revised by Tsantalis et al.~\cite{tsantalis2015assessing}, proposing a set of 8 preconditions that determine whether two duplicated fragments can be refactored.
-
-%A recent study~\cite{tsantalis2017clone} looks into how lambdas can assist the clone refactoring process.
-
 \section{Defining refactorable clones}\label{sec:research}
 %In literature, several clone type definitions have been used to argue about duplication in source code~\cite{roy2007survey}.
 We discuss how we can define clones such that they can be automatically refactored while avoiding changing the functional behavior and other negative side effects on the source code, such as decreasing the maintainability of the code.
@@ -284,7 +317,7 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 \end{itemize}
 For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
-\section{Survey existing clone detection tools}\label{sec:survey}
+\section{Survey of existing clone detection tools}\label{sec:survey}
 %To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
 To investigate the impact of the definitions introduced in Sec.~\ref{sec:research}, we need a tool to detect refactorable clones according to these definitions. We conducted a short survey on (recent) clone detection tools to detect such clones that can be refactored. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
@@ -466,7 +499,7 @@ We hypothesize that these characteristics are the main factors influencing the i
 \subsection{Refactoring evaluation}
 To evaluate the refactorings applied by CR and their impact, we expanded CR to create a git-commit for each applied transformation. We then use the ``Github Desktop''\footnote{GitHub Desktop is a git client: \url{https://desktop.github.com/}} to visualize each change made by CR (see Fig.~\ref{fig:cr_refactoring}). We then checked samples of the applied refactorings and the calculated metrics.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{img/cr.png}
     \caption{Automatically applied refactoring by CR shown in the GitHub Desktop client. CR automatically authors a git commit for each applied transformation and specifies the impact of the change in the commit message.}
@@ -524,19 +557,19 @@ We also test the correctness of the refactored code using the JFreeChart project
 
 
 \subsection{Corpus}
-Our corpus, consisting of open source Java projects, is derived from the corpus of a study that uses machine learning to determine the suitability of GitHub Java projects for data analysis purposes~\cite{githubCorpus2013}. We chose this corpus because it has a variety of projects of different size and quality, which accurately reflects the target group for the results of our research.
+Our corpus, consisting of open source Java projects, is derived from the corpus of a study that uses machine learning to determine the suitability of GitHub Java projects for data analysis purposes~\cite{githubCorpus2013}. We chose this corpus because it has a variety of projects of different size and quality, which accurately reflects the target group for the results of our research. The entire corpus contains a total of 14,765 Java projects.
 
 CR requires all libraries of the analyzed projects
 %it analyses, to find the full paths of all referenced symbols in the source code 
-(see Sec.~\ref{sec:t1r}). Therefore, we decided to filter the corpus to contain only projects using the Maven build automation system. %The filtering scripts are publicly availble \footnotesize{The camera-ready version would include the GitHub repo url}.
+(see Sec.~\ref{sec:t1r}). Therefore, we decided to filter the corpus to contain only projects using the Maven build automation system. We further discarded projects with build errors or unavailable dependencies. %The filtering scripts are publicly availble \footnotesize{The camera-ready version would include the GitHub repo url}.
 %We created a set of scripts to prepare such a corpus with all dependencies included.
 
-This procedure results in 2.267 Java projects including all their dependencies%\todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}
+This procedure results in 2,267 Java projects including all their dependencies%\todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}
 . The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is \textit{VisAD} with 502K lines. The distribution of project sizes is displayed in Fig.~\ref{fig:dist}.
 
 \begin{figure}[H]
   \includegraphics[width=1\columnwidth]{img/dist2}
-  \caption{Distribution of project sizes in corpus on a logaritmic scale.}
+  \caption{Distribution of project sizes in corpus on a logarithmic scale.}
   \label{fig:dist}
 \end{figure}
 
@@ -586,9 +619,9 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 
 %% RESULTS TABLES (MOVED UP SO LATEX PLACES THEM IN THE RIGHT PLACE)
 
-\begin{table*}
+\begin{table}
 \centering
-%\resizebox{\textwidth}{!}{%
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
 \textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
@@ -613,10 +646,10 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
 \textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
 \end{tabular}%
-%}
+}
 \caption{Influence on maintainability of refactoring clones with the specified relation categories.}
 \label{tab:relation_refactor}
-\end{table*}
+\end{table}
 
 %% END TABLES
 
@@ -629,7 +662,7 @@ To determine the refactoring method(s) that can be used to refactor most clones,
 \subsubsection{Relation}
 Table~\ref{tab:relation} shows the number of clone classes found for the entire corpus for each type of relations between clone instances (see Sec.~\ref{sec:relation}).
 
-\begin{table}[H]
+\begin{table}
 \centering
 \begin{tabular}{@{}llrr@{}}
 \toprule
@@ -682,7 +715,7 @@ The results show that 74\% of clones span part of a method body (77\% if we incl
 \subsection{Refactorability}
 Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique (see Sec.~\ref{sec:refactorability}).
 
-\begin{table}[H]
+\begin{table}
 \centering
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -768,7 +801,7 @@ Regarding clone locations, 74\% of clones span part of a method body (77\% if we
 Fig.~\ref{fig:maintainabilityscore} shows an increase in maintainability for refactoring larger clone classes. The tipping point, between a better and a worse maintainable refactoring, seems to lie around a token volume of 63 tokens. There are fewer large clones than small clones, resulting in a very limited %\todo{how limited? give the p-value} 
 statistical significance on our corpus when considering clones larger than 100 tokens.
 
-Table~\ref{tab:relation_refactor} shows the results regarding refactorings that are applied to clones with diverse relations. More than 54\% of the refactored clones are in a common class. This is significantly more than the percentage of clones in the common class relation reported in Table~\ref{tab:relation}. The number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% -> 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
+Table~\ref{tab:relation_refactor} shows the results regarding refactorings that are applied to clones with diverse relations. More than 54\% of the refactored clones are in a common class. This is significantly more than the percentage of clones in the common class relation reported in Table~\ref{tab:relation}. The number of refactored unrelated clones is smaller than the number reported in Table~\ref{tab:relation} (24\% vs 18\%). The main reason for this is that refactoring unrelated clones can change the relation of other clones in the same system. If we create a superclass abstraction to refactor an unrelated clone, other clones in those classes that were previously unrelated might become related.
 
 The maintainability scores in Table~\ref{tab:relation_refactor} show that the most favorable clones to refactor are clones with a Sibling relation. The most unfavorable is refactoring clones to interfaces. However, the differences in maintainability in this table are generally small %\todo{and?}
 ; according to our data relations have only a minor impact on the maintainability of clones.
