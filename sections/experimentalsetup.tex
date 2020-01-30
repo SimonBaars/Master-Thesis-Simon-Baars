@@ -21,7 +21,14 @@ To verify the syntactical correctness of all Java files in the projects, we used
 We ran CloneRefactor over every project in the corpus and inspected the output for each project. Some projects gave unusual high numbers of clones of a certain size, which we manually inspected. Often these projects contained generated source files. We removed these projects from the corpus.
 
 \subsection{Resulting corpus}
-This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the following file in our GitHub repository: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts/blob/master/filtered_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files.
+This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the following file in our GitHub repository: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts/blob/master/filtered_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files. The distribution of project sizes is displayed in Fig.~\ref{fig:dist}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\columnwidth]{img/dist2}
+  \caption{Distribution of project sizes in corpus on a logarithmic scale.}
+  \label{fig:dist}
+\end{figure}
 
 \section{Tool Validation}
 We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location, contents and refactorability category (see Section \ref{chap:contextsetup} and \ref{sec:refactorabilitysetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones, their context, and their proposed refactoring.
