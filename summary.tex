@@ -8,7 +8,10 @@ We first look into how to define clones such that they can be refactored. We loo
 
 To determine what refactoring method to use to refactor clones, we consider their context. We define the context of clones as their relation, location and contents attributes. The relation argues about how each similar fragment in a clone is related to one another, which is important to determine where to place the merged code fragment. The location argues about in what type of place the clone is located in the code: this is used to determine the refactorability of the clone (not every location can be refactored). The contents argue about what code the clone spans: based on this different refactoring techniques may be required.
 
-We then perform statistical measurements on these context categories, to understand which refactoring methods can be used to refactor most clones. 
+We then perform statistical measurements on these context categories, to understand which refactoring methods can be used to refactor most clones. We find that most clones can be refactored by moving common code to a new method and placing that method in a location that is accessible by all places the duplicated code was used, then replacing each of these fragments by a call to the new method. This technique is called ``Extract Method''. We apply this technique to automatically refactor clones in a large corpus of open-source Java projects and use it to automatically refactor 28\% of the present duplication.
+
+We then look at which characteristics of the refactored clones have the biggest impact on the maintainability of the system. We find that the size of the clone, measured in number of tokens (a token is the smallest element of a program that is meaningful to the compiler), has the biggest impact on the maintainability of the system. A second factor with a large impact is the amount of data used in both code fragments that are declared outside the scope of the fragment. The latter is currently not used to determine whether a clone should be refactored, however our results show that it is relevant to be considered.
+
 
 % After 15 years of consulting about software quality, we at the Software Improvement
 % Group (SIG) have learned a thing or two about maintainability.
