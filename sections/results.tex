@@ -129,7 +129,7 @@ From these results, we see that 74\% of clones span part of a method body (77\% 
 %To what extent can found clones be refactored through method extraction, without requiring additional transformations.
 Table~\ref{tab:refactorability} shows to what extent clone classes can be refactored by using the ``Extract Method'' refactoring technique. From these results we see that approximately 28\% of clones in our corpus can be automatically refactored. The main reason clones cannot be automatically refactored is because they are not flagged as ``Partial Method'' in Table~\ref{tab:contents}. Another reason is that top level AST-nodes are not a statement.
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -165,7 +165,7 @@ The token volume of the clone is equal to the decrease of duplicated tokens, whi
 
 In Figure~\ref{fig:volume} the average delta volume is shown when clones with the specified token volume are refactored. The trendline intersects the ``zero'' line (average delta volume does not increase nor decrease) at 60 tokens. A higher average delta volume implies lower maintainability.
 
-\begin{figure}[]
+\begin{figure}
   \includegraphics[width=1\textwidth]{img/volume}
   \caption{The effect of token volume on the delta volume of the refactored clones}
   \label{fig:volume}
@@ -173,13 +173,13 @@ In Figure~\ref{fig:volume} the average delta volume is shown when clones with th
 
 In Figure~\ref{fig:numberofparameters} we show the average delta number of parameters when clones with the specified token volume are refactored. This metric can only increase by the refactoring because CloneRefactor only applies ``Extract Method'' refactorings that create a method with a certain number of parameters (according to the data needed by the extracted method).
 
-\begin{figure}[]
+\begin{figure}
   \includegraphics[width=1\textwidth]{img/numberofparameters}
   \caption{The effect of token volume on the number of parameters of the refactored clones}
   \label{fig:numberofparameters}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}
   \includegraphics[width=1\textwidth]{img/complexity}
   \caption{The effect of token volume on the complexity of the refactored clones}
   \label{fig:complexity}
