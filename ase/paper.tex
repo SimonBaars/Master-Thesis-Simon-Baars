@@ -89,10 +89,13 @@ We correlate the delta maintainability score with the factors that influence thi
 
 \keywords{code clones, refactoring, static code analysis, object-oriented programming}
 
+\settopmatter{printfolios=true} % TODO: Remove before final version
 \maketitle
 
 \section{Introduction}
-Duplicate fragments in source code (also named ``code clones'') are often seen as one of the most harmful types of technical debt~\cite{fowler2018refactoring}. Duplicate fragments create implicit dependencies that make the code harder to maintain as the resolution of erroneous behavior in one location may have to be applied to all the cloned code as well~\cite{ostberg2014automatically}. Apart from that, code clones can contribute up to 25\% of the code size~\cite{bruntink2005use}. However, manual code clone refactoring is often tedious and could benefit from an automated tool~\cite{mazinanian2016jdeodorant}.
+Duplicate fragments in source code (also named ``code clones'') are often seen as one of the most harmful types of technical debt~\cite{fowler2018refactoring}. Duplicate fragments create implicit dependencies that make the code harder to maintain as the resolution of erroneous behavior in one location may have to be applied to all the cloned code as well~\cite{ostberg2014automatically}. Apart from that, code clones can contribute up to 25\% of the code size~\cite{bruntink2005use}.
+
+Not all 
 
 %Clone detection tools often use thresholds to determine which clones should be considered. Most clone detection tools use the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, statements \cite{higo2013revisiting, kamalpriya2017enhancing} and/or tokens \cite{ragkhitwetsagul2019siamese, jiang2007deckard} as thresholds to determine whether clones should be considered. We outline the shortcomings of these thresholds to find clones such that the maintainability of the source code is improved when refactored, and propose new thresholds to control this characteristic.
 % Current clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
