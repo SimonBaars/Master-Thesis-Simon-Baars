@@ -58,7 +58,7 @@
 
 \begin{document}
 
-\title{Improving Software Maintainability through Automated Refactoring of Code Clones}
+\title{Code Clones: To refactor or not to refactor?}
 
 \author{Simon Baars}
 \affiliation{\institution{University of Amsterdam}}
@@ -69,11 +69,22 @@
 \email{a.m.oprescu@uva.nl}
 
 \begin{abstract}
-Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Several studies show however, that not all duplication should be refactored. When some duplication is refactored, other system attributes are negatively affected thus resulting in a negative impact on the codebase when all system attributes are considered.
+% Problem
+Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Several studies show that not all duplication should be refactored. When duplication is refactored, other system attributes may be negatively affected thus resulting in a negative impact on the codebase when all system attributes are considered.
 
-We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate several maintainability metrics (duplication, complexity, unit size, code volume) to determine whether it improves the code. To simulate such refactorings in a controlled environment, we propose a tool that can automatically refactor a subset of duplication problems in Java source code. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
+% How we fix the problem that we introduced in the first paragraph
+We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate several maintainability metrics (duplication, complexity, unit size, code volume) to determine whether it improves the code.
 
-We correlate the delta maintainability score with the factors that influence this score (clone volume, clone complexity, externally declared data used). We find that the biggest influencing factor is the volume of the clone. Our data shows that clones consisting of 63 or fewer tokens most often shouldn't be refactored. The other important factor is externally declared data that is used in the clone, clones with more than two externally declared variables most often do not improve maintainability when refactored.
+% Experimental setup: how we validated that we fixed the problem
+To simulate such refactorings in a controlled environment, we propose a tool that can automatically refactor a subset of duplication problems in Java source code. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
+
+% results: what have we learned by fixing the problem
+We correlate the delta maintainability score with the factors that influence this score (clone volume, clone complexity, externally declared data used). We find that the biggest influencing factor is the volume of the clone. Our data shows that clones consisting of 63 or fewer tokens most often \textit{should not} be refactored. The other important factor is externally declared data that is used in the clone, clones with more than two externally declared variables most often do not improve maintainability when refactored.
+
+% What we want to achieve: provide support for a developer to decide whether a given clone is likely to improve the codebase when refactoring. Intersect clones with maintainability metrics to answer the "which clones should be considered harmful" question that can be found throughout literature.
+% Output: A checklist for developers.
+% The quantitative study with the tool is about validating the checklist.
+% Check whether it is doable to create an automated tool for predicting (mathematically whether a given clone improves the code), otherwise we have to continue on with the checklist.
 \end{abstract}
 
 \keywords{code clones, refactoring, static code analysis, object-oriented programming}
