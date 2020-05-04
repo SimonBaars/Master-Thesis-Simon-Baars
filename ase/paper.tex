@@ -97,19 +97,14 @@ Duplicate fragments in source code (also named ``code clones'') are often seen a
 
 However, several studies show that not all clones should be refactored~\cite{jarzabek2010clones, kapser2008cloning}. This can be due to variance between cloned fragments~\cite{roy2007survey} or parts of the codebase that have a low coupling and evolve separately~\cite{jarzabek2010clones}. There are many tools to detect clones \cite{roy2007survey, sheneamer2016survey, svajlenko2014evaluating, gautam2016various} that can find similar pieces of code, but none show which clones are relevant refactoring candidates.
 
-%Clone detection tools often use thresholds to determine which clones should be considered. Most clone detection tools use the number of lines \cite{kamiya2002ccfinder, svajlenko2016bigcloneeval}, statements \cite{higo2013revisiting, kamalpriya2017enhancing} and/or tokens \cite{ragkhitwetsagul2019siamese, jiang2007deckard} as thresholds to determine whether clones should be considered. We outline the shortcomings of these thresholds to find clones such that the maintainability of the source code is improved when refactored, and propose new thresholds to control this characteristic.
-% Current clone detection techniques are limited to measuring the size of clones to determine whether they should be considered. Because of this, the output of clone detection tools is often of limited assistance to the developer in the refactoring process.
-To reduce duplication of a codebase, there are several refactoring techniques that can be used. %applied in an automated manner. 
-The most used refactoring technique to deal with code clones is ``Extract Method'' \cite{fowler2018refactoring}. This technique entails that the duplicated code is moved to a new method, which is then called from all locations where the duplicated code was used. Using this refactoring method may have both positive and negative implications for the maintainability of the codebase. Positive implications include reduction of complexity, volume and implicit dependencies. Negative implications include an increase of parameters, volume and coupling. % To be able to execute such a refactoring, several preconditions apply \cite{tsantalis2015assessing}.% By automatically identifying refactori
-%\todo[inline]{still missing link on how current solutions do not help improving maintainability - our message from monday night is not crystal clear yet}
-In this study, we analyze the effect of clone refactoring on maintainability.  % we analyze which preconditions apply to determine whether a clone could and should be automatically refactored. We list criteria that influence the maintainability of clones when refactored. We evaluate the context of clones to determine which refactoring techniques are best suited. We define the context of clones as the inheritance relation between clone instances in a clone class and the location of clone instances in the codebase. We showcase the proposed technique as a tool that automatically refactors clones by extracting new methods out of duplicated code.
+To reduce duplication of a codebase, there are several refactoring techniques that can be used. The most used refactoring technique to deal with code clones is ``Extract Method'' \cite{fowler2018refactoring}. This technique entails that the duplicated code is moved to a new method, which is then called from all locations where the duplicated code was used. Using this refactoring method may have both positive and negative implications for the maintainability of the codebase. Positive implications include reduction of complexity, volume and implicit dependencies. Negative implications include an increase of parameters, volume and coupling. 
 
-We measure several maintainability metrics \cite{heitlager2007practical} before and after refactoring each clone to determine its impact on system maintainability. These metrics are volume, number of parameters, duplication and complexity. Using this setup, we gain empirical data about the maintainability improvement of clones on a large set of projects in a controlled environment. We use this data to define which characteristics of clones have the biggest influence on system maintainability when such a clone is refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
+In this study, we analyze the effect of clone refactoring on maintainability. We create a tool that automatically applies ``Extract Method'' refactorings to a subset of detected clones. We measure several maintainability metrics \cite{heitlager2007practical} before and after refactoring each clone to determine its impact on system maintainability. These metrics are volume, number of parameters, duplication and complexity. Using this setup, we gain empirical data about the maintainability improvement of clones on a large set of projects in a controlled environment. We use this data to define which characteristics of clones have the biggest influence on system maintainability when such a clone is refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
 
-Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quantile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored. Because of this, we minimize limiting the size of clones we find to measure the maintainability impact of all clones, including micro-clones \cite{mondai2018micro}.
+Most clone detection tools can be configured using thresholds. These thresholds indicate the minimum number of lines, tokens and/or statements that must be spanned for duplicate fragments to be considered clones. Often, such thresholds are intuitively chosen~\cite{li2006cp, roy2009mutation} or based on a quantile distribution of empirical data~\cite{alves2010deriving}. Using the maintainability score we can find support for which thresholds should be chosen to increase the chance to find clones that improve maintainability when refactored.
 
-Over a corpus of 2,267 Java project our tool refactored 12,710 clone classes. We found that the main influencing factor on maintainability when refactored is token volume. We define token volume as the combined number of tokens in all clone instances in a clone class. %When refactoring clones with a very small token volume, we found that the maintainability decreases when such clones are refactored. 
-The average clone with a token volume of 63 or larger improves maintainability when refactored. The other factor with a major influence on maintainability is the number of parameters that are required for the extracted method. We found that if a clone requires more than 2 parameters in the extracted method, it is more likely to decrease maintainability.
+Over a corpus of 2,267 Java project our tool refactored 12,710 clone classes. We found that the main influencing factor on maintainability when refactored is clone volume. %We define token volume as the combined number of tokens in all clone instances in a clone class. %When refactoring clones with a very small token volume, we found that the maintainability decreases when such clones are refactored. 
+The average clone with a volume of 63 or more tokens improves maintainability when refactored. The other factor with a major influence on maintainability is the number of parameters that are required for the extracted method. We found that if a clone requires more than 2 parameters in the extracted method, it is more likely to decrease maintainability.
 
 This paper is organized as follows. In Sec.~\ref{sec:background} we revisit key clone refactoring background. Sec.~\ref{sec:relatedwork} discusses state-of-the-art in automatic clone refactoring research. In Sec.~\ref{sec:research} we propose a definition for clones such that they could and should be automatically refactored. In Sec.~\ref{sec:clonerefactor} we introduce our clone refactoring tool. In Sec.~\ref{sec:experimentalsetup} we explain the setup of our experiments; we show the results in Sec.~\ref{sec:results} and discuss them in Sec.~\ref{sec:discussion}.
 %We evaluate our approach by comparing the maintainability of before- and after snapshots of a codebase for each duplication problem that is refactored. We define which factors have the greatest influence on whether a clone improves maintainability when refactored. We find a set of thresholds by which clones can be detected that are more likely to improve maintainability when refactored. This allows for more a accurate suggestion of code clones for refactoring and can assist in the refactoring process.
@@ -162,53 +157,7 @@ Duplication in code is found in many different forms. Most often duplicated code
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
 \subsection{Clone Refactoring}
-\subsubsection{Refactoring techniques}
-The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality from the body of a method to a new method. To reduce duplication with this technique, the contents of a single clone instance are extracted to a new method and all further locations of the clone are replaced by a call to the new method. An example of this is shown in Fig.~\ref{fig:extractmethod}.
-
-\begin{figure}[H]
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-// Original
-public void doStuff(){
-|\highlightYellow|  doA();
-|\highlightYellow|  doB();
-  doC();
-|\highlightYellow|  doA();
-|\highlightYellow|  doB();
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// Refactored
-public void doStuff(){
-|\highlightYellow|  doAandB();
-  doC();
-|\highlightYellow|  doAandB();
-}
-
-public void doAandB(){
-  doA();
-  doB();
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{Refactoring a clone class through method extraction.}
-\label{fig:extractmethod}
-\end{figure}
-
-\subsubsection{Preconditions}
-Clones detected by current detection techniques \cite{kamiya2002ccfinder, deissenboeck2010flexible, jiang2007deckard, cordy2011nicad} are subject to a set of preconditions to determine whether they can be refactored \cite{tsantalis2015assessing}:
-\begin{enumerate}
-  \item The parameterization of differences between the matched statements should not break existing data-, anti-, and output-dependencies.
-  \item The unmatched statements should be movable before or after the matched statements without breaking existing data-, anti-, and output-dependencies.
-  \item The duplicated code fragments should return at most one variable of the same type.
-  \item Matched branching (\texttt{break}, \texttt{continue}) statements should be accompanied with corresponding matched loop statements.
-  \item Matched variables having different subclass types should call only methods that are declared in the common superclass or are being overridden in the respective subclasses.
-  \item The parameterization of fields belonging to differences between the mapped statements is possible only if they are not modified.
-  \item The parameterization of method calls belonging to differences between the mapped statements is possible only if they do not return a void type.
-  \item The mapped statements within the clone fragments should not contain any conditional return statements.
-\end{enumerate}
+The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality from the body of a method to a new method. To reduce duplication with this technique, the contents of a single clone instance are extracted to a new method and all further locations of the clone are replaced by a call to the new method.
 
 \section{Related Work}\label{sec:relatedwork}
 We outline relevant research to clone refactoring. A significant aspect is the context of clones.
