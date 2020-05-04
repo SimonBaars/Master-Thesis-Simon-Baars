@@ -1,0 +1,205 @@
+Dear authors --
+
+I am very sorry to inform you that your submission #NUMBER# to ECOOP 2020
+has been rejected and will not appear in the conference proceedings:
+
+       Title: Improving Software Maintainability through Automated
+              Refactoring of Duplicate Code
+     Authors: Simon Baars (University of Amsterdam)
+              Ana Oprescu (University of Amsterdam)
+        Site: https://ecoop20.hotcrp.com/paper/54
+
+The final version of your reviews are attached and also visible on the
+paper site.
+
+I hope that you will find those reviews and comments helpful for advancing
+your work.
+
+Best wishes,
+Robert Hirschfeld
+Program Chair
+
+(robert.hirschfeld@hpi.uni-potsdam.de)
+
+--
+
+Review #54A
+===========================================================================
+* Updated: 30 Mar 2020 7:38:31am AoE
+
+Overall merit
+-------------
+D. Serious problems. I will argue to reject this paper.
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+Code clones can be harmful in terms of technical debt as changes in one clone may need to propagate consistently to others. Automated code clone detection and refactoring aim to address this problem, however, such approaches do not consider whether refactoring a clone would improve software maintainability. This paper analyzes the preconditions necessarily to automatically refactor clones. A tool is then proposed to detect clones, using the definitions put forth. While the beginning of the paper claims that a subset of clones able to be refactored is actually refactored due to maintenance considerations, later in the paper, it is stated that the tool does all of the refactorings regardless of maintainability metrics. Once all of the refactorings are done, then maintainability is assessed. A large corpus on Java projects is used in the evaluation.
+
+Strengths
+---------
+- Interesting and relevant problem.
+- Large corpus used in the evaluation.
+- Thorough discussions.
+- A lot of related work is discussed.
+- The proposed tool is open-source.
+
+Weaknesses
+----------
+- False claims. A key angle of this paper is that even if a clone *can* be refactored does not necessitate that it *should* be refactored. However, later in the paper, we find that clones that *can* be refactored *are* refactored and *then* maintainability is assessed. This would seem to defeat the purpose of the angle.
+- Writing can be improved. Various formatting issues (e.g., abstract before title).
+- The paper is not focused. There is a disjoint mix of new clone detection techniques, surveys of existing clone detectors, and maintenance issue considerations.
+- I need more evidence that clone refactoring degrades system design. Even an example would help.
+- Uses maintainability metrics as a solely quantitative method for assessing maintainability. I would have also liked to have seen a qualitative analysis on a proper subset of the refactorings to assess whether maintenance is acceptable.
+- It is difficult to understand what is novel in the paper. Some things seem like extensions, others incremental improvements. In all, this work seems more like an integration of various approaches, which can be novel in a sense, but a novelty statement in section 1 would help clarify this.
+
+Comments for authors
+--------------------
+- How does 4.1 help your cause of determining clones that should be refactored?
+- What is the goal of the experiments? What is the success criteria of the approach? Please state these early in the experimental sections.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #54B
+===========================================================================
+
+Overall merit
+-------------
+B. OK paper, but I will not champion it.
+
+Reviewer expertise
+------------------
+3. Knowledgeable
+
+Paper summary
+-------------
+In this paper the author examines pre-conditions for refactoring clones and a possible measure of maintainability. The author wrote a clone finder and used “Extract Method” to refactor based on pre-conditions including thresholds. A large-ish population of open-source Java code was used to evaluate the refactorings based on the measure settled upon. An interesting discussion of the issues was included. Results presented.
+
+Strengths
+---------
+Fairly thorough experimental setup and analysis. Reasonably well-presented and argued. Results were not surprising, but well-justified.
+
+Weaknesses
+----------
+Some of the descriptions and definitions could have been better written. For example, the Duplication metric seemed to be measuring as part of maintainability only the degree of clone elimination, which seems to be a circular measurement. It’s akin to including how much of the source code is in a red as part of measuring the maintainability of code processed by a tool that changes the text color to red. Well, yes, the tool that does that, does that.
+
+One of the threats to validity seems important enough that it should be explored in subsequent research: “we chose not to include human subjects in this study.” Not just to judge the quality of the refactorings, but to judge the increase in maintainability.
+
+Comments for authors
+--------------------
+Recently I’ve been thinking that there could be a flaw in the assumption that “duplicate fragments in source code (also named “code clones”) are often seen as one of the most harmful types of technical debt.” The more experienced the programmer, the more likely that code is cloned for a reason, and not from laziness or expediency. The three types of clones seem to recognize that. (BTW, this suggests that another variable in a future study is that experience level.) Let me quote Christopher Alexander:
+
+“In order for the building to be alive, its construction details must be unique and
+fitted to their individual circumstances as carefully as the larger parts…. The details of a building cannot be made alive when they are made from modular parts.”
+
+If programmers have been taught anything at all about software engineering, it’s that modular parts are the way to do things. And your research is based on that premise. But Alexander argues that a built structure needs to adapt to its context - and vice versa - to be “alive,” whatever that means. When something is made into a modular part, the context needs to do all the adapting (and I think your number of parameters measurement supports that view).
+
+What I was thinking would be a better way to approach the “problem” of clone-created technical debt is to create a tool that makes it easier to maintain the existing clones and to have compilers do the equivalent of your refactoring to reduce the size of the executable (in compiled code, the number of parameters makes only some performance difference, and even that can be mitigated). I am thinking of an IDE / editor that shows the clones as layers a la Photoshop with the commonalities and differences plainly marked.   This might be better than having your code changed out from under you (again, if you made a clone for a reason).
+
+Another way to think of cloning is as the application of a software pattern rather than nailing a modular part into place (I am not a fan of the Design Patterns book, and am not thinking of patterns in that manner).
+
+As you can see, this conjecture of mine is related to your research, and can be tested for (with effort).
+
+Also, a citation is not a noun. Read this sentence aloud (and without looking at your references):
+
+“Originally [16] measured by taking the amount of duplicated lines.”
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+Review #54C
+===========================================================================
+
+Overall merit
+-------------
+C. Weak paper, though I will not fight strongly against it.
+
+Reviewer expertise
+------------------
+4. Expert
+
+Paper summary
+-------------
+The paper presents a combined approach to clone detection and clone refactoring using Extract Method, its implementation and evaluation on a large body of Java programs.
+
+Strengths
+---------
+* clone detection and elimination remain relevant
+* significant evaluation effort
+
+Weaknesses
+----------
+* related work section is weak
+* missing technical detail, making paper difficult to assess
+
+Comments for authors
+--------------------
+Automatically detecting and removing clones (by introducing a suitable abstraction) is challenging. In fact, even for skilled programmers it may be hard, for if it were not, they would probably introduce the abstraction right awy, rather than leave it for later. Except when there is no common abstraction, and cloning is used to provide a suitable starting point for code that will evolve very differently (the current existence of a common abstraction is purely accidental then).
+
+Overall, this is a comprehensive piece of work that combines techniques from different disciplines. While this is commendable, I am not entirely convinced by the depth that has been achieved, in any of the disciplines. Specifically:
+
+* The related work section is more about what the authors did, than what has been done by others, and lacks discussion of immediately relevant work, for instance on refactoring.
+
+* The Exract Method refactoring has been called "The Refactoring Rubicon" (Fowler). Several works have shown that it has complex preconditions, and involves significant program analyses (see, e.g., https://doi.org/10.1007/978-3-642-03013-0_17). How does the authors' implementaion match up to these efforts?
+
+* In the evaluation, the authors state that they assessed the correctness of the refactoring using "control projects" and JFreeChart, but I see no numbers of refactoring failures, as detected by the compiler or the test suite. Assuming the evaluation did not check correctness of all refactorings performed, it is worthless.
+
+* The gap detection is likewise not followed up on. Which of the two alternatives mentioned in Section 4.3 was actually implemented? With which success? I guess handling gaps correctly is a major challenge for a language as complex as Java, and would require a formal account.
+
+* I have some doubts concerning the use of metrics to judge the success of clone removal, and measuring success of clone detection overall.
+
+ * Extracting methods improves mesaured maintainability by the design of at least some of the metrics (duplication, method size, perhaps also method complexity). What is actually shown by using these metrics?
+
+ * What is a clone is essentially a semantic issue. Similarly, whether extracting a method introduces a valid abstraction depends on the specific program, and arguably, cannot be decided automatically.
+
+ * If I were to decide, I would drop this part of the evaluation --- I see no way of fixing these problems.
+
+Some minor issues:
+
+* The list of preconditions in Section 2.2.2 needs rationale, one by one.
+
+Comments
+===========================================================================
+
+Response by Simon Baars <simon.mailadres@gmail.com>
+---------------------------------------------------------------------------
+Dear Reviewers,
+
+Many thanks for your extensive feedback. I would like to respond to a few of your comments.
+
+# Review #54A
+In this paper, we indeed refactor all clones that **can** be refactored. We understand your concern that that is not desired. However, we apply these refactorings only to perform measurements on the effect of the refactoring, e.g. determine a delta maintainability index. We intersect this maintainability index with characteristics of the clone to determine how clone characteristics (like clone size, relation, parameters) affect maintainability when refactored.
+
+So we use this refactoring as a tool to determine whether the refactoring should've been applied in the first place. This allows us to draw our conclusions, and determine where the tipping points lie between clones that improve maintainability when refactored and those that do not. The actual refactorings we apply in the study are not meant as an indication of which clones you should refactor.
+
+#### How does 4.1 help your cause of determining clones that should be refactored?
+Section 4.1 presents a technique to refactor clones whilst not introducing side effects. If there are contextual differences between cloned fragments, merging those fragments may influence the functional correctness of the program.
+
+#### What is the goal of the experiments? What are the success criteria of the approach?
+The goal is to measure the effect of refactoring clones to determine which characteristics of clones indicate whether the clone **should** be refactored. By categorizing a large set of clones over our corpus, we were able to extract such characteristics.
+
+The success criteria are that our results help prioritize detected clones. Clones that result in higher maintainability when refactored are bound to have a higher priority.
+
+# Review #54B
+The reason we chose to include duplication as an evaluation metric, even though it is also our criteria, is to stick to the maintainability model (the one by Heitlager) we used. Would we have omitted this metric, we would have had an incomplete indication of the effect of our refactoring efforts on maintainability. According to this source, a reduction of duplication is, in itself, an improvement of maintainability (in addition to the improvement in other metrics that often comes with refactoring clones).
+
+# Review #54C
+#### How does the authors' implementation match up to these efforts?
+In our study, we chose to be very strict in our selection of clones we support for refactoring. The preconditions we discuss in Section 6.3.1 eliminate those clones that have such preconditions that are not applicable to our "Extract Method" implementation. This is part of the reason we can only refactor 28% of detected clones.
+
+#### In the evaluation, the authors state that they assessed the correctness of the refactoring using "control projects" and JFreeChart, but I see no numbers of refactoring failures, as detected by the compiler or the test suite.
+We tweaked our refactoring implementation and the preconditions for which clones would be considered for refactoring till no refactoring failures were left. Thus, given our preconditions stated in Section 6.3.1, our implementation can successfully refactor all clones that are matched as "Can be refactored".
+
+Comment @A1 by Reviewer C
+---------------------------------------------------------------------------
+I appreciate the authors' response.
+
+Overall, however, I think the paper stands on shaky ground: refactoring tools that work only in some cases, the informative value of metrics is generally questionable, …
+
+Anyhow, I wish you the best of luck with your future submissions!
