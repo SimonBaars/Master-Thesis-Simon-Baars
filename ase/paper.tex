@@ -112,54 +112,25 @@ This paper is organized as follows. In Sec.~\ref{sec:background} we revisit key 
 \section{Background}\label{sec:background}
 We briefly describe relevant code clone and clone refactoring research.
 
-\subsection{Code clones}
+\subsection{Definition of code clones}
 We use two concepts to argue about code clones~\cite{roy2007survey}:
 \\ \textbf{Clone instance}: A single cloned fragment.
 \\ \textbf{Clone class}: A set of similar clone instances.
 
-Fig.~\ref{fig:cloneclasses} shows an example of two clone classes. The first clone class spans the first two lines of all three files. The second clone class spans all lines of the first two files.
-
-\begin{figure}[H]
-\begin{parcolumns}{3}
-\colchunk[1]{
-\begin{javacode}
-// File1.java
-|\highlightDarkyellow|doA();
-|\highlightDarkyellow|doB();
-|\highlightYellow|doC();
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-// File2.java
-|\highlightDarkyellow|doA();
-|\highlightDarkyellow|doB();
-|\highlightYellow|doC();
-\end{javacode}}
-\colchunk[3]{
-\begin{javacode}
-// File3.java
-|\highlightYellow|doA();
-|\highlightYellow|doB();
-doD();
-\end{javacode}}
-\end{parcolumns}
-\caption{Example of two clone classes.}
-\label{fig:cloneclasses}
-\end{figure}
-
-%\subsection{Clone Types}
-Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed%. These clone types are described in Roy et al
-~\cite{roy2007survey}:\\
+Duplication in code is found in many different forms. Most often duplicated code is the result of a programmer reusing previously written code \cite{haefliger2008code, baxter1998clone}. Sometimes this code is then adapted to fit the new context. To reason about these modifications, several clone types have been proposed~\cite{roy2007survey}:\\
 \textbf{Type I:} Identical code fragments except for variations in whitespace (may be also variations in layout), and comments.\\
 \textbf{Type II:} Structurally/syntactically identical fragments except variations in identifiers, literals, types, layout, and comments.\\
 \textbf{Type III:} Copied fragments with further modifications. Statements can be changed, added or removed next to variations in identifiers, literals, types, layout, and comments.
 
 A higher type of clone means that it is harder to detect and refactor. Many studies adopt these clone types, analyzing them further and writing detection techniques for them \cite{sajnani2016sourcerercc, kodhai2010detection, van2019novel}.
 
-\subsection{Clone Refactoring}
+\subsection{Clone harmfulness}
+
+
+\subsection{Clone refactoring}
 The most common technique for refactoring clones is ``Extract Method''~\cite{fowler2018refactoring}, which can be applied on code inside the body of a method. Applying this technique entails moving functionality from the body of a method to a new method. To reduce duplication with this technique, the contents of a single clone instance are extracted to a new method and all further locations of the clone are replaced by a call to the new method.
 
-\section{Related Work}\label{sec:relatedwork}
+\section{Related work}\label{sec:relatedwork}
 We outline relevant research to clone refactoring. A significant aspect is the context of clones.
 
 \subsection{Clone context analysis}\label{sec:rw:contextanalysis}
