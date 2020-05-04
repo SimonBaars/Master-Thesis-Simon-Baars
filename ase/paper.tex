@@ -407,53 +407,6 @@ To assess the impact of an applied refactoring, we selected the four characteris
 \end{itemize}
 We hypothesize that these characteristics are the main factors influencing the impact on the maintainability of the system as a result of refactoring the clone. This is because there are no further transformations that are applied that influence the maintainability metrics.
 
-\subsection{Refactoring evaluation}
-To evaluate the refactorings applied by CR and their impact, we expanded CR to create a git-commit for each applied transformation. We then use the ``Github Desktop''\footnote{GitHub Desktop is a git client: \url{https://desktop.github.com/}} to visualize each change made by CR (see Fig.~\ref{fig:cr_refactoring}). We then checked samples of the applied refactorings and the calculated metrics.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{img/cr.png}
-    \caption{Automatically applied refactoring by CR shown in the GitHub Desktop client. CR automatically authors a git commit for each applied transformation and specifies the impact of the change in the commit message.}
-    \label{fig:cr_refactoring}
-\end{figure}
-
-The full commit message for the refactoring example displayed in Fig.~\ref{fig:cr_refactoring} is as follows:
-\begin{quote}
-CR refactored a clone class with 2 clone instances. For the common code we created a new method and named this method “refactoredClone0". These clone instances have a Same Method relation with each other. The newly created method has been placed in ISODateTimeFormat. Each duplicated fragment has been replaced with a call to this method.
-\\ \\
-== System Quality Metrics == \\
-Total Cyclomatic Complexity increased by 1 from 6,994 to 6,995.\\
-Total Unit Interface Size increased by 1 from 3,715 to 3,716.\\
-Total Unit Line Size increased by 1 from 23,024 to 23,025.\\
-Total Unit Token Size decreased by 2 from 153,190 to 153,188.\\
-Total Nodes decreased by 1 from 18,866 to 18,865.\\
-\\
-Duplicated Nodes decreased by 6 from 502 to 496.\\
-Duplicated Tokens decreased by 42 from 5,064 to 5,022.\\
-Duplicated Lines decreased by 6 from 504 to 498.\\
-\\
-== Risk Profiles ==\\
-Unit Complexity\\
-Created a new method with a low risk Unit Complexity of 1.\\
-Removing duplicate blocks changed 1 method.\\
-The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 8 to 8 Unit Complexity. This did not influence the risk category of this method, it is still low risk.\\
-\\
-Line Volume\\
-Created a new method with a low risk Line Volume of 5.\\
-Removing duplicate blocks changed 1 method.\\
-The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 47 to 39 Line Volume. This did not influence the risk category of this method, it is still high risk.\\
-\\
-Token Volume\\
-Created a new method with a low risk Token Volume of 30.\\
-Removing duplicate blocks changed 1 method.\\
-The method "dateByWeek(DateTimeFormatterBuilder, Collection, boolean, boolean)" went from 303 to 271 Token Volume. This increased the risk category of this method from high to moderate.\\
-\\
-The new method has a low risk Unit Interface Size of 1.\\
-\\
-Duplication went from 2.66\% to 2.63\%. This did not influence the risk category of the duplication in this codebase, it is still low risk.
-\end{quote}
-Inspecting these 
-
 \section{Experimental setup} \label{sec:experimentalsetup}
 %In this section, we describe the setup of our experiments.
 We describe how we evaluated CR and the corpus on which we ran CR. We then describe the configuration of our experiments. Finally, we describe how we calculated our results.
@@ -531,7 +484,7 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 
 %% RESULTS TABLES (MOVED UP SO LATEX PLACES THEM IN THE RIGHT PLACE)
 
-\begin{table}
+\begin{table*}
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
@@ -561,7 +514,7 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 }
 \caption{Influence on maintainability of refactoring clones with the specified relation categories.}
 \label{tab:relation_refactor}
-\end{table}
+\end{table*}
 
 %% END TABLES
 
