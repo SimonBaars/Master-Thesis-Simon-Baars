@@ -1,12 +1,11 @@
 \documentclass[sigconf,review,anonymous]{acmart}
 
+\usepackage{amsmath}
 \usepackage[table]{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
-
 \usepackage{booktabs}
 \usepackage{multirow}
-\usepackage{parcolumns}
 
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
@@ -493,10 +492,8 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \textbf{Common Hierarchy} & \textbf{-66.33} & \textbf{0.73} & \textbf{1.20} & \textbf{-8.85} & \textbf{2,202} & \textbf{0.23} \\ \midrule
 \hspace{10pt} Superclass & -64.48 & 0.79 & 0.94 & -7.22 & 229 & 0.42 \\
 \hspace{10pt} Sibling & -70.07 & 0.69 & 1.28 & -10.97 & 1,722 & 0.23 \\
-\rowcolor[HTML]{D0D0D0}
 \hspace{10pt} Same Hierarchy & -44.18 & 0.95 & 0.89 & 1.54 & 87 & 0.10 \\
 \hspace{10pt} First Cousin & -42.69 & 0.89 & 0.93 & 4.86 & 144 & 0.02 \\
-\rowcolor[HTML]{D0D0D0}
 \hspace{10pt} Ancestor & -32.75 & 1.00 & 0.75 & 11.00 & 20 & -0.03 \\ \midrule
 \textbf{Common Interface} & \textbf{-47.06} & \textbf{0.83} & \textbf{1.04} & \textbf{4.50} & \textbf{1,044} & \textbf{-0.02} \\ \midrule
 \hspace{10pt} Same Indirect Interface & -37.08 & 0.93 & 0.82 & 9.96 & 487 & -0.01 \\
@@ -628,7 +625,6 @@ The main reason that "Void" is lowest, is that it is linked to a higher number o
 \textit{\textbf{Return Category}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Size}} & \textit{\textbf{Duplication}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
 Return & 0.85 & 1.02 & -3.84 & -55.00 & 1,571 & 0.19 \\
 Declare & 0.94 & 0.74 & 11.11 & -49.19 & 5,177 & 0.15 \\
-\rowcolor[HTML]{D0D0D0}
 Assign & 0.79 & 1.07 & 0.43 & -56.29 & 14 & 0.12 \\
 Void & 0.76 & 1.49 & -5.85 & -56.35 & 5,921 & -0.18 \\ \midrule
 \textbf{Grand Total} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{-53.26} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
