@@ -285,31 +285,6 @@ After all clones have been detected, CR determines whether clone classes can be 
 
 Note that unlike the expression variability threshold, this threshold can exceed 100\%. This is because, in theory, the gap can be larger than the clones surrounding it.
 
-% To verify the correctness of all detected clones, we ran the tool over a large project and manually checked the output. We also created a set of control projects to test the correctness for many edge cases.
-
-\begin{figure*}
-\begin{parcolumns}{2}
-\colchunk[1]{
-\begin{javacode}
-|\highlightYellow|int a = getA();
-|\highlightYellow|while(a<1000) {
-|\highlightYellow|  a *= 5;
-  doC();
-}
-\end{javacode}}
-\colchunk[2]{
-\begin{javacode}
-|\highlightYellow|int a = getA();
-|\highlightYellow|while(a<1000) {
-|\highlightYellow|  a *= 5;
-  doB(a);
-}
-\end{javacode}}
-\end{parcolumns}
-\caption{A clone that spans a block partially.}
-\label{fig:refactorabilitypartialblock}
-\end{figure*}
-
 \subsection{Context mapping} \label{sec:context}
 After clones are detected, we map the context of these clones. We identify two properties of clones as their context: relation~\cite{fontana2012duplicated} and location~\cite{tairas2011representing}. We identify categories for each of these properties, to get a detailed insight into the context of clones.
 
@@ -363,7 +338,7 @@ Table~\ref{tab:location} shows that most clones are found in method bodies. Ther
 Several factors may obstruct the possibility to extract code to a new method~\cite{tsantalis2015assessing}:
 \begin{itemize}
     \item \textbf{Complex Control Flow}: This clone contains \texttt{break}, \texttt{continue} or \texttt{return} statements, obstructing the possibility of method extraction.
-    \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement. An example of this is shown in Fig.~\ref{fig:refactorabilitypartialblock}.
+    \item \textbf{Spans Part Of A Block}: This clone spans a part of a block statement.
     \item \textbf{Is Not A Partial Method}: If the clone does not fall in the ``Partial method'' category of Sec.~\ref{sec:location}, the ``Extract Method'' refactoring technique cannot be applied.
     \item \textbf{Returns Multiple Values}: If a clone modifies or declares multiple pieces of data that it should return.
     \item \textbf{Top-Level Non-Statement}: If one of the top-level AST nodes of the clone is not a statement. For instance, if a (part of) an anonymous class is cloned.
@@ -431,7 +406,7 @@ CR requires all libraries of the analyzed projects
 This procedure results in 2,267 Java projects including all their dependencies%\todo{this is confusing, how many original projects are there? were the dependencies in the original corpus?}
 . The projects vary in size and quality. The total size of all projects is 14.2M lines (11.3M when excluding whitespace) over a total of 100K Java files. This is an average of 6.3K lines over 44 files per project. The largest project in the corpus is \textit{VisAD} with 502K lines. The distribution of project sizes is displayed in Fig.~\ref{fig:dist}.
 
-\begin{figure}[H]
+\begin{figure}
   \includegraphics[width=1\columnwidth]{img/dist2}
   \caption{Distribution of project sizes in corpus on a logarithmic scale.}
   \label{fig:dist}
@@ -485,7 +460,6 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 
 \begin{table*}
 \centering
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
 \textit{\textbf{Relation}} & \textit{\textbf{Duplication}} & \textit{\textbf{Complexity}} & \textit{\textbf{Parameters}} & \textit{\textbf{Volume}} & \textit{\textbf{\#}} & \textit{\textbf{Score}} \\ \midrule
@@ -508,7 +482,6 @@ N_{duplication} + N_{complexity} + N_{volume} + N_{parameters}
 \hspace{10pt} No Indirect Superclass & -44.89 & 0.84 & 1.18 & 14.08 & 104 & -0.30 \\ \midrule
 \textbf{Grand Total} & \textbf{-53.26} & \textbf{0.84} & \textbf{1.12} & \textbf{1.33} & \textbf{12,683} & \textbf{0.00} \\ \bottomrule
 \end{tabular}%
-}
 \caption{Influence on maintainability of refactoring clones with the specified relation categories.}
 \label{tab:relation_refactor}
 \end{table*}
