@@ -1,0 +1,95 @@
+Review 1
+Overall evaluation:	
+2: (accept)
+The paper fits within the goals, content and scope of BENEVOL and should therefore be accepted.
+
+This paper proposes to correctly identify code clones (code duplication) by taking contextual information into account, and proposes a method to do this “efficiently”. The evaluation of the proposed method is currently based on a “manual inspection of a sample of clones”. Also, the evaluation only seems to consider whether the found clones by the method are relevant, and whether irrelevant clones have been excluded by the method. When reading “efficient” I tend to understand things related to performance. The authors talk about this in section VI and VII, showing that including contextual information reduces the performance by an order of magniture (factor 13). I would have expected the abstract and introduction to mention this aspect as well.
+
+The focus of the paper (i.e. about how and why to take contextual information into account) seems to be to evaluate whether “clones or suitable for refactoring purposes”. Is this the only scenario of use of the proposed method, or are there others?
+
+To which extent is the proposed method specific for Java? Would it also be applicable to other programming languages? Why (not)? Do you expect to obtain the same or similar results? Why (not)? I was also missing a motivation in the work about why you choose to focus on Java. It seems that the proposed approach heavily relies on the type information provided by the language. If this is the case, how could it be applied to dynamically typed (or untyped) programming languages?
+
+The paper restricts itself to studying only Type 1 clones. Why is that? I did not find a clear motivation or argument for this.
+CloneRefactor is using single statements as the lowest level of granularity. The rationale for this is “simplicity and performance efficiency”. Did you actually evaluate this? What performance difference would you get if you would have an even finer granularity, and what would you gain by having an approach that would work on such as a finer level of granularity?
+
+I found the “Experiments and Results” section quite disappointing. It is very short, compared to the previous paragraph. While I see some explanation about the performance of the method (13 times longer than without using contextual information), I do not see any empirical evaluation related to the accuracy, precision and recall of the clone detection. You can (and should) actually measure and evaluate these aspects to empirically quantify why and how the proposed method is an improvement over existing approaches. I am also lacking information about the possible representativeness of the selected corpus and sample:
+- “we use a corpus of 2,267 Java projects including their dependencies [1]. “ => How was this corpus selected? Is this corpus biased? Is it representative? Why?”
+- We manually analyse a sample of 50 clones that are not found when considering contextual in- formation => How was this sample selected out of all available candidates? Is this sample biased? Is it representative? Why?
+
+Detailed comments:
+- The paper is too long It was requested to have 4 pages + 1 page of references. The paper itself is, however 4,5 pages long. Please respect the imposed page limitations, it is part of the exercice. In a real conference, not doing so would end up in an automatic desk reject of the submission.
+- Is “simon.mailadres@gmail.com “ your real email address?
+- There was quite some redundancy (more than usual) between the abstract, the introduction and the conclusion. In all these sections, the results of the paper (e.g. 11% fewer clones our found) are reported. For a paper that is only 4 pages long such redundancy could be avoided. Note that, after reading section VI, I do not really see where these 11% come from…
+- First sentence of abstract: “Duplication in source code is often seen as one of the most harmful types of technical debt”. First sentence of introduction: “Duplicate code fragments are often considered as bad design.” => This depends on the point of view. For example, there is the well-known paper “"Cloning Considered Harmful" Considered Harmful” by Kapser and Godfrey that provides an alternative point of view https://ieeexplore.ieee.org/document/4023973
+A journal extension of their paper was published in Empirical Software Engineering 2008: https://link.springer.com/article/10.1007%2Fs10664-008-9076-6
+Review 2
+Overall evaluation:	
+1: (weak accept)
+BENEVOL 2019 #2 Statement-level AST-based Clone Detection in Java using Resolved Symbols
+
+The paper presents a novel approach to detection of clones. The paper makes several assumptions, the primary one being the purpose of clone detection, namely refactoring. I would have appreciated if this purpose would have been stated explicitly in the title: code duplication is not necessarily problematic (Kapser and Godfrey). The authors seem to echo this sentiment mentioning in Section VI that “refactoring would not improve the code design” of the manually analysed “clones that are not found when considering contextual information”.
+
+As usual, in code duplication the name of the game is precision vs scalability. Techniques that consider the source code as a series of sentences or tokens can be expected to be fast but imprecise while techniques that consider the source code as a more advanced structure such as a program-dependency graph (Krinke) are more precise but slow. From this perspective the results of empirical evaluation reported in Section VI are not surprising: more complex data representation (AST) and reasoning produce 11% less clones at the expense of an extreme slowdown (13 times!).
+
+Empirical evaluation:
+* The code clone detection community has designed several techniques for evaluation of clone detection tools - benchmarks (Roy and Cordy) and tool evaluation framework (Svajlenko and Roy). I would like to encourage the author to benefit from these techniques and evaluate CloneRefactor using them.
+* Discussion in Section VI should have included information on how the corpus has been constructed. Is this collection representative? In what sense? The author might have considered checking papers of Munaiah et al. and Nagappan et al.
+
+Finally, the paper is too long. The call for paper has allowed the fifth page for bibliography only.
+
+Cory Kapser, Michael W. Godfrey: "Cloning considered harmful" considered harmful: patterns of cloning in software. Empirical Software Engineering 13(6): 645-692 (2008)
+Jens Krinke: Identifying Similar Code with Program Dependence Graphs. WCRE 2001: 301-309
+Nuthan Munaiah, Steven Kroh, Craig Cabrey, Meiyappan Nagappan: Curating GitHub for engineered software projects. Empirical Software Engineering 22(6): 3219-3253 (2017)
+Meiyappan Nagappan, Thomas Zimmermann, Christian Bird: Diversity in software engineering research. ESEC/SIGSOFT FSE 2013: 466-476
+Chanchal K. Roy, James R. Cordy: Benchmarks for software clone detection: A ten-year retrospective. SANER 2018: 26-37
+Jeffrey Svajlenko, Chanchal K. Roy: BigCloneEval: A Clone Detection Tool Evaluation Framework with BigCloneBench. ICSME 2016: 596-600
+Review 3
+Overall evaluation:	
+2: (accept)
+Summary:
+This paper presents CloneRefactor: a tool for detecting type I code clones in Java. CloneRefactor distinguishes itself from other code detection tools in that it takes contextual information into account. This contextual information can take the form of: 1) the FQI of variable references, 2) the FQI of method references, and 3) the FQI of type references. When the contextual information between two potential clone instances does not match, CloneRefactor does not classify the fragments as clones. By analysing 2267 Java projects, the authors found that 11% of code fragments in these projects were incorrectly classified as clones.
+
+
+Major comments:
+I wonder whether the proposed contextual information could be too restrictive at times. Suppose the following two code snippets:
+Snippet 1:
+import bar.Foo;
+void f(Foo x) {
+x.m();
+}
+
+Snippet 2:
+import baz.Foo;
+void f(Foo x) {
+x.m();
+}
+
+As far as I understand it, traditional type I clone detectors would claim that the method f was cloned in both fragments, whereas your clone detector would correctly state that these two instances are *not* clones. Suppose now that both the bar.Foo and the baz.Foo classes implement an external interface (e.g., com.IFoo), and that the method m that is invoked was declared in this external, shared interface. In this case, would your clone detector still state that both fragments are *not* clones of each other, or would it recognise that the method definition of f could be refactored into:
+void f(IFoo x) {
+x.m();
+}
+without loss of correctness?
+As I understand it, Section IV.A) states that your detector will classify these as clones if the location of the method reference points to the method declaration in the IFoo interface. Is this understanding correct?
+
+
+
+
+Minor comments:
+Reference [3] cites a work that was published almost 15 years ago. Although I don't doubt that duplicated code still accounts for a large fraction of the total codebase of a system, most software ecosystems have evolved significantly in the intervening years.
+I wonder by how much, if at all, this fraction has changed. Perhaps you can cite a publication that is more up-to-date?
+
+
+Regarding your evaluation: could you confirm that *each* of the 50 samples you analysed was incorrectly classified as a clone by a detector that did not take contextual information into account?
+Specifically regarding your assessment that refactoring would not improve the code design of those 50 samples: it could be prudent to also perform this experiment on 50 samples that *were* classified as clones by CloneRefactor. Is it possible that the question of whether or not code design improves by refactoring clones does not necessarily depend on whether contextual information is included?
+
+
+The paper appears to be half a page over the page limit. It should be easy to reduce the size of the paper by making the figures (especially Figures 1 and 3) smaller.
+
+
+Typos:
+p.1: "They *increasing* maintenance efforts or *causing* bugs"
+p.1: "however [they] do not take into account"
+p.1: "11% *less* (-> fewer) clones"
+p.1: "Manually inspecting a sample [of] the difference"
+p.1: "we mainly focus [on] expanding type 1"
+p.5: "based on our *judgement*"

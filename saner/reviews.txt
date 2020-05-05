@@ -1,0 +1,73 @@
+Review 1
+Overall evaluation:	Summary: The paper proposes an approach and tool to detect clones that can be automatically extracted to methods. To this purpose, the authors define a set of preconditions to characterize an extractable code clone. They implemented a tool to both detect clones and to check the proposed preconditions. Then, they executed this tool in a corpus of Java program.s They reported that only 28% of the detected clones can be automatically extracted to methods, i.e., only these clones follow the proposed preconditions. The paper complements the results with data on the maintainability scores after and before the recommended refactorings.
+
+Major layout problem: The font size suddenly changed to small or footnote size in page 7. This change made reading the paper really hard.
+
+Pros & Cons:
+
++ The addressed theme is relevant, since duplicated code has a real impact on the quality and maintainability of software systems.
+
++ The authors also implemented a non-trivial tool.
+
++ Some results are interesting, e.g,. only 28% of the clones detected in 2K Java projects can be automatically refactored.
+
+- I was expecting a more solid evaluation. For example, an evaluation using precision/recall or --- even more interesting --- an evaluation with the owners of some Java projects. Would they agree with the recommended clone elimination?
+
+- There are no discussions about the limitations of the approach/tool/evaluation (e.g., limitations of the preconditions to detect refactorable clones, generalization of the results, threats to validity section, etc).
+
+Other comments:
+
+I also have some concerns about Section V (survey with existing clone detection tools). I suggest the authors to provide more details about this process to select the studied tools. For example, they mention some control projects: “we create a set of 57 control projects to verify the correctness in many (edge) cases”. Please, give details about these projects (size, number of clones, types of clones, etc) and edge cases. The authors also commented they discarded the Scorpio tool due to its (bad?) performance in such projects (see Table I). But, please, give details about this particular result …. It seems it was the only reason for not considering Scorpio in the study.
+
+Page 4: “None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool…” Again, I am recommending the authors to provide more details about this decision. For example, Figure 1 shows an example of a code clone. In this example, the expressions in line 12 rely on different types. The first method sums two integers and the second one concatenates two strings. Suppose another tool also detects this clone, why not using this tool and just extend it to consider types in the detected clones?
+
+The paper should have provided a more detailed and convincing evaluation of the tool. Section VIII and IX show results based on metrics and preconditions. There is no discussion about precision, recall, and limitations of the tool. For instance, did other similar approaches detect different clones? Indeed, the authors start a discussion about their results in Section VII. But I recommend them to expand this section, providing more details about this evaluation.
+
+Finally, there are also many concerns related with using maintainability scores and metric aggregation to compare the code before and after extracting the clones. The authors define the maintainability score of a refactoring as combination of four components (duplication, complexity, volume, and parameters), with the same weight. I view this kind of score, generalization and metric aggregation as a major conclusion validity concern.
+
+"CR has refactored 12.710 clone classes and measured the change ....": Please, give more details on how these refactorings were automatically applied by the tool. Did CR use an automatic refactoring engine (e.g., the one implemented by Eclipse or similar IDE)?
+
+Minors:
+
+Figure 1: methods “addTen” and “concatTen” return “int” and “string” values, respectively (line 13). However, both are declared as returning void (line 11).
+
+Besides the font size problem, which I mentioned before, the paper also contains some layout problems, e.g., the titles are not at the top from tables II to VI.
+Review 2
+Overall evaluation:	Based on an analysis of the preconditions of clone refactoring, this paper presents a tool that can detect and refactor code clones based on code context analysis. The tool uses a set of maintainability metrics to determine the potential value of refactoring a clone class. The tool is evaluated with a set of open-source Java projects. From the evaluation the authors find that code token volume and external data dependency are the two factors that have the greatest effect on the maintainability improvement of clone refactoring.
+
+Clone refactoring is an important technique that can eliminate the harm of code clones. This paper presents an interesting investigation to answer the question: what kinds of code clones are worth refactoring. The results can provide some useful hints for practitioners. However, the paper given its current form suffers from a series of problems that hinder it from being accepted.
+
+First, the contributions of the paper are not clear. The tool introduced in Section VI covers clone detection, clone refactoring, and maintainability measurement. None of these parts provide solid and novel techniques that improve existing techniques. For example, the paper concludes that none of the surveyed clone detection tools can support clone refactoring, while the clone detection technique introduced in Section VI.A only defines two thresholds that can be easily supported by existing techniques.
+
+Second, some important decisions are not justified and important details are missing. For example, Section V defines four criteria for the selection of clone detection tools. It is not clear why these criteria are defined and what are the rationales behind the decisions. Moreover, it is not clear how the assessment in Table 1 is made: there lack necessary explanations for the assessment. Similarly, it is not clear how the four maintainability metrics are chosen and why their weights are equal in the calculation of maintainability score.
+
+Third, the evaluation is vague and weak. The research questions of the evaluation are not clear. And the evaluation does not compare the work with existing clone detection or clone refactoring tools.
+
+Fourth, the paper is not well formatted. The template used for Page 1-6 is obviously different from that used for Page 7-10. The titles of the tables are not put in right positions and the numbers of some tables are wrong.
+Review 3
+Overall evaluation:	This paper presents a study on how to detect and refactor code clones in a system automatically. Thus, they developed a tool to detect clones and refactor them automatically and ran it on a large corpus of open-source Java software systems. The main idea consisting of three steps clone detection, context mapping and refactoring. To determine the impact on system maintainability, multiple factors are measured before and after the refactoring and the main technique which is employed to refactor the code clone is “Extract Method”.
+
+Detailed Evaluation:
+Positives:
+
+• The paper is interesting and the topic is very importnat
+• The author started with explaining a big picture regarding what is code clone which contributes to ease of understanding.
+• The main code clone that the author is focusing on is the ones that need “Extract Method” technique which is the most popular kind of code smell.
+• The paper is organized and easy to follow.
+
+Negatives:
+• The objectives and motivations of the research work are not written clearly in the Introduction section. And also, contributions are not discussed concisely.
+• The Survey of Existing code clone detection tools are discussed based on four criteria, but it is hard to find the novelty of the work by making a relation with the current work.
+• In fact it is not clear how the author concluded the existing clone detection tools cannot detect refactorable clones. There are studies that use the existing clone detection tools to refactor clones.
+• Now that they proposed a new clone detection tool, it is important that the evaluate it and compare with the state of the art. I can only see limited evaluation of their proposed approach.
+• How the proposed technique ensures the equality between the code fragments and code clones is not clear in Section IV.
+• The comparisons among the existing methods and the proposed method should have been discussed elaborately.
+• It is not clear how the preconditions are working to determine a clone could be refactored in the Experimental Setup section.
+• In the Introduction section, the authors mention the impact on system maintainability of measuring four metrics before and after applying code refactoring. However, the result is not discussed with the impacts of the measures.
+• In the paragraph 4 of introduction section, it mentioned “maintainability score”. However, it does not provide an explicit definition of the term like the definition of “token volume”. If readers do not read the rest sections, they might be confused whether the “maintainability score” is calculated by those maintainability metrics or not.
+• In the section VI B 1), “common interface” and “unrelated” has the same definition and it seems does not make sense for “unrelated”.
+• The description of “no direct superclass” and “no indirect superclass” under “unrelated” part of section VI B 1) is not very clear to me.
+• In the result section, there is no result of testing the correctness after refactoring, which could be important for the tool’s reliability.
+• There is the description of preconditions in the background section, but it does not show up in later sections.
+• The examples are used are so simple how the author can be sure a same technique can be applied on more complex codes?
+• Based on Refactorability section there are a lot of situations where proposed technique cannot be effective. I believe this technique can be used as a baseline for further investigation

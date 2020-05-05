@@ -1,0 +1,29 @@
+Review 1
+Overall evaluation:	
+2: (accept)
+This paper, which is clearly marked as "work in progress" by the authors, presents their ongoing work on developing an automated refactoring tool for removing code clones from Java programs. The paper is well written and raises important research questions. Even though a lot of work on code clone detection has already been conducted, the paper does a good job at explaining what is still missing and at how their proposed approach differs from what exists. The main difference of these authors' vision is not only to detect code clones but also to be able to apply refactorings to remove those clones. And to focus on clone groups rather than clone pairs. From their survey on existing clone detection tools, the most interesting related tool seems to be Scorpio. It is a pity that the paper doesn't explain this tool in a bit more detail, before presenting their own tool, especially since their own approach seems to be similar as they also combine AST- and graph-based approaches for clone detection. A bit of detail is also missing on how exactly the clone classes are detected in their own tool. Is this an exhaustive brute-force approach? And what is the performance and memory usage of such an approach on typical Java systems? In Section 5 I would have liked to see more in detail how the CloneRefactor tool is implemented. I did appreciate the discussion of problems with existing clone type definitions, the authors' proposal for an alternative definition of clone types, and their analysis of these new clone types definitions impact the clone detection results, as well as how to refactor them through for example method extraction refactorings.
+
+Minor issues:
+- It is not clear why the title uses the term "merging" whereas the remainder of the paper uses the term "refactoring" (except for section 6 which talks about "merging" again). I would suggest to stick to the term "refactoring".
+- In section 1 the authors mention somewhere their interest in "programming language dependent aspects" and also the title suggests object-oriented programming languages in general. The details of the paper however focus mostly on Java and the language-agnostic aspect is not really discussed. For now I would suggest the authors not to make too strong promises or claims about the language-agnostic nature of their approach, unless possibly as part of a more long term vision for their research.- At the end of section 5.3.1 the authors say that it is often not possible to refactor to external classes. Why not? Is that really so? Maybe not with trivial refactorings but maybe with a bit more effort it could become feasible?
+- At the beginning of section 5.3 the authors say that they "use a *vastly different setup*" as compared to Fontana et al., but then just a bit later at the start of section 5.3.2 they say they "use a *similar setup* to that used by Fontana et al.". This sounds inconsistent.
+- Another such inconsistent phrasing is in the first paragraph of section 5.1 where the authors first state that the corpus contains "higher quality projects" but then two sentences later say that these projects reflect "the quality of average [...] systems".
+- In section 5.3.3 it would be good to explain the T1 algorithm in a bit more detail because it was not really explained.
+Review 2
+Overall evaluation:	
+1: (weak accept)
+This work-in-progress paper introduces a new detection tool for type 1 clones that favours refactorability over recall, reports on its results on a corpus of 1361 Java projects with information about the location of and the relations between the clone classes.
+
+The work is well-motivated and the empirical results are interesting.
+The paper is easy to follow and of interest to the SATToSE community.
+
+My only serious gripe concerns the structure of the paper: the sections about type 2R and type 3R clones present rather vague definitions and detection strategies which have not yet been implemented. It would be in the interest of the long-term relevance of the paper to drop these sections and re-focus entirely on the 1R clones. Otherwise, future insights gained from the implementation might require drastic changes to the paper's definitions.
+The space gained in this manner could be used to present some more information about the distribution of the 1R clones and their relation across the projects (i.e., quartiles and outliers as some projects might differ in the number of clones they contain).
+
+Apart from this restructuring, I would suggest the authors to clarify the following questions in their camera-ready version:
+- what is the motivation for detecting type 1R clones through the proposed method rather than through post-processing the results from an existing tool for type 1 clones?
+- how is the tool similar to Scorpio (section 3.2), if it does not use a program dependency graph for detecting type 1R clones? perhaps this could be clarified through the pseudo-code for its detection algorithm
+- which empirical research are the threshold values in section 3.2.1 based on?
+- the equality checks in section 4.1 seem to account for overloading of methods, but not for overriding. Is this not a concern for the refactorability of the clones classes too?
+- for Table 4, would it be possible to derive the information for clone pairs from the information that you have for the clone classes? this would facilitate comparison with the results of Fontana et al. [FZ15]
+- is there preliminary information on precision and recall of the tool on a statistically significant sample of the corpus?
