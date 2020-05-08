@@ -72,7 +72,7 @@
 Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Several studies show that not all duplication should be refactored. When duplication is refactored, other system attributes may be negatively affected thus resulting in a negative impact on the codebase when all system attributes are considered.
 
 % How we fix the problem that we introduced in the first paragraph
-We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate several maintainability metrics (duplication, complexity, unit size, code volume) to determine whether it improves the code. This score provides support for a developer to decide whether a given clone is likely to improve the codebase when refactoring. 
+We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate a set maintainability metrics (duplication, complexity, unit size, code volume) that are calculated on unit level. This score provides support for a developer to decide whether a given clone is likely to improve the codebase when refactoring. 
 
 % Experimental setup: how we validated that we fixed the problem
 To simulate such refactorings in a controlled environment, we propose a tool that can automatically refactor a subset of duplication problems in Java source code. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
