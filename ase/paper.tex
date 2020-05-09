@@ -180,7 +180,14 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
-None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
+
+To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four c required by such :
+\begin{enumerate}
+    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
+\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of the surveyed clone detection tools.
+\item \textbf{Can analyze resolved symbols.} When detecting the clones proposed in Sec.~\ref{sec:research}, it is important that we can analyze resolved symbols (for instance a type reference).
+\item \textbf{Extensive detection configuration.} Detecting our clone definitions, as proposed in Sec.~\ref{sec:research}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
+\end{enumerate}
 
 \begin{figure}[H]
   \includegraphics[width=0.7\columnwidth]{img/flow}
@@ -188,15 +195,13 @@ None of the surveyed tools were suitable for our definitions of refactorable clo
   \label{fig:clonerefactorflow}
 \end{figure}
 
-\subsection{Survey of existing clone detection tools}\label{sec:survey}
+
+None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
+
+
+
+% \subsection{Survey of existing clone detection tools}\label{sec:survey}
 %To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
-To investigate the impact of the definitions introduced in Sec.~\ref{sec:research}, we need a tool to detect refactorable clones according to these definitions. We conducted a short survey on (recent) clone detection tools to detect such clones that can be refactored. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
-\begin{enumerate}
-    \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
-\item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of the surveyed clone detection tools.
-\item \textbf{Can analyze resolved symbols.} When detecting the clones proposed in Sec.~\ref{sec:research}, it is important that we can analyze resolved symbols (for instance a type reference).
-\item \textbf{Extensive detection configuration.} Detecting our clone definitions, as proposed in Sec.~\ref{sec:research}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
-\end{enumerate}
 
 \begin{table}[H]
  \begin{center}
