@@ -178,7 +178,16 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 \end{itemize}
 For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
-\section{Survey of existing clone detection tools}\label{sec:survey}
+\section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
+None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
+
+\begin{figure}[H]
+  \includegraphics[width=0.7\columnwidth]{img/flow}
+  \caption{Abstract flow diagram of CR.}
+  \label{fig:clonerefactorflow}
+\end{figure}
+
+\subsection{Survey of existing clone detection tools}\label{sec:survey}
 %To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
 To investigate the impact of the definitions introduced in Sec.~\ref{sec:research}, we need a tool to detect refactorable clones according to these definitions. We conducted a short survey on (recent) clone detection tools to detect such clones that can be refactored. The results of our survey are displayed in table~\ref{table:dettools}. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. Next, we formulate the following four criteria by which we analyze these tools:
 \begin{enumerate}
@@ -213,15 +222,6 @@ Apart from these criteria, we found that the output of these clone detection too
 %To detect clones that can be automatically refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect automatically refactorable clones, either through configuration or postprocessing of their output.
 
 %None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable for our definitions of refactorable clones, because of which we propose CR. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
-
-\section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
-None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
-
-\begin{figure}[H]
-  \includegraphics[width=0.7\columnwidth]{img/flow}
-  \caption{Abstract flow diagram of CR.}
-  \label{fig:clonerefactorflow}
-\end{figure}
 
 \subsection{Clone detection}\label{sec:detection}
 We use an AST-based method to detect clones. Clones are detected on a statement level: only full statements are considered as clones. In Sec.~\ref{sec:t2r} we described that we limit the variability between variable, literal and method reference expressions by a threshold. This threshold is the percentage of different expressions against the total number of expressions in the source code:
