@@ -179,27 +179,23 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
 \subsection{Difference from literature clone types}
-These proposed definitions slightly differ from type 1, 2 and 3 clones as defined in literature \cite{roy2007survey}. To compare them, we refer to the literature types as T1, T2 and T3 and towards our as T1R (contextually equal clones), T2R (allowing variability) and T3R (gapped clones). Like the literature types, these clone type definitions are subsets of each other:
+These proposed definitions slightly differ from type 1, 2 and 3 clones as defined in literature \cite{roy2007survey}. To compare them, we refer to the literature types as T1, T2 and T3 and to our set as T1R (contextually equal clones), T2R (allowing variability) and T3R (gapped clones). Mirroring the literature types, our clone type definitions are subsets of each other:
 
 \begin{equation}\label{eq:typerelation}
-%N_{1R} = \{n | n = a node found using the T1R set of rules\}
-%N_{2R} = \{n | n = a node found using the T2R set of rules\}
-%N_{3R} = \{n | n = a node found using the T3R set of rules\}
 L_{T1R} \subseteq L_{T2R} \subseteq L_{T3R}
 \end{equation}
 
-Where $N_{\text{clone type}}$ is the set of cloned lines found by the rules of the specified clone type. All clones found for type 1R will also be found for type 2R and type 3R.
+Where $L_{\text{clone type}}$ is the set of cloned lines found by the rules of the specified clone type.
 
 Comparing these clone type definitions to the ones used in literature, we have the following subset relations:
 
 \begin{equation}\label{eq:typerelation2}
-N_{T1R} \subseteq N_{T1} \text{, but } N_{T2R} \nsubseteq N_{T2} \text{ and } N_{T3R} \nsubseteq N_{T3}
+L_{T1R} \subseteq L_{T1} \text{, but } L_{T2R} \nsubseteq L_{T2} \text{ and } L_{T3R} \nsubseteq L_{T3}
 \end{equation}
 
-Where $N_{\text{clone type}}$ is the set of cloned nodes found by the rules of the specified clone type. The reason that type 2R and type 3R are not subsets of type 2 and 3, is that type 2R and type 3R allow variability in method calls which can differ in structure. Type 2 and 3 do not allow such differences.
+Where $L_{\text{clone type}}$ is the set of cloned lines found by the rules of the specified clone type. The reason that T2R and T3R are not subsets of T2 and T3, is that T2R and T3R allow variability in method calls which can differ in structure. T2 and T3 do not allow such differences.
 
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
-
 To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four characteristics required by such a tool:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
