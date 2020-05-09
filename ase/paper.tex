@@ -71,10 +71,10 @@
 
 \begin{abstract}
 % Problem
-Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and creates implicit dependencies between fragments of code. Several studies show that not all duplication should be refactored. When duplication is refactored, other system attributes may be negatively affected thus resulting in a negative impact on the codebase when all system attributes are considered.
+Duplication in source code is often seen as one of the most harmful types of technical debt as it increases the size of the codebase and it creates implicit dependencies between fragments of code. Several studies show that not all duplication should be refactored. When duplication is refactored, other system attributes may be negatively affected thus resulting in a negative impact on the codebase when all system attributes are considered.
 
 % How we fix the problem that we introduced in the first paragraph
-We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate a set maintainability metrics (duplication, complexity, unit size, code volume) that are calculated on unit level, which we call the delta maintainability score. Based on this score, we extract common factors between clones for a developer to filter their clone output based on the factors and the derived thresholds for them.
+We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate a set maintainability metrics (duplication, complexity, unit size, code volume) calculated on unit level, which we call the delta maintainability score. Based on this score, we extract common factors between clones and the derived thresholds for them, based on which a developer could filter their clone output.
 
 % Experimental setup: how we validated that we fixed the problem
 To conduct such refactorings in a controlled environment, we create a tool that can automatically refactor a set of duplication problems in Java source code. This set is selected because not all clones can easily be automatically refactored, so we define those that can. Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
@@ -178,7 +178,7 @@ Sometimes, when fragments are duplicated, a statement is inserted or changed sev
 \end{itemize}
 For both of these techniques, a trade-off is at play. This is because these solutions increase the complexity and volume of the source code in favor of removing a clone.
 
-\subsection{Difference from literature clone types}
+\subsection{Difference from literature clone types}\label{sec:different-types}
 These proposed definitions slightly differ from type 1, 2 and 3 clones as defined in literature \cite{roy2007survey}. To compare them, we refer to the literature types as T1, T2 and T3 and to our set as T1R (contextually equal clones), T2R (allowing variability) and T3R (gapped clones). Mirroring the literature types, our clone type definitions are subsets of each other:
 
 \begin{equation}\label{eq:typerelation}
@@ -193,7 +193,7 @@ Comparing these clone type definitions to the ones used in literature, we have t
 L_{T1R} \subseteq L_{T1} \text{, but } L_{T2R} \nsubseteq L_{T2} \text{ and } L_{T3R} \nsubseteq L_{T3}
 \end{equation}
 
- The reason that T2R and T3R are not subsets of T2 and T3, is that T2R and T3R allow variability in method calls which can differ in structure. T2 and T3 do not allow such differences.
+The reason that T2R and T3R are not subsets of T2 and T3, is that T2R and T3R allow variability in method calls which can differ in structure. T2 and T3 do not allow such differences.
 
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
 To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four characteristics required by such a tool:
@@ -227,7 +227,7 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{table}
 
 
-None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of the clones detected by these tools (see Sec.~\ref{sec:} and will thus require an analysis of the entire system.
+None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of the clones detected by these tools (see Sec.~\ref{sec:different-types}) and will thus require an analysis of the entire system.
 
 Therefore, we created a tool, CR\footnote{anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
 
