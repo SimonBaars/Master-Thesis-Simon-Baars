@@ -613,24 +613,23 @@ number of parameters metric is negatively influenced, but more method parameters
 %\todo[inline]{one paragraph with a general remark on this discussion, summarizing our findings}
 \section{Conclusion} \label{sec:conclusion}
 %\todo[inline]{one paragraph summarizing the context of our research}
-We defined automatically refactorable clones and created a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability.
+We define automatically refactorable clones and create a tool to detect and refactor them. We measured statistical data with this tool over a large corpus of open-source Java software systems to get more information about the context of clones and how refactoring them influences system maintainability. Based on this information, we extract characteristics of clones that influence system maintainability when they are refactored.
 
-We defined two aspects as part of the context of a clone: relation and location. Regarding relations, over 37\% of clones are found in the same class. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
+We define two aspects as part of the context of a clone: relation and location. Regarding relations, over 37\% of clones are found in the same class. About 24\% of clones are in the same inheritance hierarchy. Another 24\% of clones are unrelated. The final 15\% of clones have the same interface. Regarding location, over 74\% of clones span part of a method. About 8\% span several methods. Only 4\% of clones span a declaration (method, class, etc.) fully.
 
-We built a tool that can automatically apply refactorings to 28\% of the clones in our corpus using the ``Extract Method'' refactoring technique. 
+
 % The main reason our tool could not refactor all clones is that many clones span certain statements that obstruct method extraction, e.g., when code outside a method is part of a clone.
 
-We measured the change in four maintainability metrics
-%before- and after applying each refactoring 
-to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 63  %\todo{wasn't this 63?}
-tokens for all clone instances combined for system maintainability to increase after refactoring the clone. Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data: when a clone is refactored to a method that requires more than 2 parameters it is more likely to decrease maintainability than to increase it. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+We built a tool that can automatically apply refactorings to 28\% of the clones in our corpus using the ``Extract Method'' refactoring technique. It measured the change in four maintainability metrics to determine the impact of each refactoring on system maintainability. We found that the most prominent factor influencing maintainability is the size of the clone. We found that the threshold lies at a clone volume of 63 tokens for all clone instances combined for system maintainability to increase after refactoring the clone. 
 
-\subsection{Threats to Validity}
+Another factor with a major impact on maintainability is the number of parameters that the extracted method requires to get all required data: when a clone is refactored to a method that requires more than 2 parameters it is more likely to decrease maintainability than to increase it. We noticed that the inheritance relation of the clone and the return value of the extracted method has only a minor impact on system maintainability.
+
+\subsection{Threats to validity}
 To limit the scope of this research, we chose not to include human subjects in this study. However, we think that the results of this study could be strengthened by performing a survey on software engineering practitioners. We have determined maintainability scores only based on literature input and statistical analysis. It would be valuable to have a control group rate the refactorings performed by CR, as an extra form of input regarding the quality of the code transformations that CR performs.
 
 In Section~\ref{sec:metricformula} we proposed an aggregation to measure a maintainability score on small-grained changes. The assumptions stated in this section influence the validity of the maintainability scores shown in our results. We noticed that the maintainability scores displayed in Table~\ref{tab:relation_refactor} and Table~\ref{tab:return} were mostly influenced by the differences in the ``number of parameters'' metric. This is because, for the scores, we normalized the metrics over all values obtained by these metrics. As our data regarding ``number of parameters'' has a very low standard deviation, small changes in this metric will influence the maintainability score a lot.
 
-\subsection{Future Work}
+\subsection{Future work}
 In this study, we limited our scope by taking the naming of generated declarations outside of the scope. When using our work for refactoring assistance, these names will have to be manually provided. Recent studies aim at solving this problem by generating a name that matches the body of a declaration \cite{allamanis2015suggesting, alon2018code2seq}. We will investigate the possibility to combine such approaches with CR, to make it more usable in the refactoring process.
 
 We also limited our scope by choosing a set of four metrics. However, software maintainability depends on more factors and can be measured by more metrics. By taking more metrics into account, we can give a better indication whether the maintainability improves after refactoring. For instance, we think that module coupling \cite{briand1999unified,heitlager2007practical} is an important metric to be considered when refactoring clones. In future work we will investigate other groups of maintainability metrics to broaden the understanding of factors influencing the desirability of a refactoring.
