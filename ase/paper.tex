@@ -182,10 +182,10 @@ For both of these techniques, a trade-off is at play. This is because these solu
 These proposed definitions slightly differ from type 1, 2 and 3 clones as defined in literature \cite{roy2007survey}. To compare them, we refer to the literature types as T1, T2 and T3 and to our set as T1R (contextually equal clones), T2R (allowing variability) and T3R (gapped clones). Mirroring the literature types, our clone type definitions are subsets of each other:
 
 \begin{equation}\label{eq:typerelation}
-L_{T1R} \subseteq L_{T2R} \subseteq L_{T3R}
+L_{T1R} \subseteq L_{T2R} \subseteq L_{T3R},
 \end{equation}
 
-Where $L_{\text{clone type}}$ is the set of cloned lines found by the rules of the specified clone type.
+where $L_{\text{clone type}}$ is the set of cloned lines according to the rules of the respective $\text{clone type}$.
 
 Comparing these clone type definitions to the ones used in literature, we have the following subset relations:
 
@@ -193,7 +193,7 @@ Comparing these clone type definitions to the ones used in literature, we have t
 L_{T1R} \subseteq L_{T1} \text{, but } L_{T2R} \nsubseteq L_{T2} \text{ and } L_{T3R} \nsubseteq L_{T3}
 \end{equation}
 
-Where $L_{\text{clone type}}$ is the set of cloned lines found by the rules of the specified clone type. The reason that T2R and T3R are not subsets of T2 and T3, is that T2R and T3R allow variability in method calls which can differ in structure. T2 and T3 do not allow such differences.
+ The reason that T2R and T3R are not subsets of T2 and T3, is that T2R and T3R allow variability in method calls which can differ in structure. T2 and T3 do not allow such differences.
 
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
 To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four characteristics required by such a tool:
@@ -227,7 +227,7 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{table}
 
 
-None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of clones detected by these tools and will thus require an analysis of the entire system.
+None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of the clones detected by these tools (see Sec.~\ref{sec:} and will thus require an analysis of the entire system.
 
 Therefore, we created a tool, CR\footnote{anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
 
