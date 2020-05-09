@@ -77,7 +77,7 @@ Duplication in source code is often seen as one of the most harmful types of tec
 We use software maintainability metrics to determine the impact of a refactoring applied to duplicate code. For a given refactoring we aggregate a set maintainability metrics (duplication, complexity, unit size, code volume) calculated on unit level, which we call the delta maintainability score. Based on this score, we extract common factors between clones and the derived thresholds for them, based on which a developer could filter their clone output.
 
 % Experimental setup: how we validated that we fixed the problem
-To conduct such refactorings in a controlled environment, we create a tool that can automatically refactor a set of duplication problems in Java source code. This set is selected because not all clones can easily be automatically refactored, so we define those that can. Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
+To conduct such refactorings in a controlled environment, we create a tool that can automatically refactor a set of duplication problems in Java source code. Because not all clones can easily be automatically refactored, we define those that can. Using these definitions we can extract a sufficiently large set of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
 
 % results: what have we learned by fixing the problem
 We correlate the delta maintainability score with the factors that influence this score (clone volume, clone complexity, externally declared data used). We find that the biggest influencing factor is the volume of the clone. Our data shows that clones consisting of 63 or fewer tokens most often \textit{should not} be refactored. The other important factor is externally declared data that is used in the clone, clones with more than two externally declared variables most often do not improve maintainability when refactored.
@@ -227,7 +227,7 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{table}
 
 
-None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of the clones detected by these tools (see Sec.~\ref{sec:different-types}) and will thus require an analysis of the entire system.
+None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is because the automatically refactorable clones are not necessarily a subset of the clones detected by these tools (see Sec.~\ref{sec:different-types}) and will thus require an analysis of the entire system.
 
 Therefore, we created a tool, CR\footnote{anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
 
@@ -236,16 +236,6 @@ Therefore, we created a tool, CR\footnote{anonymized for the blind review, camer
   \caption{Abstract flow diagram of CR.}
   \label{fig:clonerefactorflow}
 \end{figure}
-
-
-% \subsection{Survey of existing clone detection tools}\label{sec:survey}
-%To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
-
-
-
-%To detect clones that can be automatically refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect automatically refactorable clones, either through configuration or postprocessing of their output.
-
-%None of the surveyed tools~\cite{ragkhitwetsagul2019siamese, roy2008nicad, semura2017ccfindersw, sajnani2016sourcerercc, saini2018oreo, jiang2007deckard, kamalpriya2017enhancing, mazinanian2016jdeodorant} were suitable for our definitions of refactorable clones, because of which we propose CR. This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In the following sections, we explain these steps.
 
 \subsection{Clone detection}\label{sec:detection}
 We use an AST-based method to detect clones. Clones are detected on a statement level: only full statements are considered as clones. In Sec.~\ref{sec:t2r} we described that we limit the variability between variable, literal and method reference expressions by a threshold. This threshold is the percentage of different expressions against the total number of expressions in the source code:
