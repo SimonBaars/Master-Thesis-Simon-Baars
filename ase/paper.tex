@@ -78,7 +78,8 @@ We use software maintainability metrics to determine the impact of a refactoring
 Based on this score, we extract common factors between clones for a developer to filter their clone output based on the factors and the derived thresholds for them.
 
 % Experimental setup: how we validated that we fixed the problem
-To simulate such refactorings in a controlled environment, we create a tool that can automatically refactor a subset of duplication problems in Java source code. This subset is selected because not all clones can easily be automatically refactored, so we identify and define those that can. This subset is based on adapted clone definitions, that are optimized towards automated refactoring. Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
+To simulate such refactorings in a controlled environment, we create a tool that can automatically refactor a subset of duplication problems in Java source code. This subset is selected because not all clones can easily be automatically refactored, so we identify and define those that can. %This subset is based on adapted clone definitions, that are optimized towards automated refactoring. 
+Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
 
 % results: what have we learned by fixing the problem
 We correlate the delta maintainability score with the factors that influence this score (clone volume, clone complexity, externally declared data used). We find that the biggest influencing factor is the volume of the clone. Our data shows that clones consisting of 63 or fewer tokens most often \textit{should not} be refactored. The other important factor is externally declared data that is used in the clone, clones with more than two externally declared variables most often do not improve maintainability when refactored.
@@ -212,10 +213,9 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{table}
 
 
+None of the surveyed tools had all the desired characteristics. Also, the output of these clone detection tools cannot be post-processed to match the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because the automatically refactorable clones are not necessarily a subset of clones detected by these tools and will thus require an analysis of the entire system.
 
-None of the surveyed tools had all desired characteristics. Apart from these criteria, we found that the output of these clone detection tools cannot be post-processed to find the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because these clones are not necessarily a subset of clones detected by these tools and will thus require an analysis of the entire system.
-
-anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
+Therefore, we created a tool, CR\footnote{anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
 
 \begin{figure}[H]
   \includegraphics[width=0.7\columnwidth]{img/flow}
