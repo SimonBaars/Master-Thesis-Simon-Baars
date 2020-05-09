@@ -311,7 +311,7 @@ Several factors may obstruct the possibility to extract code to a new method~\ci
 \end{itemize}
 Clones that do not fall in the \textit{Can Be Extracted} category may require additional transformations or other techniques to refactor. CR only refactors the clones that \textit{Can Be Extracted}.
 
-\subsubsection{AST Transformation}
+\subsubsection{AST transformation}
 %\todo{Big todo --> Find literature, introduce proper reasoning why I need to do this.}
 CR uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allows to modify the AST and write it back to source code. To refactor clones, CR creates a new method declaration and moves all statements from a clone instance in the clone class to the new method. This method is placed according to the relation between the clone instances (see Sec.~\ref{sec:relation}). CR analyzes the source code of the extracted method and populates it with the following properties:
 \begin{itemize}
@@ -321,7 +321,7 @@ CR uses JavaParser~\cite{smith2017javaparser}: an AST-parsing library that allow
 \end{itemize}
 CR then removes all cloned code and replaces it with a call to the newly created method. In case of a return value, CR either assigns the call result, declares it or returns it accordingly.
 
-\subsection{Maintainability Metrics}
+\subsection{Maintainability metrics}
 After applying the refactorings, CR measures the impact of the refactoring on maintainability metrics. We first state the metrics that we measure and then define the characteristics of the applied refactoring that influence the metrics.
 
 \subsubsection{Selected metrics} \label{sec:metrics}
@@ -351,7 +351,7 @@ We hypothesize that these characteristics are the main factors influencing the i
 We describe how we evaluated CR and the corpus on which we ran CR. We then describe the configuration of our experiments. Finally, we describe how we calculated our results.
 %Our goal is analysing whether automatic refactoring of code clones leads to an improved maintainability. We first validate our automatic refactoring tool, CR. Next, we run our tool on a reference corpus and measure the change in the maintainability score.
 
-\subsection{Tool Evaluation}
+\subsection{Tool evaluation}
 We assess the correctness of CR through unit tests and empirical validation. First, we create a set of 57 control projects to verify the correctness in many (edge) cases. These projects contain clones for each relation, location, and refactorability category. 
 %to see whether they get correctly identified. 
 Next, we run the tool over the corpus and manually verify samples of the acquired results. We verified at least 5 clones of each relation, location and refactoring. This way, we check both the correctness of the identified clones, their context, and their proposed refactoring.
@@ -537,7 +537,7 @@ The results show that, given our refactorability criteria, 28\% of clones can be
 CR has refactored 12.710 clone classes and measured the change in the selected metrics (Sec.~\ref{sec:metrics}). %\todo{use the formulas labels to refer here.
 Using the formulas in Eq.~\ref{eq:scoredev} and~\ref{eq:scoreref} (Sec.~\ref{sec:metricformula}) we determine how the characteristics of the extracted method (see Sec.~\ref{sec:characteristics}) influence the maintainability of the resulting codebase after refactoring. We explore the data obtained by comparing the before- and after snapshots of the system for each separate refactoring. Using this data, we find supporting evidence regarding which thresholds are most likely to find clones that should be refactored to improve maintainability.
 
-\subsubsection{Clone Token Volume} \label{sec:clonetokenvolume}
+\subsubsection{Clone token volume} \label{sec:clonetokenvolume}
 Figure \ref{fig:maintainabilityscore} shows the results by plotting the clone volume vs the average delta maintainability score. We define the \textit{token volume} as the combined number of tokens in all clone instances in a refactored clone class. For higher token volume numbers we have fewer refactorings that refactor such clones, therefore we represent the x-axis as a logarithmic scale. The trendline intersects the ``zero'' line (maintainability does not increase nor decrease) at a token volume of 63.
 
 %\todo{Redo plot, explain axes units}
@@ -551,7 +551,7 @@ Figure \ref{fig:maintainabilityscore} shows the results by plotting the clone vo
 Table~\ref{tab:relation_refactor} shows our data regarding how different relations influence maintainability. We mark rows grey if they are based on less than 100 refactorings, as their result does not have statistical significance. Relations are ordered by their scores. %\todo{this sentence about relation impact seems more suitable for discussion}
 Scores do not deviate much (-0.15 to 0.23), indicating that the relation between clones has a minor impact on maintainability. Overall, common hierarchy clones have the highest maintainability, whereas unrelated clones have the lowest maintainability.
 
-\subsubsection{Return Value}
+\subsubsection{Return value}
 Table~\ref{tab:return} shows how the return value of the extracted method influences the maintainability of the resulting system. The return categories are ordered by their scores. %\todo{this sentence about relation impact seems more suitable for discussion}
 Scores do not deviate much (-0.18 to 0.19), indicating that the return category has a minor impact on maintainability. When the result of the call to the extracted method is directly returned, the maintainability score is the highest. When no value is returned, the maintainability score is the lowest. %\todo{this sentence about relation impact seems more suitable for discussion}
 The main reason that "Void" is lowest, is that it is linked to a higher number of parameters required for the extracted method.
@@ -587,12 +587,12 @@ Fig.~\ref{fig:arguments} shows how an increase in parameters lowers the maintain
 
 %\todo{Explain about the coupling metric. Discussion: it is not too relevant to the results because most refactorings are SAME CLASS which do not impact on the coupling metric. (maybe more about architectural refactorings because COUPLING, BALANCE, COHESION?)}
 
-\subsection{Clone Context}
+\subsection{Clone context}
 Regarding clone context, our results indicate that most clones (37\%) are in a common class. This is favorable for automatic refactoring because the extracted method does not have to be moved after extraction. 24\% of clones are in a common hierarchy. These refactorings are also often favorable. Another 24\% of clones are unrelated, which is often unfavorable because it often requires a more comprehensive refactoring. 15\% of clones are in an interface. %\todo{which ...}.
 
 Regarding clone locations, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
-\subsection{Extract Method}
+\subsection{Extract method}
 28\% of clones can be refactored using the ``Extract Method'' refactoring technique (50\% if we limit our searching scope to method bodies). About 25\% of clones do not span part of a method, therefore they cannot be refactored. Many clones (23\%) do not have a statement as top-level AST-Node. Upon manual inspection, we noticed that the main reason is clones in lambda functions or in anonymous classes. About 15\% of clones span only part of an AST-Node.% \todo{and?}.
 
 \subsection{Refactoring}
