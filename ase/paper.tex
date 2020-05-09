@@ -78,7 +78,7 @@ We use software maintainability metrics to determine the impact of a refactoring
 Based on this score, we extract common factors between clones for a developer to filter their clone output based on the factors and the derived thresholds for them.
 
 % Experimental setup: how we validated that we fixed the problem
-To simulate such refactorings in a controlled environment, we create a tool that can automatically refactor a subset of duplication problems in Java source code. This subset is based on adapted clone definitions, that are optimized towards automated refactoring. Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
+To simulate such refactorings in a controlled environment, we create a tool that can automatically refactor a subset of duplication problems in Java source code. This subset is selected because not all clones can easily be automatically refactored, so we identify and define those that can. This subset is based on adapted clone definitions, that are optimized towards automated refactoring. Using these definitions we can extract a sufficiently large dataset of refactored clones to perform our analyses. Our tool refactors 13k clones over 2k open-source Java projects and measures the delta maintainability scores of the refactoring.
 
 % results: what have we learned by fixing the problem
 We correlate the delta maintainability score with the factors that influence this score (clone volume, clone complexity, externally declared data used). We find that the biggest influencing factor is the volume of the clone. Our data shows that clones consisting of 63 or fewer tokens most often \textit{should not} be refactored. The other important factor is externally declared data that is used in the clone, clones with more than two externally declared variables most often do not improve maintainability when refactored.
@@ -181,7 +181,7 @@ For both of these techniques, a trade-off is at play. This is because these solu
 
 \section{A tool for automatic clone refactoring}\label{sec:clonerefactor}
 
-To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four c required by such :
+To automatically refactor a large set of clones, we first need tool able to detect refactorable clones, as defined in Sec.~\ref{sec:research}.  We formulate the following four characteristics required by such a tool:
 \begin{enumerate}
     \item \textbf{Should find clones in any context.} Some tools only find clones in specific contexts, such as only method level clones. We want to perform an analysis of all clones in projects to get a complete overview.
 \item \textbf{Finds clone classes in control projects.} We assembled a number of control projects to assess the validity of the surveyed clone detection tools.
@@ -189,19 +189,7 @@ To automatically refactor a large set of clones, we first need tool able to dete
 \item \textbf{Extensive detection configuration.} Detecting our clone definitions, as proposed in Sec.~\ref{sec:research}, require to have some understanding about the meaning of tokens in the source code (whether a certain token is a type, variable, etc.). The tool should recognize such structures, in order for us to configure our clone type definitions in the tool.
 \end{enumerate}
 
-\begin{figure}[H]
-  \includegraphics[width=0.7\columnwidth]{img/flow}
-  \caption{Abstract flow diagram of CR.}
-  \label{fig:clonerefactorflow}
-\end{figure}
-
-
-None of the surveyed tools were suitable for our definitions of refactorable clones. Therefore, we built a new tool, CR\footnote{Name anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.} This tool goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
-
-
-
-% \subsection{Survey of existing clone detection tools}\label{sec:survey}
-%To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
+We conducted a short survey on (recent) clone detection tools based on the above characteristics. We chose a set of tools that are open source and can analyze a popular object-oriented programming language. The results of our survey are shown in Table~\ref{table:dettools}. 
 
 \begin{table}[H]
  \begin{center}
@@ -223,7 +211,23 @@ Scorpio~\cite{higo2013revisiting, kamalpriya2017enhancing} & \checkmark   &     
 \end{center}
 \end{table}
 
-Apart from these criteria, we found that the output of these clone detection tools cannot be post-processed to find the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because these clones are not necessarily a subset of clones detected by these tools and will thus require an analysis of the entire system.
+
+
+None of the surveyed tools had all desired characteristics. Apart from these criteria, we found that the output of these clone detection tools cannot be post-processed to find the clone definition proposed in Sec.~\ref{sec:research}. This is mainly because these clones are not necessarily a subset of clones detected by these tools and will thus require an analysis of the entire system.
+
+anonymized for the blind review, camera-ready paper would include a link to the GitHub repo of the tool.}, which goes through a 3-step process to automatically refactor clones as shown in Fig.~\ref{fig:clonerefactorflow}. In Sec.~\ref{sec:detection} we describe how CR detects refactorable clones. In Sec.~\ref{sec:context} we describe how CR maps the context of clones as input for the refactoring process described in Sec.~\ref{sec:refactoring}.
+
+\begin{figure}[H]
+  \includegraphics[width=0.7\columnwidth]{img/flow}
+  \caption{Abstract flow diagram of CR.}
+  \label{fig:clonerefactorflow}
+\end{figure}
+
+
+% \subsection{Survey of existing clone detection tools}\label{sec:survey}
+%To detect refactorable clones according to the definitions introduced in Sec.~\ref{sec:research}, we survey existing clone detection tools for their suitability.
+
+
 
 %To detect clones that can be automatically refactored, we surveyed a set of modern clone detection tools and techniques~\cite{svajlenko2014evaluating, sheneamer2016survey, gautam2016various, roy2009comparison}. We created a set of control projects to determine the suitability of these tools to detect automatically refactorable clones, either through configuration or postprocessing of their output.
 
