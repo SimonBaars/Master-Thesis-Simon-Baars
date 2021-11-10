@@ -59,7 +59,6 @@ Several refactoring techniques can be used to reduce duplication in source code~
 
 We extend the state-of-the-art \cite{fontana2015duplicated} by defining location, relation and contents categories for clones to determine how they should be refactored. The extra categories we provide help to propose a refactoring opportunity that can automatically be applied, rather than merely suggesting the technique that has to be used \cite{fontana2015duplicated}.
 
-%We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that 77\% of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. Clones were found in very diverse relations, which indicates that in
 We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that a significant portion of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring such a clone depends on the relation among its clone instances.
 
 If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, the ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstraction or create a utility class to put the common functionality.
@@ -86,7 +85,6 @@ The context of a clone determines how it should be refactored~\cite{fowler2018re
 \end{enumerate}
 
 This is shown schematically in Figure~\ref{fig:clonecontext}.
-%We define categories for each of these aspects and determine the categories of clones.
 
 \begin{figure}[H]
   \centering
@@ -95,7 +93,6 @@ This is shown schematically in Figure~\ref{fig:clonecontext}.
   \label{fig:clonecontext}
 \end{figure}
 
-%Fig.~\ref{fig:clonecontext} shows an abstract representation of clone classes and clone instances. The relation of clones through inheritance is determined for each clone class. The location and contents of clones are determined for each clone instance.
 
 \subsection{Relation}\label{sec:setuprelation}
 When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
@@ -140,45 +137,26 @@ We separate these relations into the following categories, because of their rela
 
 Every clone class only has a single relation, which is the first relation from the above list that the clone class applies to. For instance: all ``Superclass'' clones also apply to ``Same Hierarchy'', but because ``Superclass'' is earlier in the above list they will get the ``Superclass'' relation. This is because the items earlier in the above list denote a more favorable refactoring.
 
-%When CloneRefactor applies automated refactorings, it uses this inheritance relation to see where it must place the refactored code. We explain this for each relation category over the following sections.
-
-%To determine the relation for a given clone class, we compare each node in a clone instance with the respective nodes in each other clone instance within a clone class. %So for a clone class with x clone instances and each clone instance has y nodes, we perform:
-
-%\begin{equation}\label{eq:sameclass}
-%\frac{x * (x + 1)}{2} * y
-%\end{equation}
-
-%comparisons to determine the relation. Each of these checks will result in one of the relations from the list above. Of these relations, the item lowest in the list is going to be the relation of the clone class. So for instance, if a clone class has 15 nodes that denote a \textit{Superclass} relation but 3 nodes are \textit{Unrelated}, the clone class becomes \textit{Unrelated}.
 
 \subsubsection{Common Class}
 The \textit{Same method} and \textit{Same class} relations share a common refactoring opportunity. Clones of both these categories, when extracted to a new method, can be placed in the same class. Both of these relations are most favorable for refactoring, as they require a minimal design tradeoff. Furthermore, global variables that are used in the class can be used without having to create method parameters.
 
- %We define the method as the first method declaration that is encountered when following the parent nodes in the AST for a given cloned node. %Please note that a clone instance may not always be in a method, for which this predicate will fail.
-
-%Clone classes are flagged as \textit{Same method} if all their clone instances are found in the same method. Cloned classes are flagged as \textit{Same class} if all their clone instances are found in the same class. %We define the class as the first class declaration that is encountered when following the parent nodes in the AST for a given cloned node.
 
 \subsubsection{Common Hierarchy}
 Clones that are in a common hierarchy can be refactored by using the ``Extract Method'' refactoring method followed by ``Pull Up Method'' until the method reaches a location that is accessible by all clone instances. However, the more often ``Pull Up Method'' has to be used, the more detrimental the effect is on system design. This is because putting a lot of functionality in classes higher up in an inheritance structure can result in the ``God Object'' anti-pattern. A god object is an object that knows too much or does too much~\cite{fowler2018refactoring}.
 
-%Clone classes are flagged as \textit{Superclass} if the classes in which the clone instances are found are parent and child class of each other. Clone classes are flagged as \textit{Siblings} if the classes in which their clone instances are found all share the same parent and this parent class is not external. Clone classes are flagged as \textit{First Cousin} if the classes in which their clone instances are found all share the same grandparent and this grandparent class is not external.
-
-%Clone classes nodes are flagged as \textit{Ancestor} if the classes in which their clone instances are found are recursively the parent of an antecedent. Cloned nodes are flagged as \textit{Same Hierarchy} if the classes in which these nodes are found are all in the same inheritance hierarchy and not linked by any external classes.
 
 \subsubsection{Common Interface}
 Many object-oriented languages know the concept of ``interfaces'', which are used to specify a behavior that classes must implement. As code clones describe functionality and interfaces originally did not allow for functionality, interfaces did not open up refactoring opportunities for duplicated code. However, many programming languages nowadays support default implementations in interfaces. Since Java 7 and C\# 8, these programming languages allow for functionality to be defined in interfaces. Many other object-oriented languages like Python allow this by nature, as they do not have a true notion of interfaces.
 
 The greatest downside on system design of putting functionality in interfaces is that interfaces are per definition part of a classes' public contract. That is, all functionality that is shared between classes via an interface cannot be hidden by stricter visibility. Because of that, we favor all ``Common Hierarchy'' refactoring opportunities over ``Common Interface''.
 
-%To check whether two cloned nodes have a \textit{Same Direct Interface} relation, we check that the classes to which these nodes belong both implement the same interface type. To check whether two cloned nodes have a \textit{Same Indirect Interface} relation, we recursively walk all types the class or interface of the cloned nodes implement and extend. The common interface that is closest to the cloned node in terms of depth of recursion will be flagged as the refactoring candidate.
 
 \subsubsection{Unrelated}
 Clones are unrelated if they share no common class or interface in their inheritance structure. These clones are least favorable for refactoring, because their refactoring will almost always have a major impact on system design. We formulated four categories of unrelated clones to look into their refactoring opportunities.
 
 Cloned classes with a \textit{No Direct Superclass} relation mark the opportunity for creating a superclass abstraction and placing the extracted method there. For clone classes with a \textit{No Indirect Superclass} relation, it is possible to create such an abstraction for the ancestor that does not have a parent. Clone classes with an \textit{External Superclass} or \textit{External Ancestor} relation obstruct the possibility of creating a superclass abstraction. In such a case, it is possible to create an interface abstraction to make their relation explicit.
 
-%Cloned nodes are flagged \textit{No Direct Superclass} if they are in classes that do currently not have a parent. This marks the opportunity for creating a superclass abstraction and placing the extracted method there. Cloned nodes are flagged \textit{No Indirect Superclass} if any of their ancestors do not have a parent. In such a case, it would be possible to create such an abstraction for the ancestor that does not have a parent.
-
-%Cloned nodes are flagged \textit{External Superclass} if they are in a class which has an external parent. Cloned nodes are flagged \textit{External Ancestor} if one of their ancestors has an external parent. Both of these relations obstruct the possibility of creating a superclass abstraction. In such a case, an interface abstraction could be created to make their relation explicit.
 
 \subsection{Location}\label{sec:setuplocation}
 A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We decided to measure the locations of clones through static analysis in our dataset. We chose the following categories:
