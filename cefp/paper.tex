@@ -5,6 +5,7 @@
 \usepackage[style=ieee,citestyle=numeric-comp,dashed=false]{biblatex}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{todonotes}
 \addbibresource{refs.bib}
 
 \begin{document}
@@ -23,7 +24,7 @@ Reducing clones in source code is one of the techniques to improve the maintaina
 
 Based on experiments on corpus of open-source Java projects we find that most clones (77\%) are in the body of methods or constructors and thus the ``Extract Method'' refactoring technique applies. What further techniques are required for the refactoring depends on the relation among the clone instances of a clone. We define four relations that require different further refactoring techniques: Common Class, Common Hierarchy, Common Interface and Unrelated. The closer classes are related, the more favorable refactoring clones by such relations becomes. 37\% of clones are in the same class, 24\% share an inheritance hierarchy, 24\% are unrelated and 15\% have a common interface.
 
-\keywords{Code Clones \and MSR \and Clone Relation \and Inheritance \and Object-Oriented Programming.}
+\keywords{Code Clones \and Mining Software Repositories \and Clone Relation \and Inheritance \and Object-Oriented Programming.}
 \end{abstract}
 
 \section{Introduction}
@@ -37,7 +38,7 @@ We study a large corpus of open-source software systems to determine which relat
 
 If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, the ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstraction or create a utility class to put the common functionality.
 
-\section{Background}
+\section{Background and Related Work}
 We use two definitions to argue about code clones~\cite{roy2007survey}:
 \begin{itemize}
     \item \textbf{Clone instance}: A single code fragment of which a similar/identical copy exists elsewhere in the codebase.
@@ -51,18 +52,31 @@ To argue about the similarity relation between clone instances in a clone class,
     \item \textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.
 \end{itemize}
 
-A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}).
+A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}.
+
+Next, we outline relevant research to clone refactoring. A significant aspect is the context of clones.
+
+\subsection{Clone context analysis}\label{sec:rw:contextanalysis}
+Golomingi~\cite{koni2001scenario} explores mapping the relation between clone instances to refactoring methods. The author analyses the refactoring methods described by Martin Fowler~\cite{fowler1999refactoring} and analyzes what refactoring methods can be used to refactor clones with what inheritance relations. The identified clone relations are: Ancestor, Common Hierarchy, First Cousin, Same Method, Sibling, Single Class, Superclass and Unrelated. We extend this list with several more fine-grained relations, suitable for automatic refactoring.
+
+Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated} combine the research by Golomingi~\cite{koni2001scenario} with clone types 1 and 3 \cite{roy2007survey}. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analysis of clone relations together with clone types. We repeat this research with a different setup, namely we elaborate further in the categories analysed, and thus get results with a finer granularity, and we use a larger dataset, namely the GitHub set of repositories~\cite{githubCorpus2013}. 
+
+\subsection{Clone refactoring}
+Krishnan et al.~\cite{krishnan2013refactoring} approach clone refactoring as an optimization problem: how variability between cloned fragments influences the refactoring techniques required and their implications on system design. The main focus of this study is to find out which clones \textbf{can} be refactored. We extend this work by looking into which clones \textbf{should} be refactored. We propose definitions for refactorable clones together with thresholds to be able to limit their negative impact on system design. We measure which clones improve maintainability when refactored. This results in a set of thresholds that can be used to detect and refactor clones that should be refactored.
+
+For refactoring clones, we took naming the extracted method outside of the scope of the study. To have this not influence the results, the metrics that determine the maintainability of an applied refactoring do not measure the quality of the name of the extracted method. 
 
 \section{Context Analysis of Clones}\label{chap:contextsetup}
 The context of a clone determines how it should be refactored~\cite{fowler2018refactoring}. Based on current literature \cite{fontana2012duplicated, fontana2015duplicated}, we define the following aspects of a clone as its context:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Relation:} The relation of clone instances in a clone class through inheritance.
   \item \textbf{Location:} Where a clone instance occurs in the code.
   \item \textbf{Contents:} The statements/declarations of a clone instance.
-\end{enumerate}
+\end{itemize}
 
 This is shown schematically in Figure~\ref{fig:clonecontext}.
 
+\todo{Redo figure to show the clone context as a composite of relation, location and contents}
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\columnwidth]{img/context}
@@ -75,7 +89,7 @@ This is shown schematically in Figure~\ref{fig:clonecontext}.
 When merging code clones in object-oriented languages, it is important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
 Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation between clone instances in a clone class. To do this, they first define several categories to argue about such relations. These categories are as follows:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Same Method}: All instances of the clone class are in the same method.
   \item \textbf{Same Class}: All instances of the clone class are in the same class.
   \item \textbf{Superclass}: All instances of the clone class are in a class that are child or parent of each other.
@@ -85,17 +99,17 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
     \item \textbf{Same Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
 \item \textbf{Same External Superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
 \item \textbf{Unrelated class}: There is at least one instance of the clone class that is not in the same hierarchy.
-\end{enumerate}
+\end{itemize}
 
 We added the following categories, to gain more information about clones and be able to suggest a more fine-grained refactoring opportunity:
 
-\begin{enumerate}
+\begin{itemize}
 \item \textbf{Same Direct Interface}: All instances of the clone class are in a class or interface implement the same interface.
 \item \textbf{Same Indirect Interface}: All instances of the clone class are in a class or interface that have a common interface anywhere in their inheritance hierarchy.
 \item \textbf{No Direct Superclass}: All instances of the clone class are in a class that does not have any superclass.
 \item \textbf{No Indirect Superclass}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
 \item \textbf{External Ancestor}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
-\end{enumerate}
+\end{itemize}
 
 \begin{figure}[H]
   \centering
@@ -137,11 +151,11 @@ Cloned classes with a \textit{No Direct Superclass} relation mark the opportunit
 
 \subsection{Location}\label{sec:setuplocation}
 A paper by Lozano et al.~\cite{lozano2007evaluating} discusses the harmfulness of cloning. The authors argue that 98\% are produced at method-level. However, this claim is based on a small dataset and based on human copy-paste behavior rather than static code analysis. We decided to measure the locations of clones through static analysis in our dataset. We chose the following categories:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Method/Constructor Level:} A clone instance that does not exceed the boundaries of a single method or constructor (optionally including the declaration of the method or constructor itself).
   \item \textbf{Class Level:} A clone instance in a class, that exceeds the boundaries of a single method or contains something else in the class (like field declarations, other methods, etc.).
   \item \textbf{Interface/Enumeration Level:} A clone that is (a part of) an interface or enumeration.
-\end{enumerate}
+\end{itemize}
 We check the location of each clone instance for each of its nodes. If any node reports a different location from the others, we choose the location that is lowest in the above list. So for instance, if a clone instance has 15 nodes that denote a \textit{Method Level} location but 3 nodes are \textit{Class Level}, the clone instance becomes \textit{Class Level}.
 
 \subsubsection{Method/Constructor Level Clones} \label{sec:methodlevelcr}
@@ -154,13 +168,13 @@ Class/Interface/Enumeration Level clone instances are found inside the body of o
 
 \subsection{Contents}\label{sec:setupcontents}
 Finally, we looked at what nodes individual clone instances span. We selected a set of categories based on empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Full Method/Constructor/Class/Interface/Enumeration:} A clone that spans a full class, method, constructor, interface or enumeration, including its declaration.
   \item \textbf{Partial Method/Constructor:} A clone that spans (a part of) the body of a method/constructor. The declaration itself is not included.
   \item \textbf{Several Methods:} A clone that spans over two or more methods, either fully or partially, but does not span anything but methods (so not fields or anything in between).
   \item \textbf{Only Fields:} A clone that spans only global variables.
   \item \textbf{Other:} Anything that does not match with above-stated categories.
-\end{enumerate}
+\end{itemize}
 
 \subsubsection{Full Method/Constructor/Class/Interface/Enumeration}
 These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. Sometimes, the declaration should be moved to a location that is accessible by all usages. 
@@ -201,7 +215,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}llrrrr@{}}
+\begin{tabular}{@{}l|l|rr|rr@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
 \multirow{2}{*}{Common Class} & Same Class & 22,893 & 26.8\% & \multirow{2}{*}{31,848} & \multirow{2}{*}{37.2\%} \\ \cmidrule(lr){2-4}
@@ -249,9 +263,9 @@ Table~\ref{tab:contents} displays the number of clone classes found for the enti
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}llrrrr@{}}
+\begin{tabular}{@{}l|l|rr|rr@{}}
 \toprule
-\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{Total}} \\ \midrule
+\textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
 \multirow{2}{*}{Partial} & Method Body & 219,540 & 74.05\% & \multirow{2}{*}{229,521}& \multirow{2}{*}{77.42\%} \\ \cmidrule(lr){2-4}
  & Constructor Body & 9,981 & 3.37\% & & \\ \midrule
 \multirow{3}{*}{Other} & Several Methods & 22,749 & 7.67\% & \multirow{3}{*}{53,773} & \multirow{3}{*}{18.14\%} \\ \cmidrule(lr){2-4}
