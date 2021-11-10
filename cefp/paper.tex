@@ -19,7 +19,7 @@ Ana Oprescu\inst{1,3}\orcidID{0000-0001-6376-0750}}
 \maketitle
 
 \begin{abstract}
-Reducing clones in source code is one of the techniques to improve the maintainability of a software system. Which refactoring technique to use depends on where a clone is found and what the relation between clone instances in a clone class is. We define three influencing factors on how a clone should be refactored: Relation, Location and Contents. The Relation describes the inheritance relation among the clone instances in a clone class. The Location describes where a clone instance is found in the source code. The Contents describe what a clone instance spans.
+Reducing clones in source code is one of the techniques to improve the maintainability of a software system. Which refactoring technique to use depends on where a clone is found and what the relation between clone instances in a clone class is. We define three influencing factors on how a clone should be refactored: relation, location and contents. The relation describes the inheritance relation among the clone instances in a clone class. The location describes where a clone instance is found in the source code. The contents describe what a clone instance spans.
 
 Based on experiments on corpus of open-source Java projects we find that most clones (77\%) are in the body of methods or constructors and thus the ``Extract Method'' refactoring technique applies. What further techniques are required for the refactoring depends on the relation among the clone instances of a clone. We define four relations that require different further refactoring techniques: Common Class, Common Hierarchy, Common Interface and Unrelated. The closer classes are related, the more favorable refactoring clones by such relations becomes. 37\% of clones are in the same class, 24\% share an inheritance hierarchy, 24\% are unrelated and 15\% have a common interface.
 
@@ -33,20 +33,23 @@ Several refactoring techniques can be used to reduce duplication in source code~
 
 We extend the state-of-the-art \cite{fontana2015duplicated} by defining location, relation and contents categories for clones to determine how they should be refactored. The extra categories we provide help to propose a refactoring opportunity that can automatically be applied, rather than merely suggesting the technique that has to be used \cite{fontana2015duplicated}.
 
-We perform statistical measurements on a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that a significant portion of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring such a clone depends on the relation among its clone instances.
+We study a large corpus of open-source software systems to determine which relation, location and contents category has the most clones. We find that a significant portion of clones is found in the bodies of constructors and methods, which indicate clones that can be refactored by applying the ``Extract Method'' refactoring technique. What further techniques apply when refactoring such a clone depends on the relation among its clone instances.
 
 If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, the ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances. If the instances share a common interface, some languages allow to move the extracted method there. Otherwise, if the clone instances are not related, we either have to create a superclass/interface abstraction or create a utility class to put the common functionality.
 
 \section{Background}
 We use two definitions to argue about code clones~\cite{roy2007survey}:
-\\ \textbf{Clone instance}: A single code fragment of which a similar/identical copy exists elsewhere in the codebase.
-\\ \textbf{Clone class}: A set of similar/identical clone instances.
+\begin{itemize}
+    \item \textbf{Clone instance}: A single code fragment of which a similar/identical copy exists elsewhere in the codebase.
+    \item \textbf{Clone class}: A set of similar/identical clone instances.
+\end{itemize}
 
 To argue about the similarity relation between clone instances in a clone class, several clone type definitions have been proposed~\cite{roy2007survey}:
-\\\\
-\textbf{Type 1:} Identical code fragments except for variations in whitespace (may also be variations in layout) and comments.\\
-\textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.\\
-\textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.\\
+\begin{itemize}
+    \item \textbf{Type 1:} Identical code fragments except for variations in whitespace (may also be variations in layout) and comments.
+    \item \textbf{Type 2:} Structurally/syntactically identical fragments except for variations in identifiers, literals, types, layout and comments.
+    \item \textbf{Type 3:} Copied fragments with further modifications. Statements can be changed, added or removed in addition to variations in identifiers, literals, types, layout, and comments.
+\end{itemize}
 
 A higher type of clone means that it is harder to detect. It also makes the clone harder to refactor, as more transformations would be required. Higher clone types also become more disputable whether they actually indicate a harmful anti-pattern (as not every clone is harmful~\cite{jarzabek2010clones, kapser2008cloning}).
 
@@ -69,7 +72,7 @@ This is shown schematically in Figure~\ref{fig:clonecontext}.
 
 
 \subsection{Relation}\label{sec:setuprelation}
-When merging code clones in object-oriented languages, it is important to consider the inheritance relation between clone instances. This relation has a big impact on how a clone should be refactored.
+When merging code clones in object-oriented languages, it is important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
 Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open source projects on the relation between clone instances in a clone class. To do this, they first define several categories to argue about such relations. These categories are as follows:
 \begin{enumerate}
@@ -79,7 +82,7 @@ Fontana et al.~\cite{fontana2015duplicated} describe measurements on 50 open sou
   \item \textbf{Sibling Class}: All instances of the clone class have the same parent class.
     \item \textbf{Ancestor Class}: All instances of the clone class are superclasses except for the direct superclass.
   \item \textbf{First Cousin Class}: All instances of the clone class have the same grandparent class.
-\item \textbf{Same Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
+    \item \textbf{Same Hierarchy Class}: All instances of the clone class belong to the same inheritance hierarchy, but do not belong to any of the other categories.
 \item \textbf{Same External Superclass}: All instances of the clone class have the same superclass, but this superclass is not included in the project but part of a library.
 \item \textbf{Unrelated class}: There is at least one instance of the clone class that is not in the same hierarchy.
 \end{enumerate}
@@ -174,11 +177,14 @@ This category denotes that the clone spans over only global variables/fields tha
 \subsubsection{Other}
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated to refactor, especially when aiming to automate this process.
 
+\section{CloneRefactor}
+\todo[inline]{add text from other paper}
+
 \section{Experimental Setup}
-To find out in which location, relation and contents category most clones are found, we performed statistical measurements on a large corpus of diverse open-source projects. We use the tool CloneRefactor\footnote{CloneRefactor is a code clone detection and refactoring tool: \url{https://github.com/SimonBaars/CloneRefactor}} which automatically determines these context aspects of code clones.
+To find out in which location, relation and contents category most clones are found, we performed measurements on a large corpus of diverse open-source projects. We use the tool CloneRefactor\footnote{CloneRefactor is a code clone detection and refactoring tool: \url{https://github.com/SimonBaars/CloneRefactor}} which automatically determines these context aspects of code clones.
 
 \subsection{The Corpus}\label{chap:corpus}
-For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}\footnote{The corpus can be downloaded at: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/}}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are useful to perform measurements on.
+For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}\footnote{The corpus can be downloaded at: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/}}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are thus relevant to study.
 
 Because CloneRefactor requires all dependencies for the projects it analyses, we created a set of scripts\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} to filter the corpus for all projects for which we can obtain all dependencies using Maven\footnote{Maven is a build automation system, mainly used for Java programs: \url{https://maven.apache.org/}}.
 
@@ -188,7 +194,7 @@ This procedure results in 2,267 Java projects including all their dependencies\f
 We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location and contents category (see Section \ref{chap:contextsetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones and their context.
 
 \section{Results}
-To determine the refactoring method(s) that can be used to refactor most clones, we perform statistical analysis on the context of clones.
+To determine the refactoring method(s) that can be used to refactor most clones, we perform analysis on the context of clones.
 
 \subsection{Relation} \label{sec:relationresults}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Section~\ref{sec:setuprelation}).
@@ -268,6 +274,7 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 
 Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
+\todo[inline]{add more details here, especially about comparison with previous studies.}
 \section{Conclusion}
 We defined categories to argue about the contextual information of code clones. These categories are:
 \begin{itemize}
