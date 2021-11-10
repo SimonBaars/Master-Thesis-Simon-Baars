@@ -1,9 +1,4 @@
-% This is samplepaper.tex, a sample chapter demonstrating the
-% LLNCS macro package for Springer Computer Science proceedings;
-% Version 2.20 of 2017/10/04
-%
 \documentclass[runningheads]{llncs}
-%
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
@@ -11,47 +6,26 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \addbibresource{refs.bib}
-% Used for displaying a sample figure. If possible, figure files should
-% be included in EPS format.
-%
-% If you use the hyperref package, please uncomment the following line
-% to display URLs in blue roman font according to Springer's eBook style:
-% \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \begin{document}
-%
 \title{Finding Code Clone Refactoring Techniques by Mapping Clone Context}
-%
-%\titlerunning{Abbreviated paper title}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here
-%
+
 \author{Simon Baars\inst{1,2}\orcidID{0000-0001-7905-1027} \and
 Ana Oprescu\inst{1,3}\orcidID{0000-0001-6376-0750}}
-%
-%\authorrunning{F. Author et al.}
-% First names are abbreviated in the running head.
-% If there are more than two authors, 'et al.' is used.
-%
+
 \institute{University of Amsterdam \and
 \email{simon.j.baars@gmail.com} \and
 \email{A.M.Oprescu@uva.nl}}
-%
-\maketitle              % typeset the header of the contribution
-%
+\maketitle
+
 \begin{abstract}
 Reducing clones in source code is one of the techniques to improve the maintainability of a software system. Which refactoring technique to use depends on where a clone is found and what the relation between clone instances in a clone class is. We define three influencing factors on how a clone should be refactored: Relation, Location and Contents. The Relation describes the inheritance relation among the clone instances in a clone class. The Location describes where a clone instance is found in the source code. The Contents describe what a clone instance spans.
 
-Based on experiments on corpus of open-source Java projects we find that most clones (77\%) are in the body of methods or constructors and thus the ``Extract Method'' refactoring technique applies. What further techniques are required for the refactoring depends on the relation among the clone instances of a clone. We define four relations that require different further refactoring techniques: Common Class, Common Hierarchy, Common Interface and Unrelated. % (ordered by how favorable their refactoring is). When clones are in the same class, no further techniques than ``Extract Method'' have to be applied. If they are not, further techniques have to be applied that create a trade-off on system maintainability. 
-The closer classes are related, the more favorable refactoring clones by such relations becomes. 37\% of clones are in the same class, 24\% share an inheritance hierarchy, 24\% are unrelated and 15\% have a common interface.% For each of these, we define subcategories to facilitate further understanding in what relations clones are found in the codebase.
-
-% What further techniques apply when refactoring a clone using the ``Extract Method'' technique depends on the relation among its clone instances. If clone instances share a common class, no further refactoring techniques are required. If they are in the same inheritance hierarchy, ``Pull-Up Method'' can be used till the extracted method is in a location accessible by all instances.
+Based on experiments on corpus of open-source Java projects we find that most clones (77\%) are in the body of methods or constructors and thus the ``Extract Method'' refactoring technique applies. What further techniques are required for the refactoring depends on the relation among the clone instances of a clone. We define four relations that require different further refactoring techniques: Common Class, Common Hierarchy, Common Interface and Unrelated. The closer classes are related, the more favorable refactoring clones by such relations becomes. 37\% of clones are in the same class, 24\% share an inheritance hierarchy, 24\% are unrelated and 15\% have a common interface.
 
 \keywords{Code Clones \and MSR \and Clone Relation \and Inheritance \and Object-Oriented Programming.}
 \end{abstract}
-%
-%
-%
+
 \section{Introduction}
 Duplicate code fragments are often considered as bad design~\cite{fowler2018refactoring}. They increase maintenance efforts or cause bugs in evolving software~\cite{heitlager2007practical}. Changing one occurrence of a duplicated fragment may require changes in other occurrences~\cite{ostberg2014automatically}. Furthermore, duplicated code was shown to account for up to 25\% of total system volume~\cite{bruntink2005use}, entailing more code to be maintained.
 
@@ -170,43 +144,10 @@ We check the location of each clone instance for each of its nodes. If any node 
 \subsubsection{Method/Constructor Level Clones} \label{sec:methodlevelcr}
 Method/Constructor Level clones denote clones that are found in either a method or constructor. A constructor is a special method that is called when an object is instantiated. Most modern clone refactoring studies only focus on clones at method level~\cite{choi2011extracting, yue2018automatic, kodhai2013method, arcelli2013software, lin2014clonepedia, mandal2014automatic, balazinska2000advanced, yongting2018detection, bouktif2006novel, fanqi2014using, devi2016study}. This is because most clones reside at those places~\cite{lozano2007evaluating, fontana2015duplicated} and most of those clones can be refactored with a relatively simple set of refactoring techniques~\cite{kodhai2013method, fontana2015duplicated}.
 
-%To detect whether a given clone instance is at Method Level, we check for each node in the clone instance whether it has an ancestor node that is a method declaration. A clone instance is considered ``Method Level'' if:
-
-%\begin{equation}\label{eq:samemethod}
-%\forall (n \in I)\text{ } Tn = \text{MethodDeclaration} \lor \exists (p \in ancestors(n)) \text{ } Tp = \text{MethodDeclaration}
-%\end{equation}
-
-%Where \textit{T} is the type of a node. \textit{ancestors(n)} denotes all of ancestor nodes of a node. The ancestor nodes are all recursive parents of a given node in the AST. Apart from this, we check that the MethodDeclaration ancestor of each clone instance is the same, to be sure the clone only spans a \textit{single} method. Figure \ref{fig:methodlevelclone} shows an example of a method level clone and its recursive parents.
-
-%\begin{figure}[H]
-%\begin{parcolumns}{2}
-%\colchunk[1]{
-%\begin{javacode}
-%  public void doA() { // |\textcolor{pgreen}{$p_2$}|
-%    public class Class1 { // |\textcolor{pgreen}{$p_3$}|
-%    if(isA()) // |\textcolor{pgreen}{$p_1$}|
-%|\highlightYellow|      doB(); // |\textcolor{pgreen}{$n_1$}|
-%  }
-%}
-%\end{javacode}}
-%\colchunk[2]{
-%\begin{javacode}
-%public class Class2 { // |\textcolor{pgreen}{$p_3$}|
-%  public void doB() { // |\textcolor{pgreen}{$p_2$}|
-%    if(isB()) // |\textcolor{pgreen}{$p_1$}|
-%|\highlightYellow|      doB(); // |\textcolor{pgreen}{$n_2$}|
-%  }
-%}
-%\end{javacode}}
-%\end{parcolumns}
-%\caption{Example of a method level clone and its parents.}
-%\label{fig:methodlevelclone}
-%\end{figure}
 
 \subsubsection{Class/Interface/Enumeration Level Clones}
 Class/Interface/Enumeration Level clone instances are found inside the body of one of these declarations and optionally include the declaration itself. It can also be a clone instance that exceeds the boundaries of a single method. These clone instances can contain fields, (abstract) methods, inner classes, enumeration fields, etc. These types of clones require various refactoring techniques to refactor. For instance, we might have to move fields in an inheritance hierarchy. Or, we might have to perform refactoring on an architectural level, if a large set of methods is cloned.
 
-%We detect these clones in the same way we detect method level clones: we walk up the AST until we find the first node that indicates one of these categories.
 
 \subsection{Contents}\label{sec:setupcontents}
 Finally, we looked at what nodes individual clone instances span. We selected a set of categories based on empirical evaluation of a set of clones in our dataset. We selected the following categories to be relevant for refactoring:
@@ -219,16 +160,16 @@ Finally, we looked at what nodes individual clone instances span. We selected a 
 \end{enumerate}
 
 \subsubsection{Full Method/Constructor/Class/Interface/Enumeration}
-These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. Sometimes, the declaration should be moved to a location that is accessible by all usages. %We check for clones in this category by checking that the first node in a clone instance is a declaration and the last node in the clone instance is the last node in the body of that declaration.
+These categories denote that a full declaration, including its body, is cloned with another declaration. These categories often denote redundancy and are often easy to refactor: one of both declarations is redundant and should be removed. All usages of the removed declaration should be redirected to the clone instance that was not removed. Sometimes, the declaration should be moved to a location that is accessible by all usages. 
 
 \subsubsection{Partial Method/Constructor}
-These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code. %We detect such clones by checking that each node in the clone instance has an ancestor node that is a MethodDeclaration, but none of the nodes is a method declaration. We describe the procedure by with we recursively seek the parent nodes of a node in Section~\ref{sec:methodlevelcr}.
+These categories describe clone instances which are found in the body of a method or constructor. These clones can often be refactored by extracting a new method out of the cloned code.
 
 \subsubsection{Several Methods}
-Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately. %We detect such clones by checking that each cloned node has a parent node that is a MethodDeclaration. This is the same process as described in equation \ref{eq:samemethod}. Additionally, we check that the MethodDeclaration ancestor of the first node in the clone instance differs from the last, to be sure that the clone instance spans over at least two methods.
+Several methods cloned in a single class is a strong indication of implicit dependencies between two classes. This increases the chance that these classes are missing some form of abstraction, or their abstraction is used inadequately.
 
 \subsubsection{Only Fields}
-This category denotes that the clone spans over only global variables/fields that are declared outside of a method. This indicates data redundancy: pieces of data have an implicit dependency. In such cases, these fields may have to be encapsulated in a new object. Or, the fields should be somewhere in the inheritance structure where all objects containing the clone can access them. %We check for this category by validating that all nodes in the clone instance are a VariableDeclarator. Because VariableDeclarators in methods would already fall into the ``Partial Method'' category, this includes only globally defined fields.
+This category denotes that the clone spans over only global variables/fields that are declared outside of a method. This indicates data redundancy: pieces of data have an implicit dependency. In such cases, these fields may have to be encapsulated in a new object. Or, the fields should be somewhere in the inheritance structure where all objects containing the clone can access them.
 
 \subsubsection{Other}
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated to refactor, especially when aiming to automate this process.
@@ -251,7 +192,6 @@ To determine the refactoring method(s) that can be used to refactor most clones,
 
 \subsection{Relation} \label{sec:relationresults}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Section~\ref{sec:setuprelation}).
-% Sander: is dat plaatje met overzicht van relaties van clone classen weg of ergens anders? hij is hier ook wel handig
 
 \begin{table}[H]
 \centering
