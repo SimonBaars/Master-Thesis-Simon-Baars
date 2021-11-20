@@ -74,17 +74,6 @@ The context of a clone determines how it should be refactored~\cite{fowler2018re
   \item \textbf{Contents:} The statements/declarations of a clone instance.
 \end{itemize}
 
-This is shown schematically in Figure~\ref{fig:clonecontext}.
-
-\todo{Redo figure to show the clone context as a composite of relation, location and contents}
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.8\columnwidth]{img/context}
-    \caption{Abstract representation of clone classes and clone instances.}
-  \label{fig:clonecontext}
-\end{figure}
-
-
 \subsection{Relation}\label{sec:setuprelation}
 When merging code clones in object-oriented languages, it is important to consider the relation between clone instances. This relation has a big impact on how a clone should be refactored.
 
@@ -111,7 +100,7 @@ We added the following categories, to gain more information about clones and be 
 \item \textbf{External Ancestor}: All instances of the clone class are in a class that does not have any external classes in its inheritance hierarchy.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}
   \centering
     \includegraphics[width=0.6\columnwidth]{img/Relation}
       \caption{Abstract figure displaying some relations of clone classes. Arrows represent superclass relations.}
