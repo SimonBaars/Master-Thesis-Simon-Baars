@@ -181,7 +181,7 @@ This category denotes that the clone spans over only global variables/fields tha
 The ``Other'' category denotes all configurations of clone contents that do not fall into above categories. Often, these are combinations of the above stated concepts. For instance, a combination of constructors and methods or a combination of fields and methods is cloned. Such clones indicate, like the ``Several Methods'', the requirement of performing a more architectural-level refactoring. These are often more complicated to refactor, especially when aiming to automate this process.
 
 \section{CloneRefactor}
-To determine the context of clones, we use the tool CloneRefactor\footnote{CloneRefactor is a code clone detection and refactoring tool: \url{https://github.com/SimonBaars/CloneRefactor}}. CloneRefactor uses JavaParser~\cite{tomassetti2017javaparser} to parse the Abstract Syntax Tree (AST) of Java source code. We then find cloned nodes in the syntax tree, of which we map the relation, location, and contents.
+To determine the context of clones, we use the tool CloneRefactor\cite{simonbaarsclonerefactor}. CloneRefactor uses JavaParser~\cite{tomassetti2017javaparser} to parse the Abstract Syntax Tree (AST) of Java source code. We then find cloned nodes in the syntax tree, of which we map the relation, location, and contents.
 
 CloneRefactor uses this information to propose refactorings for the detected clones. Where clone instances are located in the code has a large impact on how it can be refactored, and what the impact on the design of the code is. In that way, the categorizations that CloneRefactor proposes helps determine which clones are most suitable for refactoring, as opposed to traditional clone detection approaches that do not take clone context into account.
 
@@ -189,22 +189,22 @@ CloneRefactor uses this information to propose refactorings for the detected clo
 To find out in which location, relation and contents category most clones are found, we performed measurements on a large corpus of diverse open-source projects.
 
 \subsection{The Corpus}\label{chap:corpus}
-For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}\footnote{The corpus can be downloaded at: \url{http://groups.inf.ed.ac.uk/cup/javaGithub/}}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are thus relevant to study.
+For our experiments we use a large corpus of open-source projects assembled by Allamanis et al.~\cite{githubCorpus2013}. This corpus contains a set of Java projects from GitHub, selected by the number of forks. The projects and files in this corpus were de-duplicated manually. This results in a variety of Java projects that reflect the quality of average open-source Java systems and are thus relevant to study.
 
-Because CloneRefactor requires all dependencies for the projects it analyses, we created a set of scripts\footnote{All scripts to prepare the corpus are available on GitHub: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts}} to filter the corpus for all projects for which we can obtain all dependencies using Maven\footnote{Maven is a build automation system, mainly used for Java programs: \url{https://maven.apache.org/}}.
+Because CloneRefactor requires all dependencies for the projects it analyses, we created a set of scripts\cite{simonbaarscorpusscripts} to filter the corpus for all projects for which we can obtain all dependencies using Maven.
 
-This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the following file in our GitHub repository: \url{https://github.com/SimonBaars/GitHub-Java-Corpus-Scripts/blob/master/filtered_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14.210.357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files.
+This procedure results in 2,267 Java projects including all their dependencies\footnote{The full list of projects is in the \texttt{SimonBaars/GitHub-Java-Corpus-Scripts} GitHub repository as \texttt{filtered\_projects.txt}}. The projects vary in size and quality. The total size of all projects is 14,210,357 lines (11,315,484 when excluding whitespace) over a total of 99,586 Java files. This is an average of 6,268 lines over an average of 44 files per project, 141 lines on average per file. The largest project in the corpus is \textit{VisAD} with 502,052 lines over 1,527 files.
 
 \subsection{Tool Validation}
 We have validated the correctness of CloneRefactor through unit tests and empirical validation. First, we created a set of 57 control projects\footnote{Control projects for testing CloneRefactor: \url{https://github.com/SimonBaars/CloneRefactor/tree/master/src/test/resources}} to verify the correctness in many (edge) cases. These projects test each identified relation, location and contents category (see Section \ref{chap:contextsetup}), to see whether they are correctly identified. Next, we run the tool over the corpus and manually verify samples of the acquired results. This way, we check the correctness of the identified clones and their context.
 
 \section{Results}
-To determine the refactoring method(s) that can be used to refactor most clones, we perform analysis on the context of clones.
+To determine the refactoring methods that can be used to refactor most clones, we perform analysis on the context of clones.
 
 \subsection{Relation} \label{sec:relationresults}
 Table~\ref{tab:relation} displays the number of clone classes found for the entire corpus for different relations (see Section~\ref{sec:setuprelation}).
 
-\begin{table}[H]
+\begin{table}
 \centering
 \caption{Number of clone classes per clone relation.}
 \begin{tabular}{@{}l|l|rr|rr@{}}
