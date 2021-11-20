@@ -7,6 +7,7 @@
 \usepackage{multirow}
 \usepackage{todonotes}
 \addbibresource{refs.bib}
+\usepackage{makecell}
 
 \begin{document}
 \title{Finding Code Clone Refactoring Techniques by Mapping Clone Context}
@@ -279,7 +280,35 @@ Regarding clone context, our results indicate that most clones (37\%) are in a c
 
 Regarding clone contents, 74\% of clones span part of a method body (77\% if we include constructors). 8\% of clones span several methods, which often require refactorings on a more architectural level. 6\% of clones span only global variables, requiring an abstraction to encapsulate these data declarations. Only 4\% of clones span a full declaration (method, class, constructor, etc.).
 
-\todo[inline]{add more details here, especially about comparison with previous studies.}
+Comparing our results for the relation categories to the similar study of Fontana et al.~\cite{fontana2012duplicated, fontana2015duplicated}, we get the percentages stated in. They use a large corpus~\cite{tempero2010qualitas} on which they perform statistical analyses of clone relations together with clone types. Table \ref{tab:dcra-relation} displays the result of this analysis. We added percentages and ordering to this table for easier comparison with the results of our work (see \ref{sec:relationresults}). We also added the percentages of our work to this table.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+                         & \makecell{# clones\\(Fontana et al.)} & \makecell{Percentage\\(Fontana et al.)} & \makecell{Percentage\\(Our Work)} \\ \midrule
+Same Class               & 5,645  & 32.1\%     & 26.8\%    \\
+Same External Superclass & 4,384  & 25.0\%     & 20.6\%   \\
+Unrelated Class          & 2,758  & 15.7\%     & 18.4\%    \\
+Sibling Class            & 2,721  & 15.5\%     & 18.2\%    \\
+Common Hierarchy Class   & 970    & 5.5\%      & 0.8\%    \\
+Same Method              & 569    & 3.2\%      & 10.5\%    \\
+First Cousin Class       & 416    & 2.4\%      & 1.4\%    \\
+Superclass               & 91     & 0.5\%      & 3.1\%    \\
+Ancestor Class           & 13     & 0.1\%      & 0.2\%    \\ \bottomrule
+\end{tabular}
+\caption{Clone relation analysis by Fontana et al. \cite{fontana2012duplicated} measured over the Qualitas Corpus \cite{tempero2010qualitas}.}
+\label{tab:dcra-relation}
+\end{table}
+
+Some of our results differ quite a lot from their results. We think this is mostly accounted due to two differences in their setup:
+\begin{itemize}
+\item Fontana et al. use a corpus consisting of large higher-quality open-source software systems \cite{tempero2010qualitas} where we use a more varied corpus \cite{githubCorpus2013}.
+\item Fontana et al. use clone pairs while we use clone classes.
+\end{itemize}
+
+
+
 \section{Conclusion}
 We defined categories to argue about the contextual information of code clones. These categories are:
 \begin{itemize}
