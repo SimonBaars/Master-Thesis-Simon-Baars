@@ -5,7 +5,6 @@
 \usepackage[style=ieee,citestyle=numeric-comp,dashed=false]{biblatex}
 \usepackage{booktabs}
 \usepackage{multirow}
-\usepackage{todonotes}
 \addbibresource{refs.bib}
 \usepackage{makecell}
 
@@ -207,6 +206,7 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 
 \begin{table}[H]
 \centering
+\caption{Number of clone classes per clone relation.}
 \begin{tabular}{@{}l|l|rr|rr@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Relation}} & \textit{\textbf{Clone Classes}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
@@ -224,7 +224,6 @@ Table~\ref{tab:relation} displays the number of clone classes found for the enti
 \multirow{2}{*}{Common Interface} & Same Direct Interface & 7,522 & 8.8\% & \multirow{2}{*}{13,074} & \multirow{2}{*}{15.3\%} \\ \cmidrule(lr){2-4}
  & Same Indirect Interface & 5,552 & 6.5\% & & \\ \bottomrule
 \end{tabular}
-\caption{Number of clone classes per clone relation.}
 \label{tab:relation}
 \end{table}
 
@@ -235,6 +234,7 @@ Table~\ref{tab:location} displays the number of clone instances found for the en
 
 \begin{table}[H]
 \centering
+\caption{Amount of clone instances with a per location category.}
 \begin{tabular}{@{}lrr@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Clone instances}} & \textit{\textbf{\%}} \\ \midrule
@@ -244,7 +244,6 @@ Constructor Level & 10,039 & 3.39\% \\
 Interface Level & 2,693 & 0.91\% \\
 Enum Level & 788 & 0.27\% \\
 \end{tabular}
-\caption{Amount of clone instances with a per location category.}
 \label{tab:location}
 \end{table}
 
@@ -255,6 +254,7 @@ Table~\ref{tab:contents} displays the number of clone instances found for the en
 
 \begin{table}[H]
 \centering
+\caption{Number of clone instances for clone contents categories}
 \begin{tabular}{@{}l|l|rr|rr@{}}
 \toprule
 \textit{\textbf{Category}} & \textit{\textbf{Contents}} & \textit{\textbf{Clone instances}} & \textit{\textbf{\%}} & \textit{\textbf{Total}} & \textit{\textbf{\%}} \\ \midrule
@@ -269,7 +269,6 @@ Table~\ref{tab:contents} displays the number of clone instances found for the en
   & Full Class & 37 & 0.01\% & & \\ \cmidrule(lr){2-4}
   & Full Enum & 24 & 0.01\% & & \\ \bottomrule
 \end{tabular}
-\caption{Number of clone instances for clone contents categories}
 \label{tab:contents}
 \end{table}
 
@@ -284,9 +283,10 @@ Comparing our results for the relation categories to the similar study of Fontan
 
 \begin{table}[H]
 \centering
+\caption{Clone relation analysis by Fontana et al. \cite{fontana2012duplicated} measured over the Qualitas Corpus \cite{tempero2010qualitas}.}
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
-                         & \makecell{# clones\\(Fontana et al.)} & \makecell{Percentage\\(Fontana et al.)} & \makecell{Percentage\\(Our Work)} \\ \midrule
+                         & \makecell{Nr. of clones\\(Fontana et al.)} & \makecell{Percentage\\(Fontana et al.)} & \makecell{Percentage\\(Our Work)} \\ \midrule
 Same Class               & 5,645  & 32.1\%     & 26.8\%    \\
 Same External Superclass & 4,384  & 25.0\%     & 20.6\%   \\
 Unrelated Class          & 2,758  & 15.7\%     & 18.4\%    \\
@@ -297,7 +297,7 @@ First Cousin Class       & 416    & 2.4\%      & 1.4\%    \\
 Superclass               & 91     & 0.5\%      & 3.1\%    \\
 Ancestor Class           & 13     & 0.1\%      & 0.2\%    \\ \bottomrule
 \end{tabular}
-\caption{Clone relation analysis by Fontana et al. \cite{fontana2012duplicated} measured over the Qualitas Corpus \cite{tempero2010qualitas}.}
+
 \label{tab:dcra-relation}
 \end{table}
 
@@ -306,8 +306,6 @@ Some of our results differ quite a lot from their results. We think this is most
 \item Fontana et al. use a corpus consisting of large higher-quality open-source software systems \cite{tempero2010qualitas} where we use a more varied corpus \cite{githubCorpus2013}.
 \item Fontana et al. use clone pairs while we use clone classes.
 \end{itemize}
-
-
 
 \section{Conclusion}
 We defined categories to argue about the contextual information of code clones. These categories are:
